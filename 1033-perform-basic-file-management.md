@@ -1414,9 +1414,13 @@ cpio \(copy in copy out\)
 
 [https://www.digitalocean.com/community/tutorials/how-to-use-find-and-locate-to-search-for-files-on-a-linux-vps](https://www.digitalocean.com/community/tutorials/how-to-use-find-and-locate-to-search-for-files-on-a-linux-vps)
 
-[https://www.geeksforgeeks.org/file-command-in-linux-with-examples/](https://www.geeksforgeeks.org/file-command-in-linux-with-examples/)
+{% embed url="https://www.geeksforgeeks.org/file-command-in-linux-with-examples/" %}
 
 [https://www.geeksforgeeks.org/tar-command-linux-examples/](https://www.geeksforgeeks.org/tar-command-linux-examples/)
+
+{% embed url="https://itsfoss.com/linux-zip-folder/" %}
+
+[https://www.geeksforgeeks.org/zip-command-in-linux-with-examples/](https://www.geeksforgeeks.org/zip-command-in-linux-with-examples/)
 
 and whith the special thanks from shawn powers.
 
