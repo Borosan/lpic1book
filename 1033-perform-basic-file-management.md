@@ -1154,9 +1154,102 @@ gzip and bzip2 are used just for compression.
 
 ![](.gitbook/assets/performbasicfile-compratio.jpg)
 
+#### zip
+
+`Zip` is one of the most popular archive file format out there. With zip, you can compress multiple files into one file. This not only saves disk space, it also saves network bandwidth. This is why you’ll encounter zip files almost all the time.
+
+```text
+zip options archive inpath inpath ...
+```
+
+Lets take a look a look:
+
+```text
+root@ubuntu16-1:~/test-space/myfiles# tree -F
+.
+├── dir1/
+│   └── myvideo.mp4*
+├── dir2/
+│   ├── zabbix-cli-manual-1.7.0.pdf
+│   └── zabbix-cli-rpm-2.1.1-1.tar.gz
+├── myconf.txt
+└── mylog.txt
+
+2 directories, 5 files
+
+root@ubuntu16-1:~/test-space/myfiles# zip myconf.zip myconf.txt 
+  adding: myconf.txt (deflated 60%)
+
+root@ubuntu16-1:~/test-space/myfiles# tree -F
+.
+├── dir1/
+│   └── myvideo.mp4*
+├── dir2/
+│   ├── zabbix-cli-manual-1.7.0.pdf
+│   └── zabbix-cli-rpm-2.1.1-1.tar.gz
+├── myconf.txt
+├── myconf.zip
+└── mylog.txt
+
+2 directories, 6 files
+```
+
+use the `-r` option with the zip command and it will recursively zips the files in a directory. This option helps you to zip all the files present in the specified directory:
+
+```text
+root@ubuntu16-1:~/test-space/myfiles# cd ..
+root@ubuntu16-1:~/test-space# zip -r myfiles.zip myfiles/
+  adding: myfiles/ (stored 0%)
+  adding: myfiles/dir1/ (stored 0%)
+  adding: myfiles/dir1/myvideo.mp4 (deflated 71%)
+  adding: myfiles/etc/ (stored 0%)
+  adding: myfiles/dir2/ (stored 0%)
+  adding: myfiles/dir2/zabbix-cli-rpm-2.1.1-1.tar.gz (deflated 0%)
+  adding: myfiles/dir2/zabbix-cli-manual-1.7.0.pdf (deflated 88%)
+  adding: myfiles/mylog.txt (deflated 89%)
+  adding: myfiles/myconf.txt (deflated 60%)
+  adding: myfiles/myconf.zip (stored 0%)
+```
+
+#### uzip
+
+A separate companion program, unzip, unpacks and uncompresses zip archives.
+
+```text
+root@ubuntu16-1:~/test-space# rm -rf myfiles
+root@ubuntu16-1:~/test-space# unzip myfiles.zip 
+Archive:  myfiles.zip
+   creating: myfiles/
+   creating: myfiles/dir1/
+  inflating: myfiles/dir1/myvideo.mp4  
+   creating: myfiles/etc/
+   creating: myfiles/dir2/
+  inflating: myfiles/dir2/zabbix-cli-rpm-2.1.1-1.tar.gz  
+  inflating: myfiles/dir2/zabbix-cli-manual-1.7.0.pdf  
+  inflating: myfiles/mylog.txt       
+  inflating: myfiles/myconf.txt      
+ extracting: myfiles/myconf.zip   
+```
+
+| zip command example | Description  |
+| :--- | :--- |
+| zip –v filename.zip file1.txt | -v Option: Verbose mode or print diagnostic version info. |
+| zip –d filename.zip file.txt | -d Option: Removes the file from the zip archive. |
+| zip –u filename.zip file.txt | -u Option: Updates the file in the zip archive. |
+| zip –m filename.zip file.txt | -m Option: Deletes the original files after zipping. |
+| zip –x filename.zip file\_to\_be\_excluded | -x Option: Exclude the files in creating the zip. |
+
 ### Compressing files
 
-#### zip
+#### gzip
+
+
+
+#### bzip2
+
+
+
+
 
 ### Archiving files
 
@@ -1243,11 +1336,7 @@ Options:
 
 Fortunately tar oprates on File System level. tar \(Tape Archive\)
 
-zip
 
-gzip
-
-bzip2
 
 again tar
 
