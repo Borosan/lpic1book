@@ -1426,6 +1426,8 @@ root@ubuntu16-1:~/test-space# ls
 myarch.tar  myfiles
 ```
 
+We can include more than one directory, also it is possible to exclude with `--exclude` option.
+
 **Untar tar Archive File**
 
 ```text
@@ -1440,10 +1442,42 @@ myfiles/mylog.txt
 myfiles/myconf.txt
 ```
 
-Usefull switches are:
+We can use Linux tar command to create compressed or uncompressed Archive files and also maintain and modify them.
+
+![](.gitbook/assets/performbasicfile-targzipbzip2.jpg)
 
 ```text
-Options:
+root@ubuntu16-1:~/test-space# tar -cvzf myfiles.tar.gz myfiles/
+myfiles/
+myfiles/dir1/
+myfiles/dir1/myvideo.mp4
+myfiles/dir2/
+myfiles/dir2/zabbix-cli-rpm-2.1.1-1.tar.gz
+myfiles/dir2/zabbix-cli-manual-1.7.0.pdf
+myfiles/mylog.txt
+myfiles/myconf.txt
+
+root@ubuntu16-1:~/test-space# tar -cvjf myfiles.tar.bz2 myfiles/
+myfiles/
+myfiles/dir1/
+myfiles/dir1/myvideo.mp4
+myfiles/dir2/
+myfiles/dir2/zabbix-cli-rpm-2.1.1-1.tar.gz
+myfiles/dir2/zabbix-cli-manual-1.7.0.pdf
+myfiles/mylog.txt
+myfiles/myconf.txt
+
+root@ubuntu16-1:~/test-space# ls -lh
+total 6.4M
+drwxr-xr-x 4 root root 4.0K Oct  5 23:51 myfiles
+-rw-r--r-- 1 root root 3.2M Oct  6 01:59 myfiles.tar.bz2
+-rw-r--r-- 1 root root 3.3M Oct  6 01:58 myfiles.tar.gz
+```
+
+for decompressing tar.gzip use   `tar -xzvf file.tar.gz`  and `tar -xjvf file.tar.bz2` for bzip2 files.
+
+```text
+tar command Options:
 -c : Creates Archive
 -x : Extract the archive
 -f : creates archive with given filename
@@ -1455,11 +1489,19 @@ Options:
 -j : filter archive tar file using tbzip
 -W : Verify a archive file
 -r : update or add file or directory in already existed .tar file
+wildcards – Specify patterns in unix tar command
 ```
 
-again tar
+we usually use mixture of tar options to gain what we want:
 
-We can use Linux tar command to create compressed or uncompressed Archive files and also maintain and modify them.
+| tar command example | Description |
+| :--- | :--- |
+| tar tf file.tar | list the contents and specify the tarfile |
+| tar tvf file.tar | Viewing the Archive |
+| tar tvf file.tar filename | We can pass a file name as an argument to search a tarfile |
+| tar tvf file.tar --wildcards '\*.png' | Using wildcards with tar |
+| tar -tvfW file.tar | Verify tar, tar.gz and tar.bz2 Archive File |
+| tar -rvf file.tar newfile.txt | Add a file to .tar or .tar.gz or .tar.bz2 File |
 
 ![](.gitbook/assets/performbasicfile-over.jpg)
 
@@ -1540,6 +1582,8 @@ cpio \(copy in copy out\)
 [https://www.geeksforgeeks.org/zip-command-in-linux-with-examples/](https://www.geeksforgeeks.org/zip-command-in-linux-with-examples/)
 
 [https://www.geeksforgeeks.org/gzip-command-linux/](https://www.geeksforgeeks.org/gzip-command-linux/)
+
+[https://www.geeksforgeeks.org/bzip2-command-in-linux-with-examples/](https://www.geeksforgeeks.org/bzip2-command-in-linux-with-examples/)
 
 and whith the special thanks from shawn powers.
 
