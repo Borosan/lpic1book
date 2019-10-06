@@ -1243,13 +1243,136 @@ Archive:  myfiles.zip
 
 #### gzip
 
+Gzip \(GNU zip\) is a compressing tool, which is used to truncate the file size. 
 
+```text
+gzip [OPTION]... [FILE]...
+```
+
+**By default** original file will be replaced by the compressed file ending with extension \(.gz\) and gzip removes the original files after creating the compressed file. gzip keeps the original file mode, ownership, and timestamp.
+
+```text
+root@ubuntu16-1:~/test-space/myfiles# tree -F
+.
+├── dir1/
+│   └── myvideo.mp4*
+├── dir2/
+│   ├── zabbix-cli-manual-1.7.0.pdf
+│   └── zabbix-cli-rpm-2.1.1-1.tar.gz
+├── myconf.txt
+└── mylog.txt
+
+2 directories, 5 files
+root@ubuntu16-1:~/test-space/myfiles# gzip mylog.txt 
+root@ubuntu16-1:~/test-space/myfiles# tree -F
+.
+├── dir1/
+│   └── myvideo.mp4*
+├── dir2/
+│   ├── zabbix-cli-manual-1.7.0.pdf
+│   └── zabbix-cli-rpm-2.1.1-1.tar.gz
+├── myconf.txt
+└── mylog.txt.gz
+
+2 directories, 5 files
+```
+
+#### gunzip
+
+To decompress a file we can use gunzip command and your original file will be back.
+
+```text
+root@ubuntu16-1:~/test-space/myfiles# ls -l
+total 136
+drwxr-xr-x 2 root root   4096 Sep 30 05:42 dir1
+drwxr-xr-x 2 root root   4096 Oct  5 05:25 dir2
+-rw-r--r-- 1 root root   2084 Sep 30 05:44 myconf.txt
+-rw-r----- 1 root root 123925 Sep 30 05:41 mylog.txt.gz
+root@ubuntu16-1:~/test-space/myfiles# gunzip mylog.txt.gz 
+root@ubuntu16-1:~/test-space/myfiles# ls -l
+total 1144
+drwxr-xr-x 2 root root    4096 Sep 30 05:42 dir1
+drwxr-xr-x 2 root root    4096 Oct  5 05:25 dir2
+-rw-r--r-- 1 root root    2084 Sep 30 05:44 myconf.txt
+-rw-r----- 1 root root 1156369 Sep 30 05:41 mylog.txt
+```
+
+also we can use -d option to decompress a file using the “gzip” command.ex : `gzip -d mydoc.gz`
+
+| gzip command example | Description |
+| :--- | :--- |
+| gzip -r testfolder | compress every file in a folder and its subfolders |
+| gzip -k mydoc.txt | compress the file and keep the original file |
+| gzip -f myfile1.txt | fore to compress already compressed file |
+| gzip -v mydoc.txt | displays the name and percentage reduction for each file compressed or decompressed. we can use -l with compressed files. |
+| gzip -L filename.gz | displays the gzip license |
+| gzip -9 mydoc.txt | -\[1-9\] option : It allows to change the compression level |
 
 #### bzip2
 
+Like gzip, bzip2  command in Linux is used to compress and decompress the files. It uses different compression algorithm so it compress files better than gzip, but  It has a slower decompression time and higher memory use.
 
+```text
+bzip2 [OPTIONS] filenames ...
+```
 
+```text
+root@ubuntu16-1:~/test-space/myfiles# tree -F
+.
+├── dir1/
+│   └── myvideo.mp4*
+├── dir2/
+│   ├── zabbix-cli-manual-1.7.0.pdf
+│   └── zabbix-cli-rpm-2.1.1-1.tar.gz
+├── myconf.txt
+└── mylog.txt
 
+2 directories, 5 files
+root@ubuntu16-1:~/test-space/myfiles# bzip2 mylog.txt 
+root@ubuntu16-1:~/test-space/myfiles# tree -F
+.
+├── dir1/
+│   └── myvideo.mp4*
+├── dir2/
+│   ├── zabbix-cli-manual-1.7.0.pdf
+│   └── zabbix-cli-rpm-2.1.1-1.tar.gz
+├── myconf.txt
+└── mylog.txt.bz2
+
+2 directories, 5 files
+```
+
+#### bunzip2
+
+bunzip2 is used for decompression bzip2 files:
+
+```text
+root@ubuntu16-1:~/test-space/myfiles# ls -l
+total 92
+drwxr-xr-x 2 root root  4096 Sep 30 05:42 dir1
+drwxr-xr-x 2 root root  4096 Oct  5 05:25 dir2
+-rw-r--r-- 1 root root  2084 Sep 30 05:44 myconf.txt
+-rw-r----- 1 root root 79421 Sep 30 05:41 mylog.txt.bz2
+root@ubuntu16-1:~/test-space/myfiles# bunzip2 mylog.txt.bz2 
+root@ubuntu16-1:~/test-space/myfiles# ls -l
+total 1144
+drwxr-xr-x 2 root root    4096 Sep 30 05:42 dir1
+drwxr-xr-x 2 root root    4096 Oct  5 05:25 dir2
+-rw-r--r-- 1 root root    2084 Sep 30 05:44 myconf.txt
+-rw-r----- 1 root root 1156369 Sep 30 05:41 mylog.txt
+```
+
+also  **-d**  option is used for decompression of compressed files.
+
+| bzip2 command example | Description |
+| :--- | :--- |
+| bzip2 -k input.txt | does compression but does not deletes the original file |
+| bzip2 -z input.txt | forces compression. It is an opposite command of decompression |
+| bzip2 -v input.txt | show the compression ratio for each file processed |
+| bzip2 -L filename.gz | -V , -L used to display the software version, license terms |
+| bzip2 -q input.txt |  It will suppress non-essential warning messages. |
+
+bzip2 doesn't any options for compressing a directory, so use tar with that. How? read below:
 
 ### Archiving files
 
@@ -1334,10 +1457,6 @@ Options:
 -r : update or add file or directory in already existed .tar file
 ```
 
-Fortunately tar oprates on File System level. tar \(Tape Archive\)
-
-
-
 again tar
 
 We can use Linux tar command to create compressed or uncompressed Archive files and also maintain and modify them.
@@ -1419,6 +1538,8 @@ cpio \(copy in copy out\)
 [https://itsfoss.com/linux-zip-folder/](https://itsfoss.com/linux-zip-folder/)
 
 [https://www.geeksforgeeks.org/zip-command-in-linux-with-examples/](https://www.geeksforgeeks.org/zip-command-in-linux-with-examples/)
+
+[https://www.geeksforgeeks.org/gzip-command-linux/](https://www.geeksforgeeks.org/gzip-command-linux/)
 
 and whith the special thanks from shawn powers.
 
