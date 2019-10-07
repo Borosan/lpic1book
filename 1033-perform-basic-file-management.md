@@ -1372,7 +1372,38 @@ also  **-d**  option is used for decompression of compressed files.
 | bzip2 -L filename.gz | -V , -L used to display the software version, license terms |
 | bzip2 -q input.txt |  It will suppress non-essential warning messages. |
 
-bzip2 doesn't any options for compressing a directory, so use tar with that. How? read below:
+bzip2 doesn't any options for compressing a directory, so use tar with that. How? read tar section.
+
+### xz
+
+xz is a new general-purpose, command line data compression utility, similar to gzip and bzip2. It can be used to compress or decompress a file according to the selected operation mode. It supports various formats to compress or decompress files.
+
+Selecting a compression utility to use will depend mainly on two factors, the compression speed and rate of a given tool. Unlike its counterparts, xz is not commonly used but offers the best compression.
+
+```text
+root@ubuntu16-1:~/test-space/myfiles# ls
+dir1  dir2  myconf.txt  mylog.txt
+root@ubuntu16-1:~/test-space/myfiles# xz mylog.txt 
+```
+
+or we could use xz -x file to compress that. -d is usef for decompression:
+
+```text
+root@ubuntu16-1:~/test-space/myfiles# xz -d mylog.txt.xz 
+root@ubuntu16-1:~/test-space/myfiles# ls -l
+total 1144
+drwxr-xr-x 2 root root    4096 Sep 30 05:42 dir1
+drwxr-xr-x 2 root root    4096 Oct  5 05:25 dir2
+-rw-r--r-- 1 root root    2084 Sep 30 05:44 myconf.txt
+-rw-r----- 1 root root 1156369 Sep 30 05:41 mylog.txt
+```
+
+| xz command example | Description |
+| :--- | :--- |
+| xz -k file.txt | prevent deleting of the input file\(s\) |
+| xz -f file.txt.xz | use the -f option to force the process\(ex: compressed file already exist\) |
+| xz -9 file.txt | different compression preset levels \(0 to 9, with default being 6\) --fast equals  -0 and --best is the same as -9 |
+| xz -q file.txt | run it in quiet mode or enable verbose mode with the -v |
 
 ### Archiving files
 
@@ -1507,6 +1538,8 @@ we usually use mixture of tar options to gain what we want:
 
 ![](.gitbook/assets/performbasicfile-over.jpg)
 
+use `tar -cJf file.tar.xz` to create xz compressed file and `tar -xJf file.tar.xz` for extracting.
+
 #### Block Devices vs File system
 
 ### dd
@@ -1586,6 +1619,8 @@ cpio \(copy in copy out\)
 [https://www.geeksforgeeks.org/gzip-command-linux/](https://www.geeksforgeeks.org/gzip-command-linux/)
 
 [https://www.geeksforgeeks.org/bzip2-command-in-linux-with-examples/](https://www.geeksforgeeks.org/bzip2-command-in-linux-with-examples/)
+
+[https://www.tecmint.com/xz-command-examples-in-linux/](https://www.tecmint.com/xz-command-examples-in-linux/)
 
 and whith the special thanks from shawn powers.
 
