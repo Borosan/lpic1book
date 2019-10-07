@@ -1428,6 +1428,8 @@ myarch.tar  myfiles
 
 We can include more than one directory, also it is possible to exclude with `--exclude` option.
 
+note: by default tar uncompresses file in your current directory and it can make some problems, for avoiding that use `tar -xvf backupfile  -C  /restoreDir` command. -C means change the directory before extracting the backup.
+
 **Untar tar Archive File**
 
 ```text
@@ -1509,7 +1511,7 @@ we usually use mixture of tar options to gain what we want:
 
 ### dd
 
-dd doesn't stand for any thing but the best acronym for that is Disk Destroyer becuase dd doesn't care at all about file system and strickly works with Block Devices!
+dd stands for Convert & Copy but why it is not cc? because the name cc is already used by c compiler.  Many people call it  Disk Destroyer becuase dd doesn't care at all about file system and strickly works with Block Devices!
 
 ![](.gitbook/assets/performbasicfile-dd.jpg)
 
