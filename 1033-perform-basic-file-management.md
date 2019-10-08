@@ -1540,25 +1540,122 @@ we usually use mixture of tar options to gain what we want:
 
 use `tar -cJf file.tar.xz` to create xz compressed file and `tar -xJf file.tar.xz` for extracting.
 
-#### Block Devices vs File system
+#### Linux Devices
+
+ In Linux various special files can be found under the directory `/dev`. These files are called device files and behave unlike ordinary files.
+
+```text
+root@ubuntu16-1:~/test-space# ls -l /dev/
+total 0
+...
+brw-rw----  1 root disk      8,   0 Dec  2  2018 sda
+brw-rw----  1 root disk      8,   1 Dec  2  2018 sda1
+brw-rw----  1 root disk      8,   2 Dec  2  2018 sda2
+brw-rw----  1 root disk      8,   5 Dec  2  2018 sda5
+crw-rw----  1 root disk     21,   0 Dec  2  2018 sg0
+crw-rw----+ 1 root cdrom    21,   1 Dec  2  2018 sg1
+...
+```
+
+The columns are as follows from left to right:
+
+* Permissions
+* Owner
+* Group
+* Major Device Number
+* Minor Device Number
+* Timestamp
+* Device Name
+
+Remember in the ls command you can see the type of file with the first bit on each line. Device files are denoted as the following:
+
+```text
+c - character
+b - block
+p - pipe
+s - socket
+```
+
+ The most common types of device files are for block devices and character devices. These files are an interface to the actual driver \(part of the Linux kernel\) which in turn accesses the hardware. Another, less common, type of device file is the named _pipe:_
+
+ **Character Device:**These devices transfer data, but one a character at a time. You'll see a lot of pseudo devices \(/dev/null\) as character devices, these devices aren't really physically connected to the machine, but they allow the operating system greater functionality.
+
+ **Block Device:**These devices transfer data, but in large fixed-sized blocks. We'll most commonly see devices that utilize data blocks as block devices, such as harddrives, filesystems, etc.
+
+**Pipe Device:**Named pipes allow two or more processes to communicate with each other, these are similar to character devices, but instead of having output sent to a device, it's sent to another process.
+
+**Socket Device:**Socket devices facilitate communication between processes, similar to pipe devices but they can communicate with many processes at once.
+
+ **Device Characterization \(Major Device Number & Minor Device Number\)**
+
+Devices are characterized using two numbers, major device number and minor device number. **We** can see these numbers in the above ls example, they are separated by a comma. For example, let's say a device had the device numbers: 8, 0:
+
+The major device number represents the device driver that is used, in this case 8, which is often the major number for sd block devices. The minor number tells the kernel which unique device it is in this driver class, in this case 0 is used to represent the first device \(a\).
 
 ### dd
 
 dd stands for Convert & Copy but why it is not cc? because the name cc is already used by c compiler.  Many people call it  Disk Destroyer becuase dd doesn't care at all about file system and strickly works with Block Devices!
 
+```text
+dd [OPERAND]...
+dd OPTION
+```
+
+ The command line syntax of dd differs from many other Unix programs, in that it uses the syntax _option=value_ for its command line options, rather than the more-standard _-option value_ or _–option=value_ formats. By default, dd reads from stdin and writes to stdout, but these can be changed by using the if \(input file\) and of \(output file\) options.
+
 ![](.gitbook/assets/performbasicfile-dd.jpg)
 
-dd takes an input file line /dev/sda and it writes it to the out put file /dev/sdb we specify, bs is block size, how big we want to write blocks and it is not neseccary and can be omitted.
+dd takes an input file line \(ex:/dev/sda\) and it writes it to the out put file \(ex:/dev/sdb\) we specify, bs is block size, how big we want to write blocks and it is not neseccary and can be omitted.
 
-We can even use dd to copy any kind of block devices
+ Backup the entire harddisk:
 
-And as dd works on block devices itself it doesn't matter if partion ups.
+```text
+dd if = /dev/sda of = /dev/sdb
+```
 
-cpio
+We can even use dd to copy any kind of block devices and as dd works on block devices itself it doesn't matter if partion ups.
 
-cpio \(copy in copy out\)
+* If there are any errors, the above command will fail. If you give the parameter _“conv=noerror”_ then it will continue to copy if there are read errors.`dd if = /dev/sda of = /dev/sdb conv=noerror`
+* Input file and output file should be mentioned very carefully. Just in case, you mention source device in the target and vice versa, you might loss all your data.
+* To copy, hard drive to hard drive using dd command given below, sync option allows you to copy everything using synchronized I/O.`dd if = /dev/sda of = /dev/sdb conv=noerror, sync`
+
+| dd comand examples | Description |
+| :--- | :--- |
+| dd if = /dev/sda of = /dev/sdb | backup entire Disk |
+| dd if=/dev/hda1 of=~/partition.img | backup a partition |
+| dd if = /dev/hda of = ~/hdadisk.img | create an image of a Hard Disk |
+| dd if = hdadisk.img of = /dev/hdb | restore using  Hard Disk image |
+| dd if = /dev/cdrom of = tgsservice.iso bs = 2048 | create CD-Rom backup |
+| dd if=/path/to/ubuntu.iso of=/dev/sdb bs=1M | create bootable usb drive from  image |
+| dd if=textfile.ebcdic of=textfile.ascii conv=ascii | Convert the data format of a file from EBCDIC to ASCII |
+
+conv can do many thing such as Converting a file to uppercase or visa versa.
+
+### cpio
+
+`cpio` stands for “**C**o**p**y **i**n, c**o**py out“. It is used for processing the archive files like _.cpio or_ .tar. This command can copy files to and from archives.
+
+* **Copy-out Mode:** Copy files named in name-list to the archive `command | cpio -o  > archive`
+* **Copy-in Mode:** Extract files from the archive `cpio -i < archive`
+* **Copy-pass Mode:** Copy files named in name-list to destination-directory `cpio -p destination-directory < name-list`
 
 ![](.gitbook/assets/performbasicfile-cpio.jpg)
+
+```text
+Policy options:
+    -i, –extract: Extract files from an archive and it runs only in copy-in mode.
+    -o, –create: Create the archive and it runs only in copy-out mode.
+    -p, –pass-through: Run in copy-pass mode.
+    -t, –list: Print a table of contents of all the inputs present.
+```
+
+| cpio command example | Description |
+| :--- | :--- |
+| ls /etc \| cpio -ov file.cpio | create a cpio file |
+| cpio -iv &lt;  file.cpio | extract a cpio file |
+| ls \| cpio -ov -H tar file.tar | create a tar file using cpio |
+| cpio -iv -F file.tar | extract a tar file using cpio |
+| cpio -it -F &lt; file.tar | only view tar archive file using cpio |
 
 .
 
@@ -1621,6 +1718,16 @@ cpio \(copy in copy out\)
 [https://www.geeksforgeeks.org/bzip2-command-in-linux-with-examples/](https://www.geeksforgeeks.org/bzip2-command-in-linux-with-examples/)
 
 [https://www.tecmint.com/xz-command-examples-in-linux/](https://www.tecmint.com/xz-command-examples-in-linux/)
+
+[https://www.debian.org/releases/wheezy/amd64/apds01.html.en](https://www.debian.org/releases/wheezy/amd64/apds01.html.en)
+
+[https://linuxjourney.com/lesson/device-types](https://linuxjourney.com/lesson/device-types)
+
+[https://www.geeksforgeeks.org/dd-command-linux/](https://www.geeksforgeeks.org/dd-command-linux/)
+
+[https://linoxide.com/linux-command/linux-dd-command-create-1gb-file/](https://linoxide.com/linux-command/linux-dd-command-create-1gb-file/)
+
+\`\`[`https://www.geeksforgeeks.org/cpio-command-in-linux-with-examples/`](https://www.geeksforgeeks.org/cpio-command-in-linux-with-examples/)\`\`
 
 and whith the special thanks from shawn powers.
 
