@@ -205,6 +205,8 @@ root@ubuntu16-1:~/test-space/myfiles# wc < list
   6  47 267
 ```
 
+or simply wc 0&lt; list do the same thing.
+
 ### here documents
 
 A here document \(or heredoc\) is a way of getting text input into a script or command without having to feed it in from a separate file.
