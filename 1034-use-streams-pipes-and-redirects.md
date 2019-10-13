@@ -42,10 +42,15 @@ Streams Are Handled Like Files.Streams in Linux—like almost everything else—
 
 Each file associated with a process is allocated a unique number to identify it. This is known as the **file descriptor**. Whenever an action is required to be performed on a file, the file descriptor is used to identify the file.  These values are always used for `stdin`, `stdout,` and `stderr`:
 
+* 0: stdin 
+* 1: stdout 
+* 2: stderr
+
 ```text
-    0: stdin
-    1: stdout
-    2: stderr
+ root@ubuntu16-1:~/test-space/myfiles# ls -al /dev/std*
+lrwxrwxrwx 1 root root 15 Dec  1  2018 /dev/stderr -> /proc/self/fd/2
+lrwxrwxrwx 1 root root 15 Dec  1  2018 /dev/stdin -> /proc/self/fd/0
+lrwxrwxrwx 1 root root 15 Dec  1  2018 /dev/stdout -> /proc/self/fd/1
 ```
 
 ### Redirecting standard IO <a id="redirecting-standard-io"></a>
