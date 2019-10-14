@@ -284,6 +284,34 @@ Use  “**Ctrl-A**” and “**K**” to kill the screen.
 
 
 
+### Signal a program to continue running after logout
+
+#### What is process?
+
+A program is a series of instructions that tell the computer what to do. When we run a program, those instructions are copied into memory and space is allocated for variables and other stuff required to manage its execution. This running instance of a program is called a process and it's processes which we manage
+
+#### Manage processes
+
+To manage processes in a linux machine  we can send signals signals to the process.Many Signals are defined in the linux kernels. \(try `man 7 signal`\)
+
+| Signal Name | Signal Number | Description |
+| :--- | :--- | :--- |
+| SIGHUP | 1 | Hang up detected on controlling terminal or death of controlling process |
+| SIGINT | 2 | Issued if the user sends an interrupt signal \(Ctrl + C\) |
+| SIGQUIT | 3 | Issued if the user sends a quit signal \(Ctrl + D\) |
+| SIGFPE | 8 | Issued if an illegal mathematical operation is attempted |
+| SIGKILL | 9 | If a process gets this signal it must quit immediately and will not perform any clean-up operations |
+| SIGALRM | 14 | Alarm clock signal \(used for timers\) |
+| SIGTERM | 15 | Software termination signal \(sent by kill by default\) |
+
+
+
+to send signals to processes there are some commands.
+
+
+
+
+
 > If we use the `jobs` command with the `-p` option, the output is simply the PID of the _process group leader_ for each job.
 
 
@@ -313,6 +341,10 @@ In linux if we want to run some thing in background we put & at end of it.
 [https://www.tecmint.com/screen-command-examples-to-manage-linux-terminals/](https://www.tecmint.com/screen-command-examples-to-manage-linux-terminals/)
 
 [https://linoxide.com/linux-command/15-examples-screen-command-linux-terminal/](https://linoxide.com/linux-command/15-examples-screen-command-linux-terminal/)
+
+[https://ryanstutorials.net/linuxtutorial/processes.php](https://ryanstutorials.net/linuxtutorial/processes.php)
+
+[https://www.tutorialspoint.com/unix/unix-signals-traps.htm](https://www.tutorialspoint.com/unix/unix-signals-traps.htm)
 
 .
 
