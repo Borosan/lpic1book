@@ -330,11 +330,13 @@ this is my file ./myconf.txt
 this is my file ./mydate
 ```
 
+`cut -d: -f1 < /etc/passwd | sort | xargs`  generates a compact list of all Linux user accounts on the system .
+
 ```text
 xargs options :
 -0 : input items are terminated by null character instead of white spaces
 -a file : read items from file instead of standard input
-–delimiter = delim : input items are terminated by a special character
+-d,–delimiter = delim : input items are terminated by a special character
 -E eof-str : set the end of file string to eof-str
 -I replace-str : replace occurrences of replace-str in the initial arguments with names read from standard input
 -L max-lines : use at-most max-lines non-blank input lines per command line.
@@ -364,7 +366,7 @@ tee [OPTION]... [FILE]...
 
 ![](.gitbook/assets/upstreams-tee.jpg)
 
-tee does both the tasks simultaneously.example:
+tee always work after the '\|' and it does both the tasks simultaneously.example:
 
 ```text
 root@ubuntu16-1:~/test-space/myfiles# ls  | tee list.txt
