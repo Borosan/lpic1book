@@ -194,7 +194,7 @@ root@ubuntu16-1:~/test-space#
 >
 > we can use  disown with -h option. `disown -h %1`. In this state, you could use normal job control mechanisms to continue controlling the process until closing the terminal. Upon closing the terminal, you will, once again, be stuck with a process with nowhere to output if you didn’t redirect to a file when starting it.
 
-There a problem with nohup and disown commands. There is no way to bring back that job to forground and work interactivly with that. So we need a different solution, screen.
+There is a problem with nohup and disown commands. There is no way to bring back that job to forground and work interactivly with that. So we need a different solution, screen.
 
 ### screen
 
@@ -311,9 +311,10 @@ processes can further be categorized into:
 
 therefore **PPID** stands for **Parent Process ID**. notes:
 
-> note1:Used up pid’s can be used in again for a newer process since all the possible combinations are used.
->
-> note2:At any point of time, no two processes with the same pid exist in the system because it is the pid that Unix uses to track each process.
+* note1:Used up pid’s can be used in again for a newer process since all the possible combinations are used.
+* note2:At any point of time, no two processes with the same pid exist in the system because it is the pid that Unix uses to track each process.
+
+> If we use the `jobs` command with the `-l` option, it will also show process ID.
 
 ### ps
 
@@ -399,7 +400,25 @@ It is also possible to use --sort option to sort output based on different field
 | ps -g group\_name , ps -G group\_id | Select by group name or ID |
 | ps -t pst/0 | Display Processes by TTY |
 
-Be crative and use combination of commands we have learned like grep and watch.
+We already know about the grep command in Linux, which searches for a pattern, and then prints the matching text in the output. What if the requirement is to apply this kind of processing to fetch select information about processes currently running in the system?
+
+### pgrep
+
+the `pgrep` command searches for processes currently running on the system, based on a complete or partial process name, or other specified attributes.
+
+```text
+pgrep [options] pattern
+```
+
+
+
+
+
+> Be creative and use combination of commands we have learned like 'watch'. We can use 'watch' in conjunction with ps  to perform Real-time Process Monitoring :
+>
+> `watch -n 1 'ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head'`
+
+But there is another tool for that, top.
 
 ###  top
 
@@ -427,11 +446,40 @@ KiB Swap:  1045500 total,   448216 free,   597284 used.   256968 avail Mem
     10 root      rt   0       0      0      0 S  0.0  0.0   0:00.00 migration/0
 ```
 
-#### 
+Top output keep refreshing until you press ‘q‘.
 
-#### 
+Where,
 
-#### Manage processes
+* **PID:** Shows task’s unique process id
+* **USER:** User name of owner of task.
+* **PR:** Stands for priority of the task.
+* **NI:** Represents a Nice Value of task. A Negative nice value implies higher priority, and positive Nice value means lower p
+* **VIRT:** Total virtual memory used by the task.
+* **RES:**It is the Resident size, the non-swapped physical memory a task has used.
+* **SHR:** Represents the amount of shared memory used by a task.
+* **%CPU:** Represents the CPU usage.
+* **%MEM:** Shows the Memory usage of task.
+* **TIME+:** CPU Time, the same as ‘TIME’, but reflecting more granularity through hundredths of a second.
+* **COMMAND:**Shows the command used to launch the process.
+
+| top command option | description |
+| :--- | :--- |
+| top -n 10 | Exit Top Command After Specific repetition |
+| top -u user1 |  Display Specific User Process |
+| Top -d seconds.tenths | It tells delay time between screen updates |
+| top -h |  Shows top command syntax |
+
+| Running top command hot keys | Description |
+| :--- | :--- |
+|  pressing ‘d‘ | change screen refresh interval \(default 3.0 sec\) |
+| Pressing ‘z‘  | display running process in color |
+| Pressing ‘c‘ | display absolute path of running program |
+| pressing ‘k‘ | kill a process after finding PID of process\(without exiting\) |
+| Pressing 'M' | sort based on memory usage |
+| Shift+P |  Sort by CPU Utilisation |
+|  Press ‘h‘ | Getting top command help |
+
+### Manage processes
 
 To manage processes in a linux machine  we can send signals signals to the process.Many Signals are defined in the linux kernels. \(try `man 7 signal`\)
 
@@ -448,12 +496,6 @@ To manage processes in a linux machine  we can send signals signals to the proce
 to send signals to processes there are some commands.
 
 
-
-
-
-
-
-> If we use the `jobs` command with the `-p` option, the output is simply the PID of the _process group leader_ for each job.
 
 
 
@@ -524,6 +566,10 @@ Some extra modifiers:
 \*\*\*\*[https://linuxhint.com/ps\_command\_linux-2/](https://linuxhint.com/ps_command_linux-2/)
 
 [https://www.quora.com/What-is-the-difference-between-ps-elf-and-ps-aux-in-Linux](https://www.quora.com/What-is-the-difference-between-ps-elf-and-ps-aux-in-Linux)
+
+[https://www.geeksforgeeks.org/top-command-in-linux-with-examples/](https://www.geeksforgeeks.org/top-command-in-linux-with-examples/)
+
+[https://www.tecmint.com/12-top-command-examples-in-linux/](https://www.tecmint.com/12-top-command-examples-in-linux/)
 
 [https://www.tutorialspoint.com/unix/unix-signals-traps.htm](https://www.tutorialspoint.com/unix/unix-signals-traps.htm)
 
