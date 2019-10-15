@@ -126,6 +126,8 @@ We brought a job to foreground and use Ctrl + C to kill that job.
 
 jobs normally stick to the shell running it, so they are killed when we close the terminal or log out. Some times we need to make sure that the running job is not attached to the running shell.
 
+### Signal a program to continue running after logout
+
 ### nohup
 
 `Nohup` stands for **no hangup**, and that means even if the parent shell is diconnected the job just will continue,  The output of the **nohup** command will write in **nohup.out** the file if any redirecting filename is not mentioned in **nohup** command.
@@ -176,11 +178,21 @@ root@ubuntu16-1:~/test-space#
 >
 > `root@ubuntu16-1:~#sleep 666 &`
 >
-> `root@ubuntu16-1:~# sleep 666 & [1] 55458` 
+> `root@ubuntu16-1:~# sleep 666 &` 
 >
-> `root@ubuntu16-1:~# jobs [1]+ Running sleep 666 &` 
+> `[1] 55458` 
 >
-> `root@ubuntu16-1:~# disown %1 root@ubuntu16-1:~# jobs`
+> `root@ubuntu16-1:~# jobs`
+>
+>  `[1]+ Running sleep 666 &` 
+>
+> `root@ubuntu16-1:~# disown %1` 
+>
+> `root@ubuntu16-1:~# jobs`
+>
+> `root@ubuntu16-1:~#`
+>
+> we can use  disown with -h option. `disown -h %1`. In this state, you could use normal job control mechanisms to continue controlling the process until closing the terminal. Upon closing the terminal, you will, once again, be stuck with a process with nowhere to output if you didn’t redirect to a file when starting it.
 
 There a problem with nohup and disown commands. There is no way to bring back that job to forground and work interactivly with that. So we need a different solution, screen.
 
@@ -284,11 +296,140 @@ Use  “**Ctrl-A**” and “**K**” to kill the screen.
 
 
 
-### Signal a program to continue running after logout
+### Monitor active processes
 
 #### What is process?
 
 A program is a series of instructions that tell the computer what to do. When we run a program, those instructions are copied into memory and space is allocated for variables and other stuff required to manage its execution. This running instance of a program is called a process and it's processes which we manage
+
+Each process got a **PID**. PID stands for  **process identifier** and it is is a unique number that identifies each of the running processes in an operating system
+
+processes can further be categorized into:
+
+* **Parent processes** – these are processes that create other processes during run-time.
+* **Child processes** – these processes are created by other processes during run-time.
+
+therefore **PPID** stands for **Parent Process ID**. notes:
+
+> note1:Used up pid’s can be used in again for a newer process since all the possible combinations are used.
+>
+> note2:At any point of time, no two processes with the same pid exist in the system because it is the pid that Unix uses to track each process.
+
+### ps
+
+ps \(Process status\) can be used to see/list all the running processes and their PIDs along with some other information depends on different options.
+
+```text
+ps [options]
+```
+
+ ps reads the process information from the virtual files in **/proc** file-system. /proc contains virtual files, this is the reason it’s referred as a virtual file system.
+
+```text
+root@ubuntu16-1:~# ps
+   PID TTY          TIME CMD
+ 57301 pts/18   00:00:00 bash
+ 59076 pts/18   00:00:00 ps
+```
+
+ Where,  
+ **PID –** the unique process ID  
+ **TTY –** terminal type that the user is logged into  
+ **TIME –** amount of CPU in minutes and seconds that the process has been running  
+ **CMD –** name of the command that launched the process.
+
+> **Note –** Sometimes when we execute **ps** command, it shows TIME as 00:00:00. It is nothing but the total accumulated CPU utilization time for any process and 00:00:00 indicates no CPU time has been given by the kernel till now. In above example we found that, for bash no CPU time has been given. This is because bash is just a parent process for different processes which needs bash for their execution and bash itself is not utilizing any CPU time till now.
+
+Usually when we use the command ps we add parameters like `-a`, `-x` and `-u`. While `-a` lists processes started by all users, `-x` also lists processes started at boot like daemons, the parameter -`u` will add columns with additional information on each process:
+
+```text
+root@ubuntu16-1:~# ps -aux | head -10
+USER        PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root          1  0.0  0.3 185244  3856 ?        Ss   Oct11   0:07 /sbin/init auto noprompt
+root          2  0.0  0.0      0     0 ?        S    Oct11   0:00 [kthreadd]
+root          4  0.0  0.0      0     0 ?        I<   Oct11   0:00 [kworker/0:0H]
+root          6  0.0  0.0      0     0 ?        I<   Oct11   0:00 [mm_percpu_wq]
+root          7  0.0  0.0      0     0 ?        S    Oct11   0:12 [ksoftirqd/0]
+root          8  0.0  0.0      0     0 ?        I    Oct11   0:19 [rcu_sched]
+root          9  0.0  0.0      0     0 ?        I    Oct11   0:00 [rcu_bh]
+root         10  0.0  0.0      0     0 ?        S    Oct11   0:00 [migration/0]
+root         11  0.0  0.0      0     0 ?        S    Oct11   0:01 [watchdog/0]
+```
+
+where,
+
+* **USER –** Specifies the user who executed the program.
+
+   **PID:** Process ID, shows the process identification number.
+
+  **CPU%**: The processor % used by the process.
+
+  **MEME%**: The memory % used by the process.
+
+  **VSZ:** The virtual size in kbytes.
+
+  **RSS:** In contrast with the  virtual size, this shows the real memory used by the process.
+
+  **TTY:** Identifies the terminal from which the process was executed.
+
+  **STATE:** Shows information on the process’ state just as it’s priority, by running “man ps” you can see codes meaning.
+
+  **START:** Show when the process has started.
+
+  **TIME:** Shows the processor’s time occupied by the program.
+
+  **CMD:** Shows the command used to launch the process.
+
+> We can also use ps -ef instead of ps aux . There are no **differences** in the output because the meanings are the same. The **difference between ps** -**ef and ps aux** is due to historical divergences **between** POSIX and BSD systems. At the beginning, POSIX accepted the -**ef** while the BSD accepted only the **aux** form. Both list all processes of all users. In that aspect `-e` and `ax` are completely equivalent.
+
+| Options for ps command | Description |
+| :--- | :--- |
+| ps -A , ps -e | View all the running processes |
+| ps -a | View Processes not associated with a terminal |
+| ps -T | View Processes not associated with a terminal |
+| ps -x | View all processes owned by you |
+
+It is also possible to use --sort option to sort output based on different fields \(+ for ascending & - for descending\). `ps -eo  pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -10` . `-o` or `–format` options, ps allows you to build user-defined output formats.
+
+|  **Process selection commands** | Description |
+| :--- | :--- |
+| ps -C command\_name | Select the process by the command name. |
+| ps p process\_id | View process by process ID. |
+| ps -u user\_name/ID | Select by user name or ID |
+| ps -g group\_name , ps -G group\_id | Select by group name or ID |
+| ps -t pst/0 | Display Processes by TTY |
+
+Be crative and use combination of commands we have learned like grep and watch.
+
+###  top
+
+ **top** command is used to show the Linux processes. It provides a dynamic real-time view of the running system. Usually, this command shows the summary information of the system and the list of processes or threads which are currently managed by the Linux Kernel.
+
+```text
+root@ubuntu16-1:~# top
+```
+
+```text
+Tasks: 237 total,   1 running, 174 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.8 us,  0.4 sy,  0.0 ni, 98.7 id,  0.1 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :   985080 total,   167700 free,   501856 used,   315524 buff/cache
+KiB Swap:  1045500 total,   448216 free,   597284 used.   256968 avail Mem 
+
+   PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND    
+ 59562 root      20   0   41952   3604   2920 R 12.5  0.4   0:00.02 top        
+     1 root      20   0  185244   3856   2244 S  0.0  0.4   0:07.76 systemd    
+     2 root      20   0       0      0      0 S  0.0  0.0   0:00.01 kthreadd   
+     4 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kworker/0:+
+     6 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 mm_percpu_+
+     7 root      20   0       0      0      0 S  0.0  0.0   0:12.88 ksoftirqd/0
+     8 root      20   0       0      0      0 I  0.0  0.0   0:19.92 rcu_sched  
+     9 root      20   0       0      0      0 I  0.0  0.0   0:00.00 rcu_bh     
+    10 root      rt   0       0      0      0 S  0.0  0.0   0:00.00 migration/0
+```
+
+#### 
+
+#### 
 
 #### Manage processes
 
@@ -304,9 +445,9 @@ To manage processes in a linux machine  we can send signals signals to the proce
 | SIGALRM | 14 | Alarm clock signal \(used for timers\) |
 | SIGTERM | 15 | Software termination signal \(sent by kill by default\) |
 
-
-
 to send signals to processes there are some commands.
+
+
 
 
 
@@ -316,13 +457,41 @@ to send signals to processes there are some commands.
 
 
 
-\*\*\*\*
-
-\*\*\*\*
 
 
+{% hint style="info" %}
+Processes deep dive \( Beyond the scope of LPIC1\)
 
-In linux if we want to run some thing in background we put & at end of it.
+ **Types of Processes**
+
+1. **Parent and Child process :** The 2nd and 3rd column of the ps –f command shows process id and parent’s process id number. For each user process there’s a parent process in the system, with most of the commands having shell as their parent.
+2. **Zombie and Orphan process :** After completing its execution a child process is terminated or killed and SIGCHLD updates the parent process about the termination and thus can continue the task assigned to it. But at times when the parent process is killed before the termination of the child process, the child processes becomes orphan processes, with the parent of all processes “init” process, becomes their new ppid.  A process which is killed but still shows its entry in the process status or the process table is called a zombie process, they are dead and are not used.
+3. **Daemon process :** They are system-related background processes that often run with the permissions of root and services requests from other processes, they most of the time run in the background and wait for processes it can work along with for ex print daemon.  When ps –ef is executed, the process with ? in the tty field are daemon processes
+
+**States of a Process in Linux**
+
+* **Running** – here it’s either running \(it is the current process in the system\) or it’s ready to run \(it’s waiting to be assigned to one of the CPUs\). use ps -r command.
+* **Waiting** – in this state, a process is waiting for an event to occur or for a system resource. Additionally, the kernel also differentiates between two types of waiting processes; interruptible waiting processes – can be interrupted by signals and uninterruptible waiting processes – are waiting directly on hardware conditions and cannot be interrupted by any event/signal.
+* **Stopped** – in this state, a process has been stopped, usually by receiving a signal. For instance, a process that is being debugged.
+* **Zombie** – here, a process is dead, it has been halted but it’s still has an entry in the process table.
+
+**Processes state codes in ps aux or ps -ef  command:**
+
+* `R` running or runnable \(on run queue\)
+* `D` uninterruptible sleep \(usually IO\)
+* `S` interruptible sleep \(waiting for an event to complete\)
+* `Z` defunct/zombie, terminated but not reaped by its parent
+* `T` stopped, either by a job control signal or because it is being traced
+
+Some extra modifiers:
+
+* `<` high-priority \(not nice to other users\)
+* `N` low-priority \(nice to other users\)
+* `L` has pages locked into memory \(for real-time and custom IO\)
+* `s` is a session leader
+* `l` is multi-threaded \(using CLONE\_THREAD, like NPTL pthreads do\)
+* `+` is in the foreground process group
+{% endhint %}
 
 .
 
@@ -343,6 +512,18 @@ In linux if we want to run some thing in background we put & at end of it.
 [https://linoxide.com/linux-command/15-examples-screen-command-linux-terminal/](https://linoxide.com/linux-command/15-examples-screen-command-linux-terminal/)
 
 [https://ryanstutorials.net/linuxtutorial/processes.php](https://ryanstutorials.net/linuxtutorial/processes.php)
+
+[https://www.computerhope.com/jargon/p/pid.htm](https://www.computerhope.com/jargon/p/pid.htm)
+
+[https://www.tecmint.com/linux-process-management/](https://www.tecmint.com/linux-process-management/)
+
+[https://www.geeksforgeeks.org/processes-in-linuxunix/](https://www.geeksforgeeks.org/processes-in-linuxunix/)
+
+[https://www.geeksforgeeks.org/ps-command-in-linux-with-examples/](https://www.geeksforgeeks.org/ps-command-in-linux-with-examples/)
+
+\*\*\*\*[https://linuxhint.com/ps\_command\_linux-2/](https://linuxhint.com/ps_command_linux-2/)
+
+[https://www.quora.com/What-is-the-difference-between-ps-elf-and-ps-aux-in-Linux](https://www.quora.com/What-is-the-difference-between-ps-elf-and-ps-aux-in-Linux)
 
 [https://www.tutorialspoint.com/unix/unix-signals-traps.htm](https://www.tutorialspoint.com/unix/unix-signals-traps.htm)
 
