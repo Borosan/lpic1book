@@ -341,7 +341,11 @@ root@ubuntu16-1:~# ps
 
 > **Note –** Sometimes when we execute **ps** command, it shows TIME as 00:00:00. It is nothing but the total accumulated CPU utilization time for any process and 00:00:00 indicates no CPU time has been given by the kernel till now. In above example we found that, for bash no CPU time has been given. This is because bash is just a parent process for different processes which needs bash for their execution and bash itself is not utilizing any CPU time till now.
 
-Usually when we use the command ps we add parameters like `-a`, `-x` and `-u`. While `-a` lists processes started by all users, `-x` also lists processes started at boot like daemons, the parameter -`u` will add columns with additional information on each process:
+Usually when we use the command ps we add parameters like `-a`, `-u` and `-x`. While 
+
+* `a` = show processes for all users
+* `u` = display the process’s user/owner
+* `x` = also show processes not attached to a terminal
 
 ```text
 root@ubuntu16-1:~# ps -aux | head -10
@@ -410,11 +414,49 @@ the `pgrep` command searches for processes currently running on the system, base
 pgrep [options] pattern
 ```
 
+```text
+root@ubuntu16-1:~# sleep 1000 &
+[1] 60647
+root@ubuntu16-1:~# sleep 2000 &
+[2] 60648
+root@ubuntu16-1:~# pgrep sleep
+60647
+60648
+```
 
+pgrep options:
 
+```text
+-d, --delimiter <string>  specify output delimiter
+ -l, --list-name           list PID and process name
+ -a, --list-full           list PID and full command line
+ -v, --inverse             negates the matching
+ -w, --lightweight         list all TID
+ -c, --count               count of matching processes
+ -f, --full                use full process name to match
+ -g, --pgroup <PGID,...>   match listed process group IDs
+ -G, --group <GID,...>     match real group IDs
+ -n, --newest              select most recently started
+ -o, --oldest              select least recently started
+ -P, --parent <PPID,...>   match only child processes of the given parent
+ -s, --session <SID,...>   match session IDs
+ -t, --terminal <tty,...>  match by controlling terminal
+ -u, --euid <ID,...>       match by effective IDs
+ -U, --uid <ID,...>        match by real IDs
+ -x, --exact               match exactly with the command name
+ -F, --pidfile <file>      read PIDs from file
+ -L, --logpidfile          fail if PID file is not locked
+ --ns <PID>                match the processes that belong to the same
+                           namespace as <pid>
+ --nslist <ns,...>         list which namespaces will be considered for
+                           the --ns option.
+                           Available namespaces: ipc, mnt, net, pid, user, uts
 
+ -h, --help     display this help and exit
+ -V, --version  output version information and exit
+```
 
-> Be creative and use combination of commands we have learned like 'watch'. We can use 'watch' in conjunction with ps  to perform Real-time Process Monitoring :
+> Be creative and use combination of commands we have learned like 'watch'. We can use 'watch' in conjunction with ps  command to perform Real-time Process Monitoring :
 >
 > `watch -n 1 'ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head'`
 
@@ -488,12 +530,126 @@ To manage processes in a linux machine  we can send signals signals to the proce
 | SIGHUP | 1 | Hang up detected on controlling terminal or death of controlling process |
 | SIGINT | 2 | Issued if the user sends an interrupt signal \(Ctrl + C\) |
 | SIGQUIT | 3 | Issued if the user sends a quit signal \(Ctrl + D\) |
-| SIGFPE | 8 | Issued if an illegal mathematical operation is attempted |
 | SIGKILL | 9 | If a process gets this signal it must quit immediately and will not perform any clean-up operations |
-| SIGALRM | 14 | Alarm clock signal \(used for timers\) |
 | SIGTERM | 15 | Software termination signal \(sent by kill by default\) |
+| SIGCOUNT | 18 | Continue the process stopped with STOP |
+| STOP | 19 | Stop process |
 
-to send signals to processes there are some commands.
+to send signals to processes there are some commands:
+
+### kill
+
+ `kill` command in Linux \(located in /bin/kill\), is a built-in command which is used to terminate processes manually . _kill_ command sends a signal to a process which terminates the process.
+
+```text
+kill {-signal | -s signal} pid 
+```
+
+please notice that:
+
+* A user can kill all his process.
+* A user can not kill another user’s process.
+* A user can not kill processes System is using.
+* A root user can kill System-level-process and the process of any user.
+
+note: If the user doesn’t specify any signal which is to be sent along with kill command then **default TERM signal** is sent that terminates the process.
+
+```text
+root@ubuntu16-1:~# sleep 1000 &
+[1] 61080
+root@ubuntu16-1:~# sleep 2000 &
+[2] 61081
+root@ubuntu16-1:~# jobs -l
+[1]- 61080 Running                 sleep 1000 &
+[2]+ 61081 Running                 sleep 2000 &
+root@ubuntu16-1:~# ps -ef | grep sleep
+root      61080  57301  0 02:55 pts/18   00:00:00 sleep 1000
+root      61081  57301  0 02:55 pts/18   00:00:00 sleep 2000
+root      61085  57301  0 02:56 pts/18   00:00:00 grep --color=auto sleep
+root@ubuntu16-1:~# kill 61080
+root@ubuntu16-1:~# ps -ef | grep sleep
+root      61081  57301  0 02:55 pts/18   00:00:00 sleep 2000
+root      61089  57301  0 02:56 pts/18   00:00:00 grep --color=auto sleep
+[1]-  Terminated              sleep 1000
+root@ubuntu16-1:~# ps -ef | grep sleep
+root      61081   1722  0 02:55 ?        00:00:00 sleep 2000
+root      61096  55644  0 02:58 pts/17   00:00:00 grep --color=auto sleep
+root@ubuntu16-1:~# kill -9 61081
+root@ubuntu16-1:~# ps -ef | grep sleep
+root      61100  55644  0 02:58 pts/17   00:00:00 grep --color=auto sleep
+```
+
+  use `kill -l` to see all signals you can send using kill.
+
+{% hint style="danger" %}
+There are two commands used to kill a process:
+
+* kill – Kill a process by ID
+* killall,pkill – Kill a process by name
+
+killing a proccess by name could be realy dangerous, Before sending signal,  verify which process is matching the criteria using “pgrep -l”.
+{% endhint %}
+
+### killall
+
+ `killall` is a tool for terminating running processes on your system based on name. In contrast, `kill` terminates processes based on Process ID number \(PID\). Like `kill` , `killall` can also send specific system signals to processes.
+
+```text
+kill {-signal | -s signal} process_name 
+```
+
+note: If no signal name is specified, SIGTERM is sent.
+
+```text
+root@ubuntu16-1:~# sleep 1000 &
+[1] 61836
+root@ubuntu16-1:~# sleep 2000 &
+[2] 61837
+root@ubuntu16-1:~# ps -ef | grep sleep | grep -v grep
+root      61836  55644  0 03:46 pts/17   00:00:00 sleep 1000
+root      61837  55644  0 03:46 pts/17   00:00:00 sleep 2000
+root@ubuntu16-1:~# pkill sleep
+[1]-  Terminated              sleep 1000
+[2]+  Terminated              sleep 2000
+root@ubuntu16-1:~# ps -ef | grep sleep | grep -v grep
+```
+
+| killall command example | Description |
+| :--- | :--- |
+| killall -l | all signals the killall command can send |
+| killall -u process\_name | prevent killall from complaining if specified process doesn't exist |
+| killall -u \[user-name\] | kill all processes owned by a user |
+| killall -o 5h | kill all processes that have now been running for more than _5_ hour |
+| killall -y 4h | kill all precesses  that less than 4 hours old |
+| killall -w \[process-name\] |  causes `killall` to wait until the process terminates before exiting. |
+
+### pkill
+
+The PKill command allows you to kill a program simply by specifying the name.
+
+```text
+pkill [options] pattern
+```
+
+example:
+
+```text
+root@ubuntu16-1:~# pgrep firefox
+62256
+root@ubuntu16-1:~# pkill firefox
+```
+
+| pkill command example | Description |
+| :--- | :--- |
+| pkill -c \[process\_name\] | return a count of the number of processes killed |
+| pkill -U \[real\_user\_ID\] | kill all the processes for a particular user |
+| pkill -G \[real\_group\_ID\] | kill all the programs in a particular group |
+
+### free
+
+### uptime
+
+
 
 
 
@@ -535,6 +691,8 @@ Some extra modifiers:
 * `+` is in the foreground process group
 {% endhint %}
 
+
+
 .
 
 .
@@ -572,6 +730,12 @@ Some extra modifiers:
 [https://www.tecmint.com/12-top-command-examples-in-linux/](https://www.tecmint.com/12-top-command-examples-in-linux/)
 
 [https://www.tutorialspoint.com/unix/unix-signals-traps.htm](https://www.tutorialspoint.com/unix/unix-signals-traps.htm)
+
+[https://www.geeksforgeeks.org/kill-command-in-linux-with-examples/](https://www.geeksforgeeks.org/kill-command-in-linux-with-examples/)
+
+[https://www.linux.com/tutorials/how-kill-process-command-line/](https://www.linux.com/tutorials/how-kill-process-command-line/)
+
+[https://www.linode.com/docs/tools-reference/tools/use-killall-and-kill-to-stop-processes-on-linux/](https://www.linode.com/docs/tools-reference/tools/use-killall-and-kill-to-stop-processes-on-linux/)
 
 .
 
