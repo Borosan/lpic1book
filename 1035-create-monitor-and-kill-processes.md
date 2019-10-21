@@ -647,9 +647,103 @@ root@ubuntu16-1:~# pkill firefox
 
 ### free
 
+ **`free`** command  displays the total amount of **free space** available along with the amount of **memory used** and **swap** memory in the system, and also the **buffers** used by the kernel.
+
+```text
+free [options]
+```
+
+As free displays the details of the memory related to the system , its syntax doesn’t need any arguments to be passed but it has some options!
+
+```text
+root@ubuntu16-1:~# free
+              total        used        free      shared  buff/cache   available
+Mem:         985080      432716      135464       16724      416900      339484
+Swap:       1045500      671864      373636
+```
+
+free command with no options produces the columnar output as shown above where column:
+
+1. **total** : displays the total installed memory _\(MemTotal and SwapTotal i.e present in /proc/meminfo\)._
+2. **used :** displays the used memory.
+3. **free :** displays the unused memory.
+4. **shared :** displays the memory used by tmpfs_\(Shmen i.epresent in /proc/meminfo and displays zero in case not available\)._
+5. **buffers :** displays the memory used by kernel buffers.
+6. **cached :** displays the memory used by the page cache and slabs_\(Cached and Slab available in /proc/meminfo\)._
+7. **buffers/cache :** displays the sum of buffers and cache.
+
+ By default the display is in kilobytes, but you can override this using `-b` for bytes, `-k` for kilobytes, `-m` for megabytes, or `-g` for gigabytes.
+
+```text
+root@ubuntu16-1:~# free -h
+              total        used        free      shared  buff/cache   available
+Mem:           961M        423M        128M         16M        410M        330M
+Swap:          1.0G        655M        365M
+```
+
+ `-t`   displays an additional line containing the total of the total, used and free columns:
+
+```text
+root@ubuntu16-1:~# free -t -h
+              total        used        free      shared  buff/cache   available
+Mem:           961M        424M        127M         16M        410M        329M
+Swap:          1.0G        655M        365M
+Total:         1.9G        1.1G        492M
+```
+
+Other free command options:
+
+```text
+-h, --human         show human-readable output
+     --si            use powers of 1000 not 1024
+ -l, --lohi          show detailed low and high memory statistics
+ -t, --total         show total for RAM + swap
+ -s N, --seconds N   repeat printing every N seconds
+ -c N, --count N     repeat printing N times, then exit
+ -w, --wide          wide output
+
+     --help     display this help and exit
+ -V, --version  output version information and exit
+```
+
 ### uptime
 
+ The `uptime` command shows you a one-line display that includes the current time, how long the system has been running, how many users are currently logged on, and the **system load averages** for the past 1, 5, and 15 minutes.
 
+```text
+uptime [-options]
+```
+
+```text
+root@ubuntu16-1:~# uptime 
+ 03:37:00 up 3 days, 19:07,  1 user,  load average: 0.00, 0.00, 0.00
+```
+
+Lets try `uptime -h` to see all of `uptime` availbale options:
+
+```text
+Usage:
+ uptime [options]
+
+Options:
+ -p, --pretty   show uptime in pretty format
+ -h, --help     display this help and exit
+ -s, --since    system up since
+ -V, --version  output version information and exit
+
+For more details see uptime(1).
+```
+
+examples:
+
+```text
+root@ubuntu16-1:~# uptime -p
+up 3 days, 19 hours, 16 minutes
+root@ubuntu16-1:~# uptime -s
+2019-10-17 08:29:08
+root@ubuntu16-1:~# uptime -V
+uptime from procps-ng 3.3.10
+```
 
 
 
@@ -736,6 +830,10 @@ Some extra modifiers:
 [https://www.linux.com/tutorials/how-kill-process-command-line/](https://www.linux.com/tutorials/how-kill-process-command-line/)
 
 [https://www.linode.com/docs/tools-reference/tools/use-killall-and-kill-to-stop-processes-on-linux/](https://www.linode.com/docs/tools-reference/tools/use-killall-and-kill-to-stop-processes-on-linux/)
+
+[https://www.geeksforgeeks.org/free-command-linux-examples/](https://www.geeksforgeeks.org/free-command-linux-examples/)
+
+[https://www.geeksforgeeks.org/linux-uptime-command-with-examples/](https://www.geeksforgeeks.org/linux-uptime-command-with-examples/)
 
 .
 
