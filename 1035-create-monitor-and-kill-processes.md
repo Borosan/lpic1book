@@ -835,5 +835,7 @@ Some extra modifiers:
 
 [https://www.geeksforgeeks.org/linux-uptime-command-with-examples/](https://www.geeksforgeeks.org/linux-uptime-command-with-examples/)
 
+[https://linuxhint.com/load\_average\_linux/](https://linuxhint.com/load_average_linux/)
+
 .
 
