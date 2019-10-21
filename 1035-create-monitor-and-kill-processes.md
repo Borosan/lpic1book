@@ -745,11 +745,11 @@ root@ubuntu16-1:~# uptime -V
 uptime from procps-ng 3.3.10
 ```
 
+.
 
+.
 
-
-
-
+.
 
 {% hint style="info" %}
 Processes deep dive \( Beyond the scope of LPIC1\)
@@ -784,12 +784,6 @@ Some extra modifiers:
 * `l` is multi-threaded \(using CLONE\_THREAD, like NPTL pthreads do\)
 * `+` is in the foreground process group
 {% endhint %}
-
-
-
-.
-
-.
 
 .
 
