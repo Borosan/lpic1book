@@ -17,3 +17,17 @@
 * renice
 * top
 
+Linux, like most modern operating systems, can run multiple processes. It does this by sharing the CPU and other resources among the processes. If one process can use 100 percent of the CPU, then other processes may become unresponsive. We’ll introduce you to the way Linux assigns priorities for tasks.
+
+
+
+
+
+.
+
+.
+
+.
+
+[https://developer.ibm.com/tutorials/l-lpic1-103-6/](https://developer.ibm.com/tutorials/l-lpic1-103-6/)
+
