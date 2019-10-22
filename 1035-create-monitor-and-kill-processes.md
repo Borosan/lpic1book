@@ -497,7 +497,7 @@ Where,
 * **PID:** Shows task’s unique process id
 * **USER:** User name of owner of task.
 * **PR:** Stands for priority of the task.
-* **NI:** Represents a Nice Value of task. A Negative nice value implies higher priority, and positive Nice value means lower p
+* **NI:** Represents a Nice Value of task. A Negative nice value implies higher priority, and positive Nice value means lower priority.
 * **VIRT:** Total virtual memory used by the task.
 * **RES:**It is the Resident size, the non-swapped physical memory a task has used.
 * **SHR:** Represents the amount of shared memory used by a task.
