@@ -424,6 +424,8 @@ root@ubuntu16-1:~# pgrep sleep
 60648
 ```
 
+> Always use ps -ef command to make sure about process\_name. There is different between process\_name and the running program\(like bash\). compare pgrep -a and pgrep -af.
+
 pgrep options:
 
 ```text
@@ -598,7 +600,9 @@ killing a proccess by name could be realy dangerous, Before sending signal,  ver
 kill {-signal | -s signal} process_name 
 ```
 
-note: If no signal name is specified, SIGTERM is sent.
+note1:the whole process\_name should be defined \( ex : sleep not sle or slee\).
+
+note2: If no signal name is specified, SIGTERM is sent.
 
 ```text
 root@ubuntu16-1:~# sleep 1000 &
@@ -630,6 +634,8 @@ The PKill command allows you to kill a program simply by specifying the name.
 ```text
 pkill [options] pattern
 ```
+
+note: We don't have to define whole process\_name. So it could be really dangerous!
 
 example:
 
