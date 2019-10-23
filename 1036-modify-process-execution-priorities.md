@@ -17,7 +17,7 @@
 * renice
 * top
 
-Linux, like most modern operating systems, can run multiple processes. It does this by sharing the CPU and other resources among the processes. If one process can use 100 percent of the CPU, then other processes may become unresponsive. We’ll introduce you to the way Linux assigns priorities for tasks.
+Linux, like most modern operating systems, can run multiple processes. It does this by sharing the CPU and other resources among the processes. If one process can use 100 percent of the CPU, then other processes may become unresponsive. We’ll introduce you to the way Linux assigns priorities for tasks.\(We have already talked about ps and top commands in previous section\)
 
 ### nice
 
@@ -133,9 +133,68 @@ OR
 $ nice --adjustment=niceness-value [command args]
 ```
 
-####  <a id="changing-the-nice-value-of-a-running-process"></a>
+| nice command example | Description |
+| :--- | :--- |
+| nice --20 application | highest priority |
+| nice --15 application | very high |
+| nice -10 application | medium low |
+| nice -19 application | lowest |
 
 #### Changing the nice value of a running process <a id="changing-the-nice-value-of-a-running-process"></a>
+
+### renice
+
+To change the niceness of a running process to a negative value we will use the `renice` command again.
+
+```text
+renice value PID
+```
+
+It is important to note that changing a processes niceness value to a negative value requires root privileges. As the effects of giving a process a higher priority could have detrimental effects on a system.
+
+```text
+user1@ubuntu16-1:~$ sleep 88888 &
+[1] 67534
+user1@ubuntu16-1:~$ ps -alf
+F S UID         PID   PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
+4 S root      55643  55624  0  80   0 - 13594 -      Oct22 pts/17   00:00:00 su -
+4 S root      55644  55643  0  80   0 -  5725 -      Oct22 pts/17   00:00:00 -su
+4 S root      65014  55644  0  80   0 - 13594 -      Oct22 pts/17   00:00:00 su - user1
+4 S user1     65015  65014  0  80   0 -  5677 wait   Oct22 pts/17   00:00:00 -su
+0 S user1     67534  65015  0  80   0 -  1822 hrtime 05:59 pts/17   00:00:00 sleep 88888
+0 R user1     67535  65015  0  80   0 -  9341 -      05:59 pts/17   00:00:00 ps -alf
+user1@ubuntu16-1:~$ renice 10 67534
+67534 (process ID) old priority 0, new priority 10
+user1@ubuntu16-1:~$ ps -alf
+F S UID         PID   PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
+4 S root      55643  55624  0  80   0 - 13594 -      Oct22 pts/17   00:00:00 su -
+4 S root      55644  55643  0  80   0 -  5725 -      Oct22 pts/17   00:00:00 -su
+4 S root      65014  55644  0  80   0 - 13594 -      Oct22 pts/17   00:00:00 su - user1
+4 S user1     65015  65014  0  80   0 -  5677 wait   Oct22 pts/17   00:00:00 -su
+0 S user1     67534  65015  0  90  10 -  1822 hrtime 05:59 pts/17   00:00:00 sleep 88888
+0 R user1     67539  65015  0  80   0 -  9341 -      05:59 pts/17   00:00:00 ps -alf
+user1@ubuntu16-1:~$ renice 5 67534
+renice: failed to set priority for 67534 (process ID): Permission denied
+```
+
+> user can only raise nice level.
+
+```text
+user1@ubuntu16-1:~$ su - root
+Password: 
+root@ubuntu16-1:~# renice -1 67534
+67534 (process ID) old priority 10, new priority -1
+root@ubuntu16-1:~# ps -alf
+F S UID         PID   PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
+4 S root      55643  55624  0  80   0 - 13594 wait   Oct22 pts/17   00:00:00 su -
+4 S root      55644  55643  0  80   0 -  5725 wait   Oct22 pts/17   00:00:00 -su
+4 S root      65014  55644  0  80   0 - 13594 wait   Oct22 pts/17   00:00:00 su - user1
+4 S user1     65015  65014  0  80   0 -  5677 wait   Oct22 pts/17   00:00:00 -su
+0 S user1     67534  65015  0  79  -1 -  1822 hrtime 05:59 pts/17   00:00:00 sleep 88888
+4 S root      67541  65015  0  80   0 - 13594 wait   06:00 pts/17   00:00:00 su - root
+4 S root      67542  67541  0  80   0 -  5691 wait   06:00 pts/17   00:00:00 -su
+4 R root      67558  67542  0  80   0 -  9341 -      06:00 pts/17   00:00:00 ps -alf
+```
 
 .
 
