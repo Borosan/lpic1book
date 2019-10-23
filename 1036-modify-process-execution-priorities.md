@@ -196,6 +196,15 @@ F S UID         PID   PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
 4 R root      67558  67542  0  80   0 -  9341 -      06:00 pts/17   00:00:00 ps -alf
 ```
 
+we can also use -p option before giving PID, but that is not necessary.
+
+| renice command example |  |
+| :--- | :--- |
+| renice -20 -p PID | highest priority |
+| renice -15 -p PID | very high |
+| renice 10 -p PID | medium low |
+| renice 19 -p PID | lowest |
+
 .
 
 .
