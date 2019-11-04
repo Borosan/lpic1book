@@ -17,7 +17,7 @@
 * sed
 * regex\(7\)
 
-While we are working with text files, often it will happen that we are looking for a text in  text file.We might be looking for something that is not that specific. For example we are looking for "linux" or "Linux" or what ever, that is where regular expression come in handy.
+While we are working with text files, often it will happen that we are looking for a text in  text file.We might be looking for something that is not that specific. For example we are looking for "linux" or "Linux" or what ever, that is where regular expression come in handy.\(the most important light weight section!\)
 
 ### Regular Expression
 
@@ -69,7 +69,12 @@ Metacharacters are a different beast altogether; they are what give regular expr
 
  **Concatenation**
 
- Concatenating two regular expressions creates a longer expression. For example, the regular expression **a** will match the string **abcdcba** twice \(the first and last **a**\) and so will the regular expression **b**. However, **ab** will match only **ab**cdcba, while **ba** will match only abcdc**ba**.
+ Concatenating two regular expressions creates a longer expression. 
+
+| regex | match |
+| :--- | :--- |
+| echo "aa ab ba aaa bbb AB BA" \| grep "a" | **aa a**b b**a** **aaa** bbb AB BA |
+| echo "aa ab ba aaa bbb AB BA" \| grep "ab" | aa **ab** ba aaa bbb AB BA |
 
  **Repetition**
 
@@ -77,15 +82,56 @@ Metacharacters are a different beast altogether; they are what give regular expr
 * The **+** means preceding item will be matched **1 or more** times.
 * The **?** means preceding item will be matched, **0 or 1** time.
 
-Curly braces enable you to specify the number of existence for a pattern, it has three formats:
+{% hint style="info" %}
+#### Globbing and Regex: So Similar, So Different
+
+ Beginners sometimes tend to confuse wildcards\(globbing\) with regular expressions when using grep but they are not the same.  
+ Wildcards are a feature provided by the shell to expand file names whereas regular expressions are a text filtering mechanism intended for use with utilities like grep, sed and  awk.
+
+| Special Character | Meaning in Globs | Meaning in Regex |
+| :--- | :--- | :--- |
+| \* | zero or more characters | zero or more of the character it follows |
+| ? | single occurrence of any character | zero or one of the character it follows but not more than 1 |
+| . | literal "." character | any single character |
+{% endhint %}
+
+Inorder to avoid any mistak while using regular expressions, use `grep` with `-E` option in order to Treats pattern as an extended regular expression\(ERE\).
+
+| regex | match |
+| :--- | :--- |
+| echo "aa ab ba aaa bbb AB BA" \| grep -E "a\*b" | aa **ab** **b**a aaa **bbb** AB BA |
+| echo "aa ab ba aaa bbb AB BA" \| grep -E  "a+b" | aa **ab** ba aaa bbb AB BA |
+| echo "aa ab ba aaa bbb AB BA" \| grep -E "a?b" | aa **ab** **b**a aaa **bbb** AB BA |
+
+This is a point where egrep comes to play:
+
+{% hint style="success" %}
+## egrep
+
+ **egrep** is a pattern searching command which belongs to the family of grep functions. It works the same way as **`grep -E`** does. It treats the pattern as an extended regular expression and prints out the lines that match the pattern. If there are several files with the matching pattern, it also displays the file names for each line.
+
+```text
+egrep [ options ] 'PATTERN' files 
+```
+
+ **Options:** Most of the options for this command are same as grep.
+
+So intead of using grep -E command in above we can use egrep easily.
+{% endhint %}
+
+#### Curly Braces
+
+Curly braces enable us to specify the number of existence for a pattern, it has three formats:
 
 * **{N}** meanspreceding item is matched exactly N times.
 * **{N,}** means preceding item is matched N or more times.
 * The **{N,M}** means preceding item is matched at least **N** times, but not more than **M** times.
 
-**Brace expansion**
-
- The syntax for brace expansion is either a sequence or a comma separated list of items inside curly braces "{}". The starting and ending items in a sequence are separated by two periods "..".
+| regex | match |
+| :--- | :--- |
+| echo "ab aab aaab aaaab ba Ab" \| egrep  "a{1}b" | **ab** a**ab** aa**ab** aaa**ab** ba Ab |
+| echo "ab aab aaab aaaab ba Ab" \| egrep "a{2,}b" | ab **aab** **aaab** **aaaab** ba Abb |
+| echo "ab aab aaab aaaab ba Ab" \| egrep "a{1,3}b" | **ab aab aaab** a**aaab** ba Ab |
 
 **Any Characters**
 
@@ -95,6 +141,10 @@ The .\(dot\) is a metacharacter that stands for any character\(except newline `\
 
 > One of the most commonly used patterns is .**‘\*’**, which matches an arbitrary length string containing any characters \(or no characters at all\)
 
+| regex | match |
+| :--- | :--- |
+| echo "ac abc aaabbbccc abcz" \| egrep "a.\*c" | **ac abc aaabbbccc abc**z |
+
 **Anchor Characters**
 
 Anchor Characters or easily Line positioning Characters are used To locate the beginning or ending of a line in a text:
@@ -102,11 +152,26 @@ Anchor Characters or easily Line positioning Characters are used To locate the b
 * **^**  ****matches the beginning of the line.
 * **$**  matches the end of the line.
 
+```text
+root@ubuntu16-1:~# cat text
+abc
+bcd
+efg
+root@ubuntu16-1:~# egrep ^b text
+bcd
+root@ubuntu16-1:~# egrep g$ text
+efg
+```
+
 **Alternation \(multiple strings\)**
 
 The alternation operator \(\|\) matches either the preceding or following expression. for example :
 
 * **cat\|dog** it will match **cat or dog**.
+
+| regex | match |
+| :--- | :--- |
+| echo "cat dog was a cartoon" \| egrep "cat\|dog" | **cat dog** was a cartoon |
 
 ### Character Classes
 
@@ -118,17 +183,27 @@ By placing a group of characters within brackets \("\[" and "\]"\), we can speci
 
 *  **\[set\_of\_characters\]**  Matches any single character in set\_of\_characters. By default, the match is case-sensitive.
 
+| regex | match |
+| :--- | :--- |
+| echo "cat dog was a cartoon" \| egrep "cart\[o\]\*" | cat dog was a **cartoo**n |
+
 ### Negating Character Classes
 
 What about searching for a character that is not in the character class?To achieve that, precede the character class range with a caret ^
 
 *  **\[^set\_of\_characters\]**  _Negation:_ Matches any single character that is not in set\_of\_characters. By default, the match is case sensitive.
 
-> Character classes are one area where regular expressions and globbing **are** similar, although the negation differs \(^ vs. !\).
+| regex | match |
+| :--- | :--- |
+| echo "cat dog was a cartoon" \| grep ".\*\[^cartoon\]" | **cat dog was a** cartoon |
 
- **Range expression**
+**Range expression**
 
 To specify a range of characters, we ****can use the \(-\) **hyphen** symbol, such as 0-9 for digits. Note that ranges are locale dependent.
+
+| regex | match |
+| :--- | :--- |
+| echo "a12345a a54321a 123" \| egrep "\[a-z\]" | **a**12345**a** **a**54321**a** 123 |
 
 ###  Special Character Classes \(**Named classes\)**
 
@@ -140,67 +215,70 @@ Several named classes provide a convenient shorthand for commonly used classes. 
 * **\[:digit:\]**  The digits 0 through 9 \(equivalent to 0-9\).
 * **\[:upper:\] and \[:lower:\]**  Upper and lower case letters, respectively.
 
+| **regex** | match |
+| :--- | :--- |
+| echo "a12345a a54321a 123 678 9" \| egrep "\[\[:alpha:\]\]" | **a**12345**a** **a**54321**a** 123 |
+
 **Group expressions**
 
 By placing part of a regular expression inside parentheses, we can group that part of the regular expression together.
 
 * **\(\) Groups regular expressions**
 
-**Special Characters**
+| regex | match |
+| :--- | :--- |
+| echo "a12345a a54321a 123 678 9" \| egrep "\(1a.\*\)\|\(9\)" | a12345a a5432**1a 123 678 9** |
 
-As you have seen regex patterns use some special characters. And we can’t include them in your patterns and if we do so, we won’t get the expected result.
+### **Special Characters**
 
-These special characters are recognized by regex:
+regex patterns use some special characters. And we can’t include them in your patterns and if we do so, we won’t get the expected result.These special characters are recognized by regex:
 
 **.\*\[\]^${}\+?\|\(\)**
 
 We need to escape these special characters using the backslash character \(\\).
 
-### grep
+> In egrep, +, ?, \|, \(, and \), treated as meta characters. Where as in grep, they are rather treated as pattern instead of meta characters. By including 'backslash' followed by meta character can let the grep to treat it as meta characters like \?, +, {, \|, \(, and \).
 
-grep stands for **g**eneral **r**egular **e**xpression **p**arser**.** The grep filter searches a file for a particular pattern of characters, and displays all lines that contain that pattern.grep is a utility that can benefit a lot from regular expressions.
+### fgrep
+
+ If you don't want the power of regex, it can be very frustrating. This is especially true if you're actually looking for some of the special characters in a bunch of text. You can use the `fgrep` command \(or `grep -F`, which is the same thing\) in order to skip any regex substitutions. Using `fgrep`, you'll search for exactly what you type, even if they are special characters.
 
 ```text
-grep [options] pattern [files]
+fgrep [options] [ -e pattern_list] [pattern] [file]
 ```
 
 ```text
-Options Description
--c : This prints only a count of the lines that match a pattern
--h : Display the matched lines, but do not display the filenames.
--i : Ignores, case for matching
--l : Displays list of a filenames only.
--n : Display the matched lines and their line numbers.
--v : This prints out all the lines that do not matches the pattern
--e exp : Specifies expression with this option. Can use multiple times.
--f file : Takes patterns from file, one per line.
--E : Treats pattern as an extended regular expression (ERE)
--w : Match whole word
--o : Print only the matched parts of a matching line,
- with each such part on a separate output line.
+    -c : It is used to print only a count of the lines which contain the pattern.
+    -h : Used to display the matched lines.
+    -i : During comparisions, it will ignore upper/lower case distinction.
+    -l : Used to print the names of files with matching lines once, separated by new-lines. It will not repeat the names of files when the pattern is found more than once.
+    -n : It is used precede each line by its line number in the file (first line is 1).
+    -s : It will only display the error messages.
+    -v : Print all lines except those contain the pattern.
+    -x : Print only lines matched entirely.
+    -e pattern_list : Search for a string in pattern-list (useful when the string begins with a “-“).
+    -f pattern-file : Take the list of patterns from pattern-file.
+    pattern : Specify a pattern to be used during the search for input.
+    file : A path name of a file to be searched for the patterns. If no file operands are specified, the standard input will be used.
+
 ```
 
+as an example:
+
+```text
+root@ubuntu16-1:~# cat text
+^abc
+bcd$
+efg|
+root@ubuntu16-1:~# fgrep "^" text
+^abc
+root@ubuntu16-1:~# fgrep "$" text
+bcd$
+```
+
+#### sed
 
 
-Bracket Expressions
-
-Range Expressions
-
-**any charachter**
-
-line positioning 
-
-repetition operators
-
-`*`
-
-`+`
-
-`?`
-
-multiple strings grep cat\|dog \*
-
-Parentheses: to define subexpressions
 
 .
 
@@ -217,6 +295,14 @@ Parentheses: to define subexpressions
 \*\*\*\*[https://dzone.com/articles/35-examples-of-regex-patterns-using-sed-and-awk-in](https://dzone.com/articles/35-examples-of-regex-patterns-using-sed-and-awk-in)
 
 [https://www.digitalocean.com/community/tutorials/using-grep-regular-expressions-to-search-for-text-patterns-in-linux\#regular-expressions](https://www.digitalocean.com/community/tutorials/using-grep-regular-expressions-to-search-for-text-patterns-in-linux#regular-expressions)
+
+[https://www.linuxnix.com/10-file-globbing-examples-linux-unix/](https://www.linuxnix.com/10-file-globbing-examples-linux-unix/)
+
+[https://www.linuxjournal.com/content/globbing-and-regex-so-similar-so-different](https://www.linuxjournal.com/content/globbing-and-regex-so-similar-so-different)
+
+[https://www.zyxware.com/articles/4627/difference-between-grep-and-egrep](https://www.zyxware.com/articles/4627/difference-between-grep-and-egrep)
+
+[https://www.geeksforgeeks.org/fgrep-command-in-linux-with-examples/](https://www.geeksforgeeks.org/fgrep-command-in-linux-with-examples/)
 
 .
 
