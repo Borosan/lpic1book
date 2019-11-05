@@ -276,9 +276,44 @@ root@ubuntu16-1:~# fgrep "$" text
 bcd$
 ```
 
-#### sed
+### sed
 
+ Sed command or **Stream Editor** is very powerful utility offered by Linux/Unix systems. It is mainly used for **text substitution** , find & replace but it can also perform other text manipulations like **insertion**, **deletion**, **search** etc. With SED, we can edit complete files without actually having to open it. Sed also supports the use of regular expressions, which makes sed an even more powerful **test manipulation tool**.
 
+ We have previously used sed for text substitution, here we want to use regex with that.
+
+```text
+sed OPTIONS... [SCRIPT] [INPUTFILE...]
+```
+
+ `-r, --regexp-extended`  tells sed that we are using **regular expressions** in the script.
+
+```text
+root@ubuntu16-1:~# cat text
+Comment this is a  comment:
+comment pigs can not fly because the sky is high!
+
+root@ubuntu16-1:~# sed -r "s/^(Comment|comment)/\#/" text
+# this is a  comment:
+# pigs can not fly because the sky is high!
+```
+
+By default, sed prints every line. If it makes a substitution, the new text is printed instead of the old one. If you use an optional argument to sed, "sed -n," it will not:
+
+```text
+root@ubuntu16-1:~# sed -rn "s/^(Comment|comment)/\#/"  text
+root@ubuntu16-1:~# 
+```
+
+When the "-n" option is used, the "p" flag will cause the modified line to be printed.
+
+```text
+root@ubuntu16-1:~# sed -rn "s/^(Comment|comment)/CHANGE/p"  text
+CHANGE this is a  comment:
+CHANGE pigs can not fly because the sky is high!
+```
+
+sed is very powerfull tools and that is  complicated, we have just take a quick lookat it! 
 
 .
 
@@ -303,6 +338,12 @@ bcd$
 [https://www.zyxware.com/articles/4627/difference-between-grep-and-egrep](https://www.zyxware.com/articles/4627/difference-between-grep-and-egrep)
 
 [https://www.geeksforgeeks.org/fgrep-command-in-linux-with-examples/](https://www.geeksforgeeks.org/fgrep-command-in-linux-with-examples/)
+
+[https://www.linuxtechi.com/20-sed-command-examples-linux-users/](https://www.linuxtechi.com/20-sed-command-examples-linux-users/)
+
+[http://www.grymoire.com/Unix/Sed.html](http://www.grymoire.com/Unix/Sed.html)
+
+[https://www.linuxtechi.com/20-sed-command-examples-linux-users/](https://www.linuxtechi.com/20-sed-command-examples-linux-users/)
 
 .
 
