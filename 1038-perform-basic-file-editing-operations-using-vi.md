@@ -27,6 +27,8 @@ The vi editor \(visual editor\) is almost certainly on every Linux and UNIX syst
 
 Using vi editor, we can edit an existing file or create a new file from scratch. we can also use this editor to just read a text file.
 
+> vi editr is great even trough ssh sessions!
+
 #### vi or vim ?
 
  Most Linux distributions now ship with the vim \(for **V**i **IM**proved\) editor rather than classic vi. Vim is upward compatible with vi and has a graphical mode available \(gvim\) as well as the standard vi text mode interface. The `vi` command is usually an alias or symbolic link to the vim program. There are several versions of vim: tiny, small, normal, big, and huge. We can find out what version of vim we are running and what features are included by using the command\(ubuntu 16.04 here \):
@@ -82,7 +84,7 @@ Okey lets start learning vi\(m\):
 
 Vim actually has three modes: insert mode, command mode, and escape \(last-line\) mode. Let’s start with the default mode you’ll see when you start up Vim–command mode.
 
-* command mode :  When you run vim filename to edit a file, Vim starts out in command mode. This means that all the alphanumeric keys are bound to commands, rather than inserting those characters.
+* command mode :  When you run vim filename to edit a file, Vim starts out in command mode. This means that all the alphanumeric keys are bound to commands, rather than inserting those characters.\(save, quit, search/replace, navigate around, execute macros,...\)
 * insert mode :  To enter the _insert_ mode, type i \(for “insert”\) and now the keys will behave as you’d expect. You can type normally until you want to make a correction, save the file, or perform another operation that’s reserved for command mode or escape \(last-line\) mode. To get out of insert mode, hit the Escape key.
 * escape \(last-line\) mode :  Once you press Escape, you’re in command mode again. What if you’d like to save your file or search through your document? No problem, press : and Vim will switch to escape \(last-line\) mode. Vim is now waiting for you to enter a command like :w to write the file or :q to exit the editor.
 
@@ -185,8 +187,11 @@ Now that you can open a file in vi, move around it and get out, it’s time to l
 
 | key | function |
 | :--- | :--- |
+| :s/old/new/ | replace first old with new in just that  line |
+| :s/old/new/g | replace all old with new in just that  line |
 | :%s/old/new/g | replace all old with new throughout file |
 | :%s/old/new/gc | replace all old with new throughout file with confirmations |
+| :%s/old/new/gic | same as above but case insensitive |
 | :noh | remove highlighting of search matches |
 
 ### Exiting
