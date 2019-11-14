@@ -419,5 +419,7 @@ Following is a brief summary of the types you need to know about for the LPI exa
 
 [https://www.geeksforgeeks.org/fdisk-command-in-linux-with-examples/](https://www.geeksforgeeks.org/fdisk-command-in-linux-with-examples/)
 
+
+
 .
 
