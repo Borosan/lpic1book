@@ -388,14 +388,64 @@ Linux File System or any file system generally is a layer which is under the ope
 
 Following is a brief summary of the types you need to know about for the LPI exam**:**
 
-| Format | Description |
-| :--- | :--- |
-| ext2 | The ext2 filesystem \(also known as the _second extended filesystem_\) was developed to address shortcomings in the Minix filesystem used in early versions of Linux. It has been used extensively on Linux for many years. There is no journaling in ext2, and it has largely been replaced by ext3 and more recently ext4. |
-| ext3 | ext2+journaling, still being improved but backward compatibility. ext3 doesn’t support file recovery or disk snapshots |
-| ext4 | faster and allow large files with significant speed. Supports 1 exabyte with files up to 16 terabytes |
-|  |  |
-
-\*\*\*\*
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Format</th>
+      <th style="text-align:left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">ext2</td>
+      <td style="text-align:left">
+        <p></p>
+        <ol>
+          <li>Ext2 file system was introduced in <b>1993</b> and <b>Ext2</b> was developed
+            by <b>Remy Card</b>. It was the first default file system in several Linux
+            distro like RedHat and Debian.</li>
+          <li>It was to overcome limitation of legacy Ext file system.</li>
+          <li>Maximum file size is <b>16GB &#x2013; 2TB</b>.</li>
+          <li>Journaling feature is not available.</li>
+          <li>It&#x2019;s being used for normally Flash based storage media like <b>USB Flash drive</b>, <b>SD Card</b> etc.</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">ext3</td>
+      <td style="text-align:left">
+        <p></p>
+        <ol>
+          <li>Ext3 file system was introduced in <b>2001</b> and same was integrated in <b>Kernel 2.4.15</b> with
+            journaling feature, which is to improve reliability and eliminates need
+            to check file system after unclean shutdown.</li>
+          <li>Max file size <b>16GB &#x2013; 2TB</b>.</li>
+          <li>Provide facility to upgrade from Ext2 to Ext3 file systems without having
+            to back up and restore data.</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">ext4</td>
+      <td style="text-align:left">
+        <p></p>
+        <ol>
+          <li>Ext4, the high-anticipated <b>Ext3</b> successor.</li>
+          <li>On October <b>2008</b>, Ext4 as stable code were merged in the <b>Kernel 2.6.28</b> which
+            contains <b>Ext4</b> file system.</li>
+          <li>Backward compatibility.</li>
+          <li>Max file size <b>16GB to 16TB</b>.</li>
+          <li>Ext4 file system have option to <b>Turn Off</b> journaling feature.</li>
+          <li>Other features like <b>Sub Directory Scalability</b>, <b>Multiblock Allocation</b>, <b>Delayed Allocation</b>, <b>Fast FSCK</b> etc.</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left"></td>
+    </tr>
+  </tbody>
+</table>\*\*\*\*
 
 
 
@@ -419,7 +469,7 @@ Following is a brief summary of the types you need to know about for the LPI exa
 
 [https://www.geeksforgeeks.org/fdisk-command-in-linux-with-examples/](https://www.geeksforgeeks.org/fdisk-command-in-linux-with-examples/)
 
-
+[https://www.tecmint.com/what-is-ext2-ext3-ext4-and-how-to-create-and-convert-linux-file-systems/](https://www.tecmint.com/what-is-ext2-ext3-ext4-and-how-to-create-and-convert-linux-file-systems/)
 
 .
 
