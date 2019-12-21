@@ -1,6 +1,6 @@
 # 104.1. Create partitions and filesystems
 
-## **104.1 Create partitions and filesystems**
+## [https://github.com/Borosan/lpic1book](https://github.com/Borosan/lpic1book)**104.1 Create partitions and filesystems**
 
 **Weight:** 2
 
@@ -378,13 +378,23 @@ root@ubuntu16-1:~#
 
 Linux File System or any file system generally is a layer which is under the operating system that handles the positioning of your data on the storage, without it; the system cannot knows which file starts from where and ends where.
 
-**File system types**
+### **File system types**
 
  Linux supports several different filesystems. Each has strengths and weaknesses and its own set of performance characteristics. 
 
 **Ext, Ext2, Ext3, Ext4, JFS, XFS, btrfs and swap**
 
+> Which File System is perfect for you?
+>
 > One important attribute of a filesystem is journaling, which allows for much faster recovery after a system crash. Generally, a journaling filesystem is preferred over a non-journaling one when you have a choice. You may also want to consider whether your chosen filesystem supports _Security Enhanced Linux_ \(or SELinux\). Two newer file systems, ZFS and btrfs, use a technique called Copy on Write to improve data integrity and address large storage needs.
+
+What is journaling?
+
+Journaling is designed to prevent data corruption from crashes and sudden power loss. Let’s say your system is partway through writing a file to the disk and it suddenly loses power. Without a journal, your computer would have no idea if the file was completely written to disk. The file would remain there on disk, corrupt.
+
+With a journal, your computer would note that it was going to write a certain file to disk in the journal, write that file to disk, and then remove that job from the journal. If the power went out partway through writing the file, Linux would check the file system’s journal when it boots up and resume any partially completed jobs. This prevents data loss and file corruption.
+
+Journaling does slow disk write performance down a tiny bit, but it’s well-worth it on a desktop or laptop.
 
 Following is a brief summary of the types you need to know about for the LPI exam**:**
 
@@ -397,55 +407,108 @@ Following is a brief summary of the types you need to know about for the LPI exa
   </thead>
   <tbody>
     <tr>
-      <td style="text-align:left">ext2</td>
       <td style="text-align:left">
+        <p>ext2</p>
+        <p>(1993)</p>
+      </td>
+      <td style="text-align:left">
+        <p>The ext2 filesystem (also known as the <em>second extended filesystem</em>)
+          was developed to address shortcomings in the Minix filesystem used in early
+          versions of Linux. It has been used extensively on Linux for many years.
+          There is no journaling in ext2, and it has largely been replaced by ext3
+          and more recently ext4.</p>
         <p></p>
         <ol>
-          <li>Ext2 file system was introduced in <b>1993</b> and <b>Ext2</b> was developed
-            by <b>Remy Card</b>. It was the first default file system in several Linux
-            distro like RedHat and Debian.</li>
-          <li>It was to overcome limitation of legacy Ext file system.</li>
           <li>Maximum file size is <b>16GB &#x2013; 2TB</b>.</li>
-          <li>Journaling feature is not available.</li>
-          <li>It&#x2019;s being used for normally Flash based storage media like <b>USB Flash drive</b>, <b>SD Card</b> etc.</li>
         </ol>
+        <p>*It&#x2019;s being used for normally Flash based storage media like <b>USB Flash drive</b>, <b>SD Card</b> etc.</p>
       </td>
     </tr>
     <tr>
-      <td style="text-align:left">ext3</td>
       <td style="text-align:left">
-        <p></p>
+        <p>ext3</p>
+        <p>(2001)</p>
+      </td>
+      <td style="text-align:left">
+        <p>The ext3 filesystem adds journaling capability to a standard ext2 filesystem
+          and is therefore an evolutionary growth of a very stable filesystem. It
+          offers reasonable performance under most conditions and is still being
+          improved. Because it adds journaling on top of the proven ext2 filesystem,
+          it is possible to convert an existing ext2 filesystem to ext3 and even
+          convert back again if required.</p>
         <ol>
-          <li>Ext3 file system was introduced in <b>2001</b> and same was integrated in <b>Kernel 2.4.15</b> with
-            journaling feature, which is to improve reliability and eliminates need
-            to check file system after unclean shutdown.</li>
           <li>Max file size <b>16GB &#x2013; 2TB</b>.</li>
-          <li>Provide facility to upgrade from Ext2 to Ext3 file systems without having
-            to back up and restore data.</li>
+          <li>was integrated in <b>Kernel 2.4.15</b> with journaling feature</li>
         </ol>
       </td>
     </tr>
     <tr>
-      <td style="text-align:left">ext4</td>
       <td style="text-align:left">
-        <p></p>
+        <p>ext4</p>
+        <p>(2008)</p>
+      </td>
+      <td style="text-align:left">
+        <p>The ext4 filesystem started as extensions to ext3 to address the demands
+          of ever larger file systems by increasing storage limits and improving
+          performance. The ext4 filesystem, was included in the 2.6.28 kernel. Some
+          of the changes from ext3 are:</p>
         <ol>
-          <li>Ext4, the high-anticipated <b>Ext3</b> successor.</li>
-          <li>On October <b>2008</b>, Ext4 as stable code were merged in the <b>Kernel 2.6.28</b> which
-            contains <b>Ext4</b> file system.</li>
-          <li>Backward compatibility.</li>
           <li>Max file size <b>16GB to 16TB</b>.</li>
           <li>Ext4 file system have option to <b>Turn Off</b> journaling feature.</li>
-          <li>Other features like <b>Sub Directory Scalability</b>, <b>Multiblock Allocation</b>, <b>Delayed Allocation</b>, <b>Fast FSCK</b> etc.</li>
+          <li>Other features like <b>Fast FSCK</b> etc.</li>
         </ol>
       </td>
     </tr>
     <tr>
-      <td style="text-align:left"></td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">ReiserFS</td>
+      <td style="text-align:left">ReiserFS is a B-tree-based filesystem that has very good overall performance,
+        particularly for large numbers of small files. has journaling. no longer
+        in active development, does not support SELinux and has largely been superseded
+        by Reiser4 whose future is unclear.</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">XFS</td>
+      <td style="text-align:left">XFS is a filesystem with journaling. It comes with robust features and
+        is optimized for scalability. XFS aggressively caches in-transit data in
+        RAM, great if you have an uninterruptible power supply.</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">btrfs</td>
+      <td style="text-align:left">btrfs (B-Tree file system) was initially developed by Oracle(GPL).It is
+        a new copy-on-write filesystem for Linux aimed at implementing advanced
+        features while focusing on fault tolerance, repair, and easy administration.Designed
+        to handle large files efficiently and handle filesystems spread across
+        multiple devices.</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">swap</td>
+      <td style="text-align:left">Swap space must be formatted for use as swap space, but it is not generally
+        considered a filesystem.</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">vfat</td>
+      <td style="text-align:left">
+        <p>(also known as <em>FAT32</em>) no journaling, lacks many features required
+          for a full Linux filesystem implementation. useful for exchanging data
+          between Windows and Linux systems . Do <b>not</b> use this filesystem , except
+          for sharing data .</p>
+        <p>*If you unzip or untar a Linux archive on a vfat disk, you will lose permissions,
+          such as execute permission, and you will lose any symbolic links that may
+          have been stored in the archive.</p>
+      </td>
     </tr>
   </tbody>
-</table>\*\*\*\*
+</table>Linux uses the `mkfs` command to create filesystems and `mkswap`command to make swap space.
+
+### mkfs
+
+The `mkfs` command is actually a front end to several filesystem-specific commands such as `mkfs.ext3` for ext3, `mkfs.ext4` for ext4 and `mkfs.btrfs` for btrfs.
+
+```text
+ls
+```
+
+
 
 
 
@@ -470,6 +533,10 @@ Following is a brief summary of the types you need to know about for the LPI exa
 [https://www.geeksforgeeks.org/fdisk-command-in-linux-with-examples/](https://www.geeksforgeeks.org/fdisk-command-in-linux-with-examples/)
 
 [https://www.tecmint.com/what-is-ext2-ext3-ext4-and-how-to-create-and-convert-linux-file-systems/](https://www.tecmint.com/what-is-ext2-ext3-ext4-and-how-to-create-and-convert-linux-file-systems/)
+
+[https://www.howtogeek.com/howto/33552/htg-explains-which-linux-file-system-should-you-choose/](https://www.howtogeek.com/howto/33552/htg-explains-which-linux-file-system-should-you-choose/)
+
+[https://developer.ibm.com/tutorials/l-lpic1-104-1/](https://developer.ibm.com/tutorials/l-lpic1-104-1/)
 
 .
 
