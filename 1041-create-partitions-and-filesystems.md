@@ -1,6 +1,6 @@
 # 104.1. Create partitions and filesystems
 
-## [https://github.com/Borosan/lpic1book](https://github.com/Borosan/lpic1book)**104.1 Create partitions and filesystems**
+## **104.1 Create partitions and filesystems**
 
 **Weight:** 2
 
@@ -388,6 +388,7 @@ Linux File System or any file system generally is a layer which is under the ope
 >
 > One important attribute of a filesystem is journaling, which allows for much faster recovery after a system crash. Generally, a journaling filesystem is preferred over a non-journaling one when you have a choice. You may also want to consider whether your chosen filesystem supports _Security Enhanced Linux_ \(or SELinux\). Two newer file systems, ZFS and btrfs, use a technique called Copy on Write to improve data integrity and address large storage needs.
 
+{% hint style="info" %}
 What is journaling?
 
 Journaling is designed to prevent data corruption from crashes and sudden power loss. Let’s say your system is partway through writing a file to the disk and it suddenly loses power. Without a journal, your computer would have no idea if the file was completely written to disk. The file would remain there on disk, corrupt.
@@ -395,6 +396,7 @@ Journaling is designed to prevent data corruption from crashes and sudden power 
 With a journal, your computer would note that it was going to write a certain file to disk in the journal, write that file to disk, and then remove that job from the journal. If the power went out partway through writing the file, Linux would check the file system’s journal when it boots up and resume any partially completed jobs. This prevents data loss and file corruption.
 
 Journaling does slow disk write performance down a tiny bit, but it’s well-worth it on a desktop or laptop.
+{% endhint %}
 
 Following is a brief summary of the types you need to know about for the LPI exam**:**
 
