@@ -61,10 +61,6 @@ The master boot record itself holds two things : the boot loader program\(or som
 
 When the BIOS loads, it looks for data stored in the first sector of the hard drive, the MBR; using the data stored in the MBR, the BIOS activates the boot loader.
 
-{% hint style="info" %}
-Whats magic Number? Located in the final two bytes of the **MBR** \(511-512\), this section must contain the hex value AA55, which officially classifies this as a valid **MBR**. An invalid **magic number** indicates a corrupt or missing **MBR**, therefore these bytes are critical to booting or using the disk.
-{% endhint %}
-
 4-Boot Loader is executed.
 
 ### Boot Loader
@@ -176,23 +172,11 @@ root@server2:~# cat /proc/cmdline
 BOOT_IMAGE=/boot/vmlinuz-4.10.0-28-generic root=UUID=e4a2c83b-fb68-46f5-a7ec-a83bbad6e3fd ro find_preseed=/preseed.cfg auto noprompt priority=critical locale=en_US quiet
 ```
 
-6- Linux Kernel is read an executed. 
-
-{% hint style="info" %}
-As soon as the Linux kernel has been booted and the root file system \(/\) mounted, programs can be run and further kernel modules can be integrated to provide additional functions. 
-
-To mount the root file system, certain conditions must be met. The kernel needs the corresponding drivers to access the device on which the root file system is located \(especially SCSI drivers\). The kernel must also contain the code needed to read the file system \(ext2, reiserfs, romfs, etc.\). It is also conceivable that the root file system is already encrypted. In this case, a password is needed to mount the file system.
-
-The initial ramdisk \(also called initdisk or initrd\) solves precisely the problems described above.
-{% endhint %}
+6- Linux Kernel is read an executed. Kernel normally needs drivers to be present right from the beginning of boot process. And in order to get this there is initramfs.
 
 ## initramfs
 
- The Linux kernel provides an option of having a small file system loaded to a RAM disk and running programs there before the actual root file system is mounted. 
-
-The initrd contains a minimal set of directories and executables to achieve this, such as the `insmod` tool to install kernel modules into the kernel.
-
-Its lifetime is short, only serving as a bridge to the real root file system. 
+initramfs is an initial ram file system that has been compiled to contain root file system as well as some drivers. At boot time, the boot loader loads the kernel and the initramfs image into memory and starts the kernel. The kernel checks for the presence of the initramfs and, if found, mounts it as / and searchs for sbin/init.
 
 7- The 'init' program loads and become the first process ID.
 
@@ -350,9 +334,7 @@ Sources:
 
 [https://www.cyberciti.biz/tips/10-boot-time-parameters-you-should-know-about-the-linux-kernel.html](https://www.cyberciti.biz/tips/10-boot-time-parameters-you-should-know-about-the-linux-kernel.html)
 
-[https://unix.stackexchange.com/questions/89923/how-does-linux-load-the-initrd-image](https://unix.stackexchange.com/questions/89923/how-does-linux-load-the-initrd-image)
-
-[https://developer.ibm.com/articles/l-initrd/](https://developer.ibm.com/articles/l-initrd/)[https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy\_of\_the\_initrd\_and\_vmlinuz?lang=en](https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy_of_the_initrd_and_vmlinuz?lang=en)
+[https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy\_of\_the\_initrd\_and\_vmlinuz?lang=en](https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy_of_the_initrd_and_vmlinuz?lang=en)
 
 [http://www.linuxfromscratch.org/blfs/view/svn/postlfs/initramfs.html](http://www.linuxfromscratch.org/blfs/view/svn/postlfs/initramfs.html)
 

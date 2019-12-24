@@ -97,11 +97,46 @@ address sizes    : 43 bits physical, 48 bits virtual
 power management:
 ```
 
-**/proc/devices:** List of device drivers configured into the currently running kernel.
-
-**/proc/dma:** Shows which DMA channels are being used at the moment.
-
 **/proc/filesystems :** Filesystems configured into the kernel.
+
+```text
+root@blackfox:~# cat /proc/filesystems 
+nodev	sysfs
+nodev	rootfs
+nodev	ramfs
+nodev	bdev
+nodev	proc
+nodev	cpuset
+nodev	cgroup
+nodev	cgroup2
+nodev	tmpfs
+nodev	devtmpfs
+nodev	configfs
+nodev	debugfs
+nodev	tracefs
+nodev	securityfs
+nodev	sockfs
+nodev	dax
+nodev	bpf
+nodev	pipefs
+nodev	hugetlbfs
+nodev	devpts
+	ext3
+	ext2
+	ext4
+	squashfs
+	vfat
+nodev	ecryptfs
+	fuseblk
+nodev	fuse
+nodev	fusectl
+nodev	pstore
+nodev	efivarfs
+nodev	mqueue
+nodev	autofs
+nodev	binfmt_misc
+
+```
 
 **/proc/interrupts:** Shows which interrupts are in use, and how many of each there have been.
 
@@ -172,76 +207,6 @@ root@ubuntu16-1:~# cat /proc/interrupts
  MIS:          0
  PIN:          0   Posted-interrupt notification event
  PIW:          0   Posted-interrupt wakeup event
-```
-
-**/proc/ioports :** Which I/O ports are in use at the moment.
-
-```text
-root@ubuntu16-1:~# cat /proc/ioports 
-0000-0cf7 : PCI Bus 0000:00
-  0000-001f : dma1
-  0020-0021 : PNP0001:00
-    0020-0021 : pic1
-  0040-0043 : timer0
-  0050-0053 : timer1
-  0060-0060 : keyboard
-  0061-0061 : PNP0800:00
-  0064-0064 : keyboard
-  0070-0071 : rtc0
-  0080-008f : dma page reg
-  00a0-00a1 : PNP0001:00
-    00a0-00a1 : pic2
-  00c0-00df : dma2
-  00f0-00ff : fpu
-  0170-0177 : 0000:00:07.1
-    0170-0177 : ata_piix
-  01f0-01f7 : 0000:00:07.1
-    01f0-01f7 : ata_piix
-  0376-0376 : 0000:00:07.1
-    0376-0376 : ata_piix
-  03c0-03df : vga+
-  03f6-03f6 : 0000:00:07.1
-    03f6-03f6 : ata_piix
-  03f8-03ff : serial
-  04d0-04d1 : PNP0001:00
-  0cf0-0cf1 : pnp 00:00
-0cf8-0cff : PCI conf1
-0d00-feff : PCI Bus 0000:00
-  1000-103f : 0000:00:07.3
-    1000-103f : pnp 00:00
-      1000-1003 : ACPI PM1a_EVT_BLK
-      1004-1005 : ACPI PM1a_CNT_BLK
-      1008-100b : ACPI PM_TMR
-      100c-100f : ACPI GPE0_BLK
-      1010-1015 : ACPI CPU throttle
-  1040-104f : 0000:00:07.3
-    1040-104f : pnp 00:00
-  1060-106f : 0000:00:07.1
-    1060-106f : ata_piix
-  1070-107f : 0000:00:0f.0
-    1070-107f : vmwgfx probe
-  1080-10bf : 0000:00:07.7
-    1080-10bf : vmw_vmci
-  1400-14ff : 0000:00:10.0
-  2000-3fff : PCI Bus 0000:02
-    2000-203f : 0000:02:01.0
-      2000-203f : e1000
-    2040-207f : 0000:02:02.0
-      2040-207f : Ensoniq AudioPCI
-    2080-209f : 0000:02:00.0
-      2080-209f : uhci_hcd
-  4000-4fff : PCI Bus 0000:03
-  5000-5fff : PCI Bus 0000:0b
-  6000-6fff : PCI Bus 0000:13
-  7000-7fff : PCI Bus 0000:1b
-  8000-8fff : PCI Bus 0000:04
-  9000-9fff : PCI Bus 0000:0c
-  a000-afff : PCI Bus 0000:14
-  b000-bfff : PCI Bus 0000:1c
-  c000-cfff : PCI Bus 0000:05
-  d000-dfff : PCI Bus 0000:0d
-  e000-efff : PCI Bus 0000:15
-  fce0-fcff : pnp 00:06
 ```
 
 **/proc/meminfo :** Information about memory usage, both physical and swap.
@@ -506,6 +471,7 @@ video*    For use with a graphics card supporting video.
 
 with the special thanks of udev \(as a Hardware Abstraction Layer\) and the names it provides.
 
+{% hint style="info" %}
 ### /sys vs /dev
 
 * The /sys filesystem \(sysfs\) contains files that provide information about devices: whether it's powered on, the vendor name and model, what bus the device is plugged into, etc. It's of interest to applications that manage devices.
@@ -514,12 +480,15 @@ with the special thanks of udev \(as a Hardware Abstraction Layer\) and the name
 A metaphor is that /sys provides access to the packaging, while /dev provides access to the content of the box.
 
 The reason for /dev existing independently of /sys is partly historical: /dev dates back to the dawn of Unix, while /sys is a much more recent invention. If Linux was designed today with no historical background, /dev/sda might be /sys/block/sda/content.
+{% endhint %}
 
+{% hint style="success" %}
 #### pesudo File Systems
 
 'Pseudo-' means false, pretend. So "pseudo-filesystem" means a filesystem that doesn't have actual files – rather, it has virtual entries that the filesystem itself makes up on the spot.
 
 /dev, /proc and /sys are virtual "pseudo-filesystems" \(not existing on harddisk, but only in RAM – so they do not consume any harddisk space and are completely created on boot\).
+{% endhint %}
 
 ### dbus
 
