@@ -1,5 +1,7 @@
 # 101.2. Boot the system
 
+### 101.2.Boot the system
+
 **Weight:**3
 
 **Description:** Candidates should be able to guide the system through the booting process.
@@ -23,7 +25,7 @@
 * SysVinit
 * systemd
 
-Do you know when you have understood what the Operating System is? When you have understood the differences between a ghost and an operating system. Have you ever think what happens when you press power button on a pc or laptop? There is no jinni or ghost who starts dead metal heart and brings operating system up and running.
+ Have you ever think what happens when you press power button on a pc or laptop? There is no jinni or ghost who starts dead metal heart and brings operating system up and running. Lets see how does is happen?
 
 ## Boot procedure
 
@@ -33,9 +35,9 @@ Lets draw a big picture to have an overview of generic boot procedure from BIOS 
 
 Now lets explain more each of these steps:
 
-1-First system power on.
+**1-**First system power on.
 
-2-BIOS load \(in modern systems it would be UEFI\)
+**2-**BIOS load \(in modern systems it would be UEFI\)
 
 ## BIOS
 
@@ -43,7 +45,7 @@ BIOS, which stands for Basic Input Output System, is software stored on a small 
 
 ![](.gitbook/assets/boot-bios.jpg)
 
-3-BIOS scans and goes for the primary \(or chosen\) disk's "boot sector" .A boot sector is a region of a hard disk, floppy disk, optical disc, or other data storage device that contains machine code to be loaded into random-access memory \(RAM\) by a computer system's built-in firmware like BIOS.
+**3-**BIOS scans and goes for the primary \(or chosen\) disk's "boot sector" .A boot sector is a region of a hard disk, floppy disk, optical disc, or other data storage device that contains machine code to be loaded into random-access memory \(RAM\) by a computer system's built-in firmware like BIOS.
 
 What exist on boot sector? MBR
 
@@ -61,17 +63,21 @@ The master boot record itself holds two things : the boot loader program\(or som
 
 When the BIOS loads, it looks for data stored in the first sector of the hard drive, the MBR; using the data stored in the MBR, the BIOS activates the boot loader.
 
-4-Boot Loader is executed.
+{% hint style="info" %}
+Whats magic Number? Located in the final two bytes of the **MBR** \(511-512\), this section must contain the hex value AA55, which officially classifies this as a valid **MBR**. An invalid **magic number** indicates a corrupt or missing **MBR**, therefore these bytes are critical to booting or using the disk.
+{% endhint %}
+
+**4-**Boot Loader is executed.
 
 ### Boot Loader
 
 Most simply, a boot loader loads the operating system. Most boot loaders load in two stages.
 
-A- In the first stage of the boot, the BIOS loads a part of the boot loader known as the initial program loader, or IPL. The IPL interrogates the partition table and subsequently is able to load data wherever it may exist on the various media. This action is used initially to locate the second stage boot loader, which holds the remainder of the loader.
+**A-** In the first stage of the boot, the BIOS loads a part of the boot loader known as the **initial program loader**, or **IPL**. The **IPL** **interrogates the partition table and subsequently is able to load data wherever it may exist on the various media.** This action is used initially to locate the second stage boot loader, which holds the remainder of the loader.
 
-B-The second stage boot loader is the real meat of the boot loader; many consider it the only real part of the boot loader. This contains the more disk-intensive parts of the loader, such as user interfaces and kernel loaders. \(These user interfaces can range from a simple command line to the modern GUIs.\)
+**B-**The second stage boot loader is the real meat of the boot loader; many consider it the only real part of the boot loader. This contains the more **disk-intensive parts** of the loader, such as \[bootloader\] user interfaces and kernel loaders. \(These user interfaces can range from a simple command line to the modern GUIs.\)
 
-5-Lilo / Grub / Grub2 begins.
+**5-**Lilo / Grub / Grub2 begins.
 
 There have been different boot loaders . Lilo, Grub and Grub2:
 
@@ -97,7 +103,7 @@ other=/dev/hda1            # It tells LILO to boot an operating system other tha
 label=win                  # same as all other label options.
 ```
 
-There are some LILO command options which might be help full:
+lilo as a command has some options which might be help full:
 
 ```text
  -c config-file: Specifies the alternative configuration file other than default file /etc/lilo.conf.
@@ -138,7 +144,7 @@ Regardless of the GRUB version, a boot loader allows the user to:
 
 Kernel command line parameters are parameters that we pass on the system during the boot process. They are also known as "boot options".
 
-We must be at console to pass kernel boot time command because when the system is booting up there is no Networking service. So reboot the system and Press Esc key during boot:
+We **must be at console** to pass kernel boot time command because when the system is booting up there is no Networking service. So reboot the system and Press Esc key during boot:
 
 ![](.gitbook/assets/boot-grubmenu.jpg)
 
@@ -146,15 +152,15 @@ Depending on the configuration the user may be able to choose from a menu of pot
 
 ![](.gitbook/assets/boot-grubmenu2.jpg)
 
-`'linux'`defines the place of executable kernel \(vmlinuz/vmlinux\) to run ,and obviously kernel boot options come after it.
-
 The Linux Kernel boot parameters are passed into a list of strings separated with white spaces:
 
 ```text
 name[=value_1] [,value_2]........[,value_10]
 ```
 
-Where ‘name=unique keyword‘ it defines the part of kernel where the value is to be associated. The value it can hold is 10, maximum. The present code only handles 10 comma separated parameters per keywords.
+Where ‘**name=unique keyword**‘ it **defines the part of kernel** where the value is to be associated. \(max 10\)
+
+`'linux'`defines the place of executable kernel \(vmlinuz/vmlinux\) to run ,and obviously kernel boot options come after it.
 
 There are many parameters that help us configure and determine all aspects of our system's operation during the boot process. Some of them are:
 
@@ -172,13 +178,25 @@ root@server2:~# cat /proc/cmdline
 BOOT_IMAGE=/boot/vmlinuz-4.10.0-28-generic root=UUID=e4a2c83b-fb68-46f5-a7ec-a83bbad6e3fd ro find_preseed=/preseed.cfg auto noprompt priority=critical locale=en_US quiet
 ```
 
-6- Linux Kernel is read an executed. Kernel normally needs drivers to be present right from the beginning of boot process. And in order to get this there is initramfs.
+**6-** Linux Kernel is read an executed. 
+
+{% hint style="info" %}
+As soon as the Linux kernel has been booted and the root file system \(/\) mounted, programs can be run and further kernel modules can be integrated to provide additional functions. 
+
+To mount the root file system, certain conditions must be met. The kernel needs the corresponding drivers to access the device on which the root file system is located \(especially SCSI drivers\). The kernel must also contain the code needed to read the file system \(ext2, reiserfs, romfs, etc.\). It is also conceivable that the root file system is already encrypted. In this case, a password is needed to mount the file system.
+
+The initial ramdisk \(also called initdisk or initrd\) solves precisely the problems described above.
+{% endhint %}
 
 ## initramfs
 
-initramfs is an initial ram file system that has been compiled to contain root file system as well as some drivers. At boot time, the boot loader loads the kernel and the initramfs image into memory and starts the kernel. The kernel checks for the presence of the initramfs and, if found, mounts it as / and searchs for sbin/init.
+ The Linux kernel provides an option of having a small file system loaded to a RAM disk and running programs there before the actual root file system is mounted. 
 
-7- The 'init' program loads and become the first process ID.
+The initrd contains a minimal set of directories and executables to achieve this, such as the `insmod` tool to install kernel modules into the kernel.
+
+Its lifetime is short, only serving as a bridge to the real root file system. 
+
+**7-** The 'init' program loads and become the first process ID.
 
 ### What is init?
 
@@ -225,7 +243,9 @@ init/            init.d/          initramfs-tools/
 
 **Systemd**
 
+{% hint style="info" %}
 A systemd, may refer to all the packages, utilities and libraries around daemon.The goal of systemd project is to provide an operating system that runs on top of the linux kernel and taking control of almost every thing after kernel loading. Consequently it has been developed to overcome the shortcomings of init.
+{% endhint %}
 
 Systemd is designed to start processes in parallel, thus reducing the boot time and computational overhead. It has a lot other features as compared to init.
 
@@ -239,11 +259,11 @@ root@ubuntu16-1:~# ls /usr/lib/systemd
 boot  catalog  network  user  user-generators
 ```
 
-8- Sysv or upstart or systemd \(what ever your system service manager is\) starts every thing. Prerequisites, services, ... and shell. and one the shell is present the user can log in.
+**8-** Sysv or upstart or systemd \(what ever your system service manager is\) starts every thing. Prerequisites, services, ... and shell. and one the shell is present the user can log in.
 
 ## dmesg
 
-dmesg command is used to display the kernel related messages on Unix like systems. dmesg stands for “display message or display driver“. dmesg command retrieve its data by reading the kernel ring buffer.
+dmesg command is used to **display the kernel related messages** on Unix like systems. dmesg stands for “display message or display driver“. dmesg command retrieve its data by reading the kernel ring buffer.
 
 The kernel ring buffer is a data structure that records messages related to the operation of the kernel. A ring buffer is a special kind of buffer that is always a constant size, removing the oldest messages when new messages come in.
 
@@ -280,7 +300,7 @@ Options:
                                [delta|reltime|ctime|notime|iso]
 ```
 
-Wow it has lots of options. Invoking dmesg without any of its options \(which is rarely used\) causes it to write all the kernel messages to standard output. This usually produces far too many lines to fit into the display screen all at once, and thus only the final messages are visible.
+Using dmesg without any of its options causes it to write all the kernel messages to standard output. 
 
 ```text
 root@ubuntu16-1:~# dmesg 
@@ -310,6 +330,12 @@ root@ubuntu16-1:~# dmesg
 
 we can clear dmesg logs if required with `dmesg -c` command.
 
+**/var/log/dmesg**
+
+The `dmesg` command shows the current content of the kernel syslog ring buffer messages while the `/var/log/dmesg` file contains what was in that ring buffer when the boot process last completed.
+
+
+
 .
 
 .
@@ -334,7 +360,9 @@ Sources:
 
 [https://www.cyberciti.biz/tips/10-boot-time-parameters-you-should-know-about-the-linux-kernel.html](https://www.cyberciti.biz/tips/10-boot-time-parameters-you-should-know-about-the-linux-kernel.html)
 
-[https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy\_of\_the\_initrd\_and\_vmlinuz?lang=en](https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy_of_the_initrd_and_vmlinuz?lang=en)
+[https://unix.stackexchange.com/questions/89923/how-does-linux-load-the-initrd-image](https://unix.stackexchange.com/questions/89923/how-does-linux-load-the-initrd-image)
+
+[https://developer.ibm.com/articles/l-initrd/](https://developer.ibm.com/articles/l-initrd/)[https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy\_of\_the\_initrd\_and\_vmlinuz?lang=en](https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy_of_the_initrd_and_vmlinuz?lang=en)
 
 [http://www.linuxfromscratch.org/blfs/view/svn/postlfs/initramfs.html](http://www.linuxfromscratch.org/blfs/view/svn/postlfs/initramfs.html)
 
@@ -348,5 +376,7 @@ Sources:
 
 [https://www.tecmint.com/dmesg-commands/](https://www.tecmint.com/dmesg-commands/) & [https://www.linuxtechi.com/10-tips-dmesg-command-linux-geeks/](https://www.linuxtechi.com/10-tips-dmesg-command-linux-geeks/)
 
-[https://www.quora.com/What-is-a-ring-buffer-in-Linux](https://www.quora.com/What-is-a-ring-buffer-in-Linux)
+{% embed url="https://www.quora.com/What-is-a-ring-buffer-in-Linux" %}
+
+[https://unix.stackexchange.com/questions/191560/difference-between-output-of-dmesg-and-content-of-var-log-dmesg](https://unix.stackexchange.com/questions/191560/difference-between-output-of-dmesg-and-content-of-var-log-dmesg)
 

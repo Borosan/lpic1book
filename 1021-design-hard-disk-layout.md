@@ -31,17 +31,17 @@ A disk is divided into tracks, cylinders, and sectors.
 
 ![](.gitbook/assets/disklayout-diskstructure.jpg)
 
-A track is that portion of a disk which passes under a single stationary head during a disk rotation, a ring 1 bit wide.
+A **track** is that portion of a disk which passes under a single stationary head during a disk rotation, a ring 1 bit wide.
 
-A cylinder is comprised of the set of tracks described by all the heads \(on separate platters\) at a single seek position. Each cylinder is equidistant from the center of the disk. A track is divided into segments of sectors, which is the basic unit of storage.
+A **cylinder** is comprised of the set of tracks described by all the heads \(on separate platters\) at a single seek position. Each cylinder is equidistant from the center of the disk. A track is divided into segments of sectors, which is the basic unit of storage.
 
-A sector, being the smallest physical storage unit on the disk, is almost always 512 bytes in size because 512 is a power of 2 \(2 to the power of 9\). The number 2 is used because there are two states in the most basic of computer languages — on and off.
+A **sector**, being the smallest physical storage unit on the disk, is almost always 512 bytes in size because 512 is a power of 2 \(2 to the power of 9\). The number 2 is used because there are two states in the most basic of computer languages — on and off.
 
 ### Partitions
 
-Disk partitioning or disk slicing is the creation of one or more regions on a hard disk or other secondary storage, so that an operating system can manage information in each region separately. These regions are called partitions.
+Disk partitioning or disk slicing is the creation of one or more regions on a hard disk or other secondary storage, **so that an operating system can manage information in each region separately**. These regions are called partitions.
 
-The disk stores the information about the partitions' locations and sizes in an area known as the partition table that the operating system reads before any other part of the disk. Each partition then appears in the operating system as a distinct "logical" disk that uses part of the actual disk.
+The disk stores the **information about the partitions' locations and sizes** in an area known as the **partition table** that the operating system reads before any other part of the disk. Each partition then appears in the operating system as a distinct "logical" disk that uses part of the actual disk.
 
 ```text
 [root@centos7-1 ~]# lsblk
@@ -56,20 +56,20 @@ sr0              11:0    1 55.7M  0 rom  /run/media/payam/VMware Tools
 
 When doing an installation there is normally a minimum disk configuration of two partitions that needs to be created:
 
-* / \(root\): directory that contains the Linux distribution.
-* Swap space
+* **/** \(root\): directory that contains the Linux distribution.
+* **Swap space**
 
 ### **What is swap space?**
 
 Swap space in Linux is used when the amount of physical memory \(RAM\) is full. If the system needs more memory resources and the RAM is full, inactive pages in memory are moved to the swap space. While swap space can help machines with a small amount of RAM, it should not be considered a replacement for more RAM. Swap space is located on hard drives, which have a slower access time than physical memory.
 
-Swap space can be a dedicated swap partition \(recommended\), a swap file, or a combination of swap partitions and swap files.
+**Swap space can be** a **dedicated swap partition** \(recommended\), a **swap file**, or a **combination of swap partitions and swap files**.
 
 Swap should equal 2x physical RAM for up to 2 GB of physical RAM, and about 1.5x physical RAM for more than 2 GB of physical RAM. How ever that an old recipe and it depends on what kind of system we are talking about.
 
 ### **mount points**
 
-All partitions are attached to the system via a mount point. The mount point defines the place of a particular data set in the file system. Usually, all partitions are connected through the root partition. On this partition, which is indicated with the slash \(/\), directories are created. These empty directories will be the starting point of the partitions that are attached to them.
+All **partitions are attached to the system via a mount point**. The mount point defines the place of a particular data set in the file system. Usually, all partitions are connected through the root partition. On this partition, which is indicated with the slash \(/\), directories are created. These empty directories will be the starting point of the partitions that are attached to them.
 
 ```text
 [root@centos7-1 ~]# df -h
@@ -85,11 +85,11 @@ tmpfs                    378M   32K  378M   1% /run/user/1000
 tmpfs                    378M     0  378M   0% /run/user/0
 ```
 
-During system startup, all the partitions are thus mounted, as described in the file /etc/fstab. Some partitions are not mounted by default, for instance if they are not constantly connected to the system, such like theusb storage. If well configured, the device will be mounted as soon as the system notices that it is connected, or it can be user-mountable.
+During system startup, all the partitions are thus mounted, \(will be described in the file /etc/fstab\). Some partitions are not mounted by default, for instance if they are not constantly connected to the system, such like the usb storage. If well configured, the device will be mounted as soon as the system notices that it is connected, or it can be user-mountable.
 
 ### File Systems
 
-A filesystem is the methods and data structures that an operating system uses to keep track of files on a disk or partition; that is, the way the files are organized on the disk. Without a file system, information placed in a storage medium would be one large body of data with no way to tell where one piece of information stops and the next begins.
+**A filesystem is the methods and data structures that an operating system uses to keep track of files on a disk or partition**; that is, the way the files are organized on the disk. Without a file system, information placed in a storage medium would be one large body of data with no way to tell where one piece of information stops and the next begins.
 
 Different filesystems have different organizing structures to determine where the data and indexing information will be stored:
 
@@ -132,7 +132,7 @@ Linux uses a hierarchical file system structure, much like an upside-down tree, 
 
 Lets explain what they are for:
 
-* **/** : the root filesystem, mounted before the kernel loads the first process. The bootloader tells the kernel what to use as the root filesystem \(it's usually a disk partition but could be something over the network\).
+* **/** \(root\): the root filesystem, mounted before the kernel loads the first process. The bootloader tells the kernel what to use as the root filesystem \(it's usually a disk partition but could be something over the network\).
 * **/bin** : All the executable binary programs \(file\) required during booting, repairing, files required to run into single-user-mode, and other important, basic commands.
 * **/boot** : Holds important files during boot-up process, including Linux Kernel.
 * **/dev** : an in-memory filesystem where device files are automatically created by udev based on available hardware.Contains device files for all the hardware devices on the machine e.g., cdrom, cpu, etc
@@ -164,29 +164,31 @@ If the partition containing the log files runs out of space, the system won't be
 
 All in all try to follow vendor-recommended standard disk layout if not, be smart and do partitioning based on the server type and behaviour of your application\(s\).
 
+{% hint style="success" %}
 #### Blocks vs. Sectors
 
-A sector is a physical spot on a formatted disk that holds information. When a disk is formatted, tracks are defined \(concentric rings from inside to the outside of the disk platter\). Each track is divided into a slice, which is a sector. On hard drives and floppies, each sector can hold 512 bytes of data.
+**A sector is a physical spot on a formatted disk that holds information.** When a disk is formatted, tracks are defined \(concentric rings from inside to the outside of the disk platter\). Each track is divided into a slice, which is a sector. On hard drives and floppies, each sector can hold 512 bytes of data.
 
-A block, on the other hand, is a group of sectors that the operating system can address \(point to\). A block might be one sector, or it might be several sectors \(2,4,8, or even 16\). The bigger the drive, the more sectors that a block will hold.
+**A block, on the other hand, is a group of sectors that the operating system can address \(point to\).** A block might be one sector, or it might be several sectors \(2,4,8, or even 16\). The bigger the drive, the more sectors that a block will hold.
 
-So why are there blocks. Why doesn't the operating system just point straight to the sectors? Because there are limits to the number of blocks, or drive addresses, that an operating system can address. By defining a block as several sectors, an OS can work with bigger hard drives without increasing the number of block addresses.
+**So why are there blocks? Why doesn't the operating system just point straight to the sectors?** Because there are limits to the number of blocks, or drive addresses, that an operating system can address. By defining a block as several sectors, an OS can work with bigger hard drives without increasing the number of block addresses.
+{% endhint %}
 
-up to now we have talked about partitions, partitions are coll but partitions are fixed sized and that is not easy to resize in some cases. On a server we even need more flexibility. That is why LVM was invented.
+up to now we have talked about partitions, partitions are coll but partitions are fixed sized and that is not easy to resize in some cases. On a server we even need **more flexibility**. That is why **LVM** was invented.
 
 ### LVM
 
-Logical volume management \(LVM\) is a form of storage virtualization that offers system administrators a more flexible approach to managing disk storage space than traditional partitioning.
+Logical volume management \(LVM\) is a **form of storage virtualization** that offers system administrators a more **flexible** approach to managing disk storage space than traditional partitioning.
 
 There are 3 concepts that LVM manages:
 
-* **Logical Volumes \(LV\)**: A Logical Volume is the conceptual equivalent of a disk partition in a non-LVM system. Logical volumes are block devices which are created from the physical extents present in the same volume group. File systems are built on top of logical volumes.
-* **Volume Groups \(VG\)**: A Volume Group gathers together a collection of Logical Volumes and Physical Volumes into one administrative unit. Volume group is divided into fixed size physical extents.
+* **Logical Volumes \(LV\)**: A Logical Volume is the conceptual equivalent of a disk partition in a non-LVM system. Logical volumes **are block devices which are created from the physical extents present in the same volume group**. File systems are built on top of logical volumes.
+* **Volume Groups \(VG\)**: A Volume Group **gathers together a collection of Logical Volumes and Physical Volumes into one administrative unit**. Volume group is divided into fixed size physical extents.
 * **Physical Volumes \(PV\)**: Each Physical Volume can be a disk partition or whole disk.
 
 ![](.gitbook/assets/disklayout-lvm.jpg)
 
-Logical Volume Management \(LVM\) makes it easier to manage disk space. If a file system needs more space, it can be added to its logical volumes from the free spaces in its volume group and the file system can be re-sized as we wish. If a disk starts to fail, replacement disk can be registered as a physical volume with the volume group and the logical volumes extents can be migrated to the new disk without data loss.
+Logical Volume Management \(LVM\) makes it easier to manage disk space. If a file system needs more space, it can be added to its logical volumes from the free spaces in its volume group and the file system can be re-sized as we wish. If a disk **starts to fail**, replacement disk can be registered as a physical volume with the volume group and the logical volumes extents can be migrated to the new disk without data loss.
 
 **How LVM works?**
 
@@ -194,9 +196,11 @@ It works by chunking the physical volumes \(PVs\) into physical extents \(PEs\).
 
 ![](.gitbook/assets/disklayout-lvmdetails.jpg)
 
+{% hint style="danger" %}
 There is one thing that we should know about LVM, we can not put intire server in LVM! Because there is a /boot directory and /boot directory must be available at the moment of booting, so it must be seen from master boot record \(or GUID partition\).
 
 And in order to see /boot directory at the moment of booting it should always be on a traditional partition.
+{% endhint %}
 
 ![](.gitbook/assets/disklayout-lvmboot.jpg)
 

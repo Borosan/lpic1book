@@ -29,7 +29,7 @@
 
 In previous lesson we explain the sequence of system boot in liunx, then we get introduced to Sysv, Upstart and system as different service managers in linux world. In this lesson we learn how to take control over our linux system services using these service managers.
 
-Lets start with SysV. SysV is is nothing more than many executable scripts which are run after init process. How we can define which service should be run when computer starts ? I'm glad you asked. It seems that huge text configuration files would be needed, there is where **runlevels** come to play.
+Lets start with SysV. SysV is is nothing more than many executable scripts which are run after init process. How we can define which service should be run when computer starts ? I'm glad you asked. It seems that huge text configuration files would be needed, there is where runlevels come to play.
 
 ### runlevels
 
@@ -92,7 +92,6 @@ init \(as a command\) is a process control initialization like telinit.
 [root@centos5-1 ~]# init 3
 ```
 
-{% hint style="info" %}
 #### telinit vs init
 
 telinit is a smaller tool that informs init when it needs to switch runlevels. So we can use "telinit" to "tell init" that it needs to switch runlevel. telinit is actually linked to init command and it is possible to use init command instead but it is not recommanded.
@@ -101,13 +100,12 @@ telinit is a smaller tool that informs init when it needs to switch runlevels. S
 [root@centos5-1 ~]# ls -l /sbin/telinit 
 lrwxrwxrwx 1 root root 4 Aug 26 23:20 /sbin/telinit -> init
 ```
-{% endhint %}
 
-There are several ways to change runlevels. To make a permanent change, we can edit **/etc/inittab** and change the default level that we just saw above.
+There are several ways to change runlevels. To make a permanent change, we can edit /etc/inittab and change the default level that we just saw above.
 
 ### /etc/inttab
 
-After the Linux kernel has booted, the init program reads the /etc/inittab file to determine the **behavior for each runlevel**. Unless the user specifies another value as a kernel boot parameter, the system will attempt to enter \(start\) the default runlevel.\(CentOs5\)
+After the Linux kernel has booted, the init program reads the /etc/inittab file to determine the behavior for each runlevel. Unless the user specifies another value as a kernel boot parameter, the system will attempt to enter \(start\) the default runlevel.\(CentOs5\)
 
 ```text
 [root@centos5-1 ~]# cat /etc/inittab 
@@ -166,7 +164,7 @@ pr:12345:powerokwait:/sbin/shutdown -c "Power Restored; Shutdown Cancelled"
 x:5:respawn:/etc/X11/prefdm -nodaemon
 ```
 
-the default runlevel is determined from the`id:`entry in **/etc/inittab**. How run levels are set up by default and how they are configured depends in part on the particular distribution you are running.
+the default runlevel is determined from the`id:`entry in /etc/inittab. How run levels are set up by default and how they are configured depends in part on the particular distribution you are running.
 
 Now lets see how SysV implements the concept of run levels.
 
@@ -202,9 +200,7 @@ As we said, in SysV, init program is the first process that is run and consequen
 
 ### /etc/rc.d/
 
-SysV uses grouping. Scripts of each runlevel are grouped and placed in /etc/rc{runlevel}.d/ where runlevel is the runlevel. 
-
-As many services might be existed in different runlevels, the real script files are hold in /etc/init.d and /etc/rc{runlevel}.d/just point to required ones.
+SysV uses grouping. Scripts of each runlevel are grouped and placed in /etc/rc{runlevel}.d/ where runlevel is the runlevel. As many services might be existed in different runlevels, the real script files are hold in /etc/init.d and /etc/rc{runlevel}.d/just point to required ones.
 
 ```text
 [root@centos5-1 etc]# ls | grep rc.
@@ -259,7 +255,7 @@ lrwxrwxrwx 1 root root 19 Aug 26 23:21 S15mdmonitor -> ../init.d/mdmonitor
 <output has been truncated>
 ```
 
-Each script in each runlevel is run with its startup or shutdown functions depending on if that runlevel is going up or going down. **S** means starting script and **K** shows that it is a killing script .The sequence of actions is defined by the numbers. try cat command to see what is inside :
+Each script in each runlevel is run with its startup or shutdown functions depending on if that runlevel is going up or going down. S means starting script and K shows that it is a killing script .The sequence of actions is defined by the numbers. try cat command to see what is inside :
 
 ```text
 [root@centos5-1 rc5.d]# cat S55sshd
@@ -450,17 +446,15 @@ exit $RETVAL
 
 And all of these places were places that SysV uses to manage scripts and runlevels. In Sysv system we can manage services with `service`command and`chkconfig`command to define how and when services are started. We will talk about them later.
 
-{% hint style="info" %}
 **rc.local**
 
 But what about /etc/rc.local ? This file runs after all other init level scripts have run, so it's safe to put various commands that you want to have issued upon startup.This is also a good place to place "troubleshooting" scripts in. But do not forget rc.local may not work properly in Upstart and Systemd. Test it, search it and do required configuration before using in production environment.
-{% endhint %}
 
 Lets go back to our topic and get familiar with runlevels equivalent in systemd. Although /etc/inittab still exist in Systemd systems but that is not part of configuration, we have something called "Targets".
 
 ### systemd targets
 
-Like runlevels there are some modes in systemd system that our system can run in, systemd runlevels are referred to as "**targets**". "**targets**" **are described as a collection of services**. Look at the equivalents: ****
+Like runlevels there are some modes in systemd system that our system can run in, systemd runlevels are referred to as "targets". "targets" are described as a collection of services. Look at the equivalents:
 
 ```text
    ┌─────────┬───────────────────┐
@@ -509,19 +503,19 @@ Removed symlink /etc/systemd/system/default.target.
 Created symlink from /etc/systemd/system/default.target to /usr/lib/systemd/system/graphical.target.
 ```
 
-But how systemd knows what to do and how to do things ? We have something called "**Unit**". **The concept of "Unit Files" replaces the SysV init scripts for services.**
+But how systemd knows what to do and how to do things ? We have something called "Unit". The concept of "Unit Files" replaces the SysV init scripts for services.
 
 ### systemd unit files
 
-There are different types of unit files and the best way to describe unit files, is **'that is a thing which should be started'**.Yes that is a thing because there are different kinds of unit files. **Each unit file is a simple text file describing a unit, what it does, what needs to run before or afterward, and other details**
+There are different types of unit files and the best way to describe unit files, is 'that is a thing which should be started'.Yes that is a thing because there are different kinds of unit files. Each unit file is a simple text file describing a unit, what it does, what needs to run before or afterward, and other details
 
 Unit files can be stored in a few different places on your system. systemd looks for system unit files in this order:
 
-1. **/etc/systemd/system:**directory stores unit files that extend a service. This directory will take precedence over unit files located anywhere else in the system.
-2. **/run/systemd/system:**directory is the runtime location for unit files.
-3. **/usr/lib/systemd/system:**directory is the default location where unit files are installed by packages. Unit files in the default directory should not be altered.
+1. /etc/systemd/system
+2. /run/systemd/system
+3. /usr/lib/systemd/system
 
-**Unit files in the earlier directories override later ones.** Lets take a look at them:
+Unit files in the earlier directories override later ones. Lets take a look at them:
 
 ### 1./etc/systemd/system
 
@@ -553,9 +547,7 @@ drwxr-xr-x. 2 root root   44 Oct 28  2017 system-update.target.wants
 drwxr-xr-x. 2 root root   29 Oct 28  2017 vmtoolsd.service.requires
 ```
 
-### 2./run/systemd/system 
-
-### 3./usr/lib/systemd/system
+### 2./usr/lib/systemd/system
 
 ```text
 [root@centos7-1 ~]# ls  /usr/lib/systemd/system
@@ -731,7 +723,7 @@ Broadcast message from root@centos6-1 (pts/1) (Sun Nov 11 00:46:58 2018):
 we are going down
 ```
 
-and what will **user1** receive:
+and what will user1 receive:
 
 ```text
 [user1@centos5-1 ~]$ 
@@ -805,16 +797,14 @@ Shutdown scheduled for Tue 2018-11-13 10:10:00 PST, use 'shutdown -c' to cancel.
 root@ubuntu16-1:~# shutdown -c
 ```
 
-#### 
+#### halt vs poweroff
 
-{% hint style="info" %}
-#### halt vs poweroff ! it's a bit historical
+It's a bit historical.
 
 * halt was used before ACPI \(Advanced Configuration and Power Interface\)which today will turn off the power for us. It would halt the system and then print a message to the effect of "it's ok to power off now". Back then there were physical on/off switches, rather than the combo ACPI controlled power button of modern computers.
 * poweroff, naturally will halt the system and then call ACPI power off.
 
 These days halt is smart enough to automatically call poweroff if ACPI is enabled. In fact, they are functionally equivalent now.
-{% endhint %}
 
 ### reboot
 
@@ -920,9 +910,7 @@ Sources:
 
 [https://www.tecmint.com/change-runlevels-targets-in-systemd/](https://www.tecmint.com/change-runlevels-targets-in-systemd/)
 
-{% embed url="https://fedoramagazine.org/systemd-getting-a-grip-on-units/" %}
-
-[https://www.linode.com/docs/quick-answers/linux-essentials/what-is-systemd/](https://www.linode.com/docs/quick-answers/linux-essentials/what-is-systemd/)
+[https://fedoramagazine.org/systemd-getting-a-grip-on-units/](https://fedoramagazine.org/systemd-getting-a-grip-on-units/)
 
 [https://www.howtoforge.com/linux-wall-command/](https://www.howtoforge.com/linux-wall-command/)
 
