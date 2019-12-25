@@ -293,6 +293,10 @@ cpu         LNXSYSTM:00  pci0000:00  pnp0      system    virtual
 
 sysfs hasn't caused all the stuff move from /proc to /sys , they still exist in /proc but /sys gives us a better view of current data.
 
+{% hint style="info" %}
+**Linux kernel modules** \(LKMs\) are pieces of code which can be loaded into the kernel much like a hot-swappable piece of hardware. they can be inserted into the kernel and activated without the system needing to be rebooted.
+{% endhint %}
+
 ### udev
 
 The kernel is the central part of operating system to address the hardware. And to make sure that the hardware is available for the kernel udev plays an important role.
@@ -302,11 +306,13 @@ udev is a replacement for the Device File System \(DevFS\) starting with the Lin
 ![](.gitbook/assets/hw-udev.jpg)
 
 1. The linux kernel initiates the device loading and next sends out messages \(uevents\) to the udev daemon.
-2. udev daemon catches the event and decide how to handle based on the attributes that it has received in the event. udev load required kernel module with necessary information using modprobe.
+2. udev daemon catches the event and decide how to handle based on the attributes that it has received in the event. udev load required kernel module with necessary information using **modprobe**.
 
- **Linux kernel modules** \(LKMs\) are pieces of code which can be loaded into the kernel much like a hot-swappable piece of hardware. they can be inserted into the kernel and activated without the system needing to be rebooted.
+{% hint style="success" %}
+what is modprobe?
 
 **modprobe** is an intelligent command for listing, inserting as well as removing modules from the kernel.\( Will be explained \)
+{% endhint %}
 
 3 . udev next reads its rules . udev allows us to ban devices based on their properties, like vendor ID and device ID, ... .
 
