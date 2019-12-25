@@ -374,9 +374,11 @@ Sources:
 
 [https://unix.stackexchange.com/questions/196166/how-to-find-out-if-a-system-uses-sysv-upstart-or-systemd-initsystem](https://unix.stackexchange.com/questions/196166/how-to-find-out-if-a-system-uses-sysv-upstart-or-systemd-initsystem)
 
-[https://www.tecmint.com/dmesg-commands/](https://www.tecmint.com/dmesg-commands/) & [https://www.linuxtechi.com/10-tips-dmesg-command-linux-geeks/](https://www.linuxtechi.com/10-tips-dmesg-command-linux-geeks/)
+[https://www.tecmint.com/dmesg-commands/](https://www.tecmint.com/dmesg-commands/) 
 
-{% embed url="https://www.quora.com/What-is-a-ring-buffer-in-Linux" %}
+ [https://www.linuxtechi.com/10-tips-dmesg-command-linux-geeks/](https://www.linuxtechi.com/10-tips-dmesg-command-linux-geeks/)
+
+[https://www.quora.com/What-is-a-ring-buffer-in-Linux](https://www.quora.com/What-is-a-ring-buffer-in-Linux)
 
 [https://unix.stackexchange.com/questions/191560/difference-between-output-of-dmesg-and-content-of-var-log-dmesg](https://unix.stackexchange.com/questions/191560/difference-between-output-of-dmesg-and-content-of-var-log-dmesg)
 
