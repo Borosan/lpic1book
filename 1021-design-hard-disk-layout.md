@@ -152,7 +152,9 @@ Lets explain what they are for:
 * **/usr** : Contains executable binaries, documentation, source code, libraries for second level program.
 * **/var** : Stands for variable. The contents of this file is expected to grow. This directory contains log, lock, spool, mail and temp files.
 
+{% hint style="danger" %}
 Almost all of linux directories can be a separated partition, except /etc directory because it contains scripts which are required during boot process so it can be mounted with / partition and accessible at the very beginning boot process.
+{% endhint %}
 
 ### Designing Hard Disk Layout
 
@@ -174,7 +176,7 @@ All in all try to follow vendor-recommended standard disk layout if not, be smar
 **So why are there blocks? Why doesn't the operating system just point straight to the sectors?** Because there are limits to the number of blocks, or drive addresses, that an operating system can address. By defining a block as several sectors, an OS can work with bigger hard drives without increasing the number of block addresses.
 {% endhint %}
 
-up to now we have talked about partitions, partitions are coll but partitions are fixed sized and that is not easy to resize in some cases. On a server we even need **more flexibility**. That is why **LVM** was invented.
+up to now we have talked about partitions, partitions are cool but partitions are fixed sized and that is not easy to resize in some cases. On a server we even need **more flexibility**. That is why **LVM** was invented.
 
 ### LVM
 

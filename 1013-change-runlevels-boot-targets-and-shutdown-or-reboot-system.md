@@ -931,7 +931,7 @@ Sources:
 
 [https://www.tecmint.com/change-runlevels-targets-in-systemd/](https://www.tecmint.com/change-runlevels-targets-in-systemd/)
 
-{% embed url="https://fedoramagazine.org/systemd-getting-a-grip-on-units/" %}
+[https://fedoramagazine.org/systemd-getting-a-grip-on-units/](https://fedoramagazine.org/systemd-getting-a-grip-on-units/)
 
 [https://www.linode.com/docs/quick-answers/linux-essentials/what-is-systemd/](https://www.linode.com/docs/quick-answers/linux-essentials/what-is-systemd/)
 
