@@ -703,9 +703,13 @@ as an example `grub2-install /dev/sdb` will install grub on sdb device, to the m
 
 How ever instaling GRUB a from running system seems cool, but most of the time there is a problem during boot process and we can not get into our system any more, so we need to reinstall GRUB from GRUB shell. Unfortunately the setup command has been removed from GRUB2 shell and it would need more efforts. We need to bring up the system in rescue mode using a live cd and then install GRUB on our hard disk using current temporary root system file:
 
+{% hint style="danger" %}
+it is just an example and do not run it because you would mess up your current system!
+{% endhint %}
+
 `grub2-install --boot-directory=/tmp/root/boot /dev/sda`
 
-it was just an example and do not run it because you would mess up your current system.
+
 
 .
 
