@@ -198,7 +198,9 @@ haldaemon           microcode_ctl  restorecond
 halt                multipathd     rpcgssd
 ```
 
-As we said, in SysV, init program is the first process that is run and consequently some infrastructure services are started. Files in /etc/init.d are shell scripts that respond to start, stop, restart, and \(when supported\) reload commands to manage a particular service. But how SysV determine which services inside /etc/init.d should be started or stopped depend on default runlevel ?
+As we said, in SysV, init program is the first process that is run and consequently some infrastructure services are started. Files in /etc/init.d are shell scripts that respond to start, stop, restart, and \(when supported\) reload commands to manage a particular service. But how SysV determine which services inside /etc/init.d should be started or stopped depend on default runlevel ?Lets draw a picture:
+
+![](.gitbook/assets/customizsysv-sysvscripts.jpg)
 
 ### /etc/rc.d/
 

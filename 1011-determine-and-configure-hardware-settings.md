@@ -293,6 +293,10 @@ cpu         LNXSYSTM:00  pci0000:00  pnp0      system    virtual
 
 sysfs hasn't caused all the stuff move from /proc to /sys , they still exist in /proc but /sys gives us a better view of current data.
 
+{% hint style="info" %}
+**Linux kernel modules** \(LKMs\) are pieces of code which can be loaded into the kernel much like a hot-swappable piece of hardware. they can be inserted into the kernel and activated without the system needing to be rebooted.
+{% endhint %}
+
 ### udev
 
 The kernel is the central part of operating system to address the hardware. And to make sure that the hardware is available for the kernel udev plays an important role.
@@ -302,11 +306,13 @@ udev is a replacement for the Device File System \(DevFS\) starting with the Lin
 ![](.gitbook/assets/hw-udev.jpg)
 
 1. The linux kernel initiates the device loading and next sends out messages \(uevents\) to the udev daemon.
-2. udev daemon catches the event and decide how to handle based on the attributes that it has received in the event. udev load required kernel module with necessary information using modprobe.
+2. udev daemon catches the event and decide how to handle based on the attributes that it has received in the event. udev load required kernel module with necessary information using **modprobe**.
 
- **Linux kernel modules** \(LKMs\) are pieces of code which can be loaded into the kernel much like a hot-swappable piece of hardware. they can be inserted into the kernel and activated without the system needing to be rebooted.
+{% hint style="success" %}
+what is modprobe?
 
 **modprobe** is an intelligent command for listing, inserting as well as removing modules from the kernel.\( Will be explained \)
+{% endhint %}
 
 3 . udev next reads its rules . udev allows us to ban devices based on their properties, like vendor ID and device ID, ... .
 
@@ -361,6 +367,12 @@ UDEV  [12771.063716] add      /module/nls_iso8859_1 (module)
 
 udev write device information to the /sys virtual directory. Also udev works as an Hardware Abstaraction Layer\(HAL\) and creates device file entries under /dev directory in a structured way.
 
+{% hint style="success" %}
+What is HAL? In computers, a **hardware abstraction layer** \(**HAL**\) is a **layer** of programming that allows a computer OS to interact with a **hardware** device at a general or **abstract level** rather than at a detailed **hardware level**.
+{% endhint %}
+
+another example:
+
 ```text
 root@ubuntu16-1:~# udevadm info --query=all --name=/dev/sdb
 P: /devices/pci0000:00/0000:00:11.0/0000:02:03.0/usb1/1-1/1-1:1.0/host33/target33:0:0/33:0:0:0/block/sdb
@@ -405,7 +417,9 @@ This directory contains the **device files** for every hardware device attached 
 
 > **Device files** are employed to provide the operating system and users an interface to the devices that they represent.
 
-/dev exits from early beginning versions of linux and it was populated by devfs. \(As we mentioned\) devfs was a an **obsolete and no longer available** virtual filesystem that automatically generated the contents of /dev on some older versions of the Linux kernel. These days, it has been replaced by udev, a daemon that manages the contents of /dev in a temporary filesystem, or by devtmpfs, which is a lightweight replacement for devfs that is used in some minimal systems.
+/dev exits from early beginning versions of linux and it was populated by devfs. \(As we mentioned\) devfs was a an **obsolete and no longer available.**
+
+ These days, it has been replaced by udev, a daemon that manages the contents of /dev in a temporary filesystem, **\(**or by devtmpfs, which is a lightweight replacement for devfs that is used in some minimal systems\).
 
 ```text
 root@ubuntu16-1:~# ls /dev/

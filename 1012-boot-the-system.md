@@ -332,7 +332,7 @@ we can clear dmesg logs if required with `dmesg -c` command.
 
 **/var/log/dmesg**
 
-The `dmesg` command shows the current content of the kernel syslog ring buffer messages while the `/var/log/dmesg` file contains what was in that ring buffer when the boot process last completed.
+The `dmesg` command shows the current content of the kernel syslog ring buffer messages while the `/var/log/dmesg` file contains what was in that ring buffer when the boot process last completed. try `cat /var/log/dmesg`. 
 
 
 
