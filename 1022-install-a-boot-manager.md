@@ -121,12 +121,13 @@ config-2.6.18-398.el5      message
 grub                       symvers-2.6.18-398.el5.gz
 initrd-2.6.18-398.el5.img  System.map-2.6.18-398.el5
 lost+found                 vmlinuz-2.6.18-398.el5
+
 [root@centos5-1 ~]# ls /boot/grub/
 device.map     grub.conf         minix_stage1_5     stage2
 e2fs_stage1_5  iso9660_stage1_5  reiserfs_stage1_5  ufs2_stage1_5
 fat_stage1_5   jfs_stage1_5      splash.xpm.gz      vstafs_stage1_5
 ffs_stage1_5   menu.lst          stage1             xfs_stage1_5
-
+##############################################################
 ### GRUB2
 [root@centos7-1 ~]# ls /boot/
 config-3.10.0-693.el7.x86_64
@@ -143,6 +144,7 @@ vmlinuz-0-rescue-1cf30b938dc94f2bb08fb045c7a0734e
 vmlinuz-3.10.0-693.el7.x86_64
 [root@centos7-1 ~]# ls /boot/grub
 splash.xpm.gz
+
 [root@centos7-1 ~]# ls /boot/grub2
 device.map  fonts  grub.cfg  grubenv  i386-pc  locale
 ```
@@ -182,7 +184,7 @@ just make a change in menu.lst and save it and that is all.
 
 ### grub.cfg \(GRUB2\)
 
-grub.cfg is overwritten by certain Grub 2 package updates, whenever a kernel is added or removed, or when the user runs update-grub.Do not edit grub.cfg directly!!
+**grub.cfg** is overwritten by certain Grub 2 package updates, whenever a kernel is added or removed, or when the user runs update-grub.**Do not edit grub.cfg directly!!**
 
 ```text
 [root@centos7-1 ~]# cat /boot/grub2/grub.cfg 
@@ -503,7 +505,7 @@ fi
 done
 ```
 
-It reads main grub script files from /etc/grub.d and setting from /etc/default/grub and print out generated configuration.
+It reads main grub script files from **/etc/grub.d** and setting from **/etc/default/grub** and print out generated configuration.
 
 ```text
 [root@centos7-1 ~]# ls /etc/grub.d/
@@ -525,7 +527,7 @@ Generate a grub config file
 Report bugs to <bug-grub@gnu.org>.
 ```
 
-For saving generated configuration we use -o option \(it is recommanded to take a backup from `/boot/grub2/grub.cfg` file, how ever this is not touching Master Boot Record and just re touches GRUB menu\):
+For saving generated configuration we use `-o` option \(it is recommanded to take a backup from `/boot/grub2/grub.cfg` file, how ever this is not touching Master Boot Record and just re touches GRUB menu\):
 
 ```text
 [root@centos7-1 ~]# grub2-mkconfig -o /boot/grub2/grub.cfg 
@@ -595,7 +597,9 @@ GRUB2
 
 ![](.gitbook/assets/bootloader-grub2menucmd.jpg)
 
+{% hint style="info" %}
 Note: Partition numbering has changed in GRUB2. The first partition is 1 in GRUB2 rather than 0 \(GRUB Legacy\). The first device/drive is still hd0 by default \(no change\).
+{% endhint %}
 
 ### GRUB Installation
 
@@ -697,7 +701,7 @@ Report bugs to <bug-grub@gnu.org>.
 
 as an example `grub2-install /dev/sdb` will install grub on sdb device, to the master boot record of my hard disk.
 
-How ever instaling GRUB a from running system seems cool, but most of the time there is a problem during boot process and we can not get into our system any more, so we need to reinstall GRUB from GRUB shell. Unfortunately the setup command has been removed from GRUB2 shell and it would need more efforts. Wee need to bring up the system in rescue mode using a live cd and then install GRUB on our hard disk using current temporary root system file:
+How ever instaling GRUB a from running system seems cool, but most of the time there is a problem during boot process and we can not get into our system any more, so we need to reinstall GRUB from GRUB shell. Unfortunately the setup command has been removed from GRUB2 shell and it would need more efforts. We need to bring up the system in rescue mode using a live cd and then install GRUB on our hard disk using current temporary root system file:
 
 `grub2-install --boot-directory=/tmp/root/boot /dev/sda`
 
