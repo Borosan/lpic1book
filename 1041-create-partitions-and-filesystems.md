@@ -28,7 +28,7 @@
 
  The Basic Input/Output System \(BIOS\), \(also known as System BIOS, ROM BIOS \) is a  standard for defining a firmware interface. The BIOS software is built into the PC, and is the first software run by a PC when powered on.
 
-The fundamental purposes of the BIOS are to initialize and test the system hardware components, and to load a bootloader or an operating system from a mass memory device. The BIOS additionally provides abstraction layer for the hardware, i.e. a consistent way for application programs and operating systems to interact with the keyboard, display, and other input/output devices. Variations in the system hardware are hidden by the BIOS from programs that use BIOS services instead of directly accessing the hardware. Modern operating systems ignore the abstraction layer provided by the BIOS and access the hardware components directly. 
+The fundamental purposes of the BIOS are to initialize and test the system hardware components, and to load a bootloader or an operating system from a mass memory device. 
 
 ### UEFI
 

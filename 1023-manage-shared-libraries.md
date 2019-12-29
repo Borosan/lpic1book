@@ -30,17 +30,14 @@ Linux supports two classes of libraries, namely:
 * Static libraries – are bound to a program statically at compile time.
 * Dynamic or shared libraries – are loaded when a program is launched and loaded into memory and binding occurs at run time.
 
-**Static libraries vs Shared libraries**
-
-* Each program using routines from a static library has a copy of them in the executable file. This wastes disk space and \(if more than one such program is in use at the same time\) RAM as well. Also, when a static library is updated, all the programs using it must be recompiled in order to take advantage of the new code. 
-* When a program uses a shared library instead, the program binary does not include a copy of the code, but only a reference to the library. The run time loader, finds the library and loads it into memory at the same time as the program. ****One advantage of using dynamic library is that when a library is updated \( security issues \) all other programs take advantage of new code without recompiling.
-
-{% hint style="info" %}
 Dynamic or shared libraries can further be categorized into\( beyond the scope of LPIC exam\):
 
-* **Dynamically linked libraries** – here a program is linked with the shared library and the kernel loads the library \(in case it’s not in memory\) upon execution.
-* **Dynamically loaded libraries** – the program takes full control by calling functions with the library.
-{% endhint %}
+* Dynamically linked libraries – here a program is linked with the shared library and the kernel loads the library \(in case it’s not in memory\) upon execution.
+* Dynamically loaded libraries – the program takes full control by calling functions with the library.
+
+**Static libraries vs Shared libraries**
+
+Each program using routines from a static library has a copy of them in the executable file. This wastes disk space and \(if more than one such program is in use at the same time\) RAM as well. Also, when a static library is updated, all the programs using it must be recompiled in order to take advantage of the new code. When a program uses a shared library instead, the program binary does not include a copy of the code, but only a reference to the library. The run time loader, finds the library and loads it into memory at the same time as the program.
 
 ### Libraries locations in linux
 
@@ -50,7 +47,7 @@ Depending on library, Linux stores its libraries mainly in three locations:
 * **/usr/lib**
 * **/usr/local/lib**
 
-**/lib** : The /lib directory contains those **shared library images needed to boot** the system and run the commands in the root filesystem, ie. by binaries in /bin and /sbin.
+**/lib** : The /lib directory contains those shared library images needed to boot the system and run the commands in the root filesystem, ie. by binaries in /bin and /sbin.
 
 ```text
 root@ubuntu16-1:~# ls /lib
@@ -64,20 +61,20 @@ hdparm    modprobe.d                            terminfo
 
 The /lib folder sister folders are /lib32 and /lib64.
 
-**/usr/lib** : **All software libraries** are installed here. This **does not contain system default or kernel libraries**.
+**/usr/lib** : All software libraries are installed here. This does not contain system default or kernel libraries.
 
 ```text
 root@ubuntu16-1:~# ls /usr/lib/
 ```
 
-**/usr/local/lib**: To place **extra system library files** here. These library files can be used by different applications.
+**/usr/local/lib**: To place extra system library files here. These library files can be used by different applications.
 
 ```text
 root@ubuntu16-1:~# ls /usr/local/lib/
 python2.7  python3.5
 ```
 
-Also **/var/lib** Direcotry, holds **dynamic data libraries/files** like the rpm/dpkg database and game scores.
+Also **/var/lib** Direcotry, holds dynamic data libraries/files like the rpm/dpkg database and game scores.
 
 ```text
 root@ubuntu16-1:~# ls /var/lib/
@@ -111,33 +108,13 @@ Shared libraries are named in three ways:
 * filename  \(a.k.a "real name"\)\(absolute path to file which stores library code\)
 * "linker name"
 
-**1\)**Every shared library has a special name called the **"soname''**. The soname has the prefix "**lib**'', the name of the library, the phrase "**.so**'', followed by a period and a **version number** that is incremented whenever the interface changes . 
-
-```text
-libreadline.so.6
-```
-
-A fully-qualified soname includes as a prefix the directory it's in.
-
-```text
-/usr/lib/libreadline.so.6
-```
+1\)Every shared library has a special name called the **"soname''**. The soname has the prefix "lib'', the name of the library, the phrase ".so'', followed by a period and a version number that is incremented whenever the interface changes . A fully-qualified soname includes as a prefix the directory it's in;
 
 On a working system a fully-qualified soname is simply a symbolic link to the shared library's "real name''.
 
-**2\)**Every shared library also has a **"real name''**, which is the filename containing the actual library code. The real name adds to the soname a period, a minor number, another period, and the release number. The last period and release number are optional.
+2\)Every shared library also has a **"real name''**, which is the filename containing the actual library code. The real name adds to the soname a period, a minor number, another period, and the release number. The last period and release number are optional.
 
-```text
-libreadline.so.6.3
-```
-
-**3\)**In addition, there's the name that the compiler uses when requesting a library, \(I'll call it the **"linker name''**\), which is simply the soname without any version number.
-
-```text
-libreadline.so
-```
-
-Okey lets explain all in an example:
+3\)In addition, there's the name that the compiler uses when requesting a library, \(I'll call it the **"linker name''**\), which is simply the soname without any version number.
 
 ```text
 root@ubuntu16-1:/lib/x86_64-linux-gnu# ls -l | grep libread
@@ -149,7 +126,7 @@ Thus, `/usr/lib/libreadline.so.6` is a fully-qualified soname, which is set to b
 
 ### ldd
 
-To **get a list of all shared library dependencies for a binary file**, you can use the ldd utility**.** For example lets see what shared libraries are required by ls command:
+To get a list of all shared library dependencies for a binary file, you can use the ldd utility**.** For example lets see what shared libraries are required by ls command:
 
 ```text
 root@ubuntu16-1:~# which ls
@@ -247,7 +224,7 @@ vv@vKvpv}v�v�v�v�vww<wMwxw�w�w�w�w�wx5x
 <The out put has been truncuated>
 ```
 
-use `string` command intead and it just shows human readable binary files, also `lconfig -p` prints cache.
+use `string` command intead and it just shows human readable binary files.
 
 This is very important especially when we have just installed new shared libraries or created our own, or created new library directories. We need to run ldconfig command to effect the changes.\(The out put has been truncated\):
 
@@ -376,9 +353,9 @@ After creating our shared library, we need to install it.
 
 There are several ways to install a dynamic library:
 
-**1\)**We can either move it into any of the standard directories mentioned above, and run the ldconfig command.
+1\)We can either move it into any of the standard directories mentioned above, and run the ldconfig command.
 
-**2\)**The method above sets the library path permanently. To set it temporarily, use the LD\_LIBRARY\_PATH environment variable on the command line.
+2\)The method above sets the library path permanently. To set it temporarily, use the LD\_LIBRARY\_PATH environment variable on the command line.
 
 ## LD\_LIBRARY\_PATH
 
