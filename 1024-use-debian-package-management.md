@@ -253,7 +253,7 @@ Removing telnet (0.17-40) ...
 Processing triggers for man-db (2.7.5-1) ...
 ```
 
-dpkg cares about dependencies and does not remove them by default\(which is why it doesn't get .deb file, instead it requires  package name inorder to explore dependencies\), how ever we can force it with`dpkg -r --force-depends` command but is NOT recommended. It is better to use a package manager that handles dependencies to ensure that the system is in a consistent state.
+dpkg cares about dependencies by  and does not remove them by default,\(which is why it doesn't get .deb file, instead it requires  package name inorder to explore dependencies\), how ever we can force it with`dpkg -r --force-depends` command but is NOT recommended. It is better to use a package manager that handles dependencies to ensure that the system is in a consistent state.
 
 dpkg -P \| --purge purge a package! We can also use ‘P‘ option in place of ‘r’ which will remove the package along with configuration file. The ‘r‘ option will only remove the package and not configuration files.
 
