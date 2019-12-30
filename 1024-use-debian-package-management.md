@@ -54,7 +54,7 @@ Package management tools help System/Server Administrators in many ways such as:
 
 #### What is a Software Repository?
 
-A Linux repository is a storage location from which our system retrieves and installs OS updates and applications. Each repository is a collection of software hosted on a remote server and intended to be used for installing and updating software packages on Linux systems.
+A Linux repository **is a storage location from which our system retrieves and installs OS updates and applications.** Each repository is a collection of software hosted on a remote server and intended to be used for installing and updating software packages on Linux systems.
 
 ![](.gitbook/assets/debpack-swrepo.jpg)
 
@@ -65,7 +65,7 @@ Package Manager consists of two entities:
 
   ![](.gitbook/assets/debpack-all.jpg)
 
-a **low-level** tool \(such as dpkg or rpm\), takes care of the details of unpacking individual packages, running scripts, getting the software installed correctly, while a **high-level** tool \(such as apt-get, yum, or zypper\) works with groups of packages, downloads packages from the vendor, and figures out dependencies
+a **low-level** tool \(such as **dpkg** or **rpm**\), takes care of the details of unpacking individual packages, running scripts, getting the software installed correctly, while a **high-level** tool \(such as **apt-get**, yum, or **zypper**\) works with groups of packages, downloads packages from the vendor, and figures out dependencies
 
 The core parts of a linux distro and most of its add-on Software are installed via a Package Management System.
 
@@ -75,7 +75,7 @@ In this course we will talk about package management in Debian based distributio
 
 ### dpkg
 
-dpkg is a package manager for Debian-based systems. It can install, remove, and build packages, but unlike other package management systems, it cannot automatically download and install packages or their dependencies.
+dpkg is a package manager for Debian-based systems. It can install, remove, and build packages, but unlike other package management systems, **it cannot automatically download and install packages or their dependencies.**
 
 Lets take a look at most useful switches:
 
@@ -98,7 +98,11 @@ ii  account-plugin 0.12+16.04.2 all          GNOME Control Center account plug
 
 To view a specific package installed or not use the option “-l” along with package-name.
 
-dpkg -i \| --install install a local .deb file :
+dpkg -i \| --install ,install a local .deb file :
+
+{% hint style="success" %}
+.deb is extension of the software package format for the Linux distribution Debian.
+{% endhint %}
 
 ```text
 root@ubuntu16-1:~# dpkg -i zip_3.0-11_amd64.deb 
@@ -131,11 +135,11 @@ Errors were encountered while processing:
 dpkg does not handle dependencies so and we try to install a package one of two thing will happend:
 
 * whether It will completely fail !
-* or it will install the package but leave it unconfigured until all dependencies are installed and the apt tool is used to finish the configuration\(`apt-get install -f`\).
+* or it will install the package but leave it unconfigured until all dependencies are installed and the apt tool is used to finish the configuration\(`apt-get install -f`we will see it\).
 
 We can also use `dpkg --force-depends`to omit dependencies or `--force-conflicts` to close its eyes to any possible conflicts or `--force-reinstall`for reinstalling, but do not forget that any `--force` command can cause a problem and make the system inconsistent state.
 
-dpkg -L \| --listfiles To list the files installed by a package:
+dpkg -L \| --listfiles ,To list the files installed by a package:
 
 ```text
 root@ubuntu16-1:~# dpkg -L zip 
@@ -162,16 +166,16 @@ root@ubuntu16-1:~# dpkg -L zip
 /usr/share/doc/zip/changelog.gz
 ```
 
-dpkg -S \| --serach If we are not sure which package installed a file, dpkg -S may be able to tell us :
+dpkg -S \| --serach ,If we are not sure which package installed a file, dpkg -S may be able to tell us :
 
 ```text
 root@ubuntu16-1:~# dpkg -S /usr/bin/zipcloak 
 zip: /usr/bin/zipcloak
 ```
 
-We can also use `dpkg -S string` and it would do use regular expression search in the file system to find any matches with the string we have types.
+note:We can also use `dpkg -S string` and it would do use regular expression search in the file system to find any matches with the string we have types.
 
-dpkg -s \| --status Check a Package is installed or not:
+dpkg -s \| --status ,Check a Package is installed or not:
 
 ```text
 root@ubuntu16-1:~# dpkg -s zip
@@ -197,7 +201,7 @@ Original-Maintainer: Santiago Vila <sanvila@debian.org>
 Homepage: http://www.info-zip.org/Zip.html
 ```
 
-dpkg -c \| --contents will display the contents of a “.deb” package in long-list format:
+dpkg -c \| --contents ,will display the contents of a “.deb” package in long-list format:
 
 ```text
 root@ubuntu16-1:~# dpkg -c zip_3.0-11_amd64.deb 
@@ -240,7 +244,7 @@ After package installation, it is possible to go back and change the configurati
 root@ubuntu16-1:~# dpkg-reconfigure tzdata
 ```
 
-dpkg -r \| --remove remove a package:
+dpkg -r \| --remove , remove a package using  its name :
 
 ```text
 root@ubuntu16-1:~# dpkg -r telnet
@@ -249,7 +253,7 @@ Removing telnet (0.17-40) ...
 Processing triggers for man-db (2.7.5-1) ...
 ```
 
-dpkg cares about dependencies and does not remove them by default how ever we can force it with`dpkg -r --force-depends` command but is NOT recommended. It is better to use a package manager that handles dependencies to ensure that the system is in a consistent state.
+dpkg cares about dependencies and does not remove them by default\(which is why it doesn't get .deb file, instead it requires  package name inorder to explore dependencies\), how ever we can force it with`dpkg -r --force-depends` command but is NOT recommended. It is better to use a package manager that handles dependencies to ensure that the system is in a consistent state.
 
 dpkg -P \| --purge purge a package! We can also use ‘P‘ option in place of ‘r’ which will remove the package along with configuration file. The ‘r‘ option will only remove the package and not configuration files.
 
@@ -454,7 +458,7 @@ The apt-get is the command-line tool for working with APT software packages, tha
 This will help us to download a **list of packages** from different repositories included on our system and updates them when there are new versions of packages and their dependencies. \(After any modification in repositories we have to run apt-update manually other wise, system local cache from previous repositories will be used\)
 
 ```text
-root@ubuntu16-1:/# apt update 
+root@ubuntu16-1:/# apt-get update 
 Hit:1 http://us.archive.ubuntu.com/ubuntu xenial InRelease                     
 Hit:2 http://security.ubuntu.com/ubuntu xenial-security InRelease              
 Hit:3 http://ppa.launchpad.net/peek-developers/stable/ubuntu xenial InRelease  
@@ -469,7 +473,7 @@ Reading state information... Done
 to see what packages can be upgraded:
 
 ```text
-root@ubuntu16-1:/# apt list --upgradable 
+root@ubuntu16-1:/# apt-get list --upgradable 
 Listing... Done
 appstream/xenial-updates 0.9.4-1ubuntu4 amd64 [upgradable from: 0.9.4-1ubuntu3]
 apt/xenial-updates 1.2.29 amd64 [upgradable from: 1.2.24]
@@ -738,7 +742,7 @@ Reading state information... Done
 
 The apt-cache command line tool is used for searching apt software package cache. In simple words, this tool is used to search software packages, collects information of packages and also used to search for what available packages are ready for installation on Debian or Ubuntu based systems. APTs cached files are located in`/var/cache/apt/archives/`
 
-Before start using apt-cache it is good to do apt-het check first:
+Before start using apt-cache it is good to do apt-get check first:
 
 ```text
 root@ubuntu16-1:~# apt-get check 
