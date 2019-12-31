@@ -95,19 +95,9 @@ crw--w----  1 root tty    4, 0 Dec  2  2018 /dev/tty0
 
  The first character on each output line is **b** for a **block** device, such as floppy, CD drive, IDE hard drive, or SCSI hard drive; and **c** for a **character** device, such as a or terminal \(tty\) or the null device.
 
-{% hint style="info" %}
-What is File?
+#### Disk Partitioning
 
-A file is a collection of related information that is recorded on secondary storage. Or file is a collection of logically related entities. From user’s perspective a file is the smallest part of logical secondary storage.
-{% endhint %}
-
-{% hint style="info" %}
- Whats is partition?
-
-a **disk partition** or **partition** is a logical section of the hard drive that is separated from other segments. Partitions enable users to divide a physical disk into logical section\(s\).
-{% endhint %}
-
-Now that we are introduced you to hard drive layouts \(MBR & GPT\) , lets learn how to create MBR partitions using fdisk and GPT partitions using gdisk:
+Now that we are introduced you to hard drive layouts \(MBR & GPT\) , lets learn how to create MBR partitions using fdisk and GPT partitions using gdisk.
 
 ### fdisk
 
@@ -416,7 +406,8 @@ Following is a brief summary of the types you need to know about for the LPI exa
   <tbody>
     <tr>
       <td style="text-align:left">
-        <p>ext2</p>
+        <p><b>ext2</b>
+        </p>
         <p>(1993)</p>
       </td>
       <td style="text-align:left">
@@ -434,7 +425,8 @@ Following is a brief summary of the types you need to know about for the LPI exa
     </tr>
     <tr>
       <td style="text-align:left">
-        <p>ext3</p>
+        <p><b>ext3</b>
+        </p>
         <p>(2001)</p>
       </td>
       <td style="text-align:left">
@@ -452,7 +444,8 @@ Following is a brief summary of the types you need to know about for the LPI exa
     </tr>
     <tr>
       <td style="text-align:left">
-        <p>ext4</p>
+        <p><b>ext4</b>
+        </p>
         <p>(2008)</p>
       </td>
       <td style="text-align:left">
@@ -468,20 +461,23 @@ Following is a brief summary of the types you need to know about for the LPI exa
       </td>
     </tr>
     <tr>
-      <td style="text-align:left">ReiserFS</td>
+      <td style="text-align:left"><b>ReiserFS</b>
+      </td>
       <td style="text-align:left">ReiserFS is a B-tree-based filesystem that has very good overall performance,
         particularly for large numbers of small files. has journaling. no longer
         in active development, does not support SELinux and has largely been superseded
         by Reiser4 whose future is unclear.</td>
     </tr>
     <tr>
-      <td style="text-align:left">XFS</td>
+      <td style="text-align:left"><b>XFS</b>
+      </td>
       <td style="text-align:left">XFS is a filesystem with journaling. It comes with robust features and
         is optimized for scalability. XFS aggressively caches in-transit data in
         RAM, great if you have an uninterruptible power supply.</td>
     </tr>
     <tr>
-      <td style="text-align:left">btrfs</td>
+      <td style="text-align:left"><b>btrfs</b>
+      </td>
       <td style="text-align:left">btrfs (B-Tree file system) was initially developed by Oracle(GPL).It is
         a new copy-on-write filesystem for Linux aimed at implementing advanced
         features while focusing on fault tolerance, repair, and easy administration.Designed
@@ -489,7 +485,8 @@ Following is a brief summary of the types you need to know about for the LPI exa
         multiple devices.</td>
     </tr>
     <tr>
-      <td style="text-align:left">vfat</td>
+      <td style="text-align:left"><b>vfat</b>
+      </td>
       <td style="text-align:left">
         <p>(also known as <em>FAT32</em>) no journaling, lacks many features required
           for a full Linux filesystem implementation. useful for exchanging data
@@ -501,7 +498,8 @@ Following is a brief summary of the types you need to know about for the LPI exa
       </td>
     </tr>
     <tr>
-      <td style="text-align:left">swap</td>
+      <td style="text-align:left"><b>swap</b>
+      </td>
       <td style="text-align:left">Swap space must be formatted for use as swap space, but it is not generally
         considered a filesystem.</td>
     </tr>
