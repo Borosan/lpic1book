@@ -61,9 +61,9 @@ A Linux repository **is a storage location from which our system retrieves and i
 Package Manager consists of two entities:
 
 * low-level tool
-* high-level tool
+* high-level too
 
-  ![](.gitbook/assets/debpack-all.jpg)
+![](.gitbook/assets/debpack-all.jpg)
 
 a **low-level** tool \(such as **dpkg** or **rpm**\), takes care of the details of unpacking individual packages, running scripts, getting the software installed correctly, while a **high-level** tool \(such as **apt-get**, yum, or **zypper**\) works with groups of packages, downloads packages from the vendor, and figures out dependencies
 
