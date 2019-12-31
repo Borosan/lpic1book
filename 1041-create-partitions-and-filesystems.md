@@ -32,19 +32,21 @@ The fundamental purposes of the BIOS are to initialize and test the system hardw
 
 ### UEFI
 
-The Unified Extensible Firmware Interface \(UEFI\) is a specification that defines a software interface between an operating system and platform firmware. UEFI is meant to replace the Basic Input/Output System \(BIOS\) firmware interface. In practice, most UEFI images provide legacy support for BIOS services. UEFI can support remote diagnostics and repair of computers, even without another operating system.
+The Unified Extensible Firmware Interface \(UEFI\) is a specification that defines a software interface between an operating system and platform firmware. UEFI is meant to replace the Basic Input/Output System \(BIOS\) firmware interface. In practice, most UEFI images provide legacy support for BIOS services. UEFI can support remote diagnostics and repair of computers, even without another operating system!
 
+{% hint style="info" %}
 > The original EFI \(Extensible Firmware Interface\) specification was developed by Intel.
+{% endhint %}
 
 ### MBR
 
-A master boot record \(MBR\) is a special type of boot sector at the very beginning of partitioned computer mass storage devices like fixed disks or removable drives. The concept of MBRs was publicly introduced in 1983 with PC DOS 2.0.
+A master boot record \(MBR\) is a special type of boot sector at the very beginning of partitioned computer mass storage devices like fixed disks or removable drives. 
 
 The MBR holds the information on how the logical partitions, containing file systems, are organized on that medium. Besides that, the MBR also contains executable code to function as a loader for the installed operating system—usually by passing control over to the loader's second stage. This MBR code is usually referred to as a boot loader.
 
-![](.gitbook/assets/creatpartitionfs-mbr.png)
+![](.gitbook/assets/bootloader-mbr.jpg)
 
-The organization of the partition table in the MBR limits the maximum addressable storage space of a disk to 2 TB \(232 × 512 bytes\). Therefore, the MBR-based partitioning scheme is in the process of being superseded by the GUID Partition Table \(GPT\) scheme in new computers. A GPT can coexist with an MBR in order to provide some limited form of a backwards compatibility for older systems. try `xxd -l 512 /dev/sda`
+The organization of the partition table in the MBR limits the maximum addressable storage space of a disk to 2 TB. Therefore, the MBR-based partitioning scheme is in the process of being superseded by the GUID Partition Table \(GPT\) scheme in new computers. A GPT can coexist with an MBR in order to provide some limited form of a backwards compatibility for older systems. try `xxd -l 512 /dev/sda`
 
 ### GPT
 
@@ -384,18 +386,22 @@ Linux File System or any file system generally is a layer which is under the ope
 
 **Ext, Ext2, Ext3, Ext4, JFS, XFS, btrfs and swap**
 
-> Which File System is perfect for you?
->
-> One important attribute of a filesystem is journaling, which allows for much faster recovery after a system crash. Generally, a journaling filesystem is preferred over a non-journaling one when you have a choice. You may also want to consider whether your chosen filesystem supports _Security Enhanced Linux_ \(or SELinux\). Two newer file systems, ZFS and btrfs, use a technique called Copy on Write to improve data integrity and address large storage needs.
+One important attribute of a filesystem is journaling
 
-{% hint style="info" %}
-What is journaling?
+**What is journaling?**
 
 Journaling is designed to prevent data corruption from crashes and sudden power loss. Let’s say your system is partway through writing a file to the disk and it suddenly loses power. Without a journal, your computer would have no idea if the file was completely written to disk. The file would remain there on disk, corrupt.
+
+![](.gitbook/assets/createpartition-journaling.jpg)
 
 With a journal, your computer would note that it was going to write a certain file to disk in the journal, write that file to disk, and then remove that job from the journal. If the power went out partway through writing the file, Linux would check the file system’s journal when it boots up and resume any partially completed jobs. This prevents data loss and file corruption.
 
 Journaling does slow disk write performance down a tiny bit, but it’s well-worth it on a desktop or laptop.
+
+{% hint style="success" %}
+Which File System is perfect for you?
+
+ Generally, a journaling filesystem is preferred over a non-journaling one when you have a choice. You may also want to consider whether your chosen filesystem supports _Security Enhanced Linux_ \(or SELinux\). Two newer file systems, ZFS and btrfs, use a technique called Copy on Write to improve data integrity and address large storage needs. 
 {% endhint %}
 
 Following is a brief summary of the types you need to know about for the LPI exam**:**
@@ -452,10 +458,10 @@ Following is a brief summary of the types you need to know about for the LPI exa
       <td style="text-align:left">
         <p>The ext4 filesystem started as extensions to ext3 to address the demands
           of ever larger file systems by increasing storage limits and improving
-          performance. The ext4 filesystem, was included in the 2.6.28 kernel. Some
-          of the changes from ext3 are:</p>
+          performance. Some of the changes from ext3 are:</p>
         <ol>
           <li>Max file size <b>16GB to 16TB</b>.</li>
+          <li>was included in the<b> 2.6.28 kernel</b>.</li>
           <li>Ext4 file system have option to <b>Turn Off</b> journaling feature.</li>
           <li>Other features like <b>Fast FSCK</b> etc.</li>
         </ol>
@@ -483,11 +489,6 @@ Following is a brief summary of the types you need to know about for the LPI exa
         multiple devices.</td>
     </tr>
     <tr>
-      <td style="text-align:left">swap</td>
-      <td style="text-align:left">Swap space must be formatted for use as swap space, but it is not generally
-        considered a filesystem.</td>
-    </tr>
-    <tr>
       <td style="text-align:left">vfat</td>
       <td style="text-align:left">
         <p>(also known as <em>FAT32</em>) no journaling, lacks many features required
@@ -498,6 +499,11 @@ Following is a brief summary of the types you need to know about for the LPI exa
           such as execute permission, and you will lose any symbolic links that may
           have been stored in the archive.</p>
       </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">swap</td>
+      <td style="text-align:left">Swap space must be formatted for use as swap space, but it is not generally
+        considered a filesystem.</td>
     </tr>
   </tbody>
 </table>Linux uses the `mkfs` command to create filesystems and `mkswap`command to make swap space.
