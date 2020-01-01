@@ -77,7 +77,32 @@ In this course we will talk about package management in Debian based distributio
 
 dpkg is a package manager for Debian-based systems. It can install, remove, and build packages, but unlike other package management systems, **it cannot automatically download and install packages or their dependencies.**
 
-Lets take a look at most useful switches:
+The dpkg has database and its  is located under/var/lib/dpkg directory ;
+
+```text
+root@ubuntu16-1:~# ls -l /var/lib/dpkg/
+total 4416
+drwxr-xr-x 2 root root    4096 Dec  2  2018 alternatives
+-rw-r--r-- 1 root root      11 Nov 26  2017 arch
+-rw-r--r-- 1 root root  170080 Aug  1  2017 available
+-rw-r--r-- 1 root root       8 Aug  1  2017 cmethopt
+-rw-r--r-- 1 root root    1214 Jul  1  2018 diversions
+-rw-r--r-- 1 root root    1133 Jul  1  2018 diversions-old
+drwxr-xr-x 2 root root  405504 Dec  2  2018 info
+-rw-r----- 1 root root       0 Dec  2  2018 lock
+-rw-r----- 1 root root       0 Dec  2  2018 lock-frontend
+drwxr-xr-x 7 root root    4096 Dec  2  2018 methods
+drwxr-xr-x 2 root root    4096 Jan 12  2016 parts
+-rw-r--r-- 1 root root     228 Aug  1  2017 statoverride
+-rw-r--r-- 1 root root 1948486 Dec  2  2018 status
+-rw-r--r-- 1 root root 1948486 Dec  2  2018 status-old
+drwxr-xr-x 2 root root    4096 Dec  1  2018 triggers
+drwxr-xr-x 2 root root    4096 Dec  2  2018 updates
+```
+
+the "status" file contains the list of installed software on the current system.
+
+**Lets take a look at most useful switches:**
 
 -l \| --list list all packages installed on the system \( --get-selection does the same\):
 
@@ -137,7 +162,7 @@ dpkg does not handle dependencies so and we try to install a package one of two 
 * whether It will completely fail !
 * or it will install the package but leave it unconfigured until all dependencies are installed and the apt tool is used to finish the configuration\(`apt-get install -f`we will see it\).
 
-We can also use `dpkg --force-depends`to omit dependencies or `--force-conflicts` to close its eyes to any possible conflicts or `--force-reinstall`for reinstalling, but do not forget that any `--force` command can cause a problem and make the system inconsistent state.
+We can also use `dpkg --force-depends`to omit dependencies or `--force-conflicts` to close its eyes to any possible conflicts or `--force-reinstall`for reinstalling, but do not forget that any `--force` command can cause a problem and make the system **inconsistent** state.
 
 dpkg -L \| --listfiles ,To list the files installed by a package:
 
