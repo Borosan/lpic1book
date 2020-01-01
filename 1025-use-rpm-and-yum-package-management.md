@@ -198,7 +198,7 @@ htop is an interactive text-mode process viewer for Linux, similar to
 top(1).
 ```
 
-`-p` is used to query information from rpm package.
+`-p` is used to query information from rpm package. We can omit -p and use Package name instead `rpm -qi htop` .
 
 #### check dependencies of RPM Package before Installing
 
@@ -228,7 +228,7 @@ rtld(GNU_HASH)
 rpmlib(PayloadIsXz) <= 5.2-1
 ```
 
-`-R` List capabilities on which this package depends.
+`-R` List capabilities on which this package depends. we can easily use `rpm -qR PackageName` to query an installed package.
 
 **Query configuration file of Installed RPM Packae**
 
@@ -276,7 +276,12 @@ If the package is not installed use `-qpc` instead to query a rpm package.
 [root@centos7-1 ~]#
 ```
 
-No news is good news.When verifying a package, RPM produces output only if there is a verification failure. When a file fails verification, the format of the output is a bit cryptic, but it packs all the information you need into one line per file. Here is the format: `SM5DLUGT c <file>`
+No news is good news.When verifying a package, RPM produces output only if there is a verification failure. When a file fails verification, the format of the output is a bit cryptic, but it packs all the information you need into one line per file. Here is the format: **`SM5DLUGT c <file>`** `. As an example:`
+
+```text
+[root@centos7-1 ~]# rpm -V vsftpd 
+S.5....T.  c /etc/vsftpd/ftpusers
+```
 
 Where:
 
@@ -290,13 +295,6 @@ Where:
 * **T** is the modification time of the file.
 * **c** appears only if the file is a configuration file. This is handy for quickly identifying config files, as they are very likely to change, and therefore, very unlikely to verify successfully.
 * **&lt;file&gt;** is the file that failed verification. The complete path is listed to make it easy to find.
-
-As an example lets verify vsftp with modified configuration file:
-
-```text
-[root@centos7-1 ~]# rpm -V vsftpd 
-S.5....T.  c /etc/vsftpd/ftpusers
-```
 
 #### Verify all RPM Packages
 
@@ -379,7 +377,7 @@ Updating / installing...
    1:telnet-1:0.17-64.el7             ################################# [100%]
 ```
 
-One of the major advantages of using this option is that it will not only upgrade the latest version of any package, but it will also maintain the backup of the older package so that in case if the newer upgraded package does not run the previously installed package can be used again.\(using yum\)
+One of the major advantages of using this option is that it will not only upgrade the latest version of any package, but it will also maintain the backup of the older package so that in case if the newer upgraded package does not run the previously installed package can be used again.\(via rpm   --oldpackage switch  or using yum downgrade \)
 
 > **rpm -ivh vs rpm -Uvh**
 >
@@ -387,7 +385,7 @@ One of the major advantages of using this option is that it will not only upgrad
 >
 > Also rpm -ivh might cause having multiple version of a package at the same time but by using rpm -Uvh we are sure that we just have the latest version.
 
--F will upgrade packages, but only ones for which an earlier version is installed.
+-F will upgrade packages, but only ones for which an earlier version is installed.\( means upgrade if installed other wise do noting\)
 
 #### Remove a RPM Package
 
@@ -489,9 +487,9 @@ D: closed   db index       /var/lib/rpm/Packages
 D: closed   db environment /var/lib/rpm
 ```
 
-The `–nodeps` **\(Do not check dependencies\)** option **forcefully** remove the rpm package from the system. But keep in mind removing particular package may break other working applications.
+rpm take care of dependencies while removing a package and does not remove package dependencies. on the other hand if a package is required by other pacakage\(d\) rpm avoid removing that.The `–nodeps` **\(Do not check dependencies\)** option **forcefully** remove the rpm package from the system. But keep in mind removing particular package may break other working applications.
 
-## rpm2cpio
+### rpm2cpio
 
 From time to time, we might find it necessary to extract one or more files from a package file. One way to do this would be to:
 
@@ -505,7 +503,7 @@ An easier way would be to use **rpm2cpio**.
 
 ![](.gitbook/assets/redpack-rpm.jpg)
 
-A rpm package is consist of some of files and directories which has been archived in cpio format, in addidtion some descriptions and dependencies have been added to that.
+A rpm package is consist of some of files and directories which has been archived in cpio format, in addition some descriptions and dependencies have been added to that.
 
 **What does rpm2cpio do?**
 
@@ -513,8 +511,7 @@ As the name implies, rpm2cpio takes an RPM package file and converts it to a cpi
 
 ![](.gitbook/assets/redpack-rpm2cpio.jpg)
 
-In this case, the cpio options`-i` Extract one or more files from an archive, `-v`Extract one or more files from an archive  
-, and `-d`Create any directories that precede the filename specified in the cpio command.\(We will talk about cpio in next courses\)
+In this case, the cpio options`-i` Extract one or more files from an archive, `-v`Extract one or more files from an archive, and `-d`Create any directories that precede the filename specified in the cpio command.\(We will talk about cpio in next courses\)
 
 rpm2cpio takes only only one argument, and even that's optional! The optional argument is the name of the package file to be converted. \(If there is no filename specified on the command line, rpm2cpio will simply read from standard input and convert that to a cpio archive.\)
 
@@ -608,7 +605,11 @@ zip-3.0-11.el7.x86_64.rpm  zip.cpio
 zip-3.0-11.el7.x86_64.rpm  zip.cpio
 ```
 
-we used the`-t` option to direct cpio to produce a "table of contents" of the archive created by rpm2cpio. This can make it much easier to get the right filename and path when you want to extract a file.
+we used the`-t` option to direct cpio to produce a "table of contents" of the archive created by rpm2cpio. This can make it much easier to get the right filename and path when you want to extract a file. An easier way  to exctract would be `rpm2cpio package.rpm | cpio id .`
+
+{% hint style="danger" %}
+Warning! Becarefull when removing extracted package \(usr vs /usr\)
+{% endhint %}
 
 ## YUM
 
@@ -723,6 +724,10 @@ Repository configuration files tell yum information about the actual repository 
 * **Enabled** - Whether or not to enable the repository for use when performing updates and installs e.g. enabled=1 \(1 means "use this repository", 0 defines "do not use this repository"\).
 * **Gpgcheck** - Enable/disable GPG signature checking \(example: gpgcheck=1\)
 * **Gpgkey** - URL to the GPG key \(example: gpgkey=[http://mirror.cisp.com/CentOS/6/os/i386/RPM-GPG-KEY-CentOS-6\](http://mirror.cisp.com/CentOS/6/os/i386/RPM-GPG-KEY-CentOS-6%29\)
+
+{% hint style="info" %}
+GPG is a digital signature check , which is used to verify the package is modified in between your downloads or after making the package, It help to verify the that you are installing the correct package with out any modification from 3 party or a hacker.
+{% endhint %}
 
 YUM can use numerous third party repositories to install packages automatically by resolving their dependencies issues.
 
@@ -1281,6 +1286,8 @@ try`yumdownloader --help` to see some of usefull switches such as :
 ...
 ```
 
+ the `--resolve` switch is usefull inorder to download a package ant its dependencies and lets us to use them in other system.
+
 ### to view history of Yum commands \(update, install, remove\)
 
 We can either use `yum history` command :
@@ -1351,6 +1358,8 @@ sources:
 [https://www.tecmint.com/20-linux-yum-yellowdog-updater-modified-commands-for-package-mangement/](https://www.tecmint.com/20-linux-yum-yellowdog-updater-modified-commands-for-package-mangement/)
 
 [https://access.redhat.com/documentation/en-us/red\_hat\_enterprise\_linux/6/html/deployment\_guide/sec-configuring\_yum\_and\_yum\_repositories](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/sec-configuring_yum_and_yum_repositories)\(yum.conf\)
+
+[https://www.quora.com/What-is-gpgcheck-in-a-yum-configuration-file-in-Rhel](https://www.quora.com/What-is-gpgcheck-in-a-yum-configuration-file-in-Rhel)
 
 [https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-yum-repositories-on-a-centos-6-vps](https://www.digitalocean.com/community/tutorials/how-to-set-up-and-use-yum-repositories-on-a-centos-6-vps)
 
