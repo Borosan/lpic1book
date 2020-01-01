@@ -81,19 +81,15 @@ UEFI is still not widespread and major hardware companies have switched over alm
 
 ### MBR vs GPT
 
-* Compared with MBR disk, A GPT disk can support larger than 2 TB volumes where MBR cannot. 
-* A GPT disk can be basic or dynamic, just like an MBR disk can be basic or dynamic. 
-* GPT disks also support up to 128 partitions rather than the 4 primary partitions limited to MBR. 
-* Also, GPT keeps a backup of the partition table at the end of the disk. Furthermore, GPT disk provides greater reliability due to replication and cyclical redundancy check \(CRC\) protection of the partition table.
+* GPT partitioned disks have redundant primary and backup partition tables for improved partition data structure integrity. 
 * The GUID partition table \(GPT\) disk partitioning style supports volumes up to 18 exabytes in size and up to 128 partitions per disk, compared to the master boot record \(MBR\) disk partitioning style, which supports volumes up to 2 terabytes in size and up to 4 primary partitions per disk \(or three primary partitions, one extended partition, and unlimited logical drives\). 
-* Unlike MBR partitioned disks, data critical to platform operation is located in partitions instead of unpartitioned or hidden sectors. 
-* In addition, GPT partitioned disks have redundant primary and backup partition tables for improved partition data structure integrity. 
+* Unlike MBR partitioned disks, data critical to platform operation is located in partitions instead of un partitioned or hidden sectors.
+
+Both GPT disk and MBR disk can be basic or dynamic.
 
 ### Block devices
 
-A block device is an abstraction layer for any storage device that can be formatted in fixed-size blocks; individual blocks may be accessed independently of access to other blocks. Such access is often called _random access_. 
-
-The abstraction layer of randomly accessible fixed-size blocks allows programs to use these block devices without worrying about whether the underlying device is a hard drive, floppy, CD, solid-state drive, network drive, or some type of virtual device such as an in-memory file system.
+A block device is an abstraction layer for any storage device that can be formatted in fixed-size blocks and blocks should be able to be access randomly.
 
  Examples of block devices include the first IDE or SATA hard drive on our system \(/dev/sda or /dev/hda\) or the second SCSI, IDE, or USB drive \(/dev/sdb\). Use the `ls -l` command to display /dev entries.
 
@@ -492,9 +488,9 @@ Following is a brief summary of the types you need to know about for the LPI exa
       </td>
       <td style="text-align:left">btrfs (B-Tree file system) was initially developed by Oracle(GPL).It is
         a new copy-on-write filesystem for Linux aimed at implementing advanced
-        features while focusing on fault tolerance, repair, and easy administration.Designed
-        to handle large files efficiently and handle filesystems spread across
-        multiple devices.</td>
+        features(snapshots,compression,...) while focusing on fault tolerance,
+        repair, and easy administration.Designed to handle large files efficiently
+        and handle filesystems spread across multiple devices.</td>
     </tr>
     <tr>
       <td style="text-align:left"><b>vfat</b>
@@ -516,14 +512,29 @@ Following is a brief summary of the types you need to know about for the LPI exa
         considered a filesystem.</td>
     </tr>
   </tbody>
-</table>Linux uses the `mkfs` command to create filesystems and `mkswap`command to make swap space.
+</table>### partitioning
+
+Linux uses the `mkfs` command to create filesystems and `mkswap`command to make swap space.
+
+{% hint style="danger" %}
+Before you start modifying partitions, there are some important things to remember. You risk losing your existing data if you do not follow these guidelines: 
+
+1. Back up important data before you start 
+2. Do not change partitions that are in use 
+3. Know your tool
+4.  Stop if you do make a mistake
+{% endhint %}
 
 ### mkfs
 
 The `mkfs` command is actually a front end to several filesystem-specific commands such as `mkfs.ext3` for ext3, `mkfs.ext4` for ext4 and `mkfs.btrfs` for btrfs.
 
 ```text
-ls
+root@ubuntu16-1:~# ls /sbin/mk*
+/sbin/mkfs         /sbin/mkfs.ext2  /sbin/mkfs.ext4dev  /sbin/mkfs.msdos
+/sbin/mkfs.bfs     /sbin/mkfs.ext3  /sbin/mkfs.fat      /sbin/mkfs.ntfs
+/sbin/mkfs.cramfs  /sbin/mkfs.ext4  /sbin/mkfs.minix    /sbin/mkfs.vfat
+
 ```
 
 
