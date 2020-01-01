@@ -46,7 +46,16 @@ The MBR holds the information on how the logical partitions, containing file sys
 
 ![](.gitbook/assets/bootloader-mbr.jpg)
 
-The organization of the partition table in the MBR limits the maximum addressable storage space of a disk to 2 TB. Therefore, the MBR-based partitioning scheme is in the process of being superseded by the GUID Partition Table \(GPT\) scheme in new computers. A GPT can coexist with an MBR in order to provide some limited form of a backwards compatibility for older systems. try `xxd -l 512 /dev/sda`
+**Master Boot records has some short comings:**
+
+* MBR puts all information in first sector of hard disk so if any problem ocures for that sectore, system won't be able to boot up. 
+* MBR contains only four entries \(slots\) for four Primary partitions one of which can be an Extended partition. This partition will contain Un allocated space within it where we can create unlimited number of Logical partitions.
+
+![](.gitbook/assets/createpartition-mbrpart.jpg)
+
+* The organization of the partition table in the MBR limits the maximum addressable storage space of a disk to 2 TB. 
+
+Therefore, the MBR-based partitioning scheme is in the process of being superseded by the GUID Partition Table \(GPT\) scheme in new computers. A GPT can coexist with an MBR in order to provide some limited form of a backwards compatibility for older systems. 
 
 ### GPT
 
@@ -60,12 +69,15 @@ Usually, MBR and BIOS \(MBR + BIOS\), and GPT and UEFI \(GPT + UEFI\) go hand in
 
 ### BIOS vs UEFI
 
-* UEFI enables better use of bigger hard drives.Though UEFI is capable of working with the GUID Partition Table \(GPT\) it also supports the traditional master boot record \(MBR\) method of hard drive partitioning.
-* UEFI may be faster than the BIOS. Various tweaks and optimizations in the UEFI may help your system boot more quickly it could before.
-*  UEFI has room for more useful and usable features than  the BIOS. Among these are cryptography, network authentication, ..., and even a shell environment for running other EFI applications such as diagnostic utilities or flash updates. 
-* In addition, both the architecture and the drivers are CPU-independent, which opens the door to a wider variety of processors \(including those using the ARM architecture, for example\).
+* UEFI enables better use of bigger hard drives. •Though UEFI is capable of working with the GUID Partition Table \(GPT\) it also supports the traditional master boot record \(MBR\) method of hard drive partitioning. as BIOS just knows MBR, so GPT acts like MBR! BIOS sees GPT as a drive with single MBR partition
+* UEFI may be faster than the BIOS. Various tweaks and optimizations in the UEFI may help your system boot more quickly it could before. 
+* UEFI has room for more useful and usable features than the BIOS. Among these are cryptography, network authentication, ..., and even a shell environment for running other EFI applications such as diagnostic utilities or flash updates.
 
-> UEFI is still not widespread and  major hardware companies have switched over almost exclusively to UEFI use. Many older and less expensive motherboards also still use the BIOS system.
+In addition, both the architecture and the drivers are CPU-independent, which opens the door to a wider variety of processors \(including those using the ARM architecture, for example\).
+
+{% hint style="info" %}
+UEFI is still not widespread and major hardware companies have switched over almost exclusively to UEFI use. Many older and less expensive motherboards also still use the BIOS system.
+{% endhint %}
 
 ### MBR vs GPT
 
