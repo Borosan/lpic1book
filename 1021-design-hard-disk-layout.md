@@ -85,7 +85,7 @@ tmpfs                    378M   32K  378M   1% /run/user/1000
 tmpfs                    378M     0  378M   0% /run/user/0
 ```
 
-During system startup, all the partitions are thus mounted, \(will be described in the file /etc/fstab\). Some partitions are not mounted by default, for instance if they are not constantly connected to the system, such like the usb storage. If well configured, the device will be mounted as soon as the system notices that it is connected, or it can be user-mountable.
+During system startup, all the partitions are thus mounted, \(will be described in the file /etc/fstab\). Some partitions are not mounted by default, for instance if they are **not constantly connected to the system, such like the usb storage**. If well configured, the device will be mounted as soon as the system notices that it is connected, or it can be user-mountable.
 
 ### File Systems
 

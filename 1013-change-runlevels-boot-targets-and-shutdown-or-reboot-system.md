@@ -47,7 +47,7 @@ Conventionally, **seven** runlevels exist, numbered from zero to six. And there 
 | **5** | Nothing | Full,Multi-User,GUI |
 | **6** | **Reboot** | **Reboot** |
 
-CentsOS 5 was the last version which used SysV and from CentOS 7 Systemd is used.
+CentsOS 6 was the last version which used SysV and from CentOS 7 Systemd is used.
 
 ### runlevel
 
@@ -166,18 +166,7 @@ pr:12345:powerokwait:/sbin/shutdown -c "Power Restored; Shutdown Cancelled"
 x:5:respawn:/etc/X11/prefdm -nodaemon
 ```
 
-the **default runlevel** is determined from the`id:`entry in **/etc/inittab**. How run levels are set up by default and how they are configured depends in part on the particular distribution you are running.
-
-The format of each line in inittab file is as follows:
-
-`id:runlevel:action:process`
-
-Here is a description of these fields:
-
-* **id \(identification code\)** – consists of a sequence of one to four characters that identifies its function.
-* **runlevels** – lists the run levels to which this entry applies.
-* **action** – specific codes in this field tell init how to treat the process. Possible values include: initdefault, sysinit, boot, bootwait, wait, and respawn.
-* **process** – defines the command or script to execute.
+the default runlevel is determined from the`id:`entry in **/etc/inittab**. How run levels are set up by default and how they are configured depends in part on the particular distribution you are running.
 
 Now lets see how SysV implements the concept of run levels.
 
@@ -466,7 +455,7 @@ And all of these places were places that SysV uses to manage scripts and runleve
 {% hint style="info" %}
 **rc.local**
 
-But what about /etc/rc.local ? This file runs after all other init level scripts have run, so it's safe to put various commands that you want to have issued upon startup.This is also a good place to place "troubleshooting" scripts in. **But do not forget rc.local may not work properly in Upstart and Systemd.** Test it, search it and do required configuration before using in production environment.
+But what about /etc/rc.local ? This file runs after all other init level scripts have run, so it's safe to put various commands that you want to have issued upon startup.This is also a good place to place "troubleshooting" scripts in. But do not forget rc.local may not work properly in Upstart and Systemd. Test it, search it and do required configuration before using in production environment.
 {% endhint %}
 
 Lets go back to our topic and get familiar with runlevels equivalent in systemd. Although /etc/inittab still exist in Systemd systems but that is not part of configuration, we have something called "Targets".
@@ -619,7 +608,7 @@ plymouth-kexec.service                   zram.service
 plymouth-poweroff.service
 ```
 
-lets follow one of target unit files.Try `ls -al *.target` to see all of target files. As an instance _default.target_:
+Try `ls -al *.target` to see all of target files. As an instance _default.target_:
 
 ```text
 [root@centos7-1 ~]# ls -al /usr/lib/systemd/system/default.target
@@ -888,7 +877,7 @@ Halt the system.
      --no-wall   Don't send wall message before halt/power-off/reboot
 ```
 
-the halt command also has force option but try not to use it, because it might put your system in an in consistant state.
+the halt command also has force option but try not to use it, because it might put your system in an inconsistant state.
 
 ### poweroff
 
@@ -918,8 +907,6 @@ and we are done.
 
 .
 
-
-
 Sources:
 
 [https://www.linuxjournal.com/article/1274](https://www.linuxjournal.com/article/1274)
@@ -930,7 +917,7 @@ Sources:
 
 [https://www.ostechnix.com/check-runlevel-linux/](https://www.ostechnix.com/check-runlevel-linux/)
 
-[https://geek-university.com/linux/etc-inittab/](https://geek-university.com/linux/etc-inittab/)\`\`[https://developer.ibm.com/tutorials/l-lpic1-101-3/](https://developer.ibm.com/tutorials/l-lpic1-101-3/)
+[https://developer.ibm.com/tutorials/l-lpic1-101-3/](https://developer.ibm.com/tutorials/l-lpic1-101-3/)
 
 [https://www.liquidweb.com/kb/linux-runlevels-explained/](https://www.liquidweb.com/kb/linux-runlevels-explained/)
 
