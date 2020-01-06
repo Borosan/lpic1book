@@ -98,7 +98,39 @@ The echo command has a couple of options. Normally, echo will append a trailing 
 Lets start learning Linux[root@centos7-1 ~]# 
 ```
 
-Lets take a look at optoions:
+#### Special Characters or Meta Characters
+
+What makes a character special? If it has a meaning beyond its literal meaning, a meta-meaning, then we refer to it as a special character or metacharacters  like : **``|  & ; ( ) < > * ! ? ` $ \ /``**
+
+If we want to omit meta meaning of special characters and print them out via echo command we use `\` :
+
+```text
+[root@centos7-1 ~]# echo hello | by
+bash: by: command not found...
+[root@centos7-1 ~]# echo hello \| by
+hello | by
+[root@centos7-1 ~]# echo hello ; by
+hello
+bash: by: command not found...
+[root@centos7-1 ~]# echo hello \; by
+hello ; by
+```
+
+{% hint style="info" %}
+ **Double quotes**  ``**"** 
+
+Enclosing characters in double quotes \(`"`\) preserves the literal value of all characters within the quotes, _with the exception of `$`, `````, `\`, and, when history expansion is enabled, `!`_
+
+`[root@centos7-1 ~]# echo "hello | by"`
+
+`hello | by` 
+
+`[root@centos7-1 ~]# echo "hello ; by"` 
+
+`hello ; by` 
+{% endhint %}
+
+Lets take a look at other options of echo command:
 
 ```text
        -n     do not output the trailing newline
@@ -121,7 +153,7 @@ Use the`-e`option to enable certain backslash **escaped characters** to have spe
 
 **Escape Characters**
 
-A non-quoted backslash is the Bash escape character. It preserves the literal value of the next character that follows,
+A non-quoted backslash,\, is the Bash escape character. It preserves the literal value of the next character that follows,
 
 | Escape sequence | Function |
 | :--- | :--- |
@@ -153,17 +185,9 @@ One of echo command usage is getting variable values with `echo $VARIABLENAME` c
 
 ```
 
-**special characters**
-
-What makes a character special? If it has a meaning beyond its literal meaning, a meta-meaning, then we refer to it as a special character or metacharacters  like : **`| & ; ( ) < > *`**
-
-note: If we want to omit meta meaning of special characters and print them out via echo command we use `\` :
-
-
-
 **Control Operators**
 
-Certain metacharacters or pairs of metacharacters also serve as control operators: **\|\| && & ; ;; \| \(\)**
+Certain metacharacters or pairs of metacharacters also serve as control operators: **`|| && & ; ;; | ()`**
 
 Some of these control operators allow you to create sequences or lists of commands.
 
@@ -860,6 +884,8 @@ That is all!
 sources:
 
 [http://linuxcommand.org/lc3\_lts0010.php](http://linuxcommand.org/lc3_lts0010.php)
+
+[https://stackoverflow.com/questions/6697753/difference-between-single-and-double-quotes-in-bash](https://stackoverflow.com/questions/6697753/difference-between-single-and-double-quotes-in-bash)
 
 [https://www.tecmint.com/set-unset-environment-variables-in-linux/](https://www.tecmint.com/set-unset-environment-variables-in-linux/)
 
