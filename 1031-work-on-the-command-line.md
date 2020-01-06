@@ -313,13 +313,25 @@ firefox is /bin/firefox
 firefox: /usr/bin/firefox /usr/lib64/firefox /etc/firefox /usr/share/man/man1/firefox.1.gz
 ```
 
-> For running other scripts or commands we can add them to path, or use full path or relative path \(. and ..\)
+> For running other scripts or commands we can add them to path, or use full path or relative path \(. and ..\) ****
+>
+> PATH=$PATH:/tmp/mybin
 
 * **PWD**: The current working directory.
 * **LANG**: The current language and localization settings, including character encoding.
 * **HOME**: The current user's home directory.
 * **\_**: The most recent previously executed command.
 * **OLDPWD**: The previous working directory. This is kept by the shell in order to switch back to your previous directory by running cd -.
+
+{% hint style="info" %}
+The exit code of the previous command is stored in the shell variable $?. Actually $? is a shell parameter and not a variable, since you cannot assign a value to $?.
+
+`[root@centos7-1 ~]# touch my.txt` 
+
+`[root@centos7-1 ~]# echo $?`
+
+ `0`
+{% endhint %}
 
 To see the value of a variable use `echo $VARIABLENAME` :
 
@@ -376,6 +388,10 @@ exit
 When creating a new child process \(a sub shell in our example\) an export command simply ensures that any exported variables in the parent process are available in the child process.
 
 We can terminate a shell using the exit command or simply press ctrl+d keys.
+
+{% hint style="info" %}
+**\(\)** : parentheses really put the command in a subshell. try\(exit\)
+{% endhint %}
 
 ### export
 
