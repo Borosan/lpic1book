@@ -27,44 +27,58 @@
 * history
 * .bash\_history
 
+**What's A "Terminal?"**
+
+It's a program called a terminal emulator. This is a program that opens a window and lets you interact with the **shell**. There are a bunch of different terminal emulators we can use. Most Linux distributions supply several, such as: gnome-terminal, konsole, xterm, **... ,** It is also called Console.
+
 **What is "The Shell"?**
 
 Simply put, the shell is a program that takes commands from the keyboard and gives them to the operating system to perform. In the old days, it was the only user interface available on a Unix-like system such as Linux. Nowadays, we have graphical user interfaces \(GUIs\) in addition to command line interfaces \(CLIs\) such as the shell.
 
 ![](.gitbook/assets/commandintro-shell.jpg)
 
-**What is "The bash"?**
+**What is The "bash"?**
 
-On most Linux systems a program called bash \(which stands for Bourne Again SHell, an enhanced version of the original Unix shell program, sh, written by Steve Bourne\) acts as the shell program. Besides bash, there are other shell programs that can be installed in a Linux system. These include: ksh, tcsh and zsh.
+On most Linux systems a program called **bash acts as the shell** program. bash stands for **Bourne Again SHell**, an enhanced version of the original Unix shell program, sh, written by Steve Bourne
+
+Besides, There are other shell programs that can be installed in a Linux system. These include: ksh, tcsh and zsh.
 
 ```text
 [root@centos7-1 ~]# ls -ls /bin/sh
 0 lrwxrwxrwx. 1 root root 4 Oct 28  2017 /bin/sh -> bash
+```
+
+note: Historically the original /bin/sh Bourne shell would use **$** as the normal prompt and **\#** for the root user prompt This made it pretty easy to tell if you were running as superuser or not.
+
+```text
+[root@centos7-1 ~]# 
 [root@centos7-1 ~]# su - user1
 Last login: Mon Dec 10 11:44:47 EST 2018 on pts/0
 [user1@centos7-1 ~]$ 
 [user1@centos7-1 ~]$ su - root
 Password: 
 Last login: Wed Dec 12 14:34:32 EST 2018 on pts/0
+[root@centos7-1 ~]# 
 ```
 
-Historically the original /bin/sh Bourne shell would use **$** as the normal prompt and **\#** for the root user prompt This made it pretty easy to tell if you were running as superuser or not.
+note:**\#** is used for adding comment if used in front of any commnads:
 
-**What's A "Terminal?"**
-
-It's a program called a terminal emulator. This is a program that opens a window and lets you interact with the shell. There are a bunch of different terminal emulators we can use. Most Linux distributions supply several, such as: gnome-terminal, konsole, xterm, rxvt, kvt, nxterm, and eterm. It is also called Console.
+```text
+[root@centos7-1 temp]# ls # ls /etc
+zip-3.0-11.el7.x86_64.rpm  zip.cpio
+```
 
 **Standard Input, Standard Output and Standard Error**
 
 In general, a command \(a program\):
 
-* Gets data to process from standard input or stdin \(default: keyboard\).
-* Returns processed data to standard output or stdout \(default: screen\).
-* If program execution causes errors, error messages are sent to standard error or stderr \(default: screen\).
+* Gets data to process from standard input or **stdin** \(default: keyboard\).
+* Returns processed data to standard output or **stdout** \(default: screen\).
+* If program execution causes errors, error messages are sent to standard error or **stderr** \(default: screen\).
 
 ![](.gitbook/assets/commandintro-inputoutput.jpg)
 
-#### echo
+### echo
 
 echo is one of the most commonly and widely used built-in command for Linux bash and C shells, that typically used in scripting language and batch files to display a line of text/string on standard output or a file.
 
@@ -73,15 +87,15 @@ The syntax for echo is: `echo [option(s)] [string(s)]`
 example : Input a line of text and display on standard output:
 
 ```text
-[root@centos7-1 ~]# echo  "Lets start learning Linux"
+[root@centos7-1 ~]# echo  Lets start learning Linux
 Lets start learning Linux
 ```
 
 The echo command has a couple of options. Normally, echo will append a trailing new line character to the output. Use the`-n`option to suppress this:
 
 ```text
-[root@centos7-1 ~]# echo -n "Lets start learning Linux"
-Lets start learning Linux[root@centos7-1 ~]#
+[root@centos7-1 ~]# echo -n Lets start learning Linux
+Lets start learning Linux[root@centos7-1 ~]# 
 ```
 
 Lets take a look at optoions:
@@ -118,6 +132,7 @@ A non-quoted backslash is the Bash escape character. It preserves the literal va
 | \n | New line |
 | \r | Carriage return |
 | \t | Horizontal tab |
+| \v | vertical tab |
 
 Some examples:
 
@@ -133,9 +148,18 @@ Lets     start     learning     Linux
 
 One of echo command usage is getting variable values with `echo $VARIABLENAME` command. We will see that.
 
+```text
+[root@centos7-1 ~]# echo $LD_LIBRARY_PATH
+
+```
+
 **special characters**
 
-What makes a character special? If it has a meaning beyond its literal meaning, a meta-meaning, then we refer to it as a special character or metacharacters : **\| & ; \( \) &lt; &gt;**
+What makes a character special? If it has a meaning beyond its literal meaning, a meta-meaning, then we refer to it as a special character or metacharacters  like : **`| & ; ( ) < > *`**
+
+note: If we want to omit meta meaning of special characters and print them out via echo command we use `\` :
+
+
 
 **Control Operators**
 
