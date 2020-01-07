@@ -52,7 +52,7 @@ The streams are also numbered: **stdin \(0\)** ,**stdout \(1\)**, **stderr \(2\)
 
 ### piping with \|
 
-Piping is a mechanism for sending data from one program to another. The operator we use is \( \| \) \(found above the backslash \( \) key on most keyboards\). What this operator does is feed the output from the program on the left as input to the program on the right.
+Piping is a mechanism for sending data from one program to another. The operator we use is \( \| \) \(found above the backslash `\` key on most keyboards\). What this operator does is feed the output from the program on the left as input to the program on the right.
 
 ```text
 command1 | command2
@@ -86,9 +86,9 @@ Linux includes redirection commands for each stream.stream redirection allows us
 * **&lt;&lt; - standard input**
 * **2&gt;&gt; - standard error**
 
-These commands write standard output to a file. If a non-existent file is targetted \(either by a single-bracket or double-bracket command\), a new file with that name will be created prior to writing.
+These commands write standard output to a file. If a non-existent file is targeted \(either by a single-bracket or double-bracket command\), a new file with that name will be created prior to writing.
 
-> The difference between &gt; \(redirection operator\) and \| \(pipeline operator\) is that while the first connects a command with a file, the latter connects the output of a command with another command.
+> The difference between &gt; \(redirection operator\) and \| \(pipeline operator\) is that while the &gt;  connects a command with a file, the \| connects the output of a command with another command.
 
 ### Text filtering
 
@@ -142,10 +142,10 @@ create a new file with cat:
 
 ```text
 [root@centos7-1 ~]# cat > newfile2
-This is my second new file with inputredirection
+This is my second new file with input redirection
 Ctrl+d
 [root@centos7-1 ~]# cat newfile2
-This is my second new file with inputredirection
+This is my second new file with input redirection
 ```
 
 We can have custom end maker for ‘cat’ command:
@@ -309,6 +309,8 @@ Lets do reverse:
 
 unexpand with no options just initial blanks, -a option convert all blanks, instead of just initial blanks:
 
+> unexpand only convert double spaces and more to tab, it doesn't convert single spaces!
+
 ```text
 [root@centos7-1 ~]# unexpand -a expanded.txt > unexpanded2.txt
 [root@centos7-1 ~]# od -tc -An unexpanded2.txt 
@@ -372,11 +374,11 @@ his is  for   es 123
 this is  for   test
 ```
 
-We complement the sets using -c option:
+We complement the sets using -c option For example, to remove all characters except digits, you can use the following.:
 
 ```text
-[root@centos7-1 ~]# echo "this is  for   test 123" | tr -c '1' 'a'
-aaaaaaaaaaaaaaaaaaaa1aaa
+[root@centos7-1 ~]# echo "this is  for   test 123" | tr -cd [:digit:]
+123
 ```
 
 tr has many options and sets try tr --help for more information.
@@ -457,7 +459,7 @@ nl [OPTION]... [FILE]...
 000004    learn linux.
 ```
 
-> By default nl skip over blank lines and does not give a number to them use -ba switch to assign them numbers.
+> By default nl skip over blank lines and does not give a number to them, use -ba switch to assign them numbers.
 
 other ln options:
 
@@ -476,6 +478,8 @@ other ln options:
       --help     display this help and exit
       --version  output version information and exit
 ```
+
+`cat -n filename` does the same thing that `nl` command do.
 
 ## fmt
 
@@ -693,7 +697,7 @@ split command is used to split or break a file into the pieces.
 * `-l linenumber`
 * `-b bytes`
 
-If we use the -l \(a lowercase L\) option, replace linenumber with the number of lines we'd like in each of the smaller files \(the default is 1,000\).
+If we use the -l \(a lowercase L\) option, replace line number with the number of lines we'd like in each of the smaller files \(the default is 1,000\).
 
 ```text
 [root@centos7-1 split]# ls
@@ -947,7 +951,7 @@ less command allows you to view the contents of a file and navigate through file
 :
 ```
 
-By default the only way to exit less command is to hit q key. To change this behavior and automatically exit file when reaching the end of file use the -e or -E option. `less -e /var/log/auth.log` or `less -E /var/log/auth.log`
+By default the only way to exit less command is to hit q key. To change this behavior and automatically exit file when reaching the end of file use the `-e` or `-E` option. `less -e /var/log/auth.log` or `less -E /var/log/auth.log`
 
 * To open a file at the first occurrence of a pattern use the following syntax:
 
@@ -1084,6 +1088,8 @@ paste command options:
 
 Joins the lines of two files which share a common field of data.
 
+> When **using `join`**, the **input files must be sorted** _**by the join field ONLY**_, otherwise you may see the warning
+
 ```text
 join [OPTION]... FILE1 FILE2
 ```
@@ -1097,7 +1103,7 @@ join [OPTION]... FILE1 FILE2
 5 e q
 ```
 
-By default, the join command only prints pairable lines.unpairable lines are left out in the output. However, if we want, we can still have them in the output using the -a command line option. This option requires you to pass a file number so that the tool knows which file you are talking about.
+By default, the join command only prints pairable lines. unpairable lines are left out in the output. However, if we want, we can still have them in the output using the -a command line option. This option requires you to pass a file number so that the tool knows which file you are talking about.
 
 ```text
 [root@centos7-1 ~]# join 1.txt 2.txt -a 1
@@ -1146,7 +1152,7 @@ join combines lines of files on a common field, which is the first field by defa
 
 ## sed
 
-The name Sed is short for \_s\_tream \_ed\_itor.  
+The name **Sed** is short for **\_s\_tream \_ed\_itor**.  
 S stream editor is used to perform basic text transformations on an input stream \(a file or input from a pipeline\). sed uses regular expressions and the most basic \(and popular\) usage of sed is the substitution of characters.
 
 As an example lets replace 'l' with "L" in a sample text file:

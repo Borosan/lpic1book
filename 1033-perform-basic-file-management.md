@@ -55,7 +55,7 @@ Desktop    Downloads         Music     Public     Videos
 Documents  examples.desktop  Pictures  Templates
 ```
 
-The default output of the ls command shows only the names of the files, which is not very informative. So lets use ls with . When the long listing format `-l`option:
+The default output of the ls command shows only the names of the files, which is not very informative. So lets use ls with `-l` long listing format :
 
 ```text
 user1@ubuntu16-1:~$ ls -l
@@ -86,7 +86,7 @@ When the long listing format is used the ls command will display the following f
 
 **Show Hidden Files**
 
-By default, the ls command will not show hidden files. In Linux, a hidden file is any file that begins with a dot \(.\).To display all files including the hidden files use the -a option:
+By default, the ls command will not show hidden files. _In Linux, a hidden file is any file that begins with a dot \(.\)_.To display all files including the hidden files use the `-a` option:
 
 ```text
 user1@ubuntu16-1:~$ ls -a
@@ -120,7 +120,7 @@ Before going into how to use the touch command, let’s start by reviewing the f
 
 #### Linux Files Timestamps
 
-In Linux every single file is associated with timestamps, and every file stores the information of last access time, last modification time and last change time. So, whenever we create new file, access or modify an existing file, the timestamps of that file automatically updated.
+In Linux every single file is associated with timestamps, and every file stores the information of **last access time**, **last modification time** and **last change time**. So, whenever we create new file, access or modify an existing file, the timestamps of that file automatically updated.
 
 A file in Linux has three timestamps:
 
@@ -145,6 +145,9 @@ Change: 2018-07-01 23:15:30.144817112 -0700
 ### touch
 
 The touch command is a standard command used in UNIX/Linux operating system which is used to create, change and modify timestamps of a file.
+
+* touch command \(with no option\) create an empty file if file does not exist.
+* if file exists touch command would change its time stamps .
 
 **creating an empty file:**
 
@@ -201,7 +204,7 @@ total 0
 * -a: change the access time only
 * -d: update the access and modification times
 * -m: change the modification time only
-* -r: use the access and modification times of file
+* -r: use the access and modification times of **other** file as reference.
 * -t: creates a file using a specified time
 
 Lets do some timestamp modifications.
@@ -264,7 +267,7 @@ Change: 2019-09-08 03:28:06.314537292 -0700
 
 Explicitly Set the Access and Modification times: `touch -c -t YYDDHHMM filename`
 
-Update access and modification time:`touch -c-d fileName`
+Update access and modification time:`touch -c -d fileName`
 
 We use the timestamp of another file with -r option: `touch -r second_file_name first_file_name`
 
@@ -343,7 +346,7 @@ root@ubuntu16-1:~/test-space# tree
 3 directories, 0 files
 ```
 
-We can create a directory and set the permissions for that directory at the same time using -m option:
+We can create a directory and set the permissions\(will be discussed later\) for that directory at the same time using -m option:
 
 ```text
 root@ubuntu16-1:~/test-space# mkdir -m777 dir2 
@@ -353,7 +356,7 @@ drwxr-xr-x 3 root root 4096 Sep  8 03:57 dir1
 drwxrwxrwx 2 root root 4096 Sep  8 04:09 dir2
 ```
 
-The syntax of the mode is the same as the chmod command.
+The syntax of the mode is the same as the chmod command \(next lessons\).
 
 ```text
 root@ubuntu16-1:~/test-space# mkdir -v -m o=--- dir3
@@ -375,7 +378,9 @@ The `cp` command is a command-line utility for copying files and directories. Th
 cp [options….] source(s) destination
 ```
 
-It supports copying one or more files or directories with options for taking backups and preserving attributes. \[Copies of files are independent of the original file\( unlike the `mv` command\)\].
+> cp can take 1 or more sources\(s\) but just one destination.
+
+It supports copying one or more files or directories with options for taking backups and preserving attributes. \[Copies of files are independent of the original file\( unlike the `mv` command\)  \].
 
 * If the target is an existing directory, then all sources are copied into the target. 
 * If the target is a directory that does not exist, then the \(single\) source must also be a directory and a copy of the source directory and its contents is made with the target name as the new name. 
@@ -611,7 +616,7 @@ root@ubuntu16-1:~/test-space# tree -F
 3 directories, 2 files
 ```
 
-we could use`mv -t dirA dir3` command aswell. `-t, --target-directory`Move all sources into the directory destination.
+we could use`mv -t dirA dir3` command as well. `-t, --target-directory`Move all sources into the directory destination.
 
 usefull mv command options:
 
@@ -660,9 +665,11 @@ root@ubuntu16-1:~/test-space# tree -F
 2 directories, 1 file
 ```
 
-File names starting with a dash
+{% hint style="info" %}
+**File names starting with a dash, How to remove it?**
 
 To remove a file whose name begins with a dash \("-"\), you can specify a double dash \("--"\) separately before the file name. This extra dash is necessary so that rm does not misinterpret the file name as an option: `rm -- -file.txt`Or, we can delete it by referring to it with a pathname : `rm /home/hope/-file.txt`
+{% endhint %}
 
 some other options of rm command:
 
@@ -670,7 +677,7 @@ some other options of rm command:
 | :--- | :--- |
 | -v | Verbose mode; explain at all times what is being done. |
 | -i | prompt before every removal |
-| -f,--force | Ignore nonexistant files,and never prompt before removing. |
+| -f,--force | Ignore none existant files,and never prompt before removing. |
 | -d,--dir | Remove empty directories. |
 
 #### Removing directories
@@ -939,7 +946,7 @@ root@ubuntu16-1:~/test-space# find /etc/ -iname "[y-z]*"
 /etc/brltty/Contraction/zh-tw.ctb
 ```
 
-`-name` option used for searching for files based on their name. `-i`makes it case insensitive. In the first example above, we found both files and a directory \(/etc\). Use the `-type`parameter along with one-letter type to restrict the search.
+`-name` option used for searching for files based on their name. `-i`makes it case insensitive. In the first example above, we found both files and a directory \(/etc\). 
 
 note: If you want to find a file or directory whose name begins with a dot, such as .bashrc or the current directory \(.\), then you must specify a leading dot as part of the pattern. Otherwise, name searches ignore these files or directories.
 
@@ -1025,7 +1032,7 @@ We can use the time stamps described with the touch command to locate files havi
 -mtime n: File's data was last modified n days ago
 ```
 
-again \(+/-\) sighns can be used to give it a range.
+again \(+/-\) signs can be used to give it a range.
 
 Find Changed Files in Last 2 Hours:
 
@@ -1052,7 +1059,7 @@ use -nouser or -nogroup to search for a file with no user or with no group id.
 
 We can also search for files with specific permissions. If we want to match an exact set of permission`find / -perm 644`
 
-If we want to specify anything with _at least_  those permissions`find / -perm -644` .
+If we want to specify anything with _at least_  those permissions:`find / -perm -644` .
 
 **filtering by depth**
 
@@ -1082,12 +1089,12 @@ We can execute an arbitrary helper command on everything that find matches by us
 find find_parameters -exec command_and_params {} \;
 ```
 
-The “{}” is used as a placeholder for the files that find matches. The “\;” is used so that find knows where the command ends.
+The `{}` is used as a placeholder for the files that find matches. The “\;” is used so that find knows where the command ends.
 
 As an instance this will remove all empty files:
 
 ```text
-find . -empty -exec rm '{}' \;
+find . -empty -exec rm {} \;
 ```
 
 we could find the files in the previous section that had “644” permissions and modify them to have “664” permissions:
@@ -1233,11 +1240,11 @@ Archive:  myfiles.zip
 
 | zip command example | Description  |
 | :--- | :--- |
-| zip –v filename.zip file1.txt | -v Option: Verbose mode or print diagnostic version info. |
-| zip –d filename.zip file.txt | -d Option: Removes the file from the zip archive. |
-| zip –u filename.zip file.txt | -u Option: Updates the file in the zip archive. |
-| zip –m filename.zip file.txt | -m Option: Deletes the original files after zipping. |
-| zip –x filename.zip file\_to\_be\_excluded | -x Option: Exclude the files in creating the zip. |
+| zip –v filename.zip file1.txt |  Verbose mode or print diagnostic version info. |
+| zip –d filename.zip file.txt |  Removes the file from the zip archive. |
+| zip –u filename.zip file.txt | Updates the file in the zip archive. |
+| zip –m filename.zip file.txt | Deletes the original files after zipping. |
+| zip –x filename.zip file\_to\_be\_excluded | Exclude the files in creating the zip. |
 
 ### Compressing files
 
@@ -1538,7 +1545,7 @@ we usually use mixture of tar options to gain what we want:
 
 ![](.gitbook/assets/performbasicfile-over.jpg)
 
-use `tar -cJf file.tar.xz` to create xz compressed file and `tar -xJf file.tar.xz` for extracting.
+use `tar -cJf file.tar.xz` to create xz compressed file and    `tar -xJf file.tar.xz` for extracting.
 
 #### Linux Devices
 
