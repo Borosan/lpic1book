@@ -1522,58 +1522,6 @@ we usually use mixture of tar options to gain what we want:
 
 use `tar -cJf file.tar.xz` to create xz compressed file and    `tar -xJf file.tar.xz` for extracting.
 
-#### Linux Devices
-
- In Linux various special files can be found under the directory `/dev`. These files are called device files and behave unlike ordinary files.
-
-```text
-root@ubuntu16-1:~/test-space# ls -l /dev/
-total 0
-...
-brw-rw----  1 root disk      8,   0 Dec  2  2018 sda
-brw-rw----  1 root disk      8,   1 Dec  2  2018 sda1
-brw-rw----  1 root disk      8,   2 Dec  2  2018 sda2
-brw-rw----  1 root disk      8,   5 Dec  2  2018 sda5
-crw-rw----  1 root disk     21,   0 Dec  2  2018 sg0
-crw-rw----+ 1 root cdrom    21,   1 Dec  2  2018 sg1
-...
-```
-
-The columns are as follows from left to right:
-
-* Permissions
-* Owner
-* Group
-* Major Device Number
-* Minor Device Number
-* Timestamp
-* Device Name
-
-Remember in the ls command you can see the type of file with the first bit on each line. Device files are denoted as the following:
-
-```text
-c - character
-b - block
-p - pipe
-s - socket
-```
-
- The most common types of device files are for block devices and character devices. These files are an interface to the actual driver \(part of the Linux kernel\) which in turn accesses the hardware. Another, less common, type of device file is the named _pipe:_
-
- **Character Device:**These devices transfer data, but one a character at a time. You'll see a lot of pseudo devices \(/dev/null\) as character devices, these devices aren't really physically connected to the machine, but they allow the operating system greater functionality.
-
- **Block Device:**These devices transfer data, but in large fixed-sized blocks. We'll most commonly see devices that utilize data blocks as block devices, such as harddrives, filesystems, etc.
-
-**Pipe Device:**Named pipes allow two or more processes to communicate with each other, these are similar to character devices, but instead of having output sent to a device, it's sent to another process.
-
-**Socket Device:**Socket devices facilitate communication between processes, similar to pipe devices but they can communicate with many processes at once.
-
- **Device Characterization \(Major Device Number & Minor Device Number\)**
-
-Devices are characterized using two numbers, major device number and minor device number. **We** can see these numbers in the above ls example, they are separated by a comma. For example, let's say a device had the device numbers: 8, 0:
-
-The major device number represents the device driver that is used, in this case 8, which is often the major number for sd block devices. The minor number tells the kernel which unique device it is in this driver class, in this case 0 is used to represent the first device \(a\).
-
 ### dd
 
 dd stands for Convert & Copy but why it is not cc? because the name cc is already used by c compiler.  Many people call it  Disk Destroyer because dd doesn't care at all about file system and strickly works with Block Devices!
@@ -1640,6 +1588,62 @@ Policy options:
 | cpio -it -F &lt; file.tar | only view tar archive file using cpio |
 
 .
+
+{% hint style="success" %}
+#### Linux Devices
+
+ In Linux various special files can be found under the directory `/dev`. These files are called device files and behave unlike ordinary files.
+
+```text
+root@ubuntu16-1:~/test-space# ls -l /dev/
+total 0
+...
+brw-rw----  1 root disk      8,   0 Dec  2  2018 sda
+brw-rw----  1 root disk      8,   1 Dec  2  2018 sda1
+brw-rw----  1 root disk      8,   2 Dec  2  2018 sda2
+brw-rw----  1 root disk      8,   5 Dec  2  2018 sda5
+crw-rw----  1 root disk     21,   0 Dec  2  2018 sg0
+crw-rw----+ 1 root cdrom    21,   1 Dec  2  2018 sg1
+...
+```
+
+The columns are as follows from left to right:
+
+* Permissions
+* Owner
+* Group
+* Major Device Number
+* Minor Device Number
+* Timestamp
+* Device Name
+
+Remember in the ls command you can see the type of file with the first bit on each line. Device files are denoted as the following:
+
+```text
+c - character
+b - block
+p - pipe
+s - socket
+```
+
+ The most common types of device files are for block devices and character devices. These files are an interface to the actual driver \(part of the Linux kernel\) which in turn accesses the hardware. Another, less common, type of device file is the named _pipe:_
+
+ **Character Device:**These devices transfer data, but one a character at a time. You'll see a lot of pseudo devices \(/dev/null\) as character devices, these devices aren't really physically connected to the machine, but they allow the operating system greater functionality.
+
+ **Block Device:**These devices transfer data, but in large fixed-sized blocks. We'll most commonly see devices that utilize data blocks as block devices, such as harddrives, filesystems, etc.
+
+**Pipe Device:**Named pipes allow two or more processes to communicate with each other, these are similar to character devices, but instead of having output sent to a device, it's sent to another process.
+
+**Socket Device:**Socket devices facilitate communication between processes, similar to pipe devices but they can communicate with many processes at once.
+
+ **Device Characterization \(Major Device Number & Minor Device Number\)**
+
+Devices are characterized using two numbers, major device number and minor device number. **We** can see these numbers in the above ls example, they are separated by a comma. For example, let's say a device had the device numbers: 8, 0:
+
+The major device number represents the device driver that is used, in this case 8, which is often the major number for sd block devices. The minor number tells the kernel which unique device it is in this driver class, in this case 0 is used to represent the first device \(a\).
+{% endhint %}
+
+
 
 .
 
