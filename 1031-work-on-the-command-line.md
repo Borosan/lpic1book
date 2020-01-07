@@ -61,6 +61,13 @@ Last login: Wed Dec 12 14:34:32 EST 2018 on pts/0
 [root@centos7-1 ~]# 
 ```
 
+note:**\#** is used for adding comment if used in front of any commnads:
+
+```text
+[root@centos7-1 temp]# ls # ls /etc
+zip-3.0-11.el7.x86_64.rpm  zip.cpio
+```
+
 **Standard Input, Standard Output and Standard Error**
 
 In general, a command \(a program\):
@@ -91,61 +98,7 @@ The echo command has a couple of options. Normally, echo will append a trailing 
 Lets start learning Linux[root@centos7-1 ~]# 
 ```
 
-#### Special Characters or Meta Characters
-
-What makes a character special? If it has a meaning beyond its literal meaning, a meta-meaning, then we refer to it as a special character or metacharacters  like : **``| & ; ( ) < > [ ] { } * ! ? ` ' " $ \ / #``** 
-
-**pound sign \(\#\)**
-
-Everything written after a pound sign \(\#\) is ignored by the shell. This is useful to write a shell comment, but has no influence on the command execution or shell expansion.
-
-```text
-[root@centos7-1 temp]# ls # ls /etc
-zip-3.0-11.el7.x86_64.rpm  zip.cpio
-```
-
-**end of line backslash /**
-
-Lines ending in a backslash are continued on the next line. The shell does not interpret the newline character and will wait on shell expansion and execution of the command line until a newline without backslash is encountered.
-
-```text
-[root@centos7-1 ~]# echo first line second line \
-> 2nd line \
-> 3rd line
-first line second line 2nd line 3rd line
-```
-
-**escaping special characters  \**
-
-The backslash  character enables the use of control characters, but without the shell interpreting it, this is called **escaping characters**.
-
-```text
-[root@centos7-1 ~]# echo hello | by
-bash: by: command not found...
-[root@centos7-1 ~]# echo hello \| by
-hello | by
-[root@centos7-1 ~]# echo hello ; by
-hello
-bash: by: command not found...
-[root@centos7-1 ~]# echo hello \; by
-hello ; by
-```
-
-{% hint style="info" %}
- **Double quotes**  ``**"** 
-
-Enclosing characters in double quotes \(`"`\) preserves the literal value of all characters within the quotes, _with the exception of `$`, `````, `\`, and, when history expansion is enabled, `! .`_
-
-`[root@centos7-1 ~]# echo "hello | by"`
-
-`hello | by` 
-
-`[root@centos7-1 ~]# echo "hello ; by"` 
-
-`hello ; by` 
-{% endhint %}
-
-Lets take a look at other options of echo command:
+Lets take a look at optoions:
 
 ```text
        -n     do not output the trailing newline
@@ -165,6 +118,10 @@ Lets take a look at other options of echo command:
 ```
 
 Use the`-e`option to enable certain backslash **escaped characters** to have special meaning.
+
+**Escape Characters**
+
+A non-quoted backslash is the Bash escape character. It preserves the literal value of the next character that follows,
 
 | Escape sequence | Function |
 | :--- | :--- |
@@ -196,9 +153,17 @@ One of echo command usage is getting variable values with `echo $VARIABLENAME` c
 
 ```
 
-### **Control Operators**
+**special characters**
 
-Certain metacharacters or pairs of metacharacters also serve as control operators: **`|| && & ; ;; | ()`**
+What makes a character special? If it has a meaning beyond its literal meaning, a meta-meaning, then we refer to it as a special character or metacharacters  like : **`| & ; ( ) < > *`**
+
+note: If we want to omit meta meaning of special characters and print them out via echo command we use `\` :
+
+
+
+**Control Operators**
+
+Certain metacharacters or pairs of metacharacters also serve as control operators: **\|\| && & ; ;; \| \(\)**
 
 Some of these control operators allow you to create sequences or lists of commands.
 
@@ -253,7 +218,7 @@ PWD is a very common system variable which is used to store the present working 
 /etc
 ```
 
-The whole concept of setting and un-setting environment variables revolves around some set of files and few commands and different shells.
+User defined variables are typically set by user, either temporarily for the current shell or permanently. The whole concept of setting and un-setting environment variables revolves around some set of files and few commands and different shells.
 
 an environment variable can be in three types:
 
@@ -313,25 +278,13 @@ firefox is /bin/firefox
 firefox: /usr/bin/firefox /usr/lib64/firefox /etc/firefox /usr/share/man/man1/firefox.1.gz
 ```
 
-> For running other scripts or commands we can add them to path, or use full path or relative path \(. and ..\) ****
->
-> PATH=$PATH:/tmp/mybin
+> For running other scripts or commands we can add them to path, or use full path or relative path \(. and ..\)
 
 * **PWD**: The current working directory.
 * **LANG**: The current language and localization settings, including character encoding.
 * **HOME**: The current user's home directory.
 * **\_**: The most recent previously executed command.
 * **OLDPWD**: The previous working directory. This is kept by the shell in order to switch back to your previous directory by running cd -.
-
-{% hint style="info" %}
-The exit code of the previous command is stored in the shell variable $?. Actually $? is a shell parameter and not a variable, since you cannot assign a value to $?.
-
-`[root@centos7-1 ~]# touch my.txt` 
-
-`[root@centos7-1 ~]# echo $?`
-
- `0`
-{% endhint %}
 
 To see the value of a variable use `echo $VARIABLENAME` :
 
@@ -389,11 +342,7 @@ When creating a new child process \(a sub shell in our example\) an export comma
 
 We can terminate a shell using the exit command or simply press ctrl+d keys.
 
-{% hint style="info" %}
-**\(\)** : parentheses really put the command in a subshell. try\(exit\)
-{% endhint %}
-
-### export
+#### export
 
 export command is one of the bash shell builtin commands, marks an environment variable to be exported to child-processes, so that the child inherits them.
 
@@ -431,7 +380,7 @@ declare -x VAR2="Linux is Fun"
 [root@centos7-1 ~]#
 ```
 
-### set
+#### set
 
 `set`is a shell built-in that \(If no options or arguments are supplied\) displays all shell variables, not only the environment ones, and also shell functions, which is what you are seeing at the end of the list.
 
@@ -552,31 +501,7 @@ set [--abefhkmnptuvxBCEHPT] [-o option-name] [argument …]
 set [+abefhkmnptuvxBCEHPT] [+o option-name] [argument …]
 ```
 
-Try`help set | less` wow.
-
- For example `-f` **disable globbing**
-
-> File **globbing** is a feature provided by the UNIX/**Linux** shell to represent multiple filenames by using special characters called wildcards with a single file name. \(Discussed in next courses\)
-
- as an example if we disable globbing via set then "\*" in`ls *` wont mean any file:
-
-```text
-[root@centos7-1 yum.repos.d]# ls *
-CentOS-Base.repo       CentOS-fasttrack.repo  CentOS-Vault.repo
-CentOS-CR.repo         CentOS-Media.repo      epel.repo
-CentOS-Debuginfo.repo  CentOS-Sources.repo    epel-testing.repo
-[root@centos7-1 yum.repos.d]# set -f
-[root@centos7-1 yum.repos.d]# ls *
-ls: cannot access *: No such file or directory
-[root@centos7-1 yum.repos.d]# set +f
-[root@centos7-1 yum.repos.d]# ls *
-CentOS-Base.repo       CentOS-fasttrack.repo  CentOS-Vault.repo
-CentOS-CR.repo         CentOS-Media.repo      epel.repo
-CentOS-Debuginfo.repo  CentOS-Sources.repo    epel-testing.repo
-
-```
-
- Use `-m` to disable job control\(Discussed in next courses\).
+Try`help set | less` wow. For example `-f` disable globbing and then "\*" in`ls *` wont mean any file. Use `-m` to disable job control\(Discussed in next courses\).
 
 To see the current shell options use `echo $-` :
 
@@ -585,7 +510,7 @@ To see the current shell options use `echo $-` :
 himuBH
 ```
 
-We can use `set -o` without any option to get the current state of shell options :
+As an example lets disable and enable History Storing with -o option. We can use `set -o` without any option to get the current state of shell options :
 
 ```text
  [root@centos7-1 ~]# set -o
@@ -618,7 +543,7 @@ vi                 off
 xtrace             off
 ```
 
-set +o turns off specified option and set -o turns it on .For example lets disable and enable History Storing with -o option:
+set +o turns off specified option and set -o turns it on :
 
 ```text
 [root@centos7-1 ~]# set +o history
@@ -629,7 +554,7 @@ history            off
 history            on
 ```
 
-One of important options you might be asked for in the exam is noclobber, The noclobber option prevents you from overwriting existing files with the &gt; operator \(Discussed in next courses\).
+One of important options you might be asked for in the exam is noclobber, The noclobber option prevents you from overwriting existing files with the &gt; operator.
 
 set is not for setting variables. Do not make mistake!
 
@@ -642,7 +567,7 @@ set is not for setting variables. Do not make mistake!
 
 Set has lots of options which are used to change bash behaviour.
 
-### unset
+#### unset
 
 unset command is used to unset any local environment variable temporarily:
 
@@ -658,13 +583,11 @@ bash: VAR5: unbound variable
 bash: ls: No such file or directory
 ```
 
-{% hint style="success" %}
 So `set` is not set, but `unset` is unset.
-{% endhint %}
 
 ## Understanding Bash History
 
-History of all commands which are executed by all users are stored.History is maintained both in ram and in a file_.bash\_history._ History which is maintained in ram, manipulated with the command`history`and environment variables. It is important to note that the history contained in ram is only written after a user logs out of his or her session.
+History of all commands which are executed by all users are stored.History is maintained both in ram and in a file_.bash\_history._ \( History which is maintained in ram, manipulated with the command`history`and environment variables. It is important to note that the history contained in ram is only written after a user logs out of his or her session.
 
 ### history
 
@@ -722,7 +645,7 @@ and that would be 1000 lines! to see just 5 lines for example use`history 5` .
 
 ### **~/.bash\_history**
 
-When user closes shell , Bash will save its history list to the disk by appending the contained entries to his/her **~/.bash\_history** hidden file. **~/.bash\_history** is controlled by some variables:
+When user closes shell , Bash will save its history list to the disk by appending the contained entries to his/her **~/.bash\_history** **hidden** file. **~/.bash\_history** is controlled by some variables:
 
 * **HISTFILE**    This variable contains the location of the history file. When bash is logged out of, the contents of the history command will be written to this file.
 * **HISTFILESIZE**    The variable contains the maximum number of lines that may be in the history file. When bash writes to the history file, the oldest commands that go over this maximum number will be deleted.
@@ -739,7 +662,7 @@ Ignoreboth    When this setting is used it implies the conditions of both ignore
 Not Defined    If HISTCONTROL is not defined no conditions will be applied before the line is entered into the history
 ```
 
-To see the **.bash\_history** hidden file we should use ls with `-a` switch:
+To see the .bash\_history **hidden** file we should use ls with `-a` switch:
 
 ```text
 [root@centos7-1 ~]# ls -la | grep  .bash_history
@@ -799,7 +722,7 @@ If -a \(--all\) is specified, the information is printed in the following order 
 
 Processor information \(-p\) and Hardware-Platform\(-i\) are omitted if they are unknown.
 
-### man
+#### man
 
 In Unix-like operating systems, a man page \(in full manual page\) is a documentation for a terminal-based program/tool/utility \(commonly known as a command\). It contains:
 
@@ -910,7 +833,7 @@ ping (8)             - send ICMP ECHO_REQUEST to network hosts
 ping6 (8)            - send ICMP ECHO_REQUEST to network hosts
 ```
 
-### apropos
+#### apropos
 
 apropos command is used to search and display a short man page description of a command/program as follows.
 
@@ -937,10 +860,6 @@ That is all!
 sources:
 
 [http://linuxcommand.org/lc3\_lts0010.php](http://linuxcommand.org/lc3_lts0010.php)
-
-[https://stackoverflow.com/questions/6697753/difference-between-single-and-double-quotes-in-bash](https://stackoverflow.com/questions/6697753/difference-between-single-and-double-quotes-in-bash)
-
-[https://www.w3resource.com/linux-system-administration/control-operators.php](https://www.w3resource.com/linux-system-administration/control-operators.php)
 
 [https://www.tecmint.com/set-unset-environment-variables-in-linux/](https://www.tecmint.com/set-unset-environment-variables-in-linux/)
 

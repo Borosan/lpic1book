@@ -852,9 +852,9 @@ root@ubuntu16-1:~/test-space# ls -l *.txt
 
 * `[ ]`**is used to match the character from the range. Some of the mostly used range declarations are mentioned below:**
 
-`[:upper:]`or `[A-Z]` : All uppercase alphabets
+`[A-Z]` : All uppercase alphabets
 
-`[:lower:]` or `[a-z]` : All lowercase alphabets
+`[a-z]` : All lowercase alphabets
 
 `[a-zA-Z0-9]` : All uppercase alphabets, lowercase alphabet and digits
 
@@ -865,52 +865,15 @@ root@ubuntu16-1:~/test-space# ls [e-z]*
 file1  file2
 ```
 
-* `^`**is used to define the staring character. We can use ‘^’ with square bracket to define globbing pattern more specifically. ‘^’ can be used inside or outside of square bracket.**
+* **The**`!` **character means NOT so  it matches any character except the remaining characters**.
 
-`^` **is used outside the square bracket to search those contents of the file that starts with a given range of characters.**
-
-`^` **is used inside the square bracket to show all content of the file by highlighting the lines start with a given range of characters .**
-
-We can use different types of globbing patterns for searching particular content from a file.**‘grep’** command is used for content searching in bash.
-
-```text
-root@ubuntu16-1:~/test-space# cat list.txt
-Apple
-4000
-Banana
-700
-Orange
-850
-Pear
-9000
-Jackdruit
-```
-
-`grep '^[P-R]' list.txt` : search those lines from list.txt file that starts with P or Q or R.
-
-`grep '[^A-C]' list.txt` : highlight those lines from list.txt file that starts with A or B or C.
-
-* **The**`!` **character specified as the first character of a range complements the range so that it matches any character except the remaining characters**.**We can use ‘!’ inside the range pattern. It works same as the use of ‘^’ symbol outside the range pattern.**
-
-`grep [!P-R] list.txt` : show those lines from list.txt file that starts with ‘P’ or Q or R.
-
-`grep [!4-8] list.txt` : show those lines from list.txt file that starts with any digit from 4 to 8.
-
-* `$`**is used to define the ending character. If we know want to search information based on last character then we can use ‘$’ in globbing pattern.** 
-
-`grep a$ list.txt` : search those lines from list.txt file that ends with ‘a’.
-
-`grep 50$ list.txt`: search those lines from list.txt file that end with the number 50.
+\`\`
 
 * `{ }`**can be used to match filenames with more than one globbing patterns. Each pattern is separated by ‘,’ in curly bracket without any space.**
 
 `ls -l {?????.sh,*st.txt}` : search those files whose names are 5 characters long and the extension is ‘sh’ or the last two characters of the files are ‘st’ and the extension is ‘txt’.
 
 `rm {*.doc,*.docx}` : delete all files whose extensions are ‘doc’ or ‘docx’.
-
-* `|`**sign is also used for applying more than one condition on globbing pattern. Each pattern is separated by ‘\|’ symbol in the command.** 
-
-`ls (.bash|.sh)` : filenames wich has the extension ‘bash’ or ‘sh’.
 
 > Note: Wildcard patterns and regular expression patterns share some characteristics, but they are not the same. Pay careful attention.
 
@@ -963,8 +926,6 @@ find -type type_descriptor query
 * `-type f`will search for a regular file
 * `-type d` will search for a directory
 * `-type l` will search for a symbolic link
-* `-type c`  will search for  character devices
-* `-type b` will search for   block devices
 
 ```text
 root@ubuntu16-1:~/test-space# find /etc/ -type f -iname "[y-z]*"
