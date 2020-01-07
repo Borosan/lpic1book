@@ -98,7 +98,7 @@ user1@ubuntu16-1:~$ ls -a
 .cache         examples.desktop  Music          Videos
 ```
 
-Some other usefull options:
+ `-1` prints outs each result in 1 line.Some other usefull options:
 
 | ls command options | description |
 | :--- | :--- |
@@ -372,7 +372,7 @@ with `-v`option, it prints a message for each created directory.
 
 ### cp
 
-The `cp` command is a command-line utility for copying files and directories. The basic syntax of the cp command is:
+The `cp` command is a command-line utility for copying files and directories.  \[Copies of files are independent of the original file\( unlike the `mv` command\)  \].The basic syntax of the cp command is:
 
 ```text
 cp [options….] source(s) destination
@@ -380,13 +380,15 @@ cp [options….] source(s) destination
 
 > cp can take 1 or more sources\(s\) but just one destination.
 
-It supports copying one or more files or directories with options for taking backups and preserving attributes. \[Copies of files are independent of the original file\( unlike the `mv` command\)  \].
+It supports copying one or more files or directories with options for taking backups and preserving attributes.
+
+Do not forget to consider source and destination types \(files or directory\) when using cp command.
 
 * If the target is an existing directory, then all sources are copied into the target. 
 * If the target is a directory that does not exist, then the \(single\) source must also be a directory and a copy of the source directory and its contents is made with the target name as the new name. 
 * If the target is a file, then the \(single\) source must also be a file and a copy of the source file is made with the target name as the new name, replacing any existing file of the same name.
 
-Do not forget to consider source and desrination types \(files or directory\) when using cp command.lets do some examples:
+lets do some examples:
 
 ```text
 root@ubuntu16-1:~/test-space# tree
@@ -452,7 +454,9 @@ root@ubuntu16-1:~/test-space# tree
 
 **Copying files recursively**
 
-We can use cp to copy entire directory structures from one place to another using the -R option to perform a recursive copy. Let's say you are the user root and you have a directory, /home/test-space, which contains many files and subdirectories. You want to copy all those files, and all the subdirectories \(and the files and subdirectories they contain\), to a new location, /root/files-backup. You can copy all of them using the command:
+We can use cp to copy entire directory structures from one place to another using the -R option to perform a recursive copy.
+
+ Let's say you are the user root and you have a directory, /home/test-space, which contains many files and subdirectories. You want to copy all those files, and all the subdirectories \(and the files and subdirectories they contain\), to a new location, /root/files-backup. You can copy all of them using the command:
 
 `cp -R ~/test-space ~/files-backup`
 
@@ -700,7 +704,7 @@ root@ubuntu16-1:~/test-space# tree -F
 1 directory, 1 file
 ```
 
-What if desiered directory contains some files? If the **-r/-R/--recursive** option is specified, we can remove that directory however rm will remove any matching directories and their contents!
+What if desired directory contains some files? If the **-r/-R/--recursive** option is specified, we can remove that directory however rm will remove any matching directories and their contents!
 
 ```text
 root@ubuntu16-1:~/test-space# rm -rf dir2
@@ -820,7 +824,7 @@ files-backup            test-space
 jcal_0.4.1-2_amd64.deb  unzip_6.0-20ubuntu1_amd64.deb
 ```
 
-## Wildcards and globbing
+## Wildcards and Globbing
 
 File globbing is a feature provided by the UNIX/Linux shell to represent multiple filenames by using special characters called wildcards with a single file name. A wildcard is essentially a symbol which may be used to substitute for one or more characters. Therefore, we can use wildcards for generating the appropriate combination of file names as per our requirement.
 
@@ -834,20 +838,18 @@ total 0
 -rw-r--r-- 1 root root 0 Sep 27 23:33 file2
 ```
 
-* `?` **is used to match any single character. We can use ‘?’ for multiple times for matching multiple characters.**
+* `?` **is used to match any single character.** We can use ‘?’ for multiple times for matching multiple characters.
 
 ```text
 root@ubuntu16-1:~/test-space# ls ???.txt
 aaa.txt
 ```
 
-* `*` **is used to match zero or more characters. If we have less information to search any file or information then we can use ‘\*’ in globbing pattern.**
+* `*` **is used to match zero or more characters.** If we have less information to search any file or information then we can use ‘\*’ in globbing pattern.
 
 ```text
-root@ubuntu16-1:~/test-space# ls -l *.txt
--rw-r--r-- 1 root root 0 Sep 28 00:26 aaa.txt
--rw-r--r-- 1 root root 0 Sep 28 00:27 ababa.txt
--rw-r--r-- 1 root root 0 Sep 28 00:26 bbbb.txt
+root@ubuntu16-1:~/test-space# ls *.txt
+aaa.txt  ababa.txt  bbbb.txt
 ```
 
 * `[ ]`**is used to match the character from the range. Some of the mostly used range declarations are mentioned below:**
@@ -858,7 +860,7 @@ root@ubuntu16-1:~/test-space# ls -l *.txt
 
 `[a-zA-Z0-9]` : All uppercase alphabets, lowercase alphabet and digits
 
-The`-`character between two others represents a range that includes the two other characters and all characters between them in the collating sequence.
+> The`-`character between two others represents a range that includes the two other characters and all characters between them in the collating sequence.
 
 ```text
 root@ubuntu16-1:~/test-space# ls [e-z]*
@@ -867,21 +869,31 @@ file1  file2
 
 * **The**`!` **character means NOT so  it matches any character except the remaining characters**.
 
-\`\`
+```text
+root@ubuntu16-1:~/test-space# ls [!e-z]*
+aaa.txt  ababa.txt  bbbb.txt
+```
 
 * `{ }`**can be used to match filenames with more than one globbing patterns. Each pattern is separated by ‘,’ in curly bracket without any space.**
 
-`ls -l {?????.sh,*st.txt}` : search those files whose names are 5 characters long and the extension is ‘sh’ or the last two characters of the files are ‘st’ and the extension is ‘txt’.
+```text
+root@ubuntu16-1:~/test-space# ls {???.txt,????.txt}
+aaa.txt  bbbb.txt
+```
 
 `rm {*.doc,*.docx}` : delete all files whose extensions are ‘doc’ or ‘docx’.
 
-> Note: Wildcard patterns and regular expression patterns share some characteristics, but they are not the same. Pay careful attention.
+{% hint style="danger" %}
+**Wildcard patterns vs Regular Expressions**
+
+Wildcard patterns and regular expression patterns share some characteristics, but they are not the same. Pay careful attention.
+{% endhint %}
 
 ### Finding Files
 
 Now that we’ve covered the file and directory topic with the big recursive hammer that hits everything, and the globbing hammer that hits more selectively, let’s look at the find command, which can be more like a surgeon’s knife. The find command is used to find files in one or more directory trees, based on criteria such as name, time stamp, or size.
 
-#### find
+### find
 
 The find command searches for files or directories using all or part of the name, or by other search criteria, such as size, type, file owner, creation date, or last access date.
 
@@ -911,7 +923,7 @@ root@ubuntu16-1:~/test-space# find /etc/ -iname "[y-z]*"
 
 `-name` option used for searching for files based on their name. `-i`makes it case insensitive. In the first example above, we found both files and a directory \(/etc\). 
 
-note: If you want to find a file or directory whose name begins with a dot, such as .bashrc or the current directory \(.\), then you must specify a leading dot as part of the pattern. Otherwise, name searches ignore these files or directories.
+note: If you want to find a file or directory whose name begins with a dot, such as .bashrc or the current directory \(.\), then you must specify a leading dot as part of the pattern. Otherwise, name searches ignore these files or directories. `find . -name ".*"`
 
 note: If you want to chain different results together, you can use the “-and” or “-or” commands. The “-and” is assumed if omitted. `find . -name file1 -or -name file9`
 
@@ -998,7 +1010,7 @@ again \(+/-\) signs can be used to give it a range.
 Find Changed Files in Last 2 Hours:
 
 ```text
-root@ubuntu16-1:~/test-space# find /home -cmin -240
+root@ubuntu16-1:~/test-space# find /home -cmin -120
 /home/user1/.cache/upstart
 /home/user1/.cache/upstart/indicator-printers.log
 /home/user1/.cache/upstart/unity-panel-service.log
@@ -1058,16 +1070,16 @@ As an instance this will remove all empty files:
 find . -empty -exec rm {} \;
 ```
 
-we could find the files in the previous section that had “644” permissions and modify them to have “664” permissions:
+We could remove all empty files in this directory and its subdirectories:
 
 ```text
-find . -type f -perm 644 -exec chmod 664 {} \;
+find . -empty -exec rm '{}' \;
 ```
 
 We could then change the directory permissions like this:
 
 ```text
-find . -type d -perm 755 -exec chmod 700 {} \;
+find . -name "*.deb" -exec cp {} /tmp/packages \;
 ```
 
 ## Identifying files <a id="identifying-files"></a>
@@ -1108,21 +1120,23 @@ root@ubuntu16-1:~/test-space# file -z zabbix-cli-rpm-2.1.1-1.tar.gz zabbix-cli-r
 
 and `-i`option **** To view mime type of file.
 
+{% hint style="success" %}
+A MIME type is a label used to identify a type of data. It is used so software can know how to handle the data. It serves the same purpose on the Internet that file extensions do on Microsoft Windows.
+{% endhint %}
+
 ### Archiving and Compressing files
 
 Archiving and compressing are two different things
 
 ![](.gitbook/assets/performbasicfile-archcompress.jpg)
 
-tar just archive files and does not do any compression by default.
-
-zip does both archiving and compresion.
-
-gzip and bzip2 are used just for compression.
+* tar just archive files and does not do any compression by default.
+* zip does both archiving and compresion.
+* gzip and bzip2 are used just for compression.
 
 ![](.gitbook/assets/performbasicfile-compratio.jpg)
 
-#### zip
+### zip
 
 `Zip` is one of the most popular archive file format out there. With zip, you can compress multiple files into one file. This not only saves disk space, it also saves network bandwidth. This is why you’ll encounter zip files almost all the time.
 
@@ -1179,7 +1193,7 @@ root@ubuntu16-1:~/test-space# zip -r myfiles.zip myfiles/
   adding: myfiles/myconf.zip (stored 0%)
 ```
 
-#### uzip
+### uzip
 
 A separate companion program, unzip, unpacks and uncompresses zip archives.
 
@@ -1209,7 +1223,7 @@ Archive:  myfiles.zip
 
 ### Compressing files
 
-#### gzip
+### gzip
 
 Gzip \(GNU zip\) is a compressing tool, which is used to truncate the file size. 
 
@@ -1245,7 +1259,7 @@ root@ubuntu16-1:~/test-space/myfiles# tree -F
 2 directories, 5 files
 ```
 
-#### gunzip
+### gunzip
 
 To decompress a file we can use gunzip command and your original file will be back.
 
@@ -1276,7 +1290,7 @@ also we can use -d option to decompress a file using the “gzip” command.ex :
 | gzip -L filename.gz | displays the gzip license |
 | gzip -9 mydoc.txt | -\[1-9\] option : It allows to change the compression level |
 
-#### bzip2
+### bzip2
 
 Like gzip, bzip2  command in Linux is used to compress and decompress the files. It uses different compression algorithm so it compress files better than gzip, but  It has a slower decompression time and higher memory use.
 
@@ -1310,7 +1324,7 @@ root@ubuntu16-1:~/test-space/myfiles# tree -F
 2 directories, 5 files
 ```
 
-#### bunzip2
+### bunzip2
 
 bunzip2 is used for decompression bzip2 files:
 
@@ -1354,7 +1368,7 @@ dir1  dir2  myconf.txt  mylog.txt
 root@ubuntu16-1:~/test-space/myfiles# xz mylog.txt 
 ```
 
-or we could use xz -x file to compress that. -d is usef for decompression:
+or we could use xz -x file to compress that. -d is used for decompression:
 
 ```text
 root@ubuntu16-1:~/test-space/myfiles# xz -d mylog.txt.xz 
@@ -1427,7 +1441,7 @@ myarch.tar  myfiles
 
 We can include more than one directory, also it is possible to exclude with `--exclude` option.
 
-note: by default tar uncompresses file in your current directory and it can make some problems, for avoiding that use `tar -xvf backupfile  -C  /restoreDir` command. -C means change the directory before extracting the backup.
+note: by default tar uncompresses file in your current directory and it can make some problems\(overwriting ,...\), for avoiding that use `tar -xvf backupfile  -C  /restoreDir` command. -C means change the directory before extracting the backup.
 
 **Untar tar Archive File**
 
@@ -1562,7 +1576,7 @@ The major device number represents the device driver that is used, in this case 
 
 ### dd
 
-dd stands for Convert & Copy but why it is not cc? because the name cc is already used by c compiler.  Many people call it  Disk Destroyer becuase dd doesn't care at all about file system and strickly works with Block Devices!
+dd stands for Convert & Copy but why it is not cc? because the name cc is already used by c compiler.  Many people call it  Disk Destroyer because dd doesn't care at all about file system and strickly works with Block Devices!
 
 ```text
 dd [OPERAND]...
