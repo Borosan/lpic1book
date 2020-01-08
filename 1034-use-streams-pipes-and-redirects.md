@@ -38,7 +38,7 @@ Linux shells use these three standard I/O **streams ,** each of which is associa
 
 **What are file descriptors?**
 
-Streams Are Handled Like Files.Streams in Linux—like almost everything else—are treated as though they were files. We can read text from a file, and we can write text into a file. Both of these actions involve a stream of data. So the concept of handling a stream of data as a file isn’t that much of a stretch.
+Streams Are Handled Like Files. We can read text from a file, and we can write text into a file. Both of these actions involve a stream of data. So the concept of handling a stream of data as a file isn’t that much of a stretch.
 
 Each file associated with a process is allocated a unique number to identify it. This is known as the **file descriptor**. Whenever an action is required to be performed on a file, the file descriptor is used to identify the file.  These values are always used for `stdin`, `stdout,` and `stderr`:
 
@@ -111,7 +111,7 @@ ls: cannot access 'BlahBlah': No such file or directory
 
 **Append**
 
- Commands with a double bracket _do not_ overwrite the destination’s existing contents.
+ Commands with a double bracket _do not_ overwrite the destination’s existing contents, they append.
 
 * **&gt;&gt;** - standard output
 * **2&gt;&gt;** - standard error
@@ -241,7 +241,7 @@ this is last line.
 
 ### here string
 
- **&lt;&lt;&lt;** Redirect a single line of text to the stdin ofcmd. This is called a here-string.
+ **&lt;&lt;&lt;** Redirect a single line of text to the stdin of cmd. This is called a here-string.
 
 ```text
 cmd <<< "string"
@@ -318,16 +318,18 @@ dir1 dir2 interesting.txt list myconf.txt mydate mylog.txt
 
 ![](.gitbook/assets/usestreams-xarg.jpg)
 
+We can replace occurrences of arguments via `-I` switch:
+
 ```text
-root@ubuntu16-1:~/test-space/myfiles# find . -type f | xargs -I FILE  echo this is my file FILE
-this is my file ./dir1/myvideo.mp4
-this is my file ./interesting.txt
-this is my file ./list
-this is my file ./dir2/zabbix-cli-rpm-2.1.1-1.tar.gz
-this is my file ./dir2/zabbix-cli-manual-1.7.0.pdf
-this is my file ./mylog.txt
-this is my file ./myconf.txt
-this is my file ./mydate
+root@ubuntu16-1:~/test-space/myfiles# find . -type f | xargs -I FILE  echo this is my file FILE yes
+this is my file ./dir1/myvideo.mp4 yes
+this is my file ./interesting.txt yes
+this is my file ./list yes
+this is my file ./dir2/zabbix-cli-rpm-2.1.1-1.tar.gz yes
+this is my file ./dir2/zabbix-cli-manual-1.7.0.pdf yes
+this is my file ./mylog.txt yes
+this is my file ./myconf.txt yes
+this is my file ./mydate yes
 ```
 
 `cut -d: -f1 < /etc/passwd | sort | xargs`  generates a compact list of all Linux user accounts on the system .
