@@ -489,6 +489,10 @@ D: closed   db environment /var/lib/rpm
 
 rpm take care of dependencies while removing a package and does not remove package dependencies. on the other hand if a package is required by other pacakage\(d\) rpm avoid removing that.The `–nodeps` **\(Do not check dependencies\)** option **forcefully** remove the rpm package from the system. But keep in mind removing particular package may break other working applications.
 
+note:If you've made changes to a configuration file that was originally installed by RPM, your changes won't be lost if you erase the package. 
+
+What you can do is just run "rpm -qc packageName" which will show you which configuration files were installed on your system by an rpm. When you have uninstalled the rpm, you can search on your system if any of the files or their backups remain on your system and remove them manually.
+
 ### rpm2cpio
 
 From time to time, we might find it necessary to extract one or more files from a package file. One way to do this would be to:
@@ -1350,6 +1354,10 @@ sources:
 [http://ftp.rpm.org/max-rpm/s1-rpm-verify-output.html](http://ftp.rpm.org/max-rpm/s1-rpm-verify-output.html)\(rpm -V\)
 
 [https://serverfault.com/questions/747089/whats-the-diff-between-rpm-u-and-rpm-f?rq=1](https://serverfault.com/questions/747089/whats-the-diff-between-rpm-u-and-rpm-f?rq=1)
+
+[http://ftp.rpm.org/max-rpm/s1-rpm-erase-and-config-files.html](http://ftp.rpm.org/max-rpm/s1-rpm-erase-and-config-files.html)
+
+[https://www.linuxquestions.org/questions/linux-software-2/can-rpm-remove-config-files-during-uninstall-537423/](https://www.linuxquestions.org/questions/linux-software-2/can-rpm-remove-config-files-during-uninstall-537423/)
 
 [http://ftp.rpm.org/max-rpm/s1-rpm-miscellania-rpm2cpio.html](http://ftp.rpm.org/max-rpm/s1-rpm-miscellania-rpm2cpio.html)
 
