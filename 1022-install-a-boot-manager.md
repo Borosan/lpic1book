@@ -511,6 +511,10 @@ done
 
 We where able to use `grub2-mkconfig > /boot/grub2/grub.cfg` command too,and GRUB2 configuration steps finish here.
 
+#### grub-update
+
+When you run the update-grub command, GRUB automatically combines the settings from the /etc/default/grub file, the scripts from the /etc/grub.d/ directory, and everything else, creating a /boot/grub/grub.cfg file that’s read at boot.
+
 ### GRUB Interfaces
 
 There are three interfaces in GRUB which all provide different levels of functionality. The Linux kernel can be booted by the users with the help of these interfaces. Details about the interfaces are:
