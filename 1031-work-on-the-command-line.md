@@ -551,7 +551,7 @@ set [--abefhkmnptuvxBCEHPT] [-o option-name] [argument …]
 set [+abefhkmnptuvxBCEHPT] [+o option-name] [argument …]
 ```
 
- Use  + and - signs for enabling and disbaling options.Try`help set | less` wow!
+Try`help set | less` wow.
 
  For example `-f` **disable globbing**
 
