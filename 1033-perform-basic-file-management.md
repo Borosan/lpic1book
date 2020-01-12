@@ -39,7 +39,7 @@ As we said Linux is the world of processes and files, in this section we start t
 
 ### ls
 
-ls lists files and directories, and their associated metadata, such as file size, ownership, and modification time.
+ls **lists files and directories**, and their associated metadata, such as file size, ownership, and modification time.
 
 ```text
 ls [options] [file|dir]
@@ -55,7 +55,7 @@ Desktop    Downloads         Music     Public     Videos
 Documents  examples.desktop  Pictures  Templates
 ```
 
-The default output of the ls command shows only the names of the files, which is not very informative. So lets use ls with `-l` long listing format :
+The default output of the ls command shows only the names of the files, which is not very informative. So lets use ls with `-l` for long listing format :
 
 ```text
 user1@ubuntu16-1:~$ ls -l
@@ -201,11 +201,11 @@ total 0
 
 #### touch command timestamp options:
 
-* -a: change the access time only
-* -d: update the access and modification times
-* -m: change the modification time only
-* -r: use the access and modification times of **other** file as reference.
-* -t: creates a file using a specified time
+* `-a`: change the **access time** only
+* `-d`: update the **access and modification times**
+* `-m`: change the **modification time only**
+* `-r`: **use the access and modification times of other file as reference.**
+* `-t`: **creates a file using a specified time**
 
 Lets do some timestamp modifications.
 
@@ -269,7 +269,7 @@ Explicitly Set the Access and Modification times: `touch -c -t YYDDHHMM filename
 
 Update access and modification time:`touch -c -d fileName`
 
-We use the timestamp of another file with -r option: `touch -r second_file_name first_file_name`
+We use the timestamp of another file with -r option: `touch -r refrence_file_name file_name`
 
 ```text
 root@ubuntu16-1:~/test-space# stat file1
@@ -356,7 +356,7 @@ drwxr-xr-x 3 root root 4096 Sep  8 03:57 dir1
 drwxrwxrwx 2 root root 4096 Sep  8 04:09 dir2
 ```
 
-The syntax of the mode is the same as the chmod command \(next lessons\).
+The syntax of the mode is the same as the chmod command \(will be discussed later\).
 
 ```text
 root@ubuntu16-1:~/test-space# mkdir -v -m o=--- dir3
@@ -454,7 +454,7 @@ root@ubuntu16-1:~/test-space# tree
 
 **Copying files recursively**
 
-We can use cp to copy entire directory structures from one place to another using the -R option to perform a recursive copy.
+We can use cp to copy entire directory structures from one place to another using the `-R` option to perform a recursive copy.
 
  Let's say you are the user root and you have a directory, /home/test-space, which contains many files and subdirectories. You want to copy all those files, and all the subdirectories \(and the files and subdirectories they contain\), to a new location, /root/files-backup. You can copy all of them using the command:
 
@@ -544,7 +544,7 @@ cp command has lots of options.Try `man cp` command for more information.
 
 ### mv
 
-`mv` is used to move or rename one or more files or directories. In general, the names we can use follow the same rules as for copying with cp; \[If you are moving a file on the same file system, the inode wont change\].
+`mv` is used to **move or rename one or more files or directories**. In general, the names we can use follow the same rules as for copying with cp; \[If you are moving a file on the same file system, the inode wont change\]. 
 
 * Rename a file\( or directory\) name source to destination:
 
@@ -635,9 +635,9 @@ usefull mv command options:
 >
 > Normally, the cp command will copy a file over an existing copy, if the existing file is writable. On the other hand, the mv will not move or rename a file if the target exists. We can overcome this using the`-f`switch.
 
-#### rm
+### rm
 
-rm stands for **remove** here. rm -remove files or directories.
+`rm` stands for **remove** here. `rm` removes files or directories.
 
 ```text
 rm [OPTION]... FILE...
@@ -696,6 +696,7 @@ By default, `rm` does not remove directories.
 If the specified directory is empty, it may be removed with the -d/--dir option, instead.
 
 ```text
+root@ubuntu16-1:~/test-space# rm -d dir1
 root@ubuntu16-1:~/test-space# tree -F
 .
 └── dir2/
@@ -716,7 +717,7 @@ root@ubuntu16-1:~/test-space# tree -F
 
 `rm -d`lets us to remove a directory without specifying **-r/-R/--recursive**, provided that the directory is **empty**. In other words, **rm -d** is equivalent to using **rmdir**.
 
-#### rmdir
+### rmdir
 
 Removing directories using the rmdir command is the opposite of creating them. We can remove a directory with `rmdir` only if it is **empty** as there is **no option to force removal**.
 
@@ -769,7 +770,7 @@ Some time we need to work on more than one files, Now we try to have review over
 
 **Recursive listing**
 
-The ls command has a -R \(note uppercase “R”\) option for listing a directory and all its subdirectories. The recursive option applies only to directory names; it does not find all the files called ‘text1’, for example, in a directory tree.
+The ls command has a -R \(note uppercase “R”\) option for listing a directory and all its subdirectories. The recursive option applies only to directory names, for example, in a directory tree.
 
 ```text
 root@ubuntu16-1:~/test-space# tree
@@ -810,7 +811,7 @@ NewCopy/
 
 **Recursive deletion**
 
-I mentioned earlier that rmdir only removes empty directories. We can use the -r \(or -R or --recursive\) option to cause the rm command to remove both files and directories:
+I mentioned earlier that _rmdir only removes **empty** directories_. We can use the `-r` \(or -R or --recursive\) option to cause the rm command to remove both files and directories:
 
 ```text
 root@ubuntu16-1:~# ls
@@ -826,7 +827,7 @@ jcal_0.4.1-2_amd64.deb  unzip_6.0-20ubuntu1_amd64.deb
 
 ## Wildcards and Globbing
 
-File globbing is a feature provided by the UNIX/Linux shell to represent multiple filenames by using special characters called wildcards with a single file name. A wildcard is essentially a symbol which may be used to substitute for one or more characters. Therefore, we can use wildcards for generating the appropriate combination of file names as per our requirement.
+**File globbing is a feature provided by the UNIX/Linux shell to represent multiple filenames by using special characters called wildcards with a single file name.** A wildcard is essentially a symbol which may be used to substitute for one or more characters. Therefore, we can use wildcards for generating the appropriate combination of file names as per our requirement.
 
 ```text
 root@ubuntu16-1:~/test-space# ls -l
@@ -889,9 +890,11 @@ aaa.txt  bbbb.txt
 Wildcard patterns and regular expression patterns share some characteristics, but they are not the same. Pay careful attention.
 {% endhint %}
 
+Now that we’ve covered the file and directory topic with the big recursive hammer that hits everything, and the globbing hammer that hits more selectively, let’s look at the find command, which can be more like a surgeon’s knife.
+
 ### Finding Files
 
-Now that we’ve covered the file and directory topic with the big recursive hammer that hits everything, and the globbing hammer that hits more selectively, let’s look at the find command, which can be more like a surgeon’s knife. The find command is used to find files in one or more directory trees, based on criteria such as name, time stamp, or size.
+ The find command is used to find files in one or more directory trees, based on criteria such as name, time stamp, or size.
 
 ### find
 
@@ -923,7 +926,9 @@ root@ubuntu16-1:~/test-space# find /etc/ -iname "[y-z]*"
 
 `-name` option used for searching for files based on their name. `-i`makes it case insensitive. In the first example above, we found both files and a directory \(/etc\). 
 
-note: If you want to find a file or directory whose name begins with a dot, such as .bashrc or the current directory \(.\), then you must specify a leading dot as part of the pattern. Otherwise, name searches ignore these files or directories. `find . -name ".*"`
+{% hint style="info" %}
+**finding hidden files :** If you want to find a file or directory whose name begins with a dot, such as .bashrc or the current directory \(.\), then you must specify a leading dot as part of the pattern. Otherwise, name searches ignore these files or directories. `find . -name ".*"`
+{% endhint %}
 
 note: If you want to chain different results together, you can use the “-and” or “-or” commands. The “-and” is assumed if omitted. `find . -name file1 -or -name file9`
 
@@ -1020,7 +1025,7 @@ note : Adding the `-daystart` option means that you want to consider days as cal
 
 **Finding by Owner and Permissions**
 
-We can also search for files by the file owner or group owner. We do this by using the `-user` and `-group` parameters respectively.
+We can also search for files by the file owner or group owner\(will be discussed\). We do this by using the `-user` and `-group` parameters respectively.
 
 ```text
 root@ubuntu16-1:~/test-space# find /etc  -group shadow
@@ -1051,6 +1056,13 @@ Also it is possible to combine the min and max depth parameters to focus in on a
 ```text
 find -mindepth num -maxdepth num -name file
 ```
+
+Acting on files with two other switches:
+
+| find command switch | meaning |
+| :--- | :--- |
+| -ls | list current file in ls -dils format on standard output |
+| -print | print the full file name on the standard output |
 
 As you can see find command has tons of options, get into more details using man page files.
 
@@ -1086,7 +1098,7 @@ find . -name "*.deb" -exec cp {} /tmp/packages \;
 
 File names often have a suffix such as gif, jpeg, or html that gives a hint of what the file might contain. Linux does not require such suffixes and generally does not use them to identify a file type. Knowing what type of file you are dealing with helps you know what program to use to display or manipulate it.
 
-#### file
+### file
 
 The file command tells us something about the type of data in one or more files.
 
@@ -1586,6 +1598,12 @@ Policy options:
 | ls \| cpio -ov -H tar file.tar | create a tar file using cpio |
 | cpio -iv -F file.tar | extract a tar file using cpio |
 | cpio -it -F &lt; file.tar | only view tar archive file using cpio |
+
+.
+
+.
+
+.
 
 .
 
