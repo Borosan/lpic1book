@@ -1380,7 +1380,7 @@ dir1  dir2  myconf.txt  mylog.txt
 root@ubuntu16-1:~/test-space/myfiles# xz mylog.txt 
 ```
 
-or we could use xz -x file to compress that. -d is used for decompression:
+or we could use xz `-x` file to compress that. `-d` is used for decompression:
 
 ```text
 root@ubuntu16-1:~/test-space/myfiles# xz -d mylog.txt.xz 

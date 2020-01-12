@@ -489,10 +489,6 @@ D: closed   db environment /var/lib/rpm
 
 rpm take care of dependencies while removing a package and does not remove package dependencies. on the other hand if a package is required by other pacakage\(d\) rpm avoid removing that.The `–nodeps` **\(Do not check dependencies\)** option **forcefully** remove the rpm package from the system. But keep in mind removing particular package may break other working applications.
 
-note:If you've made changes to a configuration file that was originally installed by RPM, your changes won't be lost if you erase the package. 
-
-What you can do is just run "rpm -qc packageName" which will show you which configuration files were installed on your system by an rpm. When you have uninstalled the rpm, you can search on your system if any of the files or their backups remain on your system and remove them manually.
-
 ### rpm2cpio
 
 From time to time, we might find it necessary to extract one or more files from a package file. One way to do this would be to:
@@ -515,7 +511,7 @@ As the name implies, rpm2cpio takes an RPM package file and converts it to a cpi
 
 ![](.gitbook/assets/redpack-rpm2cpio.jpg)
 
-In this case, the cpio options`-i` Extract one or more files from an archive, `-v`verboe, list the files processed, and `-d`Create leading directories where needed.\(We will talk about cpio in next courses\)
+In this case, the cpio options`-i` Extract one or more files from an archive, `-v`Extract one or more files from an archive, and `-d`Create any directories that precede the filename specified in the cpio command.\(We will talk about cpio in next courses\)
 
 rpm2cpio takes only only one argument, and even that's optional! The optional argument is the name of the package file to be converted. \(If there is no filename specified on the command line, rpm2cpio will simply read from standard input and convert that to a cpio archive.\)
 
@@ -1354,10 +1350,6 @@ sources:
 [http://ftp.rpm.org/max-rpm/s1-rpm-verify-output.html](http://ftp.rpm.org/max-rpm/s1-rpm-verify-output.html)\(rpm -V\)
 
 [https://serverfault.com/questions/747089/whats-the-diff-between-rpm-u-and-rpm-f?rq=1](https://serverfault.com/questions/747089/whats-the-diff-between-rpm-u-and-rpm-f?rq=1)
-
-[http://ftp.rpm.org/max-rpm/s1-rpm-erase-and-config-files.html](http://ftp.rpm.org/max-rpm/s1-rpm-erase-and-config-files.html)
-
-[https://www.linuxquestions.org/questions/linux-software-2/can-rpm-remove-config-files-during-uninstall-537423/](https://www.linuxquestions.org/questions/linux-software-2/can-rpm-remove-config-files-during-uninstall-537423/)
 
 [http://ftp.rpm.org/max-rpm/s1-rpm-miscellania-rpm2cpio.html](http://ftp.rpm.org/max-rpm/s1-rpm-miscellania-rpm2cpio.html)
 
