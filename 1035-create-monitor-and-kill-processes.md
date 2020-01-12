@@ -126,6 +126,8 @@ We brought a job to foreground and use Ctrl + C to kill that job.
 
 jobs normally stick to the shell running it, so they are killed when we close the terminal or log out. Some times we need to make sure that the running job is not attached to the running shell.
 
+> Use `set -m` to disable job control
+
 ### Signal a program to continue running after logout
 
 ### nohup

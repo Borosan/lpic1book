@@ -70,23 +70,26 @@ Constructing long pipelines of commands that each have limited capability is a c
 [root@centos7-1 ~]# dmesg | less
 ```
 
-### Stream Redirection \(I/O Redirection\)
+### Redirection 
 
-Linux includes redirection commands for each stream.stream redirection allows us to alter the input source of a command as well as where its output and error messages are sent to. And this is made possible by the “&lt;” and “&gt;” redirection operators.
+Linux includes redirection commands for each stream.We can use `>` in order to redirect output stream \(mostly to a file\).
 
-**Overwrite** : Commands with a single bracket overwrite the destination's existing contents.
+```text
+[root@centos7-1 temp]# ls -1
+test.txt
+unexpanded.txt
+zip-3.0-11.el7.x86_64.rpm
+zip.cpio
 
-* **&gt; - standard output**
-* **&lt; - standard input**
-* **2&gt; - standard error**
+[root@centos7-1 temp]# ls -1 > list.txt
 
-**Append**  :Commands with a double bracket do not overwrite the destination's existing contents.
-
-* **&gt;&gt; - standard output**
-* **&lt;&lt; - standard input**
-* **2&gt;&gt; - standard error**
-
-These commands write standard output to a file. If a non-existent file is targeted \(either by a single-bracket or double-bracket command\), a new file with that name will be created prior to writing.
+[root@centos7-1 temp]# cat list.txt 
+list.txt
+test.txt
+unexpanded.txt
+zip-3.0-11.el7.x86_64.rpm
+zip.cpio
+```
 
 > "\|" vs "&gt;"
 >

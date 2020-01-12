@@ -136,13 +136,12 @@ hello ; by
 
 Enclosing characters in double quotes \(`"`\) preserves the literal value of all characters within the quotes, _with the exception of `$`, `````, `\`, and, when history expansion is enabled, `! .`_
 
-`[root@centos7-1 ~]# echo "hello | by"`
-
-`hello | by` 
-
-`[root@centos7-1 ~]# echo "hello ; by"` 
-
-`hello ; by` 
+```text
+[root@centos7-1 ~]# echo "hello | by"
+hello | by 
+[root@centos7-1 ~]# echo "hello ; by" 
+hello ; by
+```
 {% endhint %}
 
 Lets take a look at other options of echo command:
@@ -551,37 +550,30 @@ set [--abefhkmnptuvxBCEHPT] [-o option-name] [argument …]
 set [+abefhkmnptuvxBCEHPT] [+o option-name] [argument …]
 ```
 
-Try`help set | less` wow.
-
- For example `-f` **disable globbing**
-
-> File **globbing** is a feature provided by the UNIX/**Linux** shell to represent multiple filenames by using special characters called wildcards with a single file name. \(Discussed in next courses\)
-
- as an example if we disable globbing via set then "\*" in`ls *` wont mean any file:
-
-```text
-[root@centos7-1 yum.repos.d]# ls *
-CentOS-Base.repo       CentOS-fasttrack.repo  CentOS-Vault.repo
-CentOS-CR.repo         CentOS-Media.repo      epel.repo
-CentOS-Debuginfo.repo  CentOS-Sources.repo    epel-testing.repo
-[root@centos7-1 yum.repos.d]# set -f
-[root@centos7-1 yum.repos.d]# ls *
-ls: cannot access *: No such file or directory
-[root@centos7-1 yum.repos.d]# set +f
-[root@centos7-1 yum.repos.d]# ls *
-CentOS-Base.repo       CentOS-fasttrack.repo  CentOS-Vault.repo
-CentOS-CR.repo         CentOS-Media.repo      epel.repo
-CentOS-Debuginfo.repo  CentOS-Sources.repo    epel-testing.repo
-
-```
-
- Use `-m` to disable job control\(Discussed in next courses\).
+ Use  - and + signs for enabling and disbaling options.Try`help set | less`  .
 
 To see the current shell options use `echo $-` :
 
 ```text
 [root@centos7-1 ~]# echo $-
 himuBH
+```
+
+ For example -u treat unset variables as an error when substituting:
+
+```text
+root@ubuntu16-1:~# echo $-
+himBH
+root@ubuntu16-1:~# echo $VAR1
+
+root@ubuntu16-1:~# set -u
+root@ubuntu16-1:~# echo $-
+himuBH
+root@ubuntu16-1:~# echo $VAR1
+-su: VAR1: unbound variable
+root@ubuntu16-1:~# set +u
+root@ubuntu16-1:~# echo $-
+himBH
 ```
 
 We can use `set -o` without any option to get the current state of shell options :

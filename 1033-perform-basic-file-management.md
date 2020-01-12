@@ -899,6 +899,8 @@ aaa.txt  bbbb.txt
 
 `rm {*.doc,*.docx}` : delete all files whose extensions are ‘doc’ or ‘docx’.
 
+> We can disable globbing using `set -f` command.
+
 {% hint style="danger" %}
 **Wildcard patterns vs Regular Expressions**
 
