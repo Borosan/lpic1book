@@ -55,6 +55,21 @@ Desktop    Downloads         Music     Public     Videos
 Documents  examples.desktop  Pictures  Templates
 ```
 
+ `-1` prints outs each result in 1 line:
+
+```text
+user1@ubuntu16-1:~$ ls -1
+Desktop
+Documents
+Downloads
+examples.desktop
+Music
+Pictures
+Public
+Templates
+Videos
+```
+
 The default output of the ls command shows only the names of the files, which is not very informative. So lets use ls with `-l` for long listing format :
 
 ```text
@@ -98,7 +113,7 @@ user1@ubuntu16-1:~$ ls -a
 .cache         examples.desktop  Music          Videos
 ```
 
- `-1` prints outs each result in 1 line.Some other usefull options:
+Some other usefull options:
 
 | ls command options | description |
 | :--- | :--- |
@@ -1021,7 +1036,7 @@ root@ubuntu16-1:~/test-space# find /home -cmin -120
 /home/user1/.cache/upstart/unity-panel-service.log
 ```
 
-note : Adding the `-daystart` option means that you want to consider days as calendar days, starting at midnight.
+note : Adding the `-daystart` option to `-mtime` or `-atime` means that we want to consider days as calendar days, starting at midnight. So to list the regular files in your home directory that were modified yesterday we can use `find ~/ -daystart -type f -mtime 1` .
 
 **Finding by Owner and Permissions**
 
@@ -1127,7 +1142,8 @@ PDF document, version 1.4
 `-z`**:** Try to look inside compressed files.
 
 ```text
-root@ubuntu16-1:~/test-space# file -z zabbix-cli-rpm-2.1.1-1.tar.gz zabbix-cli-rpm-2.1.1-1.tar.gz: POSIX tar archive (gzip compressed data, from Unix)
+root@ubuntu16-1:~/test-space# file -z zabbix-cli-rpm-2.1.1-1.tar.gz zabbix-cli-rpm-2.1.1-1.tar.gz:
+POSIX tar archive (gzip compressed data, from Unix)
 ```
 
 and `-i`option **** To view mime type of file.
@@ -1453,7 +1469,7 @@ myarch.tar  myfiles
 
 We can include more than one directory, also it is possible to exclude with `--exclude` option.
 
-note: by default tar uncompresses file in your current directory and it can make some problems\(overwriting ,...\), for avoiding that use `tar -xvf backupfile  -C  /restoreDir` command. -C means change the directory before extracting the backup.
+note: by default tar uncompress file in your current directory and it can make some problems\(overwriting ,...\), for avoiding that use `tar -xvf backupfile  -C  /restoreDir` command. `-C` means change the directory before extracting the backup.
 
 **Untar tar Archive File**
 
@@ -1519,7 +1535,7 @@ tar command Options:
 wildcards – Specify patterns in unix tar command
 ```
 
-note: `-r` option can not append any files to a compressed file.  
+note: `-r` option can not append any files to a **compressed file**.  
 
 we usually use mixture of tar options to gain what we want:
 
