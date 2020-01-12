@@ -1519,6 +1519,8 @@ tar command Options:
 wildcards – Specify patterns in unix tar command
 ```
 
+note: `-r` option can not append any files to a compressed file.  
+
 we usually use mixture of tar options to gain what we want:
 
 | tar command example | Description |
