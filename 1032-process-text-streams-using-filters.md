@@ -88,6 +88,8 @@ Linux includes redirection commands for each stream.stream redirection allows us
 
 These commands write standard output to a file. If a non-existent file is targeted \(either by a single-bracket or double-bracket command\), a new file with that name will be created prior to writing.
 
+> "\|" vs "&gt;"
+>
 > The difference between &gt; \(redirection operator\) and \| \(pipeline operator\) is that while the &gt;  connects a command with a file, the \| connects the output of a command with another command.
 
 ### Text filtering
