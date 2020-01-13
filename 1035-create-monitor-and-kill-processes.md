@@ -50,7 +50,7 @@ that goes to sleep for 3600 seconds, that is an hour! So you can wait for an hou
 
 ### Foreground and Background jobs
 
- A job is a process that the shell manages. Each job is assigned a sequential job ID. Because a job is a process, each job has an associated PID. There are two types of job statuses:
+ A **job is a process that the shell manages**. Each job is assigned a sequential job ID. Because a job is a process, each job has an associated PID. There are two types of job statuses:
 
 1. **Foreground**: When we enter a command in a terminal window, the command occupies that terminal window until it completes. This is a foreground job.  
  2. **Background**: When we enter an ampersand \(&\) symbol at the end of a command line, the command runs without occupying the terminal window. The shell prompt is displayed immediately after you press Return. This is an example of a background job.
@@ -71,6 +71,7 @@ Job control commands enable **us** to place jobs in the foreground or background
 | bg %n | Places the current or specified job in the background, where n is the job ID |
 | fg %n | Brings the current or specified job into the foreground, where n is the job ID |
 | Control-Z | Stops the foreground job and places it in the background as a stopped job |
+| Control-C | Ctrl+C kills the process |
 
 > if no job id is mentioned bg and fg consider the most recent job
 
@@ -134,10 +135,9 @@ jobs normally stick to the shell running it, so they are killed when we close th
 
 `Nohup` stands for **no hangup**, and that means even if the parent shell is diconnected the job just will continue,  The output of the **nohup** command will write in **nohup.out** the file if any redirecting filename is not mentioned in **nohup** command.
 
-We can use the nohup command by two ways.
-
-1. `nohup command [args…]`
-2. `nohup option`
+```text
+nohup command [command-argument ...]
+```
 
 Using nohup with commands:
 
