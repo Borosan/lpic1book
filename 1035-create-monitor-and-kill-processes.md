@@ -125,11 +125,9 @@ root@ubuntu16-1:~#
 
 We brought a job to foreground and use Ctrl + C to kill that job. 
 
+jobs normally stick to the shell running it, so they are killed when we close the terminal or log out. Some times we need to make sure that the running job is not attached to the running shell.
 
-
-> we can disable job control via `set -m` command.
-
-jobs normally stick to the shell running it, so they are killed when we close the terminal or log out. Some times we need to make sure that the running job is not attached to the running shell.This is where nohup and disown come to play.
+> Use `set -m` to disable job control
 
 ### Signal a program to continue running after logout
 
@@ -169,40 +167,40 @@ root@ubuntu16-1:~/test-space#
 
  When we run nohup command without ‘**&’** then it returns to shell command prompt immediately after running that particular command in the background.
 
-> We useually use nohup with output redirection `nohup bash script.sh > myresult.txt 2>&1`
+> We useually use nohup with output redirection `nohup bash script.sh > myresult.txt`
 
-{% hint style="info" %}
-**disown**
-
-We can also use disown command, it is used after the a process has been launched and put in the background, it’s work is to remove a shell job from the shell’s active list jobs, therefore we can not use fg, bg commands on that particular job anymore but that process keeps running even after closing current shell.
-
-```text
-root@ubuntu16-1:~# jobs
-root@ubuntu16-1:~# sleep 111 &
-[1] 6394
-root@ubuntu16-1:~# jobs -l
-[1]+   Running                 sleep 111 &
-root@ubuntu16-1:~# disown %1
-root@ubuntu16-1:~# jobs 
-root@ubuntu16-1:~# pgrep sleep
-6394
-```
-
- disown -h %1 lets us to have  normal job control mechanisms to continue controlling the process until closing the terminal.
-
-| Option | Description |
+| nohup option | Description |
 | :--- | :--- |
-| **-a** | Delete all jobs if jobID is not supplied. |
-| **-r** | Delete only running jobs. |
-{% endhint %}
+| --help |  display this help and exit |
+| --version |  output version information and exit |
+
+> **disown**
+>
+> We can also use **disown** command, it is used after the a process has been launched and put in the background, it’s work is to remove a shell job from the shell’s active list jobs, therefore we can not use `fg`, `bg` commands on that particular job anymore.
+>
+> `root@ubuntu16-1:~#sleep 666 &`
+>
+> `root@ubuntu16-1:~# sleep 666 &` 
+>
+> `[1] 55458` 
+>
+> `root@ubuntu16-1:~# jobs`
+>
+>  `[1]+ Running sleep 666 &` 
+>
+> `root@ubuntu16-1:~# disown %1` 
+>
+> `root@ubuntu16-1:~# jobs`
+>
+> `root@ubuntu16-1:~#`
+>
+> we can use  disown with -h option. `disown -h %1`. In this state, you could use normal job control mechanisms to continue controlling the process until closing the terminal. Upon closing the terminal, you will, once again, be stuck with a process with nowhere to output if you didn’t redirect to a file when starting it.
 
 There is a problem with nohup and disown commands. There is no way to bring back that job to forground and work interactivly with that. So we need a different solution, screen.
 
 ### screen
 
- **screen** command in Linux provides the ability to launch and use multiple shell sessions from a single _ssh_ session. 
-
-When a process is started with ‘screen’, the process can be detached from session and then can reattach the session at a later time. When the session is detached, the process that was originally started from the screen is still running and managed by the screen itself. The process can then re-attach the session at a later time, and the terminals are still there, the way it was left. \(you might need to install it\)
+ **screen** command in Linux provides the ability to launch and use multiple shell sessions from a single _ssh_ session. When a process is started with ‘screen’, the process can be detached from session & then can reattach the session at a later time. When the session is detached, the process that was originally started from the screen is still running and managed by the screen itself. The process can then re-attach the session at a later time, and the terminals are still there, the way it was left. \(you might need to install it\)
 
 #### Start screen for the first time
 
@@ -328,7 +326,7 @@ ps \(Process status\) can be used to see/list all the running processes and thei
 ps [options]
 ```
 
- ps reads the process information from the virtual files in **/proc** file-system.  In it's simplest form, when used without any option, `ps` will print four columns of information for minimum two processes running in the current shell, the shell itself, and the processes that run in the shell when the command was invoked.
+ ps reads the process information from the virtual files in **/proc** file-system. /proc contains virtual files, this is the reason it’s referred as a virtual file system.
 
 ```text
 root@ubuntu16-1:~# ps
@@ -365,7 +363,7 @@ root         10  0.0  0.0      0     0 ?        S    Oct11   0:00 [migration/0]
 root         11  0.0  0.0      0     0 ?        S    Oct11   0:01 [watchdog/0]
 ```
 
-where column are :
+where,
 
 * **USER –** Specifies the user who executed the program.
 
@@ -387,17 +385,18 @@ where column are :
 
   **TIME:** Shows the processor’s time occupied by the program.
 
-  **C0MMAND:** Shows the command used to launch the process.
+  **CMD:** Shows the command used to launch the process.
 
 > We can also use ps -ef instead of ps aux . There are no **differences** in the output because the meanings are the same. The **difference between ps** -**ef and ps aux** is due to historical divergences **between** POSIX and BSD systems. At the beginning, POSIX accepted the -**ef** while the BSD accepted only the **aux** form. Both list all processes of all users. In that aspect `-e` and `ax` are completely equivalent.
 
 | Options for ps command | Description |
 | :--- | :--- |
-| ps -T | View Processes  associated with a terminal |
+| ps -A , ps -e | View all the running processes |
+| ps -a | View Processes not associated with a terminal |
+| ps -T | View Processes not associated with a terminal |
 | ps -x | View all processes owned by you |
-| ps -o  column\_name | view process according to user-defined format |
 
-It is also possible to use --sort option to sort output based on different fields \(+ for ascending & - for descending\). `ps -eo  pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -10` . With`-o` or `–format` options, ps allows us to build user-defined output formats.
+It is also possible to use --sort option to sort output based on different fields \(+ for ascending & - for descending\). `ps -eo  pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -10` . `-o` or `–format` options, ps allows you to build user-defined output formats.
 
 |  **Process selection commands** | Description |
 | :--- | :--- |
@@ -461,9 +460,7 @@ pgrep options:
  -V, --version  output version information and exit
 ```
 
-> **Real Time process monitoring ?**
->
-> Be creative and use combination of  other commands like 'watch'. We can use 'watch' in conjunction with ps  command to perform Real-time Process Monitoring :
+> Be creative and use combination of commands we have learned like 'watch'. We can use 'watch' in conjunction with ps  command to perform Real-time Process Monitoring :
 >
 > `watch -n 1 'ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head'`
 
@@ -599,7 +596,7 @@ killing a proccess by name could be realy dangerous, Before sending signal,  ver
 
 ### killall
 
- `killall` is a tool for terminating running processes on your system **based on name**. _In contrast, `kill` terminates processes based on Process ID number \(PID\)_. Like `kill` , `killall` can also send specific system signals to processes.
+ `killall` is a tool for terminating running processes on your system based on name. In contrast, `kill` terminates processes based on Process ID number \(PID\). Like `kill` , `killall` can also send specific system signals to processes.
 
 ```text
 kill {-signal | -s signal} process_name 
@@ -626,7 +623,7 @@ root@ubuntu16-1:~# ps -ef | grep sleep | grep -v grep
 | killall command example | Description |
 | :--- | :--- |
 | killall -l | all signals the killall command can send |
-| killall -q process\_name | prevent killall from complaining if specified process doesn't exist |
+| killall -u process\_name | prevent killall from complaining if specified process doesn't exist |
 | killall -u \[user-name\] | kill all processes owned by a user |
 | killall -o 5h | kill all processes that have now been running for more than _5_ hour |
 | killall -y 4h | kill all precesses  that less than 4 hours old |
@@ -634,7 +631,7 @@ root@ubuntu16-1:~# ps -ef | grep sleep | grep -v grep
 
 ### pkill
 
-The PKill command allows you to kill a program simply **by specifying the name.**
+The PKill command allows you to kill a program simply by specifying the name.
 
 ```text
 pkill [options] pattern
@@ -811,10 +808,6 @@ Some extra modifiers:
 [https://linoxide.com/linux-command/15-examples-screen-command-linux-terminal/](https://linoxide.com/linux-command/15-examples-screen-command-linux-terminal/)
 
 [https://ryanstutorials.net/linuxtutorial/processes.php](https://ryanstutorials.net/linuxtutorial/processes.php)
-
-[https://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/](https://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/)
-
-[https://linuxize.com/post/ps-command-in-linux/](https://linuxize.com/post/ps-command-in-linux/)
 
 [https://www.computerhope.com/jargon/p/pid.htm](https://www.computerhope.com/jargon/p/pid.htm)
 

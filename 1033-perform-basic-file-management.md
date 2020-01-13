@@ -1627,8 +1627,8 @@ Policy options:
 
 .
 
-{% hint style="success" %}
-#### Linux Devices
+{% hint style="info" %}
+#### Linux Devices \(beyond the scop of LPIC1 exam\)
 
  In Linux various special files can be found under the directory `/dev`. These files are called device files and behave unlike ordinary files.
 
