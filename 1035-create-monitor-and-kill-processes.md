@@ -53,7 +53,7 @@ that goes to sleep for 3600 seconds, that is an hour! So you can wait for an hou
  A **job is a process that the shell manages**. Each job is assigned a sequential job ID. Because a job is a process, each job has an associated PID. There are two types of job statuses:
 
 1. **Foreground**: When we enter a command in a terminal window, the command occupies that terminal window until it completes. This is a foreground job.  
- 2. **Background**: When we enter an ampersand \(&\) symbol at the end of a command line, the command runs without occupying the terminal window. The shell prompt is displayed immediately after you press Return. This is an example of a background job.
+ 2. **Background**: When we enter an ampersand \(**&**\) symbol at the end of a command line, the command runs without occupying the terminal window. The shell prompt is displayed immediately after you press Return. This is an example of a background job.
 
 ```text
 root@ubuntu16-1:~# sleep 1000 &
