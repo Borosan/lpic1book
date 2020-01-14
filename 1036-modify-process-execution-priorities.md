@@ -54,7 +54,7 @@ root@ubuntu16-1:~# nice
 
 #### Determining the niceness value of a current process <a id="determining-the-niceness-value-of-a-current-process"></a>
 
-The niceness value of current processes are also pretty simple to find as they are visible in the ps command’s long format.
+The niceness value of current processes are also pretty simple to find as they are visible in the ps command’s full long format :
 
 ```text
 root@ubuntu16-1:~# sleep 11111 &
@@ -72,6 +72,8 @@ F S UID         PID   PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
 0 S root      65129  65098  0  80   0 -  1822 hrtime 04:48 pts/17   00:00:00 sleep 22222
 0 R root      65133  65098  0  80   0 -  9341 -      04:49 pts/17   00:00:00 ps -fl
 ```
+
+> `-f` do full-format listing and  `-l` is for Long format.
 
 #### Changing the nice value of a new process <a id="changing-the-nice-value-of-a-new-process"></a>
 
@@ -123,7 +125,7 @@ F S UID         PID   PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
 0 R root      65113  65098  0  80   0 -  9341 -      04:45 pts/17   00:00:00 ps -fl
 ```
 
-it good to know that nice command has there different syntaxes:
+it good to know that nice command has there different syntax:
 
 ```text
 $ nice -n niceness-value [command args] 
