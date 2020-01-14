@@ -104,7 +104,7 @@ Everything written after a pound sign \(\#\) is ignored by the shell. This is us
 zip-3.0-11.el7.x86_64.rpm  zip.cpio
 ```
 
-**end of line backslash /**
+**end of line backslash \**
 
 Lines ending in a backslash are continued on the next line. The shell does not interpret the newline character and will wait on shell expansion and execution of the command line until a newline without backslash is encountered.
 
@@ -115,7 +115,7 @@ Lines ending in a backslash are continued on the next line. The shell does not i
 first line second line 2nd line 3rd line
 ```
 
-**escaping special characters  \**
+**escaping special characters**  
 
 The backslash  character enables the use of control characters, but without the shell interpreting it, this is called **escaping characters**.
 
