@@ -104,7 +104,7 @@ Everything written after a pound sign \(\#\) is ignored by the shell. This is us
 zip-3.0-11.el7.x86_64.rpm  zip.cpio
 ```
 
-**end of line backslash /**
+**end of line backslash \**
 
 Lines ending in a backslash are continued on the next line. The shell does not interpret the newline character and will wait on shell expansion and execution of the command line until a newline without backslash is encountered.
 
@@ -115,7 +115,7 @@ Lines ending in a backslash are continued on the next line. The shell does not i
 first line second line 2nd line 3rd line
 ```
 
-**escaping special characters  \**
+**escaping special characters**  
 
 The backslash  character enables the use of control characters, but without the shell interpreting it, this is called **escaping characters**.
 
@@ -132,9 +132,9 @@ hello ; by
 ```
 
 {% hint style="info" %}
- **Double quotes**  ``**"** 
+ **Double quotes " "** 
 
-Enclosing characters in double quotes \(`"`\) preserves the literal value of all characters within the quotes, _with the exception of `$`, `````, `\`, and, when history expansion is enabled, `! .`_
+Enclosing characters in double quotes \(`"`\) preserves the literal value of all characters within the quotes, \[_with the exception of `$`, `````, `\`, and, when history expansion is enabled, `!`_  ._The characters `$` and ````` retain their special meaning within double quotes_`].`
 
 ```text
 [root@centos7-1 ~]# echo "hello | by"
@@ -388,7 +388,7 @@ When creating a new child process \(a sub shell in our example\) an export comma
 We can terminate a shell using the exit command or simply press ctrl+d keys.
 
 {% hint style="info" %}
-**\(\)** : parentheses really put the command in a subshell. try\(exit\)
+**\( \)** : parentheses really put the command in a subshell. try\(exit\)
 {% endhint %}
 
 ### export

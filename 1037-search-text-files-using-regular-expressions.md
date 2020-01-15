@@ -30,7 +30,18 @@ Linux has two regular expression engines:
 * The **Basic Regular Expression \(BRE\)** engine.
 * The **Extended Regular Expression \(ERE\)** engine.
 
-> There's a differene between basic and extended regular expressions.Some utilities is written to support only basic regular expressions \(BRE\)and other utilities are written to support extended regular expressions\(ERE\) as well.Most Linux programs work well with BRE engine specifications, With GNU grep, there is no difference in functionality.
+> There's a difference between basic and extended regular expressions.Some utilities is written to support only basic regular expressions \(BRE\)and other utilities are written to support extended regular expressions\(ERE\) as well.Most Linux programs work well with BRE engine specifications, With GNU grep, there is no difference in functionality.
+
+## What makes up regular expressions
+
+There are two types of characters to be found in regular expressions:
+
+* literal characters
+* metacharacters
+
+**Literal characters** are standard characters that make up our strings. Every character in this sentence is a literal character. You could use a regular expression to search for each literal character in that string.
+
+**Metacharacters** are a different beast altogether; they are what give regular expressions their power. With metacharacters, we can do much more than searching for a single character. Metacharacters allow us to search for combinations of strings and much more. 
 
 ## grep
 
@@ -39,6 +50,22 @@ grep stands for **g**eneral **r**egular **e**xpression **p**arser**.** The grep 
 ```text
 grep [options] pattern [files]
 ```
+
+Lets see some examples:
+
+| command | description |
+| :--- | :--- |
+| echo "linux is my os" \| grep l  | **l**inux is my os |
+| echo "linux is my os" \| grep i | l**i**nux **i**s my os |
+
+ **Concatenation**
+
+ Concatenating two regular expressions creates a longer expression. 
+
+| regex | match |
+| :--- | :--- |
+| echo "aa ab ba aaa bbb AB BA" \| grep "a" | **aa a**b b**a** **aaa** bbb AB BA |
+| echo "aa ab ba aaa bbb AB BA" \| grep "ab" | aa **ab** ba aaa bbb AB BA |
 
 ```text
 Options Description
@@ -56,25 +83,7 @@ Options Description
  with each such part on a separate output line.
 ```
 
-## What makes up regular expressions
-
-There are two types of characters to be found in regular expressions:
-
-* literal characters
-* metacharacters
-
-Literal characters are standard characters that make up our strings. Every character in this sentence is a literal character. You could use a regular expression to search for each literal character in that string.
-
-Metacharacters are a different beast altogether; they are what give regular expressions their power. With metacharacters, we can do much more than searching for a single character. Metacharacters allow us to search for combinations of strings and much more. 
-
- **Concatenation**
-
- Concatenating two regular expressions creates a longer expression. 
-
-| regex | match |
-| :--- | :--- |
-| echo "aa ab ba aaa bbb AB BA" \| grep "a" | **aa a**b b**a** **aaa** bbb AB BA |
-| echo "aa ab ba aaa bbb AB BA" \| grep "ab" | aa **ab** ba aaa bbb AB BA |
+### Extended Regular Expressions
 
  **Repetition**
 
@@ -85,17 +94,21 @@ Metacharacters are a different beast altogether; they are what give regular expr
 {% hint style="info" %}
 #### Globbing and Regex: So Similar, So Different
 
- Beginners sometimes tend to confuse wildcards\(globbing\) with regular expressions when using grep but they are not the same.  
+ Beginners sometimes tend to confuse **wildcards**\(globbing\) with **regular expressions** when using grep but they are not the same.  
  Wildcards are a feature provided by the shell to expand file names whereas regular expressions are a text filtering mechanism intended for use with utilities like grep, sed and  awk.
 
 | Special Character | Meaning in Globs | Meaning in Regex |
 | :--- | :--- | :--- |
-| \* | zero or more characters | zero or more of the character it follows |
-| ? | single occurrence of any character | zero or one of the character it follows but not more than 1 |
-| . | literal "." character | any single character |
+| **\*** | zero or more characters | zero or more of the character it follows |
+| **?** | single occurrence of any character | zero or one of the character it follows but not more than 1 |
+| **.** | literal "." character | any single character |
 {% endhint %}
 
-Inorder to avoid any mistak while using regular expressions, use `grep` with `-E` option in order to Treats pattern as an extended regular expression\(ERE\).
+In order to avoid any mistake while using  extended regular expressions, use `grep` with `-E` option, `-E`  treats pattern as an extended regular expression\(ERE\).
+
+{% hint style="info" %}
+**double quotes " " :** Also we need to put our extended regex between  double quotes, other wise it might be interpreted by bash and gives us different results. 
+{% endhint %}
 
 | regex | match |
 | :--- | :--- |
@@ -116,16 +129,16 @@ egrep [ options ] 'PATTERN' files
 
  **Options:** Most of the options for this command are same as grep.
 
-So intead of using grep -E command in above we can use egrep easily.
+So instead of using grep -E command in above we can use egrep easily.
 {% endhint %}
 
 #### Curly Braces
 
 Curly braces enable us to specify the number of existence for a pattern, it has three formats:
 
-* **{N}** meanspreceding item is matched exactly N times.
-* **{N,}** means preceding item is matched N or more times.
-* The **{N,M}** means preceding item is matched at least **N** times, but not more than **M** times.
+* **{N}** meanspreceding item is matched _exactly_ **N times**.
+* **{N,}** means preceding item is matched **N or more times**.
+* The **{N,M}** means preceding item is matched _at least_ **N** _times, but not more than_ **M** _times_.
 
 | regex | match |
 | :--- | :--- |
@@ -135,7 +148,7 @@ Curly braces enable us to specify the number of existence for a pattern, it has 
 
 **Any Characters**
 
-The .\(dot\) is a metacharacter that stands for any character\(except newline `\n` \)
+The .\(dot\) is a meta character that stands for any character\(except newline `\n` \)
 
 * The  **.**   Matches **any single character**. 
 
@@ -157,9 +170,9 @@ root@ubuntu16-1:~# cat text
 abc
 bcd
 efg
-root@ubuntu16-1:~# egrep ^b text
+root@ubuntu16-1:~# egrep "^b" text
 bcd
-root@ubuntu16-1:~# egrep g$ text
+root@ubuntu16-1:~# egrep "g$" text
 efg
 ```
 
@@ -175,7 +188,7 @@ The alternation operator \(\|\) matches either the preceding or following expres
 
 ### Character Classes
 
-We can match any character with the dot special character, but what if you match a set of characters only, you can use a character class.The character class matches a set of characters if any of them found, the pattern matches.The character class is defined using square brackets \[\]
+We can match any character with the dot special character, but what if you match a set of characters only? We can use a character class.The character class matches a set of characters if any of them found, the pattern matches.The character class is defined using square brackets \[ \]
 
 **Bracket expression**
 
@@ -189,7 +202,7 @@ By placing a group of characters within brackets \("\[" and "\]"\), we can speci
 
 ### Negating Character Classes
 
-What about searching for a character that is not in the character class?To achieve that, precede the character class range with a caret ^
+What about searching for a character that is not in the character class? To achieve that, precede the character class range with a caret ^
 
 *  **\[^set\_of\_characters\]**  _Negation:_ Matches any single character that is not in set\_of\_characters. By default, the match is case sensitive.
 
@@ -235,9 +248,7 @@ regex patterns use some special characters. And we can’t include them in your 
 
 **.\*\[\]^${}\+?\|\(\)**
 
-We need to escape these special characters using the backslash character \(\\).
-
-> In egrep, +, ?, \|, \(, and \), treated as meta characters. Where as in grep, they are rather treated as pattern instead of meta characters. By including 'backslash' followed by meta character can let the grep to treat it as meta characters like \?, +, {, \|, \(, and \).
+So how we can search for some of them inside a test? That's where fgrep comes to play.
 
 ### fgrep
 
@@ -278,7 +289,7 @@ bcd$
 
 ### sed
 
- Sed command or **Stream Editor** is very powerful utility offered by Linux/Unix systems. It is mainly used for **text substitution** , find & replace but it can also perform other text manipulations like **insertion**, **deletion**, **search** etc. With SED, we can edit complete files without actually having to open it. Sed also supports the use of regular expressions, which makes sed an even more powerful **test manipulation tool**.
+ Sed command or **Stream Editor** is very powerful utility offered by Linux/Unix systems. It is mainly used for **text substitution** , **find & replace** but it can also perform other text manipulations like **insertion**, **deletion**, **search** etc. With **sed**, we can edit complete files without actually having to open it. Sed also supports the use of regular expressions, which makes sed an even more powerful **test manipulation tool**.
 
  We have previously used sed for text substitution, here we want to use regex with that.
 
@@ -305,7 +316,7 @@ root@ubuntu16-1:~# sed -rn "s/^(Comment|comment)/\#/"  text
 root@ubuntu16-1:~# 
 ```
 
-When the "-n" option is used, the "p" flag will cause the modified line to be printed.
+When the "-n" option is used, the "p" flag will cause just the modified line to be printed:
 
 ```text
 root@ubuntu16-1:~# sed -rn "s/^(Comment|comment)/CHANGE/p"  text
