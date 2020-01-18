@@ -899,6 +899,8 @@ aaa.txt  bbbb.txt
 
 `rm {*.doc,*.docx}` : delete all files whose extensions are ‘doc’ or ‘docx’.
 
+* **and finally `\` is used as an "escape" character**, we have used it to protect a subsequent special character. example: "\\” searches for a backslash
+
 > We can disable globbing using `set -f` command.
 
 {% hint style="danger" %}
