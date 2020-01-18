@@ -1547,8 +1547,9 @@ we usually use mixture of tar options to gain what we want:
 | tar tvf file.tar | Viewing the Archive |
 | tar tvf file.tar filename | We can pass a file name as an argument to search a tarfile |
 | tar tvf file.tar --wildcards '\*.png' | Using wildcards with tar |
-| tar -tvfW file.tar | Verify tar, tar.gz and tar.bz2 Archive File |
-| tar -rvf file.tar newfile.txt | Add a file to .tar or .tar.gz or .tar.bz2 File |
+| tar -tvfW file.tar | Verify tar  Archive File |
+| tar -rvf file.tar newfile.txt | Add a file to .tar File |
+| tar -uvf file.tar newdir | Add a directory to an existing .tar file |
 
 ![](.gitbook/assets/performbasicfile-over.jpg)
 
