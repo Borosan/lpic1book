@@ -40,21 +40,11 @@ Linux shells use these three standard I/O **streams ,** each of which is associa
 
 Streams Are Handled Like Files. We can read text from a file, and we can write text into a file. Both of these actions involve a stream of data. So the concept of handling a stream of data as a file isn’t that much of a stretch.
 
-Each file associated with a process is allocated a unique number to identify it.
-
-```text
-STDIN - /proc/<processID>/fd/0
-STDOUT - /proc/<processID>/fd/1
-STDERR - /proc/<processID>/fd/2
-```
-
- This is known as the **file descriptor**. Whenever an action is required to be performed on a file, the file descriptor is used to identify the file.  These values are always used for `stdin`, `stdout,` and `stderr`:
+Each file associated with a process is allocated a unique number to identify it. This is known as the **file descriptor**. Whenever an action is required to be performed on a file, the file descriptor is used to identify the file.  These values are always used for `stdin`, `stdout,` and `stderr`:
 
 * 0: stdin 
 * 1: stdout 
 * 2: stderr
-
-To make life more convenient the system creates some shortcuts for us:
 
 ```text
  root@ubuntu16-1:~/test-space/myfiles# ls -al /dev/std*
@@ -65,7 +55,7 @@ lrwxrwxrwx 1 root root 15 Dec  1  2018 /dev/stdout -> /proc/self/fd/1
 
 ### Redirecting standard IO <a id="redirecting-standard-io"></a>
 
- Although the model for standard input and output is a serial stream of characters to and from a terminal, we might want to prepare input data in a file, or save output or error information in a file. That’s where **.**comes in.
+ Although the model for standard input and output is a serial stream of characters to and from a terminal, we might want to prepare input data in a file, or save output or error information in a file. That’s where _redirection_ comes in.
 
 #### Redirecting output <a id="redirecting-output"></a>
 
@@ -142,31 +132,7 @@ Sat Oct 12 02:53:23 PDT 2019
 ```
 
 {% hint style="info" %}
- **To clobber or to noclobber?**
-
-We said that output redirection using n&gt; usually overwrites existing files. You can control this with the `noclobber` option of the `set` builtin.  use set -C for enabling noclobber:
-
-```text
-user1@ubuntu16-1:~$ set -o | grep noclobber
-noclobber      	off
-user1@ubuntu16-1:~$ ls
-Desktop    Downloads         Music     Public     Videos
-Documents  examples.desktop  Pictures  Templates
-user1@ubuntu16-1:~$ ls > list1
-user1@ubuntu16-1:~$ set -C
-user1@ubuntu16-1:~$ set -o | grep noclobber
-noclobber      	on
-user1@ubuntu16-1:~$ ls > list1
-bash: list1: cannot overwrite existing file
-```
-
-If it has been set, we can override it using n&gt;\|
-
-```text
-user1@ubuntu16-1:~$ ls >| list1
-```
-
-use `set +C` for turning globbing off.
+ We said that output redirection using n&gt; usually overwrites existing files. You can control this with the `noclobber` option of the `set` builtin. If it has been set, we can override it using n&gt;\|
 {% endhint %}
 
 **redirect both standard output and standard error**
@@ -208,7 +174,7 @@ In the first case, stderr is redirected to the current location of stdout and th
 
 At other times, we ****might want to ignore either standard output or standard error entirely. To do this, redirect the appropriate stream to the empty file, /dev/null.
 
-/dev/null is a special file called the null device. it is also called the bit-bucket or the black-hole because it immediately discards anything written to it and only returns an end-of-file EOF when read.
+/dev/null is a special file called the null device. it is also called the bit-bucket or the blackhole because it immediately discards anything written to it and only returns an end-of-file EOF when read.
 
 ```text
 root@ubuntu16-1:~/test-space/myfiles# ls -l
@@ -269,7 +235,9 @@ Theis line will be written to the file.
 this is last line.
 ```
 
-> Reminder: "-" A hyphen \(used alone\) generally signifies that input will be taken from `stdin` as opposed to a named file. try: cat - &lt;&lt; EOF &gt; interesting.txt
+> &lt;&lt;-   HereDoc uses **‘–‘** symbol to suppress any tab space from each line of heredoc text.
+
+> "-" A hyphen \(used alone\) generally signifies that input will be taken from `stdin` as opposed to a named file. try: cat - &lt;&lt; EOF &gt; interesting.txt
 
 ### here string
 
@@ -310,19 +278,16 @@ Some commands like grep can accept input as parameters, but some commands accept
 
 > Parameter vs Argument: 
 >
-> * **Parameter** is variable in the declaration of function.
-> * **Argument** is the actual value of this variable that gets passed to function.
->
->   > ```text
->   >                  Parameters
->   >                    |     |
->   > function test ( param1 , param2 ){
->   >     return ( param1 + param2 );
->   >     }
->   > test (5, 6)
->   >       |  |
->   >      Arguments
->   > ```
+> ```text
+>                  Parameters
+>                    |     |
+> function test ( param1 , param2 ){
+>     return ( param1 + param2 );
+>     }
+> test (5, 6)
+>       |  |
+>      Arguments
+> ```
 
 ### Using output as arguments <a id="using-output-as-arguments"></a>
 
@@ -332,7 +297,7 @@ In the privious of pipelines, we learned how to take the output of one command a
 
 1. The `xargs` command
 2. The `find` command with the `-exec` option \(previous section\)
-3. Command substitution \( will be discussed later\)
+3. Command substitution
 
 ### xargs
 
@@ -367,26 +332,7 @@ this is my file ./myconf.txt yes
 this is my file ./mydate yes
 ```
 
-`it is also possible to run multiple commands with xargs` 
-
-cat a.txt \| xargs -I % sh -c {command1; command2; ... }
-
-```text
-root@ubuntu16-1:~/test-space# cat foo 
-one
-two
-three
-
-root@ubuntu16-1:~/test-space# cat foo | xargs -I % sh -c 'mkdir  %  ;echo  "directory % has been made" '
-directory one has been made
-directory two has been made
-directory three has been made
-
-root@ubuntu16-1:~/test-space# ls
-foo  one  three  two
-```
-
-With `-L` option, the input will break by line and not by blanks. Other options:
+`cut -d: -f1 < /etc/passwd | sort | xargs`  generates a compact list of all Linux user accounts on the system .
 
 ```text
 xargs options :
@@ -460,8 +406,6 @@ with  **`-a`**  option It basically do not overwrite the file but append to the 
 [https://www.gnu.org/software/libc/manual/html\_node/Streams-and-File-Descriptors.html](https://www.gnu.org/software/libc/manual/html_node/Streams-and-File-Descriptors.html)
 
 [https://geek-university.com/linux/streams/](https://geek-university.com/linux/streams/)
-
-[https://ryanstutorials.net/bash-scripting-tutorial/bash-input.php](https://ryanstutorials.net/bash-scripting-tutorial/bash-input.php)
 
 [https://www.howtogeek.com/435903/what-are-stdin-stdout-and-stderr-on-linux/](https://www.howtogeek.com/435903/what-are-stdin-stdout-and-stderr-on-linux/)
 

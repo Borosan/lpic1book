@@ -178,7 +178,7 @@ Now that you can open a file in vi, move around it and get out, it’s time to l
 | key | function |
 | :--- | :--- |
 | /string | search forward for occurrence of string in text |
-| ?string | search backward for occurrence of string in text |
+| ? string | search backward for occurrence of string in text |
 | n | move to next occurrence of search string |
 | N | move to next occurrence of search string in opposite direction |
 | \string | 'very magic' string: non-alphanumeric characters are interpreted as special regex symbols \(no escaping needed\) |
