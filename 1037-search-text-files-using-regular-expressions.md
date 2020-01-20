@@ -64,8 +64,8 @@ Lets see some examples:
 
 | regex | match |
 | :--- | :--- |
-| echo "aa ab ba aaa bbb AB BA" \| grep a | **aa a**b b**a** **aaa** bbb AB BA |
-| echo "aa ab ba aaa bbb AB BA" \| grep ab | aa **ab** ba aaa bbb AB BA |
+| echo "aa ab ba aaa bbb AB BA" \| grep "a" | **aa a**b b**a** **aaa** bbb AB BA |
+| echo "aa ab ba aaa bbb AB BA" \| grep "ab" | aa **ab** ba aaa bbb AB BA |
 
 ```text
 Options Description
@@ -95,7 +95,7 @@ Options Description
 #### Globbing and Regex: So Similar, So Different
 
  Beginners sometimes tend to confuse **wildcards**\(globbing\) with **regular expressions** when using grep but they are not the same.  
- **Wildcards** are a feature provided by the shell to expand file names whereas **regular expressions** are a text filtering mechanism intended for use with utilities like grep, sed and  awk.
+ Wildcards are a feature provided by the shell to expand file names whereas regular expressions are a text filtering mechanism intended for use with utilities like grep, sed and  awk.
 
 | Special Character | Meaning in Globs | Meaning in Regex |
 | :--- | :--- | :--- |
@@ -107,7 +107,7 @@ Options Description
 In order to avoid any mistake while using  extended regular expressions, use `grep` with `-E` option, `-E`  treats pattern as an extended regular expression\(ERE\).
 
 {% hint style="info" %}
-**double quotes " " :** Also we need to put our extended regex between  double quotes, other wise it might be interpreted by shell and gives us different results. 
+**double quotes " " :** Also we need to put our extended regex between  double quotes, other wise it might be interpreted by bash and gives us different results. 
 {% endhint %}
 
 | regex | match |
@@ -194,7 +194,7 @@ We can match any character with the dot special character, but what if you match
 
 By placing a group of characters within brackets \("\[" and "\]"\), we can specify that the character at that position can be any one character found within the bracket group.
 
-*  **\[set\_of\_characters\]**  Matches any single character in _**set\_of\_characters**_. By default, the match is case-sensitive.
+*  **\[set\_of\_characters\]**  Matches any single character in set\_of\_characters. By default, the match is case-sensitive.
 
 | regex | match |
 | :--- | :--- |
@@ -202,9 +202,9 @@ By placing a group of characters within brackets \("\[" and "\]"\), we can speci
 
 ### Negating Character Classes
 
-What about searching for a character that is not in the character class? To achieve that, precede the character class range with a caret **^.**
+What about searching for a character that is not in the character class? To achieve that, precede the character class range with a caret ^
 
-*  **\[^set\_of\_characters\]**  _Negation:_ Matches any single character that is **not in** _**set\_of\_characters**_. By default, the match is case sensitive.
+*  **\[^set\_of\_characters\]**  _Negation:_ Matches any single character that is not in set\_of\_characters. By default, the match is case sensitive.
 
 | regex | match |
 | :--- | :--- |
@@ -212,7 +212,7 @@ What about searching for a character that is not in the character class? To achi
 
 **Range expression**
 
-To specify a range of characters, we ****can use the **\(-\)** **hyphen** symbol, such as 0-9 for digits. Note that ranges are locale dependent.
+To specify a range of characters, we ****can use the \(-\) **hyphen** symbol, such as 0-9 for digits. Note that ranges are locale dependent.
 
 | regex | match |
 | :--- | :--- |
@@ -222,11 +222,11 @@ To specify a range of characters, we ****can use the **\(-\)** **hyphen** symbol
 
 Several named classes provide a convenient shorthand for commonly used classes. Named classes open with \[: and close with :\] and may be used within bracket expressions. Some examples:
 
-* **\[\[:alnum:\]\]**  Alphanumeric characters.
-* **\[\[:alpha:\]\]**  Alphabetic characters.
-* **\[\[:blank:\]\]**  Space and tab characters.
-* **\[\[:digit:\]\]**  The digits 0 through 9 \(equivalent to 0-9\).
-* **\[\[:upper:\]\]** and **\[:lower:\]**  Upper and lower case letters, respectively.
+* **\[:alnum:\]**  Alphanumeric characters.
+* **\[:alpha:\]**  Alphabetic characters.
+* **\[:blank:\]**  Space and tab characters.
+* **\[:digit:\]**  The digits 0 through 9 \(equivalent to 0-9\).
+* **\[:upper:\] and \[:lower:\]**  Upper and lower case letters, respectively.
 
 | **regex** | match |
 | :--- | :--- |
@@ -248,7 +248,7 @@ regex patterns use some special characters. And we can’t include them in your 
 
 **.\*\[\]^${}\+?\|\(\)**
 
-So how we can search for some of them inside a text? That's where fgrep comes to play.
+So how we can search for some of them inside a test? That's where fgrep comes to play.
 
 ### fgrep
 
@@ -289,9 +289,7 @@ bcd$
 
 ### sed
 
- Sed command or **S**tream **Ed**itor is very powerful utility offered by Linux/Unix systems. It is mainly used for **text substitution** , **find & replace** but it can also perform other text manipulations like **insertion**, **deletion**, **search ,** etc. 
-
-With **sed**, we can edit complete files without actually having to open it. Sed also supports the use of regular expressions, which makes sed an even more powerful **text manipulation tool**.
+ Sed command or **Stream Editor** is very powerful utility offered by Linux/Unix systems. It is mainly used for **text substitution** , **find & replace** but it can also perform other text manipulations like **insertion**, **deletion**, **search** etc. With **sed**, we can edit complete files without actually having to open it. Sed also supports the use of regular expressions, which makes sed an even more powerful **test manipulation tool**.
 
  We have previously used sed for text substitution, here we want to use regex with that.
 
@@ -321,9 +319,9 @@ root@ubuntu16-1:~#
 When the "-n" option is used, the "p" flag will cause just the modified line to be printed:
 
 ```text
-root@ubuntu16-1:~# sed -rn "s/^(Comment|comment)/CHANGED/p"  text
-CHANGED this is a  comment:
-CHANGED pigs can not fly because the sky is high!
+root@ubuntu16-1:~# sed -rn "s/^(Comment|comment)/CHANGE/p"  text
+CHANGE this is a  comment:
+CHANGE pigs can not fly because the sky is high!
 ```
 
 sed is very powerfull tools and that is  complicated, we have just take a quick lookat it! 
