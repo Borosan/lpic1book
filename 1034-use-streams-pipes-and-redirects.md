@@ -367,7 +367,26 @@ this is my file ./myconf.txt yes
 this is my file ./mydate yes
 ```
 
-> `it is also possible to run multiple commands with xargs          cat a.txt | xargs -I % sh -c {command1; command2; ... }`
+`it is also possible to run multiple commands with xargs` 
+
+cat a.txt \| xargs -I % sh -c {command1; command2; ... }
+
+```text
+root@ubuntu16-1:~/test-space# cat foo 
+one
+two
+three
+
+root@ubuntu16-1:~/test-space# cat foo | xargs -I % sh -c 'mkdir  %  ;echo  "directory % has been made" '
+directory one has been made
+directory two has been made
+directory three has been made
+
+root@ubuntu16-1:~/test-space# ls
+foo  one  three  two
+```
+
+With `-L` option, the input will break by line and not by blanks. Other options:
 
 ```text
 xargs options :
@@ -383,8 +402,6 @@ xargs options :
 –help : print the summary of options to xargs and exit
 –version : print the version no. of xargs and exit
 ```
-
-With `-L` option, the input will break by line and not by blanks.
 
 | xarg command example | Description |
 | :--- | :--- |
