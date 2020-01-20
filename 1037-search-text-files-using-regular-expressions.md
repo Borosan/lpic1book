@@ -23,7 +23,7 @@ While we are working with text files, often it will happen that we are looking f
 
 Regular expressions are used when we want to search for specify lines of text containing a particular pattern.Regex can be used in a variety of programs like grep, sed, vi, bash, rename and many more. Here we will use regex with grep command.
 
- A regex pattern uses a regular expression engine which translates those patterns.
+ A regex pattern uses a **regular expression engine** which translates those patterns.
 
 Linux has two regular expression engines:
 
@@ -41,7 +41,7 @@ There are two types of characters to be found in regular expressions:
 
 **Literal characters** are standard characters that make up our strings. Every character in this sentence is a literal character. You could use a regular expression to search for each literal character in that string.
 
-**Metacharacters** are a different beast altogether; they are what give regular expressions their power. With metacharacters, we can do much more than searching for a single character. Metacharacters allow us to search for combinations of strings and much more. 
+**Meta characters** are a different beast altogether; they are what give regular expressions their power. With meta characters, we can do much more than searching for a single character. Meta characters allow us to search for combinations of strings and much more. 
 
 ## grep
 
