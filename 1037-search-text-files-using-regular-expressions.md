@@ -64,8 +64,8 @@ Lets see some examples:
 
 | regex | match |
 | :--- | :--- |
-| echo "aa ab ba aaa bbb AB BA" \| grep "a" | **aa a**b b**a** **aaa** bbb AB BA |
-| echo "aa ab ba aaa bbb AB BA" \| grep "ab" | aa **ab** ba aaa bbb AB BA |
+| echo "aa ab ba aaa bbb AB BA" \| grep a | **aa a**b b**a** **aaa** bbb AB BA |
+| echo "aa ab ba aaa bbb AB BA" \| grep ab | aa **ab** ba aaa bbb AB BA |
 
 ```text
 Options Description
@@ -95,7 +95,7 @@ Options Description
 #### Globbing and Regex: So Similar, So Different
 
  Beginners sometimes tend to confuse **wildcards**\(globbing\) with **regular expressions** when using grep but they are not the same.  
- Wildcards are a feature provided by the shell to expand file names whereas regular expressions are a text filtering mechanism intended for use with utilities like grep, sed and  awk.
+ **Wildcards** are a feature provided by the shell to expand file names whereas **regular expressions** are a text filtering mechanism intended for use with utilities like grep, sed and  awk.
 
 | Special Character | Meaning in Globs | Meaning in Regex |
 | :--- | :--- | :--- |
@@ -107,7 +107,7 @@ Options Description
 In order to avoid any mistake while using  extended regular expressions, use `grep` with `-E` option, `-E`  treats pattern as an extended regular expression\(ERE\).
 
 {% hint style="info" %}
-**double quotes " " :** Also we need to put our extended regex between  double quotes, other wise it might be interpreted by bash and gives us different results. 
+**double quotes " " :** Also we need to put our extended regex between  double quotes, other wise it might be interpreted by shell and gives us different results. 
 {% endhint %}
 
 | regex | match |
