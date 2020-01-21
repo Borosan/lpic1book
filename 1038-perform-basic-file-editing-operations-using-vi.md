@@ -164,7 +164,8 @@ Now that you can open a file in vi, move around it and get out, it’s time to l
 | Nx | delete N characters, starting with character under cursor |
 | dw | delete the single word beginning with character under cursor |
 | dNw | delete N words beginning with character under cursor; e.g., d5w deletes 5 words |
-| D | delete the remainder of the line, starting with current cursor position |
+| d^ | delete  start of line till the cursor |
+| d$ and D | delete the remainder of the line, starting with current cursor position |
 | dd | delete entire current line |
 | Ndd or dNd | delete N lines, beginning with the current line; e.g., 5dd deletes 5 lines |
 
