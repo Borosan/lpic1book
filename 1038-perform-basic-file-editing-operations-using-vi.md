@@ -27,11 +27,13 @@ The vi editor \(visual editor\) is almost certainly on every Linux and UNIX syst
 
 Using vi editor, we can edit an existing file or create a new file from scratch. we can also use this editor to just read a text file.
 
-> vi editr is great even trough ssh sessions!
+> vi editor is great even trough ssh sessions!
 
 #### vi or vim ?
 
- Most Linux distributions now ship with the vim \(for **V**i **IM**proved\) editor rather than classic vi. Vim is upward compatible with vi and has a graphical mode available \(gvim\) as well as the standard vi text mode interface. The `vi` command is usually an alias or symbolic link to the vim program. There are several versions of vim: tiny, small, normal, big, and huge. We can find out what version of vim we are running and what features are included by using the command\(ubuntu 16.04 here \):
+ Most Linux distributions now ship with the vim \(for **V**i **IM**proved\) editor rather than classic vi. Vim is upward compatible with vi and has a graphical mode available \(gvim\) as well as the standard vi text mode interface. The `vi` command is usually an alias or symbolic link to the vim program.
+
+ There are several versions of vim: tiny, small, normal, big, and huge. We can find out what version of vim we are running and what features are included by using the command\(ubuntu 16.04 here \):
 
 ```text
 root@ubuntu16-1:~# vi --version
@@ -59,7 +61,7 @@ vi filename
 ```
 
 {% hint style="info" %}
-**if you just type vi\(m\) and hit enter the vi\(m\) version will be displayed:**
+**if you just type vi\(m\) and hit enter, the vi\(m\) version will be displayed:**
 
 ```text
                               VIM - Vi IMproved                                
@@ -82,11 +84,11 @@ Okey lets start learning vi\(m\):
 
 ### vi modes
 
-Vim actually has three modes: insert mode, command mode, and escape \(last-line\) mode. Let’s start with the default mode you’ll see when you start up Vim–command mode.
+Vim actually has three modes: **insert mode**, **command mode**, and **escape**  **\(last-line\) mode**. Let’s start with the default mode you’ll see when you start up Vim–command mode.
 
-* command mode :  When you run vim filename to edit a file, Vim starts out in command mode. This means that all the alphanumeric keys are bound to commands, rather than inserting those characters.\(save, quit, search/replace, navigate around, execute macros,...\)
-* insert mode :  To enter the _insert_ mode, type i \(for “insert”\) and now the keys will behave as you’d expect. You can type normally until you want to make a correction, save the file, or perform another operation that’s reserved for command mode or escape \(last-line\) mode. To get out of insert mode, hit the Escape key.
-* escape \(last-line\) mode :  Once you press Escape, you’re in command mode again. What if you’d like to save your file or search through your document? No problem, press : and Vim will switch to escape \(last-line\) mode. Vim is now waiting for you to enter a command like :w to write the file or :q to exit the editor.
+* **command mode** :  When you run vim filename to edit a file, Vim starts out in command mode. This means that all the alphanumeric keys are bound to commands, rather than inserting those characters.\(save, quit, search/replace, navigate around, execute macros,...\)
+* **insert mode** :  _To enter the insert mode, type i \(for “insert”\)_ and now the keys will behave as you’d expect. You can type normally until you want to make a correction, save the file, or perform another operation that’s reserved for command mode or escape \(last-line\) mode. _To get out of insert mode, hit the Escape key._
+* **escape \(last-line\) mode** :  Once you press Escape, you’re in command mode again. What if you’d like to save your file or search through your document? No problem, _press : and Vim will switch to escape \(last-line\) mode_. Vim is now waiting for you to enter a command like :w to write the file or :q to exit the editor.
 
 ![](.gitbook/assets/performbasicfileop-vimodes.jpg)
 
@@ -126,7 +128,7 @@ The first thing you’ll want to learn is how to move around a file. When you’
 
 | key | function |
 | :--- | :--- |
-| 0 | jump backwards to the start of a word \(words can contain punctuation\) |
+| 0 | jump backwards to the start of line |
 | ^ | jump to the first non-blank character of the line |
 | $ | jump to the end of the line |
 | g\_ | jump to the last non-blank character of the line |
@@ -162,7 +164,7 @@ Now that you can open a file in vi, move around it and get out, it’s time to l
 | Nx | delete N characters, starting with character under cursor |
 | dw | delete the single word beginning with character under cursor |
 | dNw | delete N words beginning with character under cursor; e.g., d5w deletes 5 words |
-| D | elete the remainder of the line, starting with current cursor position |
+| D | delete the remainder of the line, starting with current cursor position |
 | dd | delete entire current line |
 | Ndd or dNd | delete N lines, beginning with the current line; e.g., 5dd deletes 5 lines |
 
@@ -181,7 +183,6 @@ Now that you can open a file in vi, move around it and get out, it’s time to l
 | ? string | search backward for occurrence of string in text |
 | n | move to next occurrence of search string |
 | N | move to next occurrence of search string in opposite direction |
-| \string | 'very magic' string: non-alphanumeric characters are interpreted as special regex symbols \(no escaping needed\) |
 
 ### replacing
 
@@ -200,17 +201,25 @@ If you’re in insert mode, hit Escape. Then enter : and you’ll see a line at 
 
 | key | function |
 | :--- | :--- |
-| :w |  That will write the file to the existing filename,but don't exit. If you don’t have a filename or want to write out to a different filename, use :w _filename_. |
-| :wq or :x or ZZ | write \(save\) and quit |
+| :w |  That will write the file to the existing filename,but don't exit. |
+| :w  _file_ | If you don’t have a filename or want to write out to a different _file name_ |
 | :q | quit \(fails if there are unsaved changes\) |
+| :q! | Quit editing without saving. |
+| :wq | write \(save\) and quit \(throw and error if file is not writable\) |
+| :wq! | try to write and quit \(if it is not writable, quit without saving! \) |
+| ZZ and :x | Exit and save the file if modified |
 | q! or ZQ | quit and throw away unsaved changes |
-| :wqa | write \(save\) and quit on all tabs |
 
 Press ESC to return back to the normal command mode!
 
 > When you want to write and exit from a file consider  you permissions, the bellow command write out the current file using sudo:
 >
-> :w !sudo tee %
+> :w !sudo tee % 
+>
+> * :w – Write a file \(actually buffer\). 
+> * !sudo – Call shell with sudo command. 
+> * tee – The output of write \(vim :w\) command redirected using tee. 
+> * % – The % is nothing but current file name.
 
 ### reloading
 
@@ -222,15 +231,13 @@ Press ESC to return back to the normal command mode!
 {% hint style="success" %}
 ### VIM Tip : running external commands in a shell
 
-A common sequence of events when editing files is to make a change and then need to test by executing the file you edited in a shell. If you’re using vim, you could suspend your session \(ctrl-Z\), and then run the command in your shell.
+It usuaslly happens that we need to run a command in shell to see the result of file which we are edditing. It could be happened in two ways:
 
-That’s a lot of keystrokes, though.
+1.We could suspend your session \(ctrl-Z\), and then run the command in your shell.That’s a lot of keystrokes, though !
 
-So, instead, you could use vim’s built-in “run a shell command”!
+2.So, instead, you could use vim’s built-in “run a shell command”:
 
-> :!{cmd} Run a shell command, shows you the output and prompts you before returning to your current buffer.
-
-Even sweeter, is to use the vim special character for current filename: %
+> :!cmd Run a shell command, shows you the output and prompts you before returning to your current buffer.
 {% endhint %}
 
 ### help
