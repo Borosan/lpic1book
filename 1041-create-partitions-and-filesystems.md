@@ -49,7 +49,7 @@ The MBR holds the information on how the logical partitions, containing file sys
 **Master Boot records has some short comings:**
 
 * MBR puts all information in first sector of hard disk so if any problem ocures for that sectore, system won't be able to boot up. 
-* MBR contains only four entries \(slots\) for four Primary partitions one of which can be an Extended partition. This partition will contain Un allocated space within it where we can create unlimited number of Logical partitions.
+* MBR contains only four entries \(slots\) for four Primary partitions, one of which can be an Extended partition. This partition will contain unallocated space within it where we can create unlimited number of Logical partitions.
 
 ![](.gitbook/assets/createpartition-mbrpart.jpg)
 
@@ -69,7 +69,7 @@ Usually, MBR and BIOS \(MBR + BIOS\), and GPT and UEFI \(GPT + UEFI\) go hand in
 
 ### BIOS vs UEFI
 
-* UEFI enables better use of bigger hard drives. •Though UEFI is capable of working with the GUID Partition Table \(GPT\) it also supports the traditional master boot record \(MBR\) method of hard drive partitioning. as BIOS just knows MBR, so GPT acts like MBR! BIOS sees GPT as a drive with single MBR partition
+* UEFI enables better use of bigger hard drives. Though UEFI is capable of working with the GUID Partition Table \(GPT\) it also supports the traditional master boot record \(MBR\) method of hard drive partitioning. as BIOS just knows MBR, so GPT acts like MBR! BIOS sees GPT as a drive with single MBR partition
 * UEFI may be faster than the BIOS. Various tweaks and optimizations in the UEFI may help your system boot more quickly it could before. 
 * UEFI has room for more useful and usable features than the BIOS. Among these are cryptography, network authentication, ..., and even a shell environment for running other EFI applications such as diagnostic utilities or flash updates.
 
@@ -241,7 +241,7 @@ Created a new partition 1 of type 'Linux' and of size 20 GiB.
 Command (m for help): 
 ```
 
-next we need to specify partition type based on the future use we have considerd for:
+next we need to specify partition type based on the future use we have considered for:
 
 ```text
 Command (m for help): l
@@ -306,7 +306,7 @@ Device     Boot Start      End  Sectors Size Id Type
 Command (m for help): 
 ```
 
-fdisk does not write any changes on hard disk until we ask it using -w switch, if you are not sure use -q to quit and hard disk stays untouched! 
+fdisk does not write any changes on hard disk until we ask it using `w` switch, if you are not sure use `q` to quit and hard disk stays untouched! 
 
 ```text
 Command (m for help): v
@@ -317,13 +317,13 @@ Calling ioctl() to re-read partition table.
 Syncing disks.
 ```
 
-use -d for delete a partition bu be carefull!
+use -d for delete a partition bu be care full!
 
 > To see the help message and listing of all options, use fdisk -h command.
 
 ### gdisk
 
-We can Manage  GPT Partitions with gdisk. like fdisk, gdisk is a text-mode menu-driven program for creation and manipulation of partition tables. It will automatically convert an old-style Master Boot Record \(MBR\) partition table or BSD disklabel stored without an MBR carrier partition to the newer Globally Unique Identifier \(GUID\) Partition Table \(GPT\) format, or will load a GUID partition table.
+We can Manage  GPT Partitions with gdisk. like fdisk, gdisk is a text-mode menu-driven program for creation and manipulation of partition tables. It will automatically convert an old-style Master Boot Record \(MBR\) partition table  to the newer Globally Unique Identifier \(GUID\) Partition Table \(GPT\) format, or will load a GUID partition table.
 
 ```text
 root@ubuntu16-1:~# gdisk /dev/sdb
@@ -380,7 +380,7 @@ Linux File System or any file system generally is a layer which is under the ope
 
 ### **File system types**
 
- Linux supports several different filesystems. Each has strengths and weaknesses and its own set of performance characteristics. 
+ Linux supports several different file systems. Each has strengths and weaknesses and its own set of performance characteristics. 
 
 **Ext, Ext2, Ext3, Ext4, JFS, XFS, btrfs and swap**
 
@@ -399,7 +399,7 @@ Journaling does slow disk write performance down a tiny bit, but it’s well-wor
 {% hint style="success" %}
 Which File System is perfect for you?
 
- Generally, a journaling filesystem is preferred over a non-journaling one when you have a choice. You may also want to consider whether your chosen filesystem supports _Security Enhanced Linux_ \(or SELinux\). Two newer file systems, ZFS and btrfs, use a technique called Copy on Write to improve data integrity and address large storage needs. 
+ Generally, a journaling filesystem is preferred over a non-journaling one when you have a choice. You may also want to consider whether your chosen filesystem supports _Security Enhanced Linux_ \(or SELinux\). 
 {% endhint %}
 
 Following is a brief summary of the types you need to know about for the LPI exam**:**
@@ -512,7 +512,9 @@ Following is a brief summary of the types you need to know about for the LPI exa
         considered a filesystem.</td>
     </tr>
   </tbody>
-</table>### partitioning
+</table>We must create a file system before you can use any data storage device connected to a Linux computer.
+
+### partitioning
 
 Linux uses the `mkfs` command to create filesystems and `mkswap`command to make swap space.
 
@@ -525,17 +527,79 @@ Before you start modifying partitions, there are some important things to rememb
 4.  Stop if you do make a mistake
 {% endhint %}
 
+ Linux uses the `mkfs` command to create filesystems and `mkswap`command to make swap space
+
 ### mkfs
+
+The mkfs \(make filesystem\) command is used to create a filesystem.
 
 The `mkfs` command is actually a front end to several filesystem-specific commands such as `mkfs.ext3` for ext3, `mkfs.ext4` for ext4 and `mkfs.btrfs` for btrfs.
 
 ```text
+root@ubuntu16-1:~# mkfs
+mkfifo        mkfs          mkfs.ext2     mkfs.ext4dev  mkfs.msdos
+mkfontdir     mkfs.bfs      mkfs.ext3     mkfs.fat      mkfs.ntfs
+mkfontscale   mkfs.cramfs   mkfs.ext4     mkfs.minix    mkfs.vfat
+
 root@ubuntu16-1:~# ls /sbin/mk*
 /sbin/mkfs         /sbin/mkfs.ext2  /sbin/mkfs.ext4dev  /sbin/mkfs.msdos
 /sbin/mkfs.bfs     /sbin/mkfs.ext3  /sbin/mkfs.fat      /sbin/mkfs.ntfs
 /sbin/mkfs.cramfs  /sbin/mkfs.ext4  /sbin/mkfs.minix    /sbin/mkfs.vfat
 
 ```
+
+various forms of some commands. mke2fs, mkfs.ext2, and mkfs.ext3 are all the same file, while mkfs.msdos and mkfs.vfat are usually symbolic links to mkdosfs.
+
+In order to build the filesystem using mkfs command, the required arguments are   filesystem-type and device-filename:
+
+```text
+mkfs [options] [-t type fs-options] device [size]
+```
+
+We can either use mkfs._fstype_ commands `mkfs.ext3 /dev/sdb1`  or we can use mkfs via `-t` option to  specify the format `mkfs -t ext3 /dev/sdb1` and both would have the same results.
+
+```text
+root@ubuntu16-1:~# mkfs -t ext3 /dev/sdb1
+mke2fs 1.42.13 (17-May-2015)
+Creating filesystem with 5242624 4k blocks and 1310720 inodes
+Filesystem UUID: fb1e0a9a-04c3-4985-80e9-132f01731c9f
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information: done  c
+
+root@ubuntu16-1:~# 
+```
+
+If we want  to assign a label to the partition during format progress we should use -L labelname with that :  `mkfs -t ext3 -L MyData /dev/sdb1`
+
+{% hint style="info" %}
+For mounting Formatted partition we can either use Partition label or  **UUID**.  **UUID** _is a unique identifier used in partitions to uniquely identify partitions_. to get the UUID of recent created  partition try : `blkid /dev/sdb1`
+{% endhint %}
+
+| Partition | Format Type | Sample Command | Notes |
+| :--- | :--- | :--- | :--- |
+| /dev/sdb1 | ext4 | mkfs -t ext4 -L data /dev/sdb1 |  Assigns Label,same as mkfs.ext4 |
+| /dev/sdb2 | xfs | mkfs -t xfs -i size=512 /dev/sdb2 | telling it to have larger inodes \(normal is 256\) it helps Selinux |
+| /dev/sdc1 | ReiserFS | mkfs -t reiserfs /dev/sdc1 | Or you can use `mkreiserfs` command. |
+| /dev/sdc2 | vFAT | mkfs -t vfat /dev/sdc2 | Or you can use `mkfs.vfat` command |
+| /dev/sdc3 | Btrfs | mkfs -t btrfs /dev/sdc3 | Or you can use  `mkfs.btrfs` command |
+
+### mkswap
+
+ `mkswap`command  makes swap space on a device or in a file. 
+
+```text
+mkswap [options] device [size]
+```
+
+The device argument will usually be a disk partition \(something like /dev/sdb1\) but can also be a file. 
+
+The Linux kernel does not look at partition IDs, but many installation scripts will assume that partitions of hex type 82 \(LINUX\_SWAP\) are meant to be swap partitions.
 
 
 
@@ -566,6 +630,8 @@ root@ubuntu16-1:~# ls /sbin/mk*
 [https://www.howtogeek.com/howto/33552/htg-explains-which-linux-file-system-should-you-choose/](https://www.howtogeek.com/howto/33552/htg-explains-which-linux-file-system-should-you-choose/)
 
 [https://developer.ibm.com/tutorials/l-lpic1-104-1/](https://developer.ibm.com/tutorials/l-lpic1-104-1/)
+
+[https://jadi.gitbooks.io/lpic1/content/1041\_create\_partitions\_and\_filesystems.html](https://jadi.gitbooks.io/lpic1/content/1041_create_partitions_and_filesystems.html)
 
 .
 
