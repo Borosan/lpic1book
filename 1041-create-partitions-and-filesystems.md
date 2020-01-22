@@ -621,9 +621,18 @@ The device argument will usually be a disk partition \(something like /dev/sdb1\
 
 The Linux kernel does not look at partition IDs, but many installation scripts will assume that partitions of hex type 82 \(LINUX\_SWAP\) are meant to be swap partitions.
 
+So in order to make a swap space first create a partition using fdisk via partition type 82 and then use mkswap:
 
+```text
+root@ubuntu16-1:/# mkswap /dev/sdb1
+mkswap: /dev/sdb1: warning: wiping old ext3 signature.
+Setting up swapspace version 1, size = 20 GiB (21473783808 bytes)
+no label, UUID=0dcd7e90-4b45-4d5f-808c-320f1e5ba8a3
+```
 
+Using the created partition as a swap space requires further step which will be discussed in later lessons.
 
+that's all!
 
 .
 
