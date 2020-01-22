@@ -24,6 +24,8 @@
 * mkfs
 * mkswap
 
+
+
 ### BIOS
 
  The Basic Input/Output System \(BIOS\), \(also known as System BIOS, ROM BIOS \) is a  standard for defining a firmware interface. The BIOS software is built into the PC, and is the first software run by a PC when powered on.
@@ -35,7 +37,7 @@ The fundamental purposes of the BIOS are to initialize and test the system hardw
 The Unified Extensible Firmware Interface \(UEFI\) is a specification that defines a software interface between an operating system and platform firmware. UEFI is meant to replace the Basic Input/Output System \(BIOS\) firmware interface. In practice, most UEFI images provide legacy support for BIOS services. UEFI can support remote diagnostics and repair of computers, even without another operating system!
 
 {% hint style="info" %}
-> The original EFI \(Extensible Firmware Interface\) specification was developed by Intel.
+> The original EFI \(Extensible Firmware Interface\) specification was developed by Intel. UEFI is still not widespread and major hardware companies have switched over almost exclusively to UEFI use. Many older and less expensive motherboards also still use the BIOS system.
 {% endhint %}
 
 ### MBR
@@ -63,29 +65,47 @@ GUID Partition Table \(GPT\) is a standard for the layout of the partition table
 
  Although it forms a part of the Unified Extensible Firmware Interface \(UEFI\) standard, it is also used on some BIOS systems because of the limitations of master boot record \(MBR\) partition tables.
 
-### MBR vs GPT & BIOS vs UEFI
+### MBR vs GBT
 
-Usually, MBR and BIOS \(MBR + BIOS\), and GPT and UEFI \(GPT + UEFI\) go hand in hand. This is compulsory for some systems \(eg Windows\), while optional for others \(eg Linux\).
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">MBR(Master Boot Record)</th>
+      <th style="text-align:left">GPT(GUID Partition Table)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">Since 1983</td>
+      <td style="text-align:left">New 2005-...</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">lives on first sector</td>
+      <td style="text-align:left">Stored in multiple locations on Drive</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p>Limited to 4 partitions per disk</p>
+        <p>Limited to 2 TB partitions</p>
+      </td>
+      <td style="text-align:left">
+        <p>Supports 128 partitions per disk</p>
+        <p>Supports 18EX partition</p>
+      </td>
+    </tr>
+  </tbody>
+</table>> Both GPT disk and MBR disk can be basic or dynamic.
 
 ### BIOS vs UEFI
 
-* UEFI enables better use of bigger hard drives. Though UEFI is capable of working with the GUID Partition Table \(GPT\) it also supports the traditional master boot record \(MBR\) method of hard drive partitioning. as BIOS just knows MBR, so GPT acts like MBR! BIOS sees GPT as a drive with single MBR partition
-* UEFI may be faster than the BIOS. Various tweaks and optimizations in the UEFI may help your system boot more quickly it could before. 
-* UEFI has room for more useful and usable features than the BIOS. Among these are cryptography, network authentication, ..., and even a shell environment for running other EFI applications such as diagnostic utilities or flash updates.
+| BIOS\(Basic Input/Output System\) | UEFI\(Unified Extensible Frimware Interface\) |
+| :--- | :--- |
+| Only Supports MBR\( So GPT itself acts like MBR!\) | Native GPT support |
+| Sees GPT as a drive with a single MBR partition | Usually need to run in legacy mode ti support MBR |
 
-In addition, both the architecture and the drivers are CPU-independent, which opens the door to a wider variety of processors \(including those using the ARM architecture, for example\).
-
-{% hint style="info" %}
-UEFI is still not widespread and major hardware companies have switched over almost exclusively to UEFI use. Many older and less expensive motherboards also still use the BIOS system.
+{% hint style="success" %}
+Usually, MBR and BIOS **\(MBR + BIOS\)**, and GPT and UEFI **\(GPT + UEFI\)** go hand in hand. This is required for some systems \(Windows\), while optional for others \(Linux\).
 {% endhint %}
-
-### MBR vs GPT
-
-* GPT partitioned disks have redundant primary and backup partition tables for improved partition data structure integrity. 
-* The GUID partition table \(GPT\) disk partitioning style supports volumes up to 18 exabytes in size and up to 128 partitions per disk, compared to the master boot record \(MBR\) disk partitioning style, which supports volumes up to 2 terabytes in size and up to 4 primary partitions per disk \(or three primary partitions, one extended partition, and unlimited logical drives\). 
-* Unlike MBR partitioned disks, data critical to platform operation is located in partitions instead of un partitioned or hidden sectors.
-
-Both GPT disk and MBR disk can be basic or dynamic.
 
 ### Block devices
 
