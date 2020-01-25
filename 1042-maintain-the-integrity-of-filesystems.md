@@ -126,6 +126,10 @@ Pass 5: Checking group summary information
 
  The ext family of filesystems also has a utility called `tune2fs`, which can be used to inspect information about the block count as well as information about whether the filesystem is journaled \(ext3 or ext4\) or not \(ext2\). 
 
+{% hint style="success" %}
+The tune2fs command allows you to set assorted filesystem parameters on a mounted ext2 or ext3 filesystem.
+{% endhint %}
+
 `-l` shows contents of the filesystem superblock, including the current values of the parameters:
 
 ```text
@@ -186,6 +190,209 @@ tune2fs 1.42.13 (17-May-2015)
 
 ### xfs\_info
 
+xfs file system has it's own family commands. xfs\_info is the same as tune2fs but for xfs.
+
+{% hint style="success" %}
+xfs\_info should be used on a mounted file system.
+{% endhint %}
+
+> xfsprogs package must be installed
+
+```text
+root@ubuntu16-1:~# xfs_info /dev/sdb1
+meta-data=/dev/sdb1              isize=512    agcount=4, agsize=1310656 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=1 spinodes=0
+data     =                       bsize=4096   blocks=5242624, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0 ftype=1
+log      =internal               bsize=4096   blocks=2560, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+```
+
+| xfs command | description |
+| :--- | :--- |
+| xfs\_info | shows information |
+| xfs\_check | complete check of file system |
+| xfs\_repair | check and fixes problems |
+| xfs\_check -n | same as xfs\_check |
+
+```text
+root@ubuntu16-1:~# xfs_repair -n /dev/sdb1
+xfs_repair: /dev/sdb1 contains a mounted and writable filesystem
+
+fatal error -- couldn't initialize XFS library
+```
+
+{% hint style="danger" %}
+obviously xfs\_repair does not work on mounted file system.
+{% endhint %}
+
+```text
+root@ubuntu16-1:~# xfs_repair  /dev/sdb1
+Phase 1 - find and verify superblock...
+Phase 2 - using internal log
+        - zero log...
+        - scan filesystem freespace and inode maps...
+        - found root inode chunk
+Phase 3 - for each AG...
+        - scan and clear agi unlinked lists...
+        - process known inodes and perform inode discovery...
+        - agno = 0
+        - agno = 1
+        - agno = 2
+        - agno = 3
+        - process newly discovered inodes...
+Phase 4 - check for duplicate blocks...
+        - setting up duplicate extent list...
+        - check for inodes claiming duplicate blocks...
+        - agno = 0
+        - agno = 1
+        - agno = 2
+        - agno = 3
+Phase 5 - rebuild AG headers and trees...
+        - reset superblock...
+Phase 6 - check inode connectivity...
+        - resetting contents of realtime bitmap and summary inodes
+        - traversing filesystem ...
+        - traversal finished ...
+        - moving disconnected inodes to lost+found ...
+Phase 7 - verify and correct link counts...
+done
+```
+
+> In XFS, you can only extend file system and can not reduce it.
+
+{% hint style="info" %}
+**Super Blocks**
+
+ You may be wondering how all these checking and repairing tools know where to start. Linux and UNIX filesystems usually have a _superblock_, which describes the filesystem _metadata_, or data describing the filesystem itself. This is usually stored at a known location, frequently at or near the beginning of the filesystem, and replicated at other well-known locations. You can use the `-n` option of `mke2fs` to display the superblock locations for an existing filesystem.
+{% endhint %}
+
+### Monitoring free space <a id="monitoring-free-space"></a>
+
+ On a storage device, a file or directory is contained in a collection of _blocks_. Information about a file is contained in an _inode._
+
+> inodes keeps information such as who the owner is, when the file was last accessed, how large it is, whether it is a directory, and who can read from or write to it. The inode number is also known as the file serial number and is unique within a particular filesystem.
+
+Data blocks and inodes each take space on a filesystem, so we need to monitor the space usage to ensure that your filesystems have space for growth.
+
+### df
+
+The `df`  \(DiskFree\) command is used to find out about the free and used space of file systems.
+
+```text
+df [OPTION]...[FILE]...
+```
+
+ If no file name is passed as an argument with df command then it shows the space available on all currently **mounted** file systems
+
+```text
+root@ubuntu16-1:~# df
+Filesystem     1K-blocks    Used Available Use% Mounted on
+udev              462796       0    462796   0% /dev
+tmpfs              98508    6544     91964   7% /run
+/dev/sda1       50442940 5613840  42243708  12% /
+tmpfs             492540     284    492256   1% /dev/shm
+tmpfs               5120       4      5116   1% /run/lock
+tmpfs             492540       0    492540   0% /sys/fs/cgroup
+tmpfs              98508      48     98460   1% /run/user/1001
+```
+
+-T  print file system type,  -h, –human-readable  ****print sizes \(in power of 1024\):
+
+```text
+root@ubuntu16-1:~# df -Th
+Filesystem     Type      Size  Used Avail Use% Mounted on
+udev           devtmpfs  452M     0  452M   0% /dev
+tmpfs          tmpfs      97M  6.4M   90M   7% /run
+/dev/sda1      ext4       49G  5.4G   41G  12% /
+tmpfs          tmpfs     481M  284K  481M   1% /dev/shm
+tmpfs          tmpfs     5.0M  4.0K  5.0M   1% /run/lock
+tmpfs          tmpfs     481M     0  481M   0% /sys/fs/cgroup
+tmpfs          tmpfs      97M   48K   97M   1% /run/user/1001
+```
+
+> `-H` make numbers human readable also  \(in powers of 1000\).
+
+-i list inode information instead of block usage:
+
+```text
+root@ubuntu16-1:~# df -i
+Filesystem      Inodes  IUsed   IFree IUse% Mounted on
+udev            115699    456  115243    1% /dev
+tmpfs           123135    750  122385    1% /run
+/dev/sda1      3211264 256212 2955052    8% /
+tmpfs           123135      9  123126    1% /dev/shm
+tmpfs           123135      6  123129    1% /run/lock
+tmpfs           123135     17  123118    1% /sys/fs/cgroup
+tmpfs           123135     27  123108    1% /run/user/1001
+```
+
+> Remember?  there is no owner or access rights on vfat filesystems. vfat file format has no inodes!
+
+| df command example | description |
+| :--- | :--- |
+| df -a  |  dislpay all information includes pseudo, duplicate and inaccessible file systems. |
+| df -Th /home | Display Information of /home File System |
+| df -k or -m or -h | displays information in Bytes, MB , GB |
+| df -t ext3 | include specific file system type |
+| df -x xfs | exclude specific file system type |
+
+ The `df` command gives information about a whole filesystem. Sometimes you might want to know how much space is used by a specific file or  directory, To answer this kind of question, we  use the `du` command.
+
+### du
+
+ The Linux `du` \(Disk Usage\)  command, used to check the information of **disk usage of files and directories** on a machine.
+
+```text
+du [OPTION]... [FILE]...
+```
+
+| useful switch | description |
+| :--- | :--- |
+| -a | write count of all files, not just directories |
+| -h  |  human readable Means we can see sizes in Bytes, KB, MB, GB,... |
+| -c | grand total usage disk space at the last line |
+|  –max-depth=N | go N or fewer sub directories further |
+| -s | display only total for each directory |
+
+```text
+root@ubuntu16-1:~# du
+16	./.aptitude
+8	./.cache/dconf
+12	./.cache
+8	./.config/htop
+8	./.config/gedit
+8	./.config/dconf
+4	./.config/ibus/bus
+8	./.config/ibus
+36	./.config
+4	./.gnupg/private-keys-v1.d
+48	./.gnupg
+4	./.gconf
+12	./.elinks
+16	./.ssh
+4	./.nano
+8	./.local/share
+12	./.local
+336	./backup
+8	./.dbus/session-bus
+12	./.dbus
+4	./test-space
+932	.
+
+root@ubuntu16-1:~# du -sh
+932K	.
+```
+
+**--time** option is used to display the last modification time in the output of du.
+
+**--exclude=PATTERN** will exclude files that match PATTERN example: `du -ah --exclude="*.txt" /home/payam`
+
+
+
 .
 
 .
@@ -196,7 +403,23 @@ tune2fs 1.42.13 (17-May-2015)
 
 [https://www.computerhope.com/unix/fsck.htm](https://www.computerhope.com/unix/fsck.htm)
 
-[https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/](https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/)
+[https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/](https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/)[https://www.serverwatch.com/tutorials/article.php/3797306/tune2fs-Makes-It-Easy-to-Play-With-Filesystems.htm](https://www.serverwatch.com/tutorials/article.php/3797306/tune2fs-Makes-It-Easy-to-Play-With-Filesystems.htm)[https://jadi.gitbooks.io/lpic1/content/1042\_maintain\_the\_integrity\_of\_filesystems.html](https://jadi.gitbooks.io/lpic1/content/1042_maintain_the_integrity_of_filesystems.html)
+
+[https://www.geeksforgeeks.org/df-command-in-linux-with-examples/](https://www.geeksforgeeks.org/df-command-in-linux-with-examples/)
+
+[https://www.geeksforgeeks.org/df-command-linux-examples/](https://www.geeksforgeeks.org/df-command-linux-examples/)
+
+[https://www.tecmint.com/how-to-check-disk-space-in-linux/](https://www.tecmint.com/how-to-check-disk-space-in-linux/)
+
+[https://www.geeksforgeeks.org/du-command-linux/](https://www.geeksforgeeks.org/du-command-linux/)
+
+[https://www.geeksforgeeks.org/du-command-linux-examples/](https://www.geeksforgeeks.org/du-command-linux-examples/)
+
+[https://www.tecmint.com/check-linux-disk-usage-of-files-and-directories/](https://www.tecmint.com/check-linux-disk-usage-of-files-and-directories/)
+
+With the special thanks of shawn powers.
+
+.
 
 .
 
