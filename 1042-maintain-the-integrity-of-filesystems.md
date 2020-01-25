@@ -28,6 +28,10 @@ In cases when your system crashes or loses power, your filesystems may be left i
 
 Operating with a damaged filesystem is not a good idea as you are likely to further compound any existing errors.We’ll take a look at  some tools to help us manage such problems.
 
+{% hint style="danger" %}
+You should always back up your filesystem before attempting any repairs!
+{% endhint %}
+
 ### fsck
 
  The main tool for checking and repairing  filesystems is `fsck`, which, like `mkfs`, is really a front end to filesystem-checking routines for the various filesystem types.
@@ -122,9 +126,38 @@ Pass 5: Checking group summary information
 
 > For checking  a XFS filesystem, wehave to use xfs\_check command
 
+{% hint style="info" %}
+**Super Blocks**
+
+ You may be wondering how all these checking and repairing tools know where to start. Linux and UNIX filesystems usually have a _superblock_, which describes the filesystem _metadata_, or data describing the filesystem itself. This is usually stored at a known location, frequently at or near the beginning of the filesystem, and replicated at other well-known locations. You can use the `-n` option of `mke2fs` to display the superblock locations for an existing filesystem.
+
+```text
+root@ubuntu16-1:~# mke2fs -n /dev/sdb1
+mke2fs 1.42.13 (17-May-2015)
+/dev/sdb1 contains a ext3 file system
+	created on Sat Jan 25 22:17:24 2020
+Proceed anyway? (y,n) y
+Creating filesystem with 5242624 4k blocks and 1310720 inodes
+Filesystem UUID: 28ce54ac-abbd-4788-bab8-b71eae9a53bc
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000
+```
+{% endhint %}
+
+## Advanced tools
+
+There are several more advanced tools that we can use to examine or repair a filesystem.
+
+#### Tools for ext2 and ext3 filesystems <a id="tools-for-ext2-and-ext3-filesystems"></a>
+
+* **tune2fs:**Adjusts parameters on ext2 and ext3 filesystems. Use this to add a journal
+* **dumpe2fs:** shows all super blocks info
+* **debugfs:** interactive file system editor
+
 ### tune2fs
 
- The ext family of filesystems also has a utility called `tune2fs`, which can be used to inspect information about the block count as well as information about whether the filesystem is journaled \(ext3 or ext4\) or not \(ext2\). 
+ The ext family of file systems also has a utility called `tune2fs`, which can be used to inspect information about the block count as well as information about whether the filesystem is journaled \(ext3 or ext4\) or not \(ext2\). 
 
 {% hint style="success" %}
 The tune2fs command allows you to set assorted filesystem parameters on a mounted ext2 or ext3 filesystem.
@@ -186,6 +219,68 @@ Also we can use tune2fs for changing or modifying partition label:
 ```text
 root@ubuntu16-1:~# tune2fs -L myroot /dev/sda1
 tune2fs 1.42.13 (17-May-2015)
+```
+
+### dumpe2fs
+
+dumpe2fs command is used to print the super block and blocks group information for the filesystem present on device.
+
+{% hint style="danger" %}
+printed information may be old or inconsistent when it is used with a mounted filesystem. Don’t forget to unmount your partition before using this command.
+{% endhint %}
+
+```text
+root@ubuntu16-1:~# dumpe2fs  /dev/sdb1 | grep superblock
+dumpe2fs 1.42.13 (17-May-2015)
+  Primary superblock at 0, Group descriptors at 1-2
+  Backup superblock at 32768, Group descriptors at 32769-32770
+  Backup superblock at 98304, Group descriptors at 98305-98306
+  Backup superblock at 163840, Group descriptors at 163841-163842
+  Backup superblock at 229376, Group descriptors at 229377-229378
+  Backup superblock at 294912, Group descriptors at 294913-294914
+  Backup superblock at 819200, Group descriptors at 819201-819202
+  Backup superblock at 884736, Group descriptors at 884737-884738
+  Backup superblock at 1605632, Group descriptors at 1605633-1605634
+  Backup superblock at 2654208, Group descriptors at 2654209-2654210
+  Backup superblock at 4096000, Group descriptors at 4096001-4096002
+
+```
+
+### debugfs
+
+Is an interactive filesystem debugger. Use it to examine or change the state of an ext2 or ext3 filesystem.  It opens the filesystem in read-only mode unless we tell it not to \(with `-w` option\).
+
+{% hint style="danger" %}
+ if  the filesystem is mounted,  is alright for inspecting, but **Do not** attempt repair on a mounted filesystem.
+{% endhint %}
+
+```text
+root@ubuntu16-1:~# debugfs /dev/sda1
+debugfs 1.42.13 (17-May-2015)
+debugfs:  cd /etc/
+debugfs:  pwd
+[pwd]   INODE: 1179649  PATH: /etc
+[root]  INODE:      2  PATH: /
+debugfs:  stat passwd
+
+Inode: 1187630   Type: regular    Mode:  0644   Flags: 0x80000
+Generation: 2904697195    Version: 0x00000000:00000001
+User:     0   Group:     0   Size: 2388
+File ACL: 0    Directory ACL: 0
+Links: 1   Blockcount: 8
+Fragment:  Address: 0    Number: 0    Size: 0
+ ctime: 0x5e2064c5:64a1019c -- Thu Jan 16 16:57:33 2020
+ atime: 0x5e2cb8a0:4aa345f8 -- Sun Jan 26 01:22:32 2020
+ mtime: 0x5e2064c5:64a1019c -- Thu Jan 16 16:57:33 2020
+crtime: 0x5e2064c5:64a1019c -- Thu Jan 16 16:57:33 2020
+Size of extra inode fields: 32
+EXTENTS:
+(0):4265700
+
+debugfs:  ncheck 1187630
+Inode	Pathname
+1187630	/etc/passwd
+debugfs:  q
 ```
 
 ### xfs\_info
@@ -263,12 +358,6 @@ done
 ```
 
 > In XFS, you can only extend file system and can not reduce it.
-
-{% hint style="info" %}
-**Super Blocks**
-
- You may be wondering how all these checking and repairing tools know where to start. Linux and UNIX filesystems usually have a _superblock_, which describes the filesystem _metadata_, or data describing the filesystem itself. This is usually stored at a known location, frequently at or near the beginning of the filesystem, and replicated at other well-known locations. You can use the `-n` option of `mke2fs` to display the superblock locations for an existing filesystem.
-{% endhint %}
 
 ### Monitoring free space <a id="monitoring-free-space"></a>
 
@@ -391,7 +480,34 @@ root@ubuntu16-1:~# du -sh
 
 **--exclude=PATTERN** will exclude files that match PATTERN example: `du -ah --exclude="*.txt" /home/payam`
 
+#### 
 
+#### summary
+
+Lets take a look at some other repairing tools beside tools which we have learned in this lesson:
+
+| file system | command | description |
+| :--- | :--- | :--- |
+| ext |  **tune2fs** | Adjusts parameters on ext2 and ext3 filesystems and can set journaling . |
+| ext |  **dumpe2fs** | Prints the super block and block group descriptor information for an ext2 or ext3 filesystem. |
+| ext |  **debugfs** | Is an interactive filesystem debugger. Use it to examine or change the state of an ext2 or ext3 filesystem. |
+| Reiserfs |  **reiserfstune** | Displays and adjusts parameters on ReiserFS filesystems. |
+| Reiserfs |  **debugreiserfs** | Performs similar functions to dumpe2fs and debugfs for ReiserFS filesystems. |
+| xfs |  **xfs\_info** | Displays XFS filesystem information. |
+| xfs |  **xfs\_growfs** | Expands an XFS filesystem |
+| xfs |  **xfs\_admin** | Changes the parameters of an XFS filesystem. |
+| xfs |  **xfs\_repair** | Repairs an XFS filesystem when the mount checks are not sufficient to repair the system. |
+| xfs |  **xfs\_db** | Examines or debugs an XFS filesystem. |
+| btrfs |  **btrfs** | Displays many aspects of btrfs filesystem information |
+| btrfs |  **btrfsck** | Check btrfs filesystems |
+| btrfs |  **btrfs-find-root** | Finds the block that is the root of the btrfs filesystem |
+| btrfs |  **btrfs-debug-tree** | Displays btrfs internal metadata |
+| btrfs |  **btrfstune** | Tune various btrfs filesystem parameters, and enables or disables some extended features |
+| btrfs |  **btrfs-restore** | Attempt to restore files from a damaged btrfs filesystem |
+
+
+
+.
 
 .
 
@@ -404,6 +520,10 @@ root@ubuntu16-1:~# du -sh
 [https://www.computerhope.com/unix/fsck.htm](https://www.computerhope.com/unix/fsck.htm)
 
 [https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/](https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/)[https://www.serverwatch.com/tutorials/article.php/3797306/tune2fs-Makes-It-Easy-to-Play-With-Filesystems.htm](https://www.serverwatch.com/tutorials/article.php/3797306/tune2fs-Makes-It-Easy-to-Play-With-Filesystems.htm)[https://jadi.gitbooks.io/lpic1/content/1042\_maintain\_the\_integrity\_of\_filesystems.html](https://jadi.gitbooks.io/lpic1/content/1042_maintain_the_integrity_of_filesystems.html)
+
+[https://www.geeksforgeeks.org/dumpe2fs-command-in-linux-with-examples/](https://www.geeksforgeeks.org/dumpe2fs-command-in-linux-with-examples/)
+
+[https://www.geeksforgeeks.org/dumpe2fs-command-in-linux-with-examples/](https://www.geeksforgeeks.org/dumpe2fs-command-in-linux-with-examples/)
 
 [https://www.geeksforgeeks.org/df-command-in-linux-with-examples/](https://www.geeksforgeeks.org/df-command-in-linux-with-examples/)
 
