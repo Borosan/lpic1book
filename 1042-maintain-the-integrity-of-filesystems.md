@@ -92,16 +92,7 @@ fsck from util-linux 2.27.1
 [/sbin/fsck.ext3 (1) -- /dev/sdb1] fsck.ext3 /dev/sdb1
 ```
 
- `-n`  causes these commands not to fix anything and just show what was going to be done:
-
-```text
-root@ubuntu16-1:~# fsck -n /dev/sdb1
-fsck from util-linux 2.27.1
-e2fsck 1.42.13 (17-May-2015)
-/dev/sdb1: clean, 11/1310720 files, 126322/5242624 blocks
-```
-
-Normally, **fsck** will skip parts of the filesystem marked as "clean" — meaning all pending writes were successfully made. The **-f** \("force"\) option specifies that **fsck** should check parts of the filesystem even if they are not "dirty". The result is a less efficient, but a more thorough check.
+ Normally, **fsck** will skip parts of the filesystem marked as "clean" — meaning all pending writes were successfully made. The **-f** \("force"\) option specifies that **fsck** should check parts of the filesystem even if they are not "dirty". The result is a less efficient, but a more thorough check.
 
 ```text
 root@ubuntu16-1:~# fsck -f /dev/sdb1
@@ -115,12 +106,6 @@ Pass 5: Checking group summary information
 /dev/sdb1: 11/1310720 files (0.0% non-contiguous), 126322/5242624 blocks
 
 ```
-
-{% hint style="success" %}
-**What are inodes?**
-
-As we said Linux  treating everything as a file \(even the hardware devices\). The keyboard, mouse, printers, monitor, hard disk, processes, even the directories are treated as files in Linux. The regular files contain data such as text \(text files\), music, videos \(multimedia files\) etc. Set aside the regular data, there are some other data about these files, such as their size, ownership, permissions, timestamp etc. This meta-data about a file is managed with a data structure known as an inode \(index node\).
-{% endhint %}
 
 > We can also check file systems using their UUID.\(use blkid command \):
 >
@@ -141,16 +126,6 @@ As we said Linux  treating everything as a file \(even the hardware devices\). T
 
 > For checking  a XFS filesystem, wehave to use xfs\_check command
 
-## Advanced tools
-
-There are several more advanced tools that we can use to examine or repair a filesystem.
-
-#### Tools for ext2 and ext3 filesystems <a id="tools-for-ext2-and-ext3-filesystems"></a>
-
-* **tune2fs:**Adjusts parameters on ext2 and ext3 filesystems. Use this to add a journal
-* **dumpe2fs:** shows all super blocks info
-* **debugfs:** interactive file system editor
-
 {% hint style="info" %}
 **Super Blocks**
 
@@ -169,6 +144,16 @@ Superblock backups stored on blocks:
 	4096000
 ```
 {% endhint %}
+
+## Advanced tools
+
+There are several more advanced tools that we can use to examine or repair a filesystem.
+
+#### Tools for ext2 and ext3 filesystems <a id="tools-for-ext2-and-ext3-filesystems"></a>
+
+* **tune2fs:**Adjusts parameters on ext2 and ext3 filesystems. Use this to add a journal
+* **dumpe2fs:** shows all super blocks info
+* **debugfs:** interactive file system editor
 
 ### tune2fs
 
@@ -378,7 +363,7 @@ done
 
  On a storage device, a file or directory is contained in a collection of _blocks_. Information about a file is contained in an _inode._
 
-> **Reminder :** inodes keeps information such as who the owner is, when the file was last accessed, how large it is, whether it is a directory, and who can read from or write to it. The inode number is also known as the file serial number and is unique within a particular filesystem.
+> inodes keeps information such as who the owner is, when the file was last accessed, how large it is, whether it is a directory, and who can read from or write to it. The inode number is also known as the file serial number and is unique within a particular filesystem.
 
 Data blocks and inodes each take space on a filesystem, so we need to monitor the space usage to ensure that your filesystems have space for growth.
 
@@ -535,8 +520,6 @@ Lets take a look at some other repairing tools beside tools which we have learne
 [https://www.computerhope.com/unix/fsck.htm](https://www.computerhope.com/unix/fsck.htm)
 
 [https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/](https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/)[https://www.serverwatch.com/tutorials/article.php/3797306/tune2fs-Makes-It-Easy-to-Play-With-Filesystems.htm](https://www.serverwatch.com/tutorials/article.php/3797306/tune2fs-Makes-It-Easy-to-Play-With-Filesystems.htm)[https://jadi.gitbooks.io/lpic1/content/1042\_maintain\_the\_integrity\_of\_filesystems.html](https://jadi.gitbooks.io/lpic1/content/1042_maintain_the_integrity_of_filesystems.html)
-
-[https://linoxide.com/linux-command/linux-inode/](https://linoxide.com/linux-command/linux-inode/)
 
 [https://www.geeksforgeeks.org/dumpe2fs-command-in-linux-with-examples/](https://www.geeksforgeeks.org/dumpe2fs-command-in-linux-with-examples/)
 
