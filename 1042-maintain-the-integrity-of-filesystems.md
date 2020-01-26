@@ -92,7 +92,16 @@ fsck from util-linux 2.27.1
 [/sbin/fsck.ext3 (1) -- /dev/sdb1] fsck.ext3 /dev/sdb1
 ```
 
- Normally, **fsck** will skip parts of the filesystem marked as "clean" — meaning all pending writes were successfully made. The **-f** \("force"\) option specifies that **fsck** should check parts of the filesystem even if they are not "dirty". The result is a less efficient, but a more thorough check.
+ `-n`  causes these commands not to fix anything and just show what was going to be done:
+
+```text
+root@ubuntu16-1:~# fsck -n /dev/sdb1
+fsck from util-linux 2.27.1
+e2fsck 1.42.13 (17-May-2015)
+/dev/sdb1: clean, 11/1310720 files, 126322/5242624 blocks
+```
+
+Normally, **fsck** will skip parts of the filesystem marked as "clean" — meaning all pending writes were successfully made. The **-f** \("force"\) option specifies that **fsck** should check parts of the filesystem even if they are not "dirty". The result is a less efficient, but a more thorough check.
 
 ```text
 root@ubuntu16-1:~# fsck -f /dev/sdb1
