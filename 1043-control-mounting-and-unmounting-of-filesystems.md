@@ -203,11 +203,68 @@ UUID=b4801c8b-ca75-4548-8697-182d1b6d895c none            swap    sw            
 > note2: noatime will disable recording of access times. Not using access times may improve performance.
 
 * **dump:** Specifies whether the dump command should consider this ext2 or ext3 filesystem for backups. A value of 0 tells dump to ignore this filesystem.
-* **pass:** Non-zero values of pass specify the order of checking filesystems at boot time, as discussed in previous section.
+* **pass:** Non-zero values of pass specify the order of checking filesystems at boot time,\( based on check interval and mount count, try tune2fs via grep\).
 
 > fstab configuration file can be used for mounting and unmounting even after reboot! `mount -a`  mount all the /etc/fstab entries
 
+Lets add /dev/sdb1 to the /etc/fstab file using UUID  and have it even after reboot:
 
+```text
+root@ubuntu16-1:~# blkid
+/dev/sdb1: LABEL="mydata" UUID="03c28ca3-daa3-49c2-9bc4-b083c3b0957b" TYPE="ext4" PARTUUID="4d71bc84-01"
+/dev/sda1: LABEL="myroot" UUID="142a64e5-96f3-4789-9c91-1dc1570057b7" TYPE="ext4" PARTUUID="101c66bb-01"
+/dev/sda5: UUID="b4801c8b-ca75-4548-8697-182d1b6d895c" TYPE="swap" PARTUUID="101c66bb-05"
+/dev/sr0: UUID="2018-04-25-06-43-09-00" LABEL="Fedora-WS-Live-28-1-1" TYPE="iso9660" PTUUID="3a663a44" PTTYPE="dos"
+
+root@ubuntu16-1:~# vim /etc/fstab 
+```
+
+```text
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda1 during installation
+UUID=142a64e5-96f3-4789-9c91-1dc1570057b7 /               ext4    errors=remount-ro 0       1
+# swap was on /dev/sda5 during installation
+UUID=b4801c8b-ca75-4548-8697-182d1b6d895c none            swap    sw              0       0
+/dev/fd0        /media/floppy0  auto    rw,user,noauto,exec,utf8 0       0
+### added by root! 
+UUID=03c28ca3-daa3-49c2-9bc4-b083c3b0957b /root/mydisk  auto default   0 0
+
+```
+
+if any worng syntaxies  exist on fstab, it can cause system failure and avoid system boots up! so try `mount -a` command before rebooting the system.
+
+> mount -a mount all the /etc/fstab entries
+
+```text
+root@ubuntu16-1:~# mount -a
+mount: wrong fs type, bad option, bad superblock on /dev/sdb1,
+       missing codepage or helper program, or other error
+
+       In some cases useful info is found in syslog - try
+       dmesg | tail or so.
+```
+
+Opps! that is defaults not default, so try to edit this line again in fstab:
+
+```text
+### added by root! 
+UUID=03c28ca3-daa3-49c2-9bc4-b083c3b0957b /root/mydisk  auto defaults   0 0
+```
+
+and we are done:
+
+```text
+root@ubuntu16-1:~# mount -a
+root@ubuntu16-1:~# cd /root/mydisk/
+root@ubuntu16-1:~/mydisk# ls
+file1.txt  file2.txt  lost+found
+```
 
 users can only mount and unmount things they are allowed to in /etc/fstab!
 
