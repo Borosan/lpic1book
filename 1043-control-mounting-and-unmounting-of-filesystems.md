@@ -42,19 +42,19 @@ With -t option we can specify file system type, how ever it can be omitted as mo
 Lets create a directory called "mydisk" as a mount point and mount /dev/sdb1 on that:
 
 ```text
-root@ubuntu16-1:~# pwd
-/root
+root@ubuntu16-1:/mnt# pwd
+/mnt
 
-root@ubuntu16-1:~# mkdir mydisk
+root@ubuntu16-1:/mnt# mkdir mydisk
 
-root@ubuntu16-1:~# mount -t ext4 /dev/sdb1 /root/mydisk
+root@ubuntu16-1:/mnt# mount -t ext4 /dev/sdb1 /mnt/mydisk
 
-root@ubuntu16-1:~# cd mydisk/
+root@ubuntu16-1:/mnt# cd mydisk/
 
 root@ubuntu16-1:~/mydisk# ls
 file1.txt  lost+found
 
-root@ubuntu16-1:~/mydisk# cat file1.txt 
+root@ubuntu16-1:/mnt/mydisk# cat file1.txt 
  this text file is on my hard disk!
 
 ```
@@ -101,7 +101,7 @@ vmware-vmblock on /run/vmblock-fuse type fuse.vmware-vmblock (rw,nosuid,nodev,re
 tmpfs on /run/user/1001 type tmpfs (rw,nosuid,nodev,relatime,size=98508k,mode=700,uid=1001,gid=1001)
 gvfsd-fuse on /run/user/1001/gvfs type fuse.gvfsd-fuse (rw,nosuid,nodev,relatime,user_id=1001,group_id=1001)
 /dev/sr0 on /media/user1/Fedora-WS-Live-28-1-1 type iso9660 (ro,nosuid,nodev,relatime,nojoliet,check=s,map=n,blocksize=2048,uid=1001,gid=1001,dmode=500,fmode=400,uhelper=udisks2)
-/dev/sdb1 on /root/mydisk type ext4 (rw,relatime,data=ordered)
+/dev/sdb1 on /mnt/mydisk type ext4 (rw,relatime,data=ordered)
 ```
 
 #### mount options
@@ -109,11 +109,11 @@ gvfsd-fuse on /run/user/1001/gvfs type fuse.gvfsd-fuse (rw,nosuid,nodev,relatime
  The `mount` command has several options that override the default behavior. For example, we can mount a filesystem read-only by specifying `-o ro`. If the filesystem is already mounted, add `remount:`
 
 ```text
-root@ubuntu16-1:~# mount -o remount,ro /dev/sdb1 /root/mydisk/
-root@ubuntu16-1:~# cd /root/mydisk/
-root@ubuntu16-1:~/mydisk# ls
+root@ubuntu16-1:/mnt# mount -o remount,ro /dev/sdb1 /mnt/mydisk/
+root@ubuntu16-1:/mnt# cd /mnt/mydisk/
+root@ubuntu16-1:/mnt/mydisk# ls
 file1.txt  lost+found
-root@ubuntu16-1:~/mydisk# touch file2
+root@ubuntu16-1:/mnt/mydisk# touch file2
 touch: cannot touch 'file2': Read-only file system
 ```
 
@@ -164,6 +164,7 @@ Fstab is  operating system’s file system table:
 
 ```text
 root@ubuntu16-1:~# cat /etc/fstab 
+
 # /etc/fstab: static file system information.
 #
 # Use 'blkid' to print the universally unique identifier for a
@@ -234,7 +235,7 @@ UUID=142a64e5-96f3-4789-9c91-1dc1570057b7 /               ext4    errors=remount
 UUID=b4801c8b-ca75-4548-8697-182d1b6d895c none            swap    sw              0       0
 /dev/fd0        /media/floppy0  auto    rw,user,noauto,exec,utf8 0       0
 ### added by root! 
-UUID=03c28ca3-daa3-49c2-9bc4-b083c3b0957b /root/mydisk  auto default   0 0
+UUID=03c28ca3-daa3-49c2-9bc4-b083c3b0957b /mnt/mydisk  auto default   0 0
 
 ```
 
@@ -253,15 +254,15 @@ Ops! that is defaults not default, so try to edit this line again in fstab:
 
 ```text
 ### added by root! 
-UUID=03c28ca3-daa3-49c2-9bc4-b083c3b0957b /root/mydisk  auto defaults   0 0
+UUID=03c28ca3-daa3-49c2-9bc4-b083c3b0957b /mnt/mydisk  auto defaults   0 0
 ```
 
 and we are done:
 
 ```text
 root@ubuntu16-1:~# mount -a
-root@ubuntu16-1:~# cd /root/mydisk/
-root@ubuntu16-1:~/mydisk# ls
+root@ubuntu16-1:~# cd /mnt/mydisk/
+root@ubuntu16-1:/mnt/mydisk# ls
 file1.txt  file2.txt  lost+found
 ```
 
