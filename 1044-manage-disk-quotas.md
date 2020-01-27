@@ -116,6 +116,8 @@ root@ubuntu16-1:/mnt/mydisk# quotaon /dev/sdb1
 root@ubuntu16-1:/mnt/mydisk# quotaon /root/mydisk
 ```
 
+ The common options `-a`, `-g`, `-u`, and `-v` have the same meaning as for the `quotacheck command`. Similarly, if you do not specify the `-a` option, you must specify a filesystem. Use the `-p` option if you just want to display whether quotas are on or off.
+
 > **quotaoff** announces to the system that the specified filesystems should have any disk quotas turned off.
 
 #### Setting quota limits
