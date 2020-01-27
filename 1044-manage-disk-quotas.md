@@ -221,13 +221,19 @@ user1     --       0       0       0              3     0     3
 
 > `-a` option produces a report for all mounted filesystems that have quota enabled. The `-v` option produces more verbose
 
-###  <a id="warning-users"></a>
-
-
+That's all!
 
 .
 
 .
+
+.
+
+{% hint style="info" %}
+### Warning users <a id="warning-users"></a>
+
+ The `warnquota` command is used to send email warnings to users who are over quota. When a group is over quota, the email is sent to the user specified in /etc/quotagrpadmins for the group. The format of the email is controlled by the file /etc/warnquota.conf. The file /etc/quotatab is used to map names such as /dev/sdc6 to more user-friendly descriptions such as “Shared EXT3 filesystem.” Normally `warnquota` is run periodically as a `cron` job\( will be discussed later\).
+{% endhint %}
 
 .
 
