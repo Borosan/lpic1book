@@ -179,6 +179,9 @@ UUID=b4801c8b-ca75-4548-8697-182d1b6d895c none            swap    sw            
 ```
 
 *  **file system :**This may be a device name such as /dev/sda1, or a label \(LABEL=\) or UUID \(UUID=\). 
+
+> > We can either mount using device name, labels or uuid. Which one is better ?Every body can set any labels the he/she wants, Device name might be changed for example if you attach two usb devices, so the best way is using uuid for mounting\(use `blkid` command\).
+
 *  **mount point :** mount point, but ****For swap space, this should be the value ‘none’ or ‘swap’.
 *  **type :** Specifies the type of filesystem. it can be \(**ext2,3,4, reiserfs,swap, vfat and ntfs,ISO9660,auto**\)
 * **option** : Specifies the mount options. Specify defaults if you want default mount options.
