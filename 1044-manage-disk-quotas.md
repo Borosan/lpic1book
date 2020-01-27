@@ -189,7 +189,9 @@ For copying one user quota limits to the other user, use -p switch:
 
 `edquota ‑p user1 user2 user2`
 
-### Quota reports <a id="quota-reports"></a>
+#### Quota reports
+
+### quota
 
  The `quota` command with no options displays the quotas for the a user on any filesystems \(quota shoud have been set for that user and he or she must have some files on it\): 
 
