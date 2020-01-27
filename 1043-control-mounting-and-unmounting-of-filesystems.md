@@ -203,9 +203,7 @@ UUID=b4801c8b-ca75-4548-8697-182d1b6d895c none            swap    sw            
 > note2: noatime will disable recording of access times. Not using access times may improve performance.
 
 * **dump:** Specifies whether the dump command should consider this ext2 or ext3 filesystem for backups. A value of 0 tells dump to ignore this filesystem.
-* **pass:** Non-zero values of pass specify the order of checking filesystems at boot time,\( based on check interval and mount count, try tune2fs via grep\).
-
-> fstab configuration file can be used for mounting and unmounting even after reboot! `mount -a`  mount all the /etc/fstab entries
+* **pass:** Non-zero values of pass specify the order of checking filesystems at boot time,\( based on check interval and mount count, try `tune2fs -l` \).
 
 Lets add /dev/sdb1 to the /etc/fstab file using UUID  and have it even after reboot:
 
@@ -237,9 +235,7 @@ UUID=03c28ca3-daa3-49c2-9bc4-b083c3b0957b /root/mydisk  auto default   0 0
 
 ```
 
-if any worng syntaxies  exist on fstab, it can cause system failure and avoid system boots up! so try `mount -a` command before rebooting the system.
-
-> mount -a mount all the /etc/fstab entries
+if any thing goes wrong in /etc/fstab , it can cause system failure and system can't boots up! So try `mount -a` in order to try mounting all fstab items before rebooting the system and check for errors.
 
 ```text
 root@ubuntu16-1:~# mount -a
@@ -250,7 +246,7 @@ mount: wrong fs type, bad option, bad superblock on /dev/sdb1,
        dmesg | tail or so.
 ```
 
-Opps! that is defaults not default, so try to edit this line again in fstab:
+Ops! that is defaults not default, so try to edit this line again in fstab:
 
 ```text
 ### added by root! 
