@@ -153,7 +153,7 @@ Ctrl+d
 This is my second new file with input redirection
 ```
 
-> Taking user input via - :
+> "-" A hyphen \(used alone\) generally signifies that input will be taken from stdin as opposed to a named file:
 >
 > ```text
 > [root@centos7-1 ~]# cat file1 - file2
@@ -166,7 +166,6 @@ This is my second new file with input redirection
 > This is 2nd line of file2.
 >
 > This is 4th line of file2.
->
 > ```
 
 List of cat command options:
