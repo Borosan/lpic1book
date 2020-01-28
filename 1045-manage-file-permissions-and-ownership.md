@@ -63,6 +63,17 @@ uid=0(root) gid=0(root) groups=0(root)
 
 > It can show numeric ID’s \(UID or group ID\) of the current user or any other user in the server.
 
+{% hint style="info" %}
+users and groups information are stored in /etc/passwd and /etc/group along other information.
+
+```text
+root@ubuntu16-1:~# cat /etc/passwd | grep user1
+user1:x:1001:1001::/home/user1:
+root@ubuntu16-1:~# cat /etc/group | grep user1
+user1:x:1001:
+```
+{% endhint %}
+
 #### File ownership and permissions
 
 Every file on a Linux system has one owner and one group associated with it.
@@ -86,7 +97,14 @@ Permissions are specified separately for the file’s owner, members of the file
 
 The Linux permission model has three types of permission for each filesystem object.
 
-The permissions are read \(r\), write \(w\), and execute \(x\). Write permission includes the ability to alter or delete an object.   A `-` indicates that the corresponding permission is not granted.
+The permissions are read \(r\), write \(w\), and execute \(x\). Write permission includes the ability to alter or delete an object.   A `-` indicates that the corresponding permission is not granted. example:
+
+```text
+root@ubuntu16-1:~# ls -l /sbin/fsck
+-rwxr-xr-x 1 root root 44184 May 16  2018 /sbin/fsck
+```
+
+As you can see fsck can be read, written and executed by its owner \(root\) and all  root group members, but others can just read and execute that\(probably with limited results \)
 
 #### Directories ownership and permissions <a id="directories"></a>
 
@@ -98,7 +116,97 @@ Directories use the same permissions flags as regular files, but they are interp
 * Write permission means a user with that permission can create or delete files in the directory.
 * Execute permission allows the user to enter the directory and access any subdirectories.
 
-Without execute permission on a directory, the filesystem objects inside the directory are not accessible. Without read permission on a directory, the filesystem objects inside the directory are not viewable in a directory listing, but these objects can still be accessed as long as you know the full path to the object on disk.
+Without execute permission on a directory, the filesystem objects inside the directory are not accessible. Without read permission on a directory, the filesystem objects inside the directory are not viewable in a directory listing, but these objects can still be accessed as long as you know the full path to the object on disk. example:
+
+```text
+root@ubuntu16-1:~# ls -l /home/
+total 8
+drwxr-xr-x 22 payam payam 4096 Oct 27  2018 payam
+drwxr-xr-x 19 user1 user1 4096 Jan 27 21:49 user1
+```
+
+The first charcter indicates that this a directory. The owner \(user1\) has read,write, execute access but other members of user1 group and others have just read and execute access on this directory, \(as we mentioned, execute lets them to see files inside it \)
+
+#### Changing permissions
+
+### chmod
+
+The command you use to change the  permissions on files is called chmod , which stands for “change mode". There  are to ways to tell this command what you want to do:
+
+* using short codes
+* using ocatl codes
+
+**1- using short codes:**  That is easier way. 
+
+![](.gitbook/assets/permis-chmodshortcodes.jpg)
+
+```text
+chmod [reference][operator][mode] file... 
+```
+
+reference can be
+
+*  u as user  \(file's owner\)
+* g as group \(users who are members of the file's grou\)
+* o as others \(users who are not the file's owner / members of the file's group\)
+* a as all \(All three of the above, same as ugo\)
+
+Operator can be
+
+* +  Adds the specified modes to the specified classes
+*  - Removes the specified modes from the specified classes
+* = The modes specified are to be made the exact modes for the specified classes
+
+obviously modes might be
+
+* r  :Permission to read the file
+* w :Permission to write \(or delete\) the file.
+* x : Permission to execute the file, or, in the case of a directory, search it.
+
+```text
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
+-rw-rw-r-- 1 user1 user1    0 Jan 27 21:49 file1
+
+user1@ubuntu16-1:~/sandbox$ chmod u+x file1
+
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
+-rwxrw-r-- 1 user1 user1    0 Jan 27 21:49 file1
+
+user1@ubuntu16-1:~/sandbox$ chmod o-r file1
+
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
+-rwxrw---- 1 user1 user1    0 Jan 27 21:49 file1
+```
+
+> If we want to set different permissions for user, group, or other, we can separate different expressions by commas —for example, `ug=rwx,o=rx`
+
+```text
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
+-rwxrw---- 1 user1 user1    0 Jan 27 21:49 file1
+
+user1@ubuntu16-1:~/sandbox$ chmod u-x,g+x,o+r file1
+
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
+-rw-rwxr-- 1 user1 user1    0 Jan 27 21:49 file1
+```
+
+> using a as ugo with = operator to set exact mode easier
+
+```text
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
+-rw-rwxr-- 1 user1 user1    0 Jan 27 21:49 file1
+user1@ubuntu16-1:~/sandbox$ chmod a=rw file1
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
+-rw-rw-rw- 1 user1 user1    0 Jan 27 21:49 file1
+```
+
+**2- using ocatl codes :** So far we have used symbols \(ugoa and rxw\) to specify permissions. we can also set permissions using octal numbers instead of symbols.
+
+![](.gitbook/assets/permis-chmodoctalcodes.jpg)
+
+
+
+To change permissions  recursively on directories and files use -R option:
 
 .
 
@@ -107,6 +215,8 @@ Without execute permission on a directory, the filesystem objects inside the dir
 .
 
 [https://developer.ibm.com/tutorials/l-lpic1-104-5/](https://developer.ibm.com/tutorials/l-lpic1-104-5/)
+
+[https://jadi.gitbooks.io/lpic1/content/1045\_manage\_file\_permissions\_and\_ownership.html](https://jadi.gitbooks.io/lpic1/content/1045_manage_file_permissions_and_ownership.html)
 
 .
 
