@@ -28,7 +28,7 @@ By now, you know that Linux is a multiuser system and that each user belongs to 
 
 To start, let’s review some basic user and group information via some commands
 
-* whoami : It displays the username of the current user 
+* whoami : It displays the username of the current user \(ubuntu16.04\)
 
 ```text
 user1@ubuntu16-1:~/sandbox$ whoami
@@ -277,7 +277,30 @@ Usually umask  is set system wide \(it could be set per user\) and we can find i
 > * /etc/bashrc \(usually\)
 > * /etc/logindefs \(ubuntu\)
 
-.
+as we are using ubuntu here lets take look at /etc/logindefs:
+
+```text
+# If USERGROUPS_ENAB is set to "yes", that will modify this UMASK default value
+# for private user groups, i. e. the uid is the same as gid, and username is
+# the same as the primary group name: for these, the user permissions will be
+# used as group permissions, e. g. 022 will become 002.
+#
+# Prefix these values with "0" to get octal, "0x" to get hexadecimal.
+#
+ERASECHAR       0177
+KILLCHAR        025
+UMASK           022
+```
+
+it say umask would be 002 if USERGROUPS\_ENAB is set, lets check it out:
+
+```text
+root@ubuntu16-1:~# cat /etc/login.defs | grep -i USERGROUPS_ENAB
+# If USERGROUPS_ENAB is set to "yes", that will modify this UMASK default value
+USERGROUPS_ENAB yes
+```
+
+which is why umask is 002 in our system.
 
 .
 
