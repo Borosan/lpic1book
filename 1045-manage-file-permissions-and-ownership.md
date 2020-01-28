@@ -204,9 +204,78 @@ user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
 
 ![](.gitbook/assets/permis-chmodoctalcodes.jpg)
 
+For using octal codes with chmod we have to create an octal string, and that's is nothing more than a simple sum of numbers:
 
+| Symbolic | note | Octal |
+| :--- | :--- | :--- |
+| rwx | 4+2+1 | 7 |
+| rw- | 4+2 | 6 |
+| r-x | 4+1 | 5 |
+| r-- | 4 | 4 |
+| -wx | 2+1 | 3 |
+| -w- | 2 | 2 |
+| --x | 1 | 1 |
+| --- | 0 | 0 |
+
+```text
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
+-rw-rw-rw- 1 user1 user1    0 Jan 27 21:49 file1
+
+user1@ubuntu16-1:~/sandbox$ chmod 700 file1
+
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
+-rwx------ 1 user1 user1    0 Jan 27 21:49 file1
+
+user1@ubuntu16-1:~/sandbox$ chmod 655 file1
+
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
+-rw-r-xr-x 1 user1 user1    0 Jan 27 21:49 file1
+```
 
 To change permissions  recursively on directories and files use -R option:
+
+```text
+user1@ubuntu16-1:~/sandbox$ chmor -R o+r dir1
+```
+
+#### Access modes
+
+### umask
+
+When a new file or directory is created, the creation process specifies the permissions that the new file or directory should have. Where do they come from? They came from the umask.
+
+ We can view your umask setting with the `umask` command:
+
+```text
+root@ubuntu16-1:~# umask
+0022
+```
+
+#### How umask work?
+
+![](.gitbook/assets/permis-umask.jpg)
+
+ When a new file is created, the creation process specifies the permissions that the new file should have. Often, the mode requested is 0666, which makes the file readable and writable by anyone \(but not executable\). Directories usually default to 0777. However, this permissive creation is affected by a _umask_ value, which specifies what permissions a user does **not** want to grant automatically to newly created files or directories. The system uses the umask value to reduce the originally requested permissions.
+
+```text
+user1@ubuntu16-1:~/sandbox$ umask
+0002
+
+user1@ubuntu16-1:~/sandbox$ touch newfile
+
+user1@ubuntu16-1:~/sandbox$ ls -l | grep newfile
+-rw-rw-r-- 1 user1 user1    0 Jan 28 05:44 newfile
+
+user1@ubuntu16-1:~/sandbox$ mkdir newdir
+user1@ubuntu16-1:~/sandbox$ ls -l | grep newdir
+drwxrwxr-x 2 user1 user1 4096 Jan 28 05:45 newdir
+```
+
+Usually umask  is set system wide \(it could be set per user\) and we can find its configuration in one of these places \(based on your linux distribution\): 
+
+> * /etc/profile \(usually\)
+> * /etc/bashrc \(usually\)
+> * /etc/logindefs \(ubuntu\)
 
 .
 
