@@ -353,6 +353,8 @@ We can also use octal codes to set suid, guid and stickybit:
 | **GUID** | 2000 |
 | **StickyBit** | 1000 |
 
+And again we can use sum of digits.
+
 ```text
 ###SUID
 user1@ubuntu16-1:~/sandbox$ touch file2
@@ -482,7 +484,7 @@ total 0
 chgrp [OPTION]… GROUP FILE…
 ```
 
-> **Note:** First we need to have administrator permission to add or delete groups.
+**Note1:** We need to have administrator permission to add or delete groups 
 
 ```text
 root@ubuntu16-1:~/sandbox# ls -l
@@ -498,9 +500,61 @@ total 0
 -rw-r--r-- 1 user1 root 0 Jan 29 03:00 file1
 ```
 
- As with many of the commands covered in this tutorial, `chgrp` has a `-R` option to allow changes to be applied recursively to all selected files and subdirectories.
+**Note2:** the owner of file can always change the group of his/her file or directory to its own group or one of the groups that him/her is a member of.
+
+```text
+root@ubuntu16-1:~# cd ~user1/
+
+root@ubuntu16-1:/home/user1# cd sandbox/
+
+root@ubuntu16-1:/home/user1/sandbox# ls -l
+total 0
+-rw-r--r-- 1 root root 0 Jan 29 05:21 file1
+
+root@ubuntu16-1:/home/user1/sandbox# chown user1 file1 
+```
+
+```text
+user1@ubuntu16-1:~/sandbox$ whoami
+user1
+
+user1@ubuntu16-1:~/sandbox$ id
+uid=1001(user1) gid=1001(user1) groups=1001(user1)
+
+user1@ubuntu16-1:~/sandbox$ ls -l
+total 0
+-rw-r--r-- 1 user1 root 0 Jan 29 05:21 file1
+
+user1@ubuntu16-1:~/sandbox$ chgrp user1 file1
+
+user1@ubuntu16-1:~/sandbox$ ls -l
+total 0
+-rw-r--r-- 1 user1 user1 0 Jan 29 05:21 file1
+```
+
+As with many of the commands covered in this tutorial, `chgrp` has a `-R` option to allow changes to be applied recursively to all selected files and subdirectories.
 
 --refrence  Uses the groupname of a reference file to change the group of another file or folder.
+
+.
+
+.
+
+.
+
+{% hint style="success" %}
+**Primary and secondary groups**
+
+There are actually two types of groups — **primary** and **secondary**.
+
+The **primary group** is the one that’s recorded in the **/etc/passwd** file, configured when an account is set up. When a user creates a file, it’s their primary group that is associated with it. 
+
+ **Secondary groups** are those that users might be added to once they already have accounts. Secondary group memberships show up in the /etc/group file.
+
+A user can change his/her **primary group** \(**default group**\) with `newgrp` command, and after that all file/directories the user creates will have that group.
+{% endhint %}
+
+
 
 .
 
@@ -519,6 +573,8 @@ total 0
 [https://www.geeksforgeeks.org/chown-command-in-linux-with-examples/](https://www.geeksforgeeks.org/chown-command-in-linux-with-examples/)
 
 [https://www.geeksforgeeks.org/chgrp-command-in-linux-with-examples/](https://www.geeksforgeeks.org/chgrp-command-in-linux-with-examples/)
+
+[https://www.networkworld.com/article/3409781/mastering-user-groups-on-linux.html](https://www.networkworld.com/article/3409781/mastering-user-groups-on-linux.html)
 
 .
 
