@@ -232,13 +232,149 @@ user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
 -rw-r-xr-x 1 user1 user1    0 Jan 27 21:49 file1
 ```
 
-To change permissions  recursively on directories and files use -R option:
+To change permissions  recursively on directories and files use `-R` option:
 
 ```text
 user1@ubuntu16-1:~/sandbox$ chmor -R o+r dir1
 ```
 
 #### Access modes
+
+When  we  log in, the new shell process runs with your user and group IDs. This usually means that you cannot access files belonging to others and cannot write system files. From the other side, users are totally dependent on other programs to perform operations. 
+
+An important example is the /etc/passwd file, which cannot be changed by normal users directly, because write permission is enabled only for root. However, normal users need to be able to modify /etc/passwd somehow:
+
+```text
+root@ubuntu16-1:~# which passwd
+/usr/bin/passwd
+root@ubuntu16-1:~# ls -l /usr/bin/passwd
+-rwsr-xr-x 1 root root 54256 May 16  2017 /usr/bin/passwd
+```
+
+So, if the user is unable to modify this file, how can this be done? What is that "s"?
+
+### suid , guid
+
+The Linux permissions model has two special access modes called suid \(set user id\) and sgid \(set group id\). When an executable program has the suid access modes set, it will run as if it had been started by the file’s owner, rather than by the user who really started it. Similarly, with the sgid access modes set, the program will run as if the initiating user belonged to the file’s group rather than to his own group.
+
+> #### Directories and sgid <a id="directories-and-sgid"></a>
+>
+> When a directory has the sgid mode enabled, any files or directories created in it will inherit the group ID of the directory. This is particularly useful for directory trees that are used by a group of people working on the same project.
+
+### sticky bit
+
+We have just seen how anyone with write permission to a directory can delete files in it. This might be acceptable for a group project, but is not desirable for globally shared file space such as the /tmp directory. Fortunately, there is a solution.  That  is called the _sticky_ bit.
+
+If set stickybit for a directory, it permits only the owning user or the superuser \(root\) to delete or unlink a file. 
+
+Okey lets wrap up what we have learned:
+
+| access mode |  **on file** | **on directory** |
+| :--- | :--- | :--- |
+| **SUID** | executes with permissions of file owner | nothing |
+| **GUID** | executes with the permissions of group | new files have group membership of directory |
+| **Sticky Bit** | nothing | only owner can delete files |
+
+#### How suid, guid and stickybit are implemented?
+
+As there is no more room for setting Access modes, execution character is used. "s" letter is used for both suid and guid but "t" letter is for stickybit. Again we use `+/-` for adding and removing permissions.
+
+![](.gitbook/assets/permis-accessmodes.jpg)
+
+> As you have probably noticed, if the file or directory is already executable  **s** and **t**  would be displayed  after setting access modes. 
+>
+> But if the file or directory hasn't been executable before setting access mode, **S** and **T** would be appear.
+
+As an example for suid consider ping command, as ping needs to access network card it needs root permissions, but an ordinary user can use it:
+
+```text
+user1@ubuntu16-1:~/sandbox$ which ping
+/bin/ping
+user1@ubuntu16-1:~/sandbox$ ls -l /bin/ping
+-rwsr-xr-x 1 root root 44168 May  7  2014 /bin/ping
+user1@ubuntu16-1:~/sandbox$ ping 8.8.8.8 -c2
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=128 time=39.9 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=128 time=39.7 ms
+
+--- 8.8.8.8 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 39.793/39.862/39.932/0.211 ms
+```
+
+Now we try setting guid on a directory and we will create a file with another user:
+
+```text
+user1@ubuntu16-1:~/sandbox$ ls -l | grep dir1
+drwxrwxrwx 2 user1 user1 4096 Jan 27 21:49 dir1
+user1@ubuntu16-1:~/sandbox$ chmod g+s dir1
+user1@ubuntu16-1:~/sandbox$ ls -l | grep dir1
+drwxrwsrwx 2 user1 user1 4096 Jan 27 21:49 dir1
+```
+
+```text
+user2@ubuntu16-1:~$ whoami
+user2
+user2@ubuntu16-1:~$ cd /home/user1/sandbox/dir1/
+user2@ubuntu16-1:/home/user1/sandbox/dir1$ touch NewFileUser2
+user2@ubuntu16-1:/home/user1/sandbox/dir1$ ls -l
+total 0
+-rw-rw-r-- 1 user2 user1 0 Jan 29 02:02 NewFileUser2
+```
+
+And finally lets try how stickybit works on  /tmp:
+
+```text
+user1@ubuntu16-1:/$ cd /
+user1@ubuntu16-1:/$ ls -l | grep tmp
+drwxrwxrwt  22 root  root   4096 Jan 29 02:03 tmp
+user1@ubuntu16-1:/$ cd tmp/
+user1@ubuntu16-1:/tmp$ touch NewFileUser1
+user1@ubuntu16-1:/tmp$ ls -l | grep -i newfile
+-rw-rw-r-- 1 user1 user1    0 Jan 29 02:04 NewFileUser1
+```
+
+```text
+user2@ubuntu16-1:~$ whoami
+user2
+user2@ubuntu16-1:~$ cd /tmp/
+user2@ubuntu16-1:/tmp$ rm NewFileUser1 
+rm: remove write-protected regular empty file 'NewFileUser1'? y
+rm: cannot remove 'NewFileUser1': Operation not permitted
+```
+
+#### Setting Access Modes via octal codes:
+
+We can also use octal codes to set suid, guid and stickybit:
+
+| Access Mode | octal |
+| :--- | :--- |
+| **SUID** | 4000 |
+| **GUID** | 2000 |
+| **StickyBit** | 1000 |
+
+```text
+###SUID
+user1@ubuntu16-1:~/sandbox$ touch file2
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file2
+-rw-rw-r-- 1 user1 user1    0 Jan 29 02:32 file2
+user1@ubuntu16-1:~/sandbox$ chmod 4470 file2
+user1@ubuntu16-1:~/sandbox$ ls -l | grep file2
+-r-Srwx--- 1 user1 user1    0 Jan 29 02:32 file2
+
+###GUID
+user1@ubuntu16-1:~/sandbox$ mkdir dir2
+user1@ubuntu16-1:~/sandbox$ ls -l | grep dir2
+drwxrwxr-x 2 user1 user1 4096 Jan 29 02:33 dir2
+user1@ubuntu16-1:~/sandbox$ chmod 2770 dir2
+user1@ubuntu16-1:~/sandbox$ ls -l | grep dir2
+drwxrws--- 2 user1 user1 4096 Jan 29 02:33 dir2
+
+###StickyBit
+user1@ubuntu16-1:~/sandbox$ chmod 1770 dir2
+user1@ubuntu16-1:~/sandbox$ ls -l | grep dir2
+drwxrws--T 2 user1 user1 4096 Jan 29 02:33 dir2
+```
 
 ### umask
 
@@ -309,6 +445,14 @@ which is why umask is 002 in our system.
 [https://developer.ibm.com/tutorials/l-lpic1-104-5/](https://developer.ibm.com/tutorials/l-lpic1-104-5/)
 
 [https://jadi.gitbooks.io/lpic1/content/1045\_manage\_file\_permissions\_and\_ownership.html](https://jadi.gitbooks.io/lpic1/content/1045_manage_file_permissions_and_ownership.html)
+
+[https://www.geeksforgeeks.org/chmod-command-linux/](https://www.geeksforgeeks.org/chmod-command-linux/)
+
+[https://www.geeksforgeeks.org/permissions-in-linux/](https://www.geeksforgeeks.org/permissions-in-linux/)
+
+.
+
+.
 
 .
 
