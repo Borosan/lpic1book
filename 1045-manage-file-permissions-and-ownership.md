@@ -438,6 +438,72 @@ USERGROUPS_ENAB yes
 
 which is why umask is 002 in our system.
 
+#### Setting file owner and group
+
+All files in Linux belong to an owner and a group.  We can set the owner by using `chown`  command, and the group by the `chgrp` command.
+
+### chown
+
+ The root user can change the ownership of a file using the `chown` command.We can use user name or user ID.
+
+```text
+chown [OPTION]… [OWNER][:[GROUP]] FILE…
+```
+
+The file’s group may be changed at the same time by adding a colon and a group name or ID right after the user name or ID.
+
+```text
+root@ubuntu16-1:~/sandbox# touch file1
+root@ubuntu16-1:~/sandbox# ls -l
+total 0
+-rw-r--r-- 1 root root 0 Jan 29 03:00 file1
+root@ubuntu16-1:~/sandbox# chown user1 file1 
+root@ubuntu16-1:~/sandbox# ls -l
+total 0
+-rw-r--r-- 1 user1 root 0 Jan 29 03:00 file1
+```
+
+If only a colon is given, then the user’s default group is used:
+
+```text
+root@ubuntu16-1:~/sandbox# chown user1: file1
+root@ubuntu16-1:~/sandbox# ls -l
+total 0
+-rw-r--r-- 1 user1 user1 0 Jan 29 03:00 file1
+```
+
+ the -R option will apply the change recursively and `-c`  Reports when a file change is made. We can also use other file ownership via `--referenece` switch.
+
+### chgrp
+
+ chgrp command in Linux is used to change the group ownership of a file or directory.
+
+```text
+chgrp [OPTION]… GROUP FILE…
+```
+
+> **Note:** First we need to have administrator permission to add or delete groups.
+
+```text
+root@ubuntu16-1:~/sandbox# ls -l
+total 0
+-rw-r--r-- 1 user1 user1 0 Jan 29 03:00 file1
+root@ubuntu16-1:~/sandbox# chgrp user2 file1
+root@ubuntu16-1:~/sandbox# ls -l
+total 0
+-rw-r--r-- 1 user1 user2 0 Jan 29 03:00 file1
+root@ubuntu16-1:~/sandbox# chgrp root file1
+root@ubuntu16-1:~/sandbox# ls -l
+total 0
+-rw-r--r-- 1 user1 root 0 Jan 29 03:00 file1
+```
+
+ As with many of the commands covered in this tutorial, `chgrp` has a `-R` option to allow changes to be applied recursively to all selected files and subdirectories.
+
+--refrence  Uses the groupname of a reference file to change the group of another file or folder.
+
+.
+
 .
 
 .
@@ -449,6 +515,10 @@ which is why umask is 002 in our system.
 [https://www.geeksforgeeks.org/chmod-command-linux/](https://www.geeksforgeeks.org/chmod-command-linux/)
 
 [https://www.geeksforgeeks.org/permissions-in-linux/](https://www.geeksforgeeks.org/permissions-in-linux/)
+
+[https://www.geeksforgeeks.org/chown-command-in-linux-with-examples/](https://www.geeksforgeeks.org/chown-command-in-linux-with-examples/)
+
+[https://www.geeksforgeeks.org/chgrp-command-in-linux-with-examples/](https://www.geeksforgeeks.org/chgrp-command-in-linux-with-examples/)
 
 .
 
