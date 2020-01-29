@@ -34,6 +34,8 @@ root@ubuntu16-1:~/sandbox# ls -1i
 2228289 file1
 ```
 
+> -i switch print the index number of each file
+
 **Whats is link ?**  A link is simply an additional directory entry for a file or directory, allowing two or more names for the same thing.
 
 #### Creating links
