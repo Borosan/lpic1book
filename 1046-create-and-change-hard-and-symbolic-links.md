@@ -40,11 +40,13 @@ root@ubuntu16-1:~/sandbox# ls -1i
 
 #### Creating links
 
- A _hard link_ is a directory entry that points to an inode, while a _soft link_ or _symbolic link_ is a directory entry that points to an inode that provides the name of another directory entry.  Symbolic links are also called _symlinks_.
+There are two types of links : **Hard Link** and **Soft Link**.
+
+ A **hard link** is a directory entry that points to an inode, while a **soft link** or _symbolic link_ is a directory entry that points to an inode that provides the name of another directory entry.  Symbolic links are also called _symlinks_.
 
 ![](.gitbook/assets/link-links.jpg)
 
-> hard links point to an inode, and inodes are only unique within a particular file system, hard links cannot cross file systems.
+> hard links point to an inode, and inodes are only unique within a particular file system, hard links cannot cross file systems\(different partitions or hard disks\).
 
 > You can create hard links only for files and not for directories. The exception is the special directory entries in a directory for the directory itself and for its parent \(. and ..\)
 
@@ -145,6 +147,63 @@ drwxr-xr-x 2 root root 4096 Jan 29 08:14 dir
 -rw-r--r-- 1 root root    0 Jan 29 09:05 file2
 -rw-r--r-- 2 root root    0 Jan 29 08:14 HardLink
 lrwxrwxrwx 1 root root    5 Jan 29 09:06 SoftLink -> file2
+```
+
+### Copying versus linking <a id="copying-versus-linking"></a>
+
+Depending on what you want to accomplish, sometimes you will use links and sometimes it may be better to make a copy of a file. The major difference is that links provide multiple names for a single file, while a copy creates two sets of identical data under two different names. You would certainly use copies for backup and also for test purposes where you want to try out a new program without putting your operational data at risk. You use links when you need an alias for a file \(or directory\), possibly to provide a more convenient or shorter path. In the next section, we’ll look at some other uses for links.
+
+As you have seen, when you update a file, all the links to it see the update, which is not the case if you copy a file. You have also seen that symbolic links can be broken but that subsequent write operations may create a new file. Use links with care.
+
+#### Links and system administration
+
+Links, especially symbolic links, are frequently used in Linux system administration.
+
+1- **Aliasing commands to a particular version**
+
+Commands are often aliased, so the user does not have to know a version number for the current command but can access other versions by longer names if necessary.
+
+```text
+root@ubuntu16-1:~/sandbox# which python
+/usr/bin/python
+root@ubuntu16-1:~/sandbox# ls -l /usr/bin/python
+lrwxrwxrwx 1 root root 9 Nov 23  2017 /usr/bin/python -> python2.7
+```
+
+2-**Command alias examples**
+
+ Other uses come into play when multiple command names use the same underlying code, such as the various commands for stopping and for restarting a system. Sometimes, a new command name, such as `genisoimage`, will replace an older command name, but the old name \(mkisofs\) is kept as a link to the new command.
+
+```text
+root@ubuntu16-1:~/sandbox# which halt
+/sbin/halt
+root@ubuntu16-1:~/sandbox# ls -l /sbin/halt
+lrwxrwxrwx 1 root root 14 Nov 27  2018 /sbin/halt -> /bin/systemctl
+
+root@ubuntu16-1:~/sandbox# which mkisofs 
+/usr/bin/mkisofs
+root@ubuntu16-1:~/sandbox# ls -l /usr/bin/mkisofs
+lrwxrwxrwx 1 root root 11 Nov 26  2017 /usr/bin/mkisofs -> genisoimage
+```
+
+3- **Library links**
+
+Library names are also managed extensively using symlinks, either to allow programs to link to a general name while getting the current version, or to manage systems such as 64-bit systems that are capable of running 32-bit programs.
+
+```text
+root@ubuntu16-1:~/sandbox# ls -l /usr/lib/
+...
+lrwxrwxrwx   1 root root     30 Jul 31  2018 libblas.so.3 -> /etc/alternatives/libblas.so.3
+lrwxrwxrwx   1 root root     18 Jul  9  2011 libfsplib.so.0 -> libfsplib.so.0.0.0
+-rw-r--r--   1 root root  22808 Jul  9  2011 libfsplib.so.0.0.0
+lrwxrwxrwx   1 root root     19 Dec 21  2015 libgdiplus.so -> libgdiplus.so.0.0.0
+lrwxrwxrwx   1 root root     19 Dec 21  2015 libgdiplus.so.0 -> libgdiplus.so.0.0.0
+-rw-r--r--   1 root root 423928 Dec 21  2015 libgdiplus.so.0.0.0
+drwxr-xr-x   2 root root   4096 Dec  1  2018 libmbim
+-rw-r--r--   1 root root 241488 Apr 12  2016 libMonoPosixHelper.so
+-rw-r--r--   1 root root 133880 Apr 12  2016 libMonoSupportW.so
+lrwxrwxrwx   1 root root     17 Nov 26  2017 libnetpbm.so.10 -> libnetpbm.so.10.0
+...
 ```
 
 .
