@@ -151,16 +151,9 @@ lrwxrwxrwx 1 root root    5 Jan 29 09:06 SoftLink -> file2
 
 ### Copying versus linking <a id="copying-versus-linking"></a>
 
-Depending on what we  want to accomplish, sometimes we  will use links and sometimes it may be better to make a copy of a file. 
+Depending on what you want to accomplish, sometimes you will use links and sometimes it may be better to make a copy of a file. The major difference is that links provide multiple names for a single file, while a copy creates two sets of identical data under two different names. You would certainly use copies for backup and also for test purposes where you want to try out a new program without putting your operational data at risk. You use links when you need an alias for a file \(or directory\), possibly to provide a more convenient or shorter path. In the next section, we’ll look at some other uses for links.
 
-* The major difference is that links provide multiple names for a single file, while a copy creates two sets of identical data under two different names. 
-* You would certainly use copies for backup and also for test purposes where you want to try out a new program without putting your operational data at risk. 
-* You use links when we need an alias for a file \(or directory\), possibly to provide a more convenient or shorter path. 
-* when we  update a file, all the links to it see the update, which is not the case if you copy a file. 
-
-{% hint style="danger" %}
-symbolic links can be broken but that subsequent write operations may create a new file. Use links with care.
-{% endhint %}
+As you have seen, when you update a file, all the links to it see the update, which is not the case if you copy a file. You have also seen that symbolic links can be broken but that subsequent write operations may create a new file. Use links with care.
 
 #### Links and system administration
 
