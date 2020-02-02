@@ -75,9 +75,7 @@ ln  [original filename] [link name]
 ln  -s [original filename] [link name] 
 ```
 
-### Hard Links
-
- Use the `ln` command to create additional hard links to an existing file \(but not to a directory, even though the system sets up . and .. as hard links\).
+#### Hard Links
 
 ```text
 root@ubuntu16-1:~/sandbox# ls -l
@@ -85,15 +83,12 @@ total 4
 drwxr-xr-x 2 root root 4096 Jan 29 08:14 dir
 -rw-r--r-- 1 root root    0 Jan 29 08:14 file1
 
-### see inodes
 root@ubuntu16-1:~/sandbox# ls -1i
 2228290 dir
 2228289 file1
 
-### creating Hard Link
 root@ubuntu16-1:~/sandbox# ln file1 HardLink
 
-### comparing inodes
 root@ubuntu16-1:~/sandbox# ls -1i
 2228290 dir
 2228289 file1
@@ -113,9 +108,7 @@ drwxr-xr-x 2 root root 4096 Jan 29 08:14 dir
 
 look at that"2" infront of file1, it was "1" before creating HardLink.
 
-### Soft Links
-
- `ln` command with the `-s` option creates soft links. Soft links use file or directory names, which may be relative or absolute. If you are using relative names, you will usually want the current working directory to be the directory where you are creating the link. Otherwise, the link you create will be relative to another point in the file system.
+#### Soft Links
 
 ```text
 root@ubuntu16-1:~/sandbox# touch file2
@@ -127,7 +120,6 @@ drwxr-xr-x 2 root root 4096 Jan 29 08:14 dir
 -rw-r--r-- 1 root root    0 Jan 29 09:05 file2
 -rw-r--r-- 2 root root    0 Jan 29 08:14 HardLink
 
-### see inodes
 root@ubuntu16-1:~/sandbox# ls -li
 total 4
 2228290 drwxr-xr-x 2 root root 4096 Jan 29 08:14 dir
@@ -135,95 +127,33 @@ total 4
 2228291 -rw-r--r-- 1 root root    0 Jan 29 09:05 file2
 2228289 -rw-r--r-- 2 root root    0 Jan 29 08:14 HardLink
 
-### creating soft link using relative path
 root@ubuntu16-1:~/sandbox# ln -s  file2 SoftLink
 
-### see inodes
 root@ubuntu16-1:~/sandbox# ls -1i
 2228290 dir
 2228289 file1
 2228291 file2
 2228289 HardLink
 2228292 SoftLink
-
-### creating soft link using absolute path,we have to be in current dir)
-root@ubuntu16-1:~/sandbox# ln -s dir/dir2/myconfig SoftLink2myconf
-
-root@ubuntu16-1:~/sandbox# ls -l | grep myconfig
-lrwxrwxrwx 1 root root   17 Feb  1 23:59 SoftLink2myconf -> dir/dir2/myconfig
-
-
-###creating soft link to a directory
-root@ubuntu16-1:~/sandbox# ln -s dir/ soft2dir
-
-root@ubuntu16-1:~/sandbox# ls -l | grep soft2dir
-lrwxrwxrwx 1 root root    4 Feb  2 00:04 soft2dir -> dir/
 ```
 
 ls -l command shows all links with second column value 1 and the link points to the original file.
 
 ```text
-drwxr-xr-x 3 root root 4096 Feb  1 23:59 dir
+root@ubuntu16-1:~/sandbox# ls -l
+total 4
+drwxr-xr-x 2 root root 4096 Jan 29 08:14 dir
 -rw-r--r-- 2 root root    0 Jan 29 08:14 file1
 -rw-r--r-- 1 root root    0 Jan 29 09:05 file2
 -rw-r--r-- 2 root root    0 Jan 29 08:14 HardLink
-lrwxrwxrwx 1 root root    4 Feb  2 00:04 soft2dir -> dir/
 lrwxrwxrwx 1 root root    5 Jan 29 09:06 SoftLink -> file2
-lrwxrwxrwx 1 root root   17 Feb  1 23:59 SoftLink2myconf -> dir/dir2/myconfig
 ```
-
-#### Broken symlinks <a id="broken-symlinks"></a>
-
-Since hard links always point to an inode that represents a file, they are always valid. However, symlinks can be broken for many reasons, including:
-
-* Either the original file or the target of the link did not exist when the link was created
-* The target of a link is deleted or renamed.
-* Some element in the path to the target is removed or renamed.
-
-
-
-{% hint style="info" %}
-**Identifying links via find command**
-
- To find which files are hard links to a particular inode, use the `find` command and the `-samefile` option with a file name or the `-inum` option with an inode number:
-
-```text
-root@ubuntu16-1:~/sandbox# ls -1i
-2228290 dir
-2228289 file1
-2228291 file2
-2228289 HardLink
-2228292 SoftLink
-
-root@ubuntu16-1:~/sandbox# find . -samefile file1
-./HardLink
-./file1
-
-root@ubuntu16-1:~/sandbox# find . -inum 2228289
-./HardLink
-./file1
-```
-
-We can also use the `find` command to search for symbolic links using the `-type l` find expression:
-
-```text
-root@ubuntu16-1:~/sandbox# find . -type l 
-./SoftLink
-```
-{% endhint %}
 
 ### Copying versus linking <a id="copying-versus-linking"></a>
 
-Depending on what we  want to accomplish, sometimes we  will use links and sometimes it may be better to make a copy of a file. 
+Depending on what you want to accomplish, sometimes you will use links and sometimes it may be better to make a copy of a file. The major difference is that links provide multiple names for a single file, while a copy creates two sets of identical data under two different names. You would certainly use copies for backup and also for test purposes where you want to try out a new program without putting your operational data at risk. You use links when you need an alias for a file \(or directory\), possibly to provide a more convenient or shorter path. In the next section, we’ll look at some other uses for links.
 
-* The major difference is that links provide multiple names for a single file, while a copy creates two sets of identical data under two different names. 
-* You would certainly use copies for backup and also for test purposes where you want to try out a new program without putting your operational data at risk. 
-* You use links when we need an alias for a file \(or directory\), possibly to provide a more convenient or shorter path. 
-* when we  update a file, all the links to it see the update, which is not the case if you copy a file. 
-
-{% hint style="danger" %}
-symbolic links can be broken but that subsequent write operations may create a new file. Use links with care.
-{% endhint %}
+As you have seen, when you update a file, all the links to it see the update, which is not the case if you copy a file. You have also seen that symbolic links can be broken but that subsequent write operations may create a new file. Use links with care.
 
 #### Links and system administration
 
