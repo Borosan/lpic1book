@@ -129,6 +129,15 @@ The `find` command is the Swiss Army knife of file-searching tools on Linux syst
 We can also search for files by the file owner or group owner \(discussed in "104-5"\). We do this by using the `-user` and `-group` parameters respectively.
 
 ```text
+### finding bu user
+root@ubuntu16-1:~# find /tmp -user user1 | head
+/tmp/gnome-software-ZPJTE0
+/tmp/gnome-software-ZPJTE0/debconf.socket
+/tmp/gnome-software-YDX3E0
+/tmp/gnome-software-YDX3E0/debconf.socket
+/tmp/gnome-software-GD8NE0
+
+### finding by group
 root@ubuntu16-1:~/test-space# find /etc  -group shadow
 /etc/shadow
 /etc/gshadow
@@ -152,11 +161,93 @@ find -maxdepth num -name query
 find -mindepth num -name query
 ```
 
-Also it is possible to combine the min and max depth parameters to focus in on a narrow range:
+Also it is possible to combine the min and max depth parameters to focus in on a narrow range `find -mindepth num -maxdepth num -name file`:
 
 ```text
-find -mindepth num -maxdepth num -name file
+
+root@ubuntu16-1:~# find /tmp  -mindepth 1 -maxdepth 2 -user user1 | head
+/tmp/gnome-software-ZPJTE0
+/tmp/gnome-software-ZPJTE0/debconf.socket
+/tmp/gnome-software-YDX3E0
+/tmp/gnome-software-YDX3E0/debconf.socket
+/tmp/gnome-software-GD8NE0
+/tmp/gnome-software-GD8NE0/debconf.socket
+/tmp/gnome-software-U5COF0
+/tmp/gnome-software-U5COF0/debconf.socket
 ```
+
+> Like other tests, you can add a ! just before any phrase to negate it. So this will find files not belonging to user1 : `find . ! -user user1`
+
+#### locate & updatedb
+
+ The `find` command searches all the directories you specify, every time you run it. To speed things up, you can use another command, `locate`, which uses a database of stored path information rather than searching the filesystem every time.
+
+### locate
+
+ The `locate` command searches for matching files in a database that is usually updated daily \(by cron job\).
+
+```text
+root@ubuntu16-1:~# locate bin/ls
+/bin/ls
+/bin/lsblk
+/bin/lsmod
+/sbin/lsmod
+/sbin/lspcmcia
+/usr/bin/lsattr
+/usr/bin/lsb_release
+/usr/bin/lscpu
+/usr/bin/lsdiff
+/usr/bin/lshw
+/usr/bin/lsinitramfs
+/usr/bin/lsipc
+/usr/bin/lslocks
+/usr/bin/lslogins
+/usr/bin/lsof
+/usr/bin/lspci
+/usr/bin/lspgpot
+/usr/bin/lsusb
+/usr/lib/klibc/bin/ls
+/usr/lib/plainbox-provider-checkbox/bin/lsmod_info
+/usr/lib/plainbox-provider-resource-generic/bin/lsb_resource
+```
+
+ The `locate` command matches against any part of a path name, not just the file name.
+
+### updatedb
+
+ The default database used by locate is stored in the `/var` filesystem, in a location such as `/var/lib/locatedb`. _This may be different on systems that use slocate or mlocate packages to provide additional security or speed_. You can find statistics on your locate database using locate-S :
+
+```text
+root@ubuntu16-1:~# locate -S
+Database /var/lib/mlocate/mlocate.db:
+	25,916 directories
+	251,926 files
+	13,669,511 bytes in file names
+	6,067,728 bytes used to store database
+```
+
+ The database is created or updated using the `updatedb` command. `(`This is usually run daily as a cron job\).
+
+```text
+root@ubuntu16-1:~# updatedb
+```
+
+> use -v for verbose mode to see what is going on after updatedb command!
+
+The file `/etc/updatedb.conf`, or sometimes `/etc/sysconfig/locate`, is the configuration file for `updatedb:`
+
+```text
+PRUNE_BIND_MOUNTS="yes"
+# PRUNENAMES=".git .bzr .hg .svn"
+PRUNEPATHS="/tmp /var/spool /media /home/.ecryptfs /var/lib/schroot"
+PRUNEFS="NFS nfs nfs4 rpc_pipefs afs binfmt_misc proc smbfs autofs iso9660 ncpfs coda devpts ftpfs devfs mfs shfs sysfs cifs lustre tmpfs usbfs udf fuse.glusterfs fuse.sshfs curlftpfs ecryptfs fusesmb devtmpfs"
+```
+
+There are some PRUNING on the configuration file which cause locate never search for those kinds of files or directories like `/tmp`  or `/var/spool` . You can let locate to search for them too if you like by manipulating this file.
+
+that's all.
+
+## Congratulation we have done lpic1-101 !!!
 
 .
 
@@ -168,7 +259,7 @@ find -mindepth num -maxdepth num -name file
 
 [https://www.geeksforgeeks.org/linux-file-hierarchy-structure/](https://www.geeksforgeeks.org/linux-file-hierarchy-structure/)
 
-[https://www.digitalocean.com/community/tutorials/how-to-use-find-and-locate-to-search-for-files-on-a-linux-vps](https://www.digitalocean.com/community/tutorials/how-to-use-find-and-locate-to-search-for-files-on-a-linux-vps)
+[https://www.digitalocean.com/community/tutorials/how-to-use-find-and-locate-to-search-for-files-on-a-linux-vps](https://www.digitalocean.com/community/tutorials/how-to-use-find-and-locate-to-search-for-files-on-a-linux-vps)[https://jadi.gitbooks.io/lpic1/content/1047\_find\_system\_files\_and\_place\_files\_in\_the\_correct\_location.html](https://jadi.gitbooks.io/lpic1/content/1047_find_system_files_and_place_files_in_the_correct_location.html)
 
 .
 

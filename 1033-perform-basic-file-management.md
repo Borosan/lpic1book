@@ -1042,7 +1042,39 @@ root@ubuntu16-1:~/test-space# find /home -cmin -120
 
 note : Adding the `-daystart` option to `-mtime` or `-atime` means that we want to consider days as calendar days, starting at midnight. So to list the regular files in your home directory that were modified yesterday we can use `find ~/ -daystart -type f -mtime 1` .
 
-> We can also find files by owner and permissions and use filter result by depth \(will be discussed in later sections"104-7"\)
+**Finding by Owner and Permissions**
+
+We can also search for files by the file owner or group owner\(will be discussed\). We do this by using the `-user` and `-group` parameters respectively.
+
+```text
+root@ubuntu16-1:~/test-space# find /etc  -group shadow
+/etc/shadow
+/etc/gshadow
+```
+
+use -nouser or -nogroup to search for a file with no user or with no group id.
+
+We can also search for files with specific permissions. If we want to match an exact set of permission`find / -perm 644`
+
+If we want to specify anything with _at least_  those permissions:`find / -perm -644` .
+
+**filtering by depth**
+
+We can specify the maximum depth of the search under the top-level search directory:
+
+```text
+find -maxdepth num -name query
+```
+
+```text
+find -mindepth num -name query
+```
+
+Also it is possible to combine the min and max depth parameters to focus in on a narrow range:
+
+```text
+find -mindepth num -maxdepth num -name file
+```
 
 Acting on files with two other switches:
 
