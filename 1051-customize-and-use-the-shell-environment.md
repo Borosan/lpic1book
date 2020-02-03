@@ -218,7 +218,7 @@ root@ubuntu16-1:~# echo ${mylist2[2]}
 lpic 1-101 exam
 ```
 
-Keep your eyes on sysntax!
+Keep your eyes on syntax!
 
 .
 

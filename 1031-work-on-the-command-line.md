@@ -250,7 +250,7 @@ an environment variable can be in three types:
 
 **3. System wide Environment Variables** :These are the environment variables which are available system-wide, i.e. for all the users present on that system. These variables are present in system-wide configuration files present in /etc directories and files.These variables are loaded every time system is powered on and logged in either locally or remotely by any user.
 
-#### env
+### env
 
 By default, "env" command lists all the current environment variables.
 
@@ -651,6 +651,10 @@ bash: ls: No such file or directory
 
 {% hint style="success" %}
 So `set` is not set, but `unset` is unset.
+{% endhint %}
+
+{% hint style="info" %}
+We can also use `env VARNAME=VALUE`  and `env -u VARNAME`    to set and unset a variable.
 {% endhint %}
 
 ## Understanding Bash History
