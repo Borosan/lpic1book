@@ -48,7 +48,7 @@ root@ubuntu16-1:~# sleep 3600
 
 that goes to sleep for 3600 seconds, that is an hour! So you can wait for an hour \(considering that you can not use your terminal\) or you can run a job in background.
 
-### Foreground and Background jobs
+### Foreground and Background jobs \(&\)
 
  A **job is a process that the shell manages**. Each job is assigned a sequential job ID. Because a job is a process, each job has an associated PID. There are two types of job statuses:
 
