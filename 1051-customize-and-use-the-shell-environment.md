@@ -42,7 +42,7 @@ The shell program, for example Bash, uses a collection of startup scripts to cre
 Startup is configured differently for Login shells and Non login shells. 
 
 1. **Login shells** : If you open a shell or terminal \(or switch to one\), and it asks you to log in \(Username? Password?\) before it gives you a prompt, it's a login shell.
-2. **Non login shells** : If it doesn't \(like _gnome-terminal_\), and lets you use it straight away, it's a non-login shell \(GUI\)
+2. **Non login shells** : If it doesn't ask you log in \(like _gnome-terminal_\), and lets you use it straight away, it's a non-login shell \(GUI\)
 
 ![](.gitbook/assets/custshell-loginshelvsnon.jpg)
 
