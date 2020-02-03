@@ -132,6 +132,17 @@ examples.desktop
 
 The file .bash\_logout is read and executed every time a login shell exits. It clears the screen whenever you log out. Without .bash\_logout whatever you were working on could be visible for the next user!
 
+```text
+root@ubuntu16-1:~# cat /etc/skel/.bash_logout 
+# ~/.bash_logout: executed by bash(1) when login shell exits.
+
+# when leaving the console clear the screen to increase privacy
+
+if [ "$SHLVL" = 1 ]; then
+    [ -x /usr/bin/clear_console ] && /usr/bin/clear_console -q
+fi
+```
+
 ### . and source
 
  If a script runs in a child shell, any variables it might export are lost when it returns to the parent.
@@ -177,6 +188,10 @@ Shell functions have a couple of advantages over aliases:
 
 * You can handle parameters.
 * You can use programming constructs, such as testing and looping, to enhance your processing.
+
+{% hint style="info" %}
+We can use `unset` command inorder to unset our defined function.
+{% endhint %}
 
 ### lists
 
