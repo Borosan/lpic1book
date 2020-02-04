@@ -332,6 +332,11 @@ if the condition of while loop is never met, it goes running for ever, that is c
 infinite loops are not that much bad ! The OS is an infinite loop which constantly checks for input and response accordingly.
 {% endhint %}
 
+{% hint style="info" %}
+**until**  
+until loops execute the command list and evaluate a condition each time the loop ends. If the condition is true, the loop is executed again. Even if the condition is not initially true, the commands execute at least once.
+{% endhint %}
+
 ### Mailing notifications to root <a id="mailing-notifications-to-root"></a>
 
 For sending mail first we need to have `mailutils` installed. Then we can send mail:
