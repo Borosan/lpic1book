@@ -23,3 +23,29 @@
 * seq
 * exec
 
+shebang
+
+variable
+
+command subs 
+
+chmod & bash
+
+in the PATH
+
+conditionals
+
+\[string\] \[digit\]
+
+read
+
+for
+
+range , seq , $\(ls\)
+
+while
+
+let
+
+infinite loop
+
