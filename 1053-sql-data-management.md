@@ -21,3 +21,13 @@
 * order by
 * join
 
+In this lesson we learn how to manage SQL Data Bases.  There are different kinds of Data Bases, One of them is MySQL which we are going to use that in order to learn basics of SQL.
+
+We are not going to install MySQL or create some databases from zero, so 
+
+select
+
+ insert, update, delete
+
+order , group , join
+
