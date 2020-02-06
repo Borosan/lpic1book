@@ -430,14 +430,6 @@ root@ubuntu16-1:~#
 
 .
 
-{% hint style="info" %}
-turn off ONLY\_FULL\_GROUP\_BY
-
-```text
-mysql > SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
-```
-{% endhint %}
-
 .
 
 [https://developer.ibm.com/tutorials/l-lpic1-105-3/](https://developer.ibm.com/tutorials/l-lpic1-105-3/)
