@@ -378,7 +378,7 @@ mysql> SELECT * FROM hatchback JOIN sedan;
 9 rows in set (0.01 sec)
 ```
 
-and if we give  JOIN a common field to JOIN the tables based on that, the mahic happens:
+and if we give  JOIN a common field to JOIN the tables based on that, the magic happens:
 
 ```text
 mysql> SELECT * FROM hatchback JOIN sedan ON  hatchback.country = sedan.country; 
