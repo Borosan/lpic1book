@@ -35,6 +35,8 @@ SQL \(pronounced "ess-que-el"\) stands for Structured Query Language. SQL is use
 
 We are not going to install MySQL or create some databases from zero, our focus is on SQL and we use existing Data Base \(ubuntu16.04\):
 
+![](.gitbook/assets/sql-mydata.jpg)
+
 #### MySQL command line
 
 mysql has simple SQL shell command line which we use to ineteractivly connect to a mysql-server. 
@@ -121,7 +123,7 @@ mysql> SELECT * FROM hatchback;
 | name   | size  | country |
 +--------+-------+---------+
 | matiz  | small | korea   |
-| vw     | big   | germany |
+| golf   | big   | germany |
 | ct200h | big   | japan   |
 +--------+-------+---------+
 3 rows in set (0.05 sec)
@@ -131,7 +133,7 @@ mysql> SELECT name FROM hatchback;
 | name   |
 +--------+
 | matiz  |
-| vw     |
+| golf   |
 | ct200h |
 +--------+
 3 rows in set (0.01 sec)
@@ -150,7 +152,7 @@ mysql> SELECT *  FROM hatchback WHERE size = 'big';
 +--------+------+---------+
 | name   | size | country |
 +--------+------+---------+
-| vw     | big  | germany |
+| golf   | big  | germany |
 | ct200h | big  | japan   |
 +--------+------+---------+
 2 rows in set (0.00 sec)
@@ -163,7 +165,7 @@ mysql> SELECT *  FROM hatchback WHERE size = 'big' AND country = 'germany';
 +------+------+---------+
 | name | size | country |
 +------+------+---------+
-| vw   | big  | germany |
+| golf | big  | germany |
 +------+------+---------+
 1 row in set (0.00 sec)
 
@@ -172,7 +174,7 @@ mysql> SELECT *  FROM hatchback WHERE size = 'big' OR country = 'korea';
 | name   | size  | country |
 +--------+-------+---------+
 | matiz  | small | korea   |
-| vw     | big   | germany |
+| golf   | big   | germany |
 | ct200h | big   | japan   |
 +--------+-------+---------+
 3 rows in set (0.01 sec)
@@ -193,7 +195,7 @@ mysql> SELECT *  FROM hatchback ORDER BY name;
 +--------+-------+---------+
 | ct200h | big   | japan   |
 | matiz  | small | korea   |
-| vw     | big   | germany |
+| golf   | big   | germany |
 +--------+-------+---------+
 3 rows in set (0.01 sec)
 ```
@@ -205,7 +207,7 @@ mysql> SELECT *  FROM hatchback ORDER BY country;
 +--------+-------+---------+
 | name   | size  | country |
 +--------+-------+---------+
-| vw     | big   | germany |
+| golf   | big   | germany |
 | ct200h | big   | japan   |
 | matiz  | small | korea   |
 +--------+-------+---------+
@@ -225,7 +227,7 @@ mysql> SELECT *  FROM hatchback ORDER BY country;
 mysql> SELECT *  FROM hatchback GROUP BY size;                                  +-------+-------+---------+
 | name  | size  | country |
 +-------+-------+---------+
-| vw    | big   | germany |
+| golf  | big   | germany |
 | matiz | small | korea   |
 +-------+-------+---------+
 2 rows in set (0.00 sec)
@@ -247,7 +249,7 @@ mysql> SELECT name,count(size)  FROM hatchback GROUP BY size;
 +-------+-------------+
 | name  | count(size) |
 +-------+-------------+
-| vw    |           2 |
+| golf  |           2 |
 | matiz |           1 |
 +-------+-------------+
 2 rows in set (0.00 sec)
@@ -271,7 +273,7 @@ mysql> SELECT * FROM hatchback;
 | name   | size  | country |
 +--------+-------+---------+
 | matiz  | small | korea   |
-| vw     | big   | germany |
+| golf   | big   | germany |
 | ct200h | big   | japan   |
 | yaris  | small | japan   |
 +--------+-------+---------+
@@ -302,7 +304,7 @@ mysql> SELECT * FROM hatchback;
 | name   | size  | country |
 +--------+-------+---------+
 | matiz  | small | korea   |
-| vw     | big   | germany |
+| golf   | big   | germany |
 | ct200h | big   | japan   |
 | yaris  | big   | japan   |
 +--------+-------+---------+
@@ -328,7 +330,7 @@ mysql> SELECT * FROM hatchback;
 | name   | size  | country |
 +--------+-------+---------+
 | matiz  | small | korea   |
-| vw     | big   | germany |
+| golf   | big   | germany |
 | ct200h | big   | japan   |
 +--------+-------+---------+
 3 rows in set (0.00 sec)
@@ -344,7 +346,7 @@ mysql> SELECT * FROM hatchback;
 | name   | size  | country |
 +--------+-------+---------+
 | matiz  | small | korea   |
-| vw     | big   | germany |
+| golf   | big   | germany |
 | ct200h | big   | japan   |
 +--------+-------+---------+
 3 rows in set (0.00 sec)
@@ -364,13 +366,13 @@ mysql> SELECT * FROM hatchback JOIN sedan;
 | name   | size  | country | name    | size  | country |
 +--------+-------+---------+---------+-------+---------+
 | matiz  | small | korea   | e200    | big   | germany |
-| vw     | big   | germany | e200    | big   | germany |
+| golf   | big   | germany | e200    | big   | germany |
 | ct200h | big   | japan   | e200    | big   | germany |
 | matiz  | small | korea   | accent  | small | korea   |
-| vw     | big   | germany | accent  | small | korea   |
+| golf   | big   | germany | accent  | small | korea   |
 | ct200h | big   | japan   | accent  | small | korea   |
 | matiz  | small | korea   | corolla | small | japan   |
-| vw     | big   | germany | corolla | small | japan   |
+| golf   | big   | germany | corolla | small | japan   |
 | ct200h | big   | japan   | corolla | small | japan   |
 +--------+-------+---------+---------+-------+---------+
 9 rows in set (0.01 sec)
@@ -383,7 +385,7 @@ mysql> SELECT * FROM hatchback JOIN sedan ON  hatchback.country = sedan.country;
 +--------+-------+---------+---------+-------+---------+
 | name   | size  | country | name    | size  | country |
 +--------+-------+---------+---------+-------+---------+
-| vw     | big   | germany | e200    | big   | germany |
+| golf   | big   | germany | e200    | big   | germany |
 | matiz  | small | korea   | accent  | small | korea   |
 | ct200h | big   | japan   | corolla | small | japan   |
 +--------+-------+---------+---------+-------+---------+
@@ -394,7 +396,7 @@ mysql> SELECT * FROM hatchback JOIN sedan ON  hatchback.size = sedan.size;
 +--------+-------+---------+---------+-------+---------+
 | name   | size  | country | name    | size  | country |
 +--------+-------+---------+---------+-------+---------+
-| vw     | big   | germany | e200    | big   | germany |
+| golf   | big   | germany | e200    | big   | germany |
 | ct200h | big   | japan   | e200    | big   | germany |
 | matiz  | small | korea   | accent  | small | korea   |
 | matiz  | small | korea   | corolla | small | japan   |
@@ -423,6 +425,8 @@ mysql> quit
 Bye
 root@ubuntu16-1:~# 
 ```
+
+that's all!
 
 .
 

@@ -337,6 +337,10 @@ infinite loops are not that much bad ! The OS is an infinite loop which constant
 until loops execute the command list and evaluate a condition each time the loop ends. If the condition is true, the loop is executed again. Even if the condition is not initially true, the commands execute at least once.
 {% endhint %}
 
+### exec <a id="mailing-notifications-to-root"></a>
+
+ **exec** command in Linux is used to execute a command from the bash itself. This command does not create a new process it just replaces the bash with the command to be executed. If the exec command is successful, it does not return to the calling process. try `exec BLAH` and `exec ls` and compare results.
+
 ### Mailing notifications to root <a id="mailing-notifications-to-root"></a>
 
 For sending mail first we need to have `mailutils` installed. Then we can send mail:
@@ -383,6 +387,8 @@ user1@ubuntu16-1:~$ echo "Body!" | mail -s "Subject" root@localhost
 [https://www.geeksforgeeks.org/let-command-in-linux-with-examples/](https://www.geeksforgeeks.org/let-command-in-linux-with-examples/)
 
 [https://www.quora.com/What-are-some-practical-uses-of-infinite-loops](https://www.quora.com/What-are-some-practical-uses-of-infinite-loops)
+
+[https://www.geeksforgeeks.org/exec-command-in-linux-with-examples/](https://www.geeksforgeeks.org/exec-command-in-linux-with-examples/)
 
 .
 
