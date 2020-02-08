@@ -53,16 +53,13 @@ Lets take a quick look at most important ones:
 
 ```text
 Section "Files"
-        ModulePath   "/usr/lib64/xorg/modules"
-        FontPath     "/usr/share/fonts/misc:unscaled"
-        FontPath     "/usr/share/fonts/Type1/"
-        FontPath     "/usr/share/fonts/100dpi:unscaled"
-        FontPath     "/usr/share/fonts/75dpi:unscaled"
-        FontPath     "/usr/share/fonts/ghostscript/"
-        FontPath     "/usr/share/fonts/cyrillic:unscaled"
-        FontPath     "/usr/share/fonts/misc/sgi:unscaled"
-        FontPath     "/usr/share/fonts/truetype/"
-        FontPath      "built-ins"
+	FontPath	"/usr/share/X11/fonts/misc"
+	FontPath	"/usr/share/X11/fonts/100dpi/:unscaled"
+	FontPath	"/usr/share/X11/fonts/75dpi/:unscaled"
+	FontPath	"/usr/share/X11/fonts/Type1"
+	FontPath	"/usr/share/X11/fonts/100dpi"
+	FontPath	"/usr/share/X11/fonts/75dpi"
+	FontPath	"/var/lib/defoma/x-ttcidfont-conf.d/dirs/TrueType"
 EndSection
 ```
 
@@ -70,26 +67,47 @@ EndSection
 
 ```text
 Section "Module"
-        Load   "glx"
-        Load   "vnc"
+	Load	"bitmap"
+	Load	"ddc"
+	Load	"dri"
+	Load	"extmod"
+	Load	"freetype"
+	Load	"glx"
+	Load	"int10"
+	Load	"type1"
+	Load	"vbe"
 EndSection
 ```
 
 * InputDevice - keyboard and pointer \(mouse\)
 
 ```text
-
 Section "InputDevice"
-        Identifier  "Keyboard0"
-        Driver      "kbd"
+	Identifier	"Generic Keyboard"
+	Driver		"kbd"
+	Option		"CoreKeyboard"
+	Option		"XkbRules"	"xorg"
+	Option		"XkbModel"	"pc105"
+	Option		"XkbLayout"	"us"
 EndSection
 
 Section "InputDevice"
-        Identifier  "Mouse0"
-        Driver      "mouse"
-        Option      "Protocol" "auto"
-        Option      "Device" "/dev/input/mice"
-        Option      "ZAxisMapping" "4 5 6 7"
+	Identifier	"Configured Mouse"
+	Driver		"mouse"
+	Option		"CorePointer"
+	Option		"Device"		"/dev/input/mice"
+	Option		"Protocol"		"ImPS/2"
+	Option		"Emulate3Buttons"	"true"
+	Option		"ZAxisMapping"		"4 5"
+EndSection
+
+Section "InputDevice"
+        Identifier      "Synaptics Touchpad"
+        Driver          "synaptics"
+        Option          "SendCoreEvents"        "true"
+        Option          "Device"                "/dev/psaux"
+        Option          "Protocol"              "auto-dev"
+        Option		"RightEdge"		"5000"
 EndSection
 ```
 
@@ -103,76 +121,88 @@ Section "Monitor"
 EndSection
 ```
 
+* Monitor - display device description
+
+```text
+Section "Monitor"
+	Identifier	"Generic Monitor"
+	Option		"DPMS"
+EndSection
+```
+
 * Device - video card description/information
 
 ```text
 Section "Device"
-        ### Available Driver options are:-
-        ### Values: <i>: integer, <f>: float, <bool>: "True"/"False",
-        ### <string>: "String", <freq>: "<f> Hz/kHz/MHz",
-        ### <percent>: "<f>%"
-        ### [arg]: arg optional
-        #Option     "SWcursor"             # [<bool>]
-        #Option     "HWcursor"             # [<bool>]
-        #Option     "NoAccel"              # [<bool>]
-        #Option     "ShadowFB"             # [<bool>]
-        #Option     "VideoKey"             # <i>
-        #Option     "WrappedFB"            # [<bool>]
-        #Option     "GLXVBlank"            # [<bool>]
-        #Option     "ZaphodHeads"          # <str>
-        #Option     "PageFlip"             # [<bool>]
-        #Option     "SwapLimit"            # <i>
-        #Option     "AsyncUTSDFS"          # [<bool>]
-        #Option     "AccelMethod"          # <str>
-        #Option     "DRI"                  # <i>
-        Identifier  "Card0"
-        Driver      "nouveau"
-        BusID       "PCI:1:0:0"
+	Identifier	"ATI Technologies, Inc. Radeon Mobility 7500 (M7 LW)"
+	Driver		"radeon"
+	BusID		"PCI:1:0:0"
+	Option		"DynamicClocks"	"on"
+
+	Option		"CRT2HSync"	"30-80"
+	Option		"CRT2VRefresh"	"59-75"
+
+  	Option		"MetaModes"	"1024x768 800x600 640x480 1024x768+1280x1024"
+
+    Option  "XAANoOffscreenPixmaps"	"true"
 EndSection
+
 ```
 
 * Screen - binds a video adapter to a monitor
 
 ```text
 Section "Screen"
-        Identifier "Screen0"
-        Device     "Card0"
-        Monitor    "Monitor0"
-        SubSection "Display"
-                Viewport   0 0
-                Depth     1
-        EndSubSection
-        SubSection "Display"
-                Viewport   0 0
-                Depth     4
-        EndSubSection
-        SubSection "Display"
-                Viewport   0 0
-                Depth     8
-        EndSubSection
-        SubSection "Display"
-                Viewport   0 0
-                Depth     15
-        EndSubSection
-        SubSection "Display"
-                Viewport   0 0
-                Depth     16
-        EndSubSection
-        SubSection "Display"
-                Viewport   0 0
-                Depth     24
+    Identifier    "Screen0"
+    Device        "Screen0 ATI Technologies, Inc. Radeon Mobility 7500 (M7 LW)"
+    Monitor        "Generic Monitor"
+    DefaultDepth    24
+    SubSection "Display"
+        Depth        1
+        Modes        "1024x768"
+    EndSubSection
+    SubSection "Display"
+        Depth        4
+        Modes        "1024x768"
+    EndSubSection
+    SubSection "Display"
+        Depth        8
+        Modes        "1024x768"
+    EndSubSection
+    SubSection "Display"
+        Depth        15
+        Modes        "1024x768"
+    EndSubSection
+    SubSection "Display"
+        Depth        16
+        Modes        "1024x768"
+    EndSubSection
+    SubSection "Display"
+        Depth        24
+        Modes        "1024x768"
+    EndSubSection
+EndSection
 ```
 
 * ServerLayout - binds one or more screens with one or more input devices
 
 ```text
 Section "ServerLayout"
-        Identifier     "X.org Configured"
-        Screen      0  "Screen0" 0 0
-        InputDevice    "Mouse0" "CorePointer"
-        InputDevice    "Keyboard0" "CoreKeyboard"
+	Identifier	"DefaultLayout"
+	Screen		"Default Screen"
+	InputDevice	"Generic Keyboard"
+	InputDevice	"Configured Mouse"
+	InputDevice	"Synaptics Touchpad"
 EndSection
 ```
+
+### xwininfo
+
+
+
+### xdpyinfo
+
+### xhost
 
 In the early days of X, configuring a display meant having extensive knowledge of the display’s capabilities and the ability to express information about not only resolution, but also horizontal and vertical sync values, color depth, and so on.
 
@@ -189,6 +219,8 @@ Since the advent of the Video Electronics Standards Association \(VESA\) and the
 [https://developer.ibm.com/tutorials/l-lpic1-106-1/](https://developer.ibm.com/tutorials/l-lpic1-106-1/)
 
 [https://en.wikipedia.org/wiki/X.Org\_Server](https://en.wikipedia.org/wiki/X.Org_Server)
+
+[https://mg.pov.lt/xorg.conf](https://mg.pov.lt/xorg.conf)
 
 .
 
