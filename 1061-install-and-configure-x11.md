@@ -32,8 +32,10 @@ The X Window System, often known as X, is a windowing system for graphics workst
 Beside  displaying  the windows for the clients\(applications \) The **X server also** handles input devices such as keyboards, mice, and touchscreens
 
 {% hint style="info" %}
-**XOrg** Server is the free and open-source implementation of the display server for the X Window System managed by the X.Org Foundation.
+**XOrg** Server was the free and open-source implementation of the display server for the X Window System managed by the X.Org Foundation. The X11 name points to X Windows version 11.
 {% endhint %}
+
+In many modern linux distributions , the Display manager server still exists, but X Window has been replaced by new solutions like wayland. 
 
 ### /etc/X11/xorg.conf
 
@@ -79,6 +81,8 @@ Section "Module"
 EndSection
 ```
 
+For example `glx` takes care of 3d graphical effects.
+
 * InputDevice - keyboard and pointer \(mouse\)
 
 ```text
@@ -111,15 +115,7 @@ Section "InputDevice"
 EndSection
 ```
 
-* Monitor - display device description
-
-```text
-Section "Monitor"
-        Identifier   "Monitor0"
-        VendorName   "Monitor Vendor"
-        ModelName    "Monitor Model"
-EndSection
-```
+These InputDevice sections are configured for any input devices, such as touchpads, mice, keyboards, that you may have plugged in to your system.
 
 * Monitor - display device description
 
@@ -349,11 +345,16 @@ where:
 
 > :0.0 means that we are talking about the first screen attached to your first display in your local host
 
-In the early days of X, configuring a display meant having extensive knowledge of the display’s capabilities and the ability to express information about not only resolution, but also horizontal and vertical sync values, color depth, and so on.
+We can  change the DISPLAY environment and connect my graphical output to another machine.
 
+```text
+root@ubuntu16-1:~# export DISPLAY=172.16.43.136:0
+root@ubuntu16-1:~# xeyes 
+```
 
+ In this case if  a graphical program is run , its output \(windows\) will be shown on another machine
 
-Since the advent of the Video Electronics Standards Association \(VESA\) and the Display Data Channel \(DDC\) protocols that allow a display to communicate these capabilities to a graphics card and thus to a computer, configuration has become much more automatic.
+> When using the OpenSSH ssh command on Linux, the -X option can be used to specify X11 forwarding.
 
 .
 
