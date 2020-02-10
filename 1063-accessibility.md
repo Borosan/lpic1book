@@ -25,3 +25,9 @@
 * GOK
 * emacspeak
 
+AccessX \(keyboard\)
+
+Visual Settings
+
+Text to speech
+
