@@ -24,7 +24,7 @@ A Linux desktop environment is a collection of applications designed to work wel
 
 The display manager is a bit of code that provides the GUI login screen for your Linux desktop. After you log in to a GUI desktop, the display manager turns control over to the window manager. When you log out of the desktop, the display manager is given control again to display the login screen and wait for another login.
 
-![](.gitbook/assets/displaymanager-ubuntu.jpg)
+![](.gitbook/assets/displaymanager-centos7gdm.jpg)
 
 There are several display managers—some are provided with their respective desktops while some others not. 
 
@@ -44,8 +44,26 @@ to get the default display manager you can try : ``
 ```text
 cat /etc/X11/default-display-manager 
 ###OR
-systemctl status display-manager commands.
+systemctl status display-manager
 ```
+
+{% hint style="success" %}
+#### installing and switching to lightdm
+
+In this lesson we use CentOS7 which uses gdm display manager by default. Lets switch to lightdm using bellow commands and check it:
+
+```text
+yum install -y epel-release 
+yum search lightdm
+yum install -y lightdm.x86_64 
+vim /etc/lightdm/lightdm.conf ### change enabled=true 
+systemctl disable gdm.service 
+systemctl enable lightdm.service 
+reboot
+```
+{% endhint %}
+
+![](.gitbook/assets/displaymanager-centos7lightdm.jpg)
 
 ### LightDM
 
@@ -58,20 +76,25 @@ LightDM is a free and open-source X display manager that aims to be lightweight,
 LightDM configuration is located in /etc/lightdm directory:
 
 ```text
-root@ubuntu16-1:~# ls -l /etc/lightdm/
-total 8
-drwxr-xr-x 2 root root 4096 Mar 31  2017 lightdm.conf.d
--rw-r--r-- 1 root root  452 Mar 31  2017 users.conf
+[root@centos7-1 ~]# ls -l /etc/lightdm/
+total 20
+-rw-r--r-- 1 root root   40 Nov 27  2017 keys.conf
+-rw-r--r-- 1 root root 7009 Feb 10 01:16 lightdm.conf
+drwxr-xr-x 2 root root    6 Nov 27  2017 lightdm.conf.d
+-rw-r--r-- 1 root root 1325 Aug  4  2015 lightdm-gtk-greeter.conf
+-rw-r--r-- 1 root root  452 Nov 27  2017 users.conf
 ```
+
+> try cat /etc/lightdm/lightdm.conf
 
 In some distributions configuration files are located inside lightdm.conf.d directory:
 
 ```text
-root@ubuntu16-1:~# ls -l /etc/lightdm/lightdm.conf.d/
+[root@centos7-1 ~]# ls -l /etc/lightdm/lightdm.conf.d/
 total 0
 ```
 
-#### installing lightdm
+#### 
 
 
 
