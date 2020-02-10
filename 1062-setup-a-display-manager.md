@@ -94,7 +94,11 @@ In some distributions configuration files are located inside lightdm.conf.d dire
 total 0
 ```
 
-#### 
+#### Controlling Display managers
+
+Installing and switching between different Display Managers is pretty easy , as we have seen in CentOS, we can install new DM via `yum /apt` commands. Next some modifications in configuration files might be needed example `/etc/lightdm/lightdm.conf` .And finally  we should enable previous DM and enable the new one with `systemctl enable/disable` commands and `reboot`.
+
+For disabling Display Manager ang going to text mode it depends on your distribution! We can either use `telinit` command or  set default target via `systemctl set-default` command.
 
 
 
