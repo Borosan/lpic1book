@@ -138,7 +138,7 @@ drwxr-xr-x 2 root root    6 Nov 27  2017 lightdm.conf.d
 next we need to edit lightdm.conf and change line bellow:
 
 ```text
-eter-session=slick-greeter
+greeter-session=slick-greeter
 ```
 
 restart lightdm using `systemctl restart lightdm` and see the result:
