@@ -22,7 +22,11 @@ A Linux desktop environment is a collection of applications designed to work wel
 
 #### What is Display Manager ?
 
-The display manager is a bit of code that provides the GUI login screen for your Linux desktop. After you log in to a GUI desktop, the display manager turns control over to the window manager. When you log out of the desktop, the display manager is given control again to display the login screen and wait for another login.
+The display manager is a bit of code that provides the GUI login screen for your Linux desktop. After you log in to a GUI desktop, the display manager turns control over to the window manager.
+
+> Kernel -&gt; X -&gt; DisplayManager -&gt; Desktop
+
+ When you log out of the desktop, the display manager is given control again to display the login screen and wait for another login.
 
 ![](.gitbook/assets/displaymanager-centos7gdm.jpg)
 
@@ -61,9 +65,11 @@ systemctl disable gdm.service
 systemctl enable lightdm.service 
 reboot
 ```
+
+if you reboot the service your system will be crashed.
 {% endhint %}
 
-![](.gitbook/assets/displaymanager-centos7lightdm.jpg)
+![lightdm greeter session](.gitbook/assets/displaymanager-centos7lightdm.jpg)
 
 ### LightDM
 
@@ -85,18 +91,63 @@ drwxr-xr-x 2 root root    6 Nov 27  2017 lightdm.conf.d
 -rw-r--r-- 1 root root  452 Nov 27  2017 users.conf
 ```
 
-> try cat /etc/lightdm/lightdm.conf
+lets see some confiurations inside /etc/lightdm/lightdm.conf :
 
-In some distributions configuration files are located inside lightdm.conf.d directory:
+```text
+...
+[Seat:*]
+
+#autologin-user=
+#allow-user-switching=true
+#allow-guest=true
+#greeter-session=example-gtk-gnome
+#user-session=default
+
+...
+```
+
+In some distributions \(ubuntu \)configuration files are located inside lightdm.conf.d directory:
 
 ```text
 [root@centos7-1 ~]# ls -l /etc/lightdm/lightdm.conf.d/
 total 0
 ```
 
+#### changing greeter session:
+
+For instance lets install another greeter session for lightdm and test it
+
+```text
+[root@centos7-1 lightdm]# yum search lightdm | grep greeter
+lightdm-autologin-greeter.noarch : Autologin greeter using LightDM
+slick-greeter.x86_64 : A slick-looking LightDM greeter
+
+[root@centos7-1 lightdm]# yum install -y slick-greeter.x86_64
+
+[root@centos7-1 lightdm]# ls -lrth
+total 24K
+-rw-r--r-- 1 root root 1.3K Aug  4  2015 lightdm-gtk-greeter.conf
+-rw-r--r-- 1 root root  452 Nov 27  2017 users.conf
+-rw-r--r-- 1 root root   40 Nov 27  2017 keys.conf
+drwxr-xr-x 2 root root    6 Nov 27  2017 lightdm.conf.d
+-rw-r--r-- 1 root root 1.2K Dec 29  2017 slick-greeter.conf
+-rw-r--r-- 1 root root 6.9K Feb 10 01:16 lightdm.conf
+
+```
+
+next we need to edit lightdm.conf and change line bellow:
+
+```text
+eter-session=slick-greeter
+```
+
+restart lightdm using `systemctl restart lightdm` and see the result:
+
+![slick greeter for lightdm](.gitbook/assets/displaymanager-slickgreeter.jpg)
+
 #### Controlling Display managers
 
-Installing and switching between different Display Managers is pretty easy , as we have seen in CentOS, we can install new DM via `yum /apt` commands. Next some modifications in configuration files might be needed example `/etc/lightdm/lightdm.conf` .And finally  we should enable previous DM and enable the new one with `systemctl enable/disable` commands and `reboot`.
+Installing and switching between different Display Managers is pretty easy , as we have seen in CentOS, we can install new DM via `yum /apt` commands. Next some modifications in configuration files might be needed example `/etc/lightdm/lightdm.conf` .And finally  we should enable previous DM and enable the new one with `systemctl enable/disable lightdm` commands and `reboot`.
 
 For disabling Display Manager ang going to text mode it depends on your distribution! We can either use `telinit` command or  set default target via `systemctl set-default` command.
 
