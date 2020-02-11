@@ -39,13 +39,11 @@ These options are available in display managers \(login screen\) and in major de
 
 Linux provides accessibility in 3 sections:
 
-1. **AccessX  :** _keyboard & mouse_
-2.  **Visual Settings :** _screen setting_ 
-3. **Assistive Technologies :** _things like text-to-speech \(tts\)_
+1. **AccessX  :** __**AccessX** or the **Keyboard Accessibility** preference tool allows you to set  some options for people who have difficulty with keyboard . 
+2.  **Visual Settings :** Visual Settings help people with vision problems:
+3. **Assistive Technologies :** things like text-to-speech \(tts\)
 
 ### AccessX
-
- **AccessX** or the **Keyboard Accessibility** preference tool allows you to set  some options for people who have difficulty with keyboard . 
 
 * **Sticky keys**: Helps users who have trouble pressing multiple keys at once, and users who have use of only one hand
 * **Slow keys** allows the user to specify the duration for which one must press-and-hold a **key** before the system accepts the keypress.
@@ -56,8 +54,6 @@ Linux provides accessibility in 3 sections:
 
 ### Visual Settings
 
-Visual Settings help people with vision problems:
-
 * **High-contrast** : Helps users who have trouble seeing text unless contrast is corrected, such as white text on a black background, or vice versa.
 * **zoom \(Magnifier\)** : Helps users with visual impairments who need larger text and images.
 * **Large Text**: Make reading text easier by using larger fonts in menus.
@@ -67,7 +63,7 @@ Visual Settings help people with vision problems:
 **GOK** is the _Gnome On-Screen Keyboard_. As the title implies, it is a keyboard that appears on the display as an alternative for those who are not able to use a regular keyboard.
 {% endhint %}
 
-* **Visual alerts**: Replace system sounds with visual cues
+* **Visual alerts**: Replace system sounds with visual cues\(like flashing th e screen\)
 * **Screen reader**: A text-to-speech system to read what's on the screen
 
 ### Text to speech 
