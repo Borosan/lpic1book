@@ -69,7 +69,7 @@ Linux also has the concept of groups .
 
 We learn how to create, delete, and manage users and groups.
 
-## Managing users
+## Managing users 
 
 ### useradd
 
@@ -84,8 +84,8 @@ We learn how to create, delete, and manage users and groups.
 | -d | home directory of the new account |
 | -m | create the user's home directory |
 | -s | login shell of the new account |
-| -G | Additional Groups  |
-| -c | comment |
+| -G | add to Additional Groups  |
+| -c | comment, most of the time user's actual name |
 
 In most distributions  useradd creates home directory for the new user but we can make sure using -m switch. example\(ubunru 16\):
 
@@ -99,6 +99,11 @@ root@ubuntu16-1:~# useradd -m -d /home/user3 -c "Dear user3" -s /bin/bash user3
 #### The home directory skeleton
 
 When you create a new user and a new home directory is created, the directory is populated with several files and subdirectories that, by default, are copied from /etc/skel.
+
+```text
+root@ubuntu16-1:~# ls -a /etc/skel/
+.  ..  .bash_logout  .bashrc  examples.desktop  .profile
+```
 {% endhint %}
 
 ### usermod <a id="the-home-directory-skeleton"></a>
@@ -146,6 +151,8 @@ uid=1003(user3) gid=1003(user3) groups=1003(user3)
 ```text
 userdel <options> <username_or_login>
 ```
+
+userdel by default does not remove user's home directory.
 
 | switch | description |
 | :--- | :--- |
@@ -253,7 +260,7 @@ it has one line for each user in the system. the format of it is :
 6. **Home directory**
 7. **Command/shell**: The absolute path of a command or shell \(/bin/bash\). Typically, this is a shell. It does not have to be a shell.
 
-> There are some users with /bin/false shell, They are actually system accounts that run a service and no one can interactively login using them.
+> There are some users with /sbin/nologin shell, They are actually system accounts that run a service and no one can interactively login using them. Some times it has been set to /bin/false.
 
 Every user should have read access to /etc/passwd  :
 
@@ -289,7 +296,7 @@ user2:$6$kN2DNYrP$XmM/3ONRnrTCuTTBxCwVBlVW9E4tVRc02JbRHPhwj128Q6aUIcUq4gxw2r74go
 postfix:*:18300:0:99999:7:::
 ```
 
-> Note: ! means no password
+> Note: !! means user can not log in with any passwords. Most of service accounts are like this.
 
 Passwords can be encrypted with one of several encryption algorithms. Older systems used DES or MD5, but modern systems typically use Blowfish, SHA-256, or SHA-512, or possibly MD5. Regardless of encryption algorithm, passwords are _salted_ so that two otherwise identical passwords do not generate the same encrypted value.
 
@@ -337,7 +344,7 @@ Options:
 
 ```
 
-lets try -l option on user1:
+chage without any options lets do  editing  all items interactively ,lets try -l option on user1:
 
 ```text
 root@ubuntu16-1:~# chage -l user1
@@ -356,7 +363,7 @@ Number of days of warning before password expires	: 7
 
 ### /etc/group
 
- /etc/group is the _group_ file containing basic information about groups and which users belong to them. The /etc/group file contains one line for each group in the system.
+ /etc/group is the _group_ file containing basic information about groups and which users belong to them. It contains one line for each group in the system.
 
 ```text
 root@ubuntu16-1:~# tail /etc/group
@@ -429,6 +436,8 @@ root@ubuntu16-1:~# getent group payam
 payam:x:1000:
 ```
 
+do not forget to use id command.
+
 .
 
 .
@@ -448,6 +457,8 @@ payam:x:1000:
 | N/A | -W | -W | The number of days of warning before a password must be changed. |
 | -f | -i | -I\(uppercase i\) | The number of days after a password expires until the account is disabled. |
 | N/A | -S | -l\(lowercase L\) | Output a short message about the current account status. |
+
+.
 
 .
 
