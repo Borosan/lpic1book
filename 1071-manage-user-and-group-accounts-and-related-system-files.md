@@ -429,13 +429,25 @@ root@ubuntu16-1:~# getent group payam
 payam:x:1000:
 ```
 
-
-
-
-
-
+.
 
 .
+
+.
+
+**Bonus:** Commands and options for changing user accounts
+
+| usermod | passwd | chage | Purpose |
+| :--- | :--- | :--- | :--- |
+| -L | -l\(lowercase L\) | N/A | Lock or suspend the account. |
+| -U | -u | N/A | Unlock the account. |
+| N/A | -d | N/A | Disable account by setting it passwordless |
+| -e | -f | -E | Set the expiration date for an account. |
+| N/A | -n | -m | The minimum password lifetime in days. |
+| N/A | -X | -M | The maximum password lifetime in days. |
+| N/A | -W | -W | The number of days of warning before a password must be changed. |
+| -f | -i | -I\(uppercase i\) | The number of days after a password expires until the account is disabled. |
+| N/A | -S | -l\(lowercase L\) | Output a short message about the current account status. |
 
 .
 
