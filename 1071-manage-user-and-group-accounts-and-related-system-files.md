@@ -28,6 +28,36 @@
 * userdel
 * usermod
 
+## Changing password
+
+### passwd
+
+The passwd command changes passwords for user accounts. A normal user can only change the password for their own account, but the superuser can change the password for any account.
+
+```text
+user1@ubuntu16-1:~$ passwd 
+Changing password for user1.
+(current) UNIX password: 
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+```
+
+1. Before a normal user can change their own password, they must first enter their current password for verification. \(The superuser can bypass this step when changing another user's password.\)
+2. After the current password has been verified, **passwd** checks to see if the user is allowed to change their password at this time or not. Then user is then prompted twice.
+3. Next, the password is tested for complexity.passwords should consist of at least 6 characters.
+
+The root user can change any users password to anything \(weak passwords\) without providing their current password:
+
+```text
+root@ubuntu16-1:~# passwd user1
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+```
+
+> Groups can also have passwords, which you set with the `gpasswd` command, but it is not used at all!
+
 ## Users and Groups
 
 We have  learned  that Linux is a multiuser system.Recall that we can log in as one user and become another user by using the su or sudo commands. 
@@ -213,11 +243,17 @@ postfix:x:123:130::/var/spool/postfix:/bin/false
 
 it has one line for each user in the system. the format of it is :
 
-```text
-username:password:userid:primary group id:Name and comments:home dir:shell
-```
+![](.gitbook/assets/usergroup-passwd.jpg)
 
-There are some users with /bin/false shell, They are actually system accounts that run a service and no one can interactively login using them. 
+1. **Username**:  should be between 1 and 32 characters 
+2. **Password** _\(will be discussed\)_
+3. **User ID \(UID\)**: Each user must be assigned a user ID \(UID\). UID 0 \(zero\) is reserved for root and UIDs 1-99 are reserved for other predefined accounts. Further UID 100-999 are reserved by system for administrative and system accounts/groups. 
+4. **Group ID \(GID\)**: The primary group ID \(stored in /etc/group file\) 
+5. **The comment field**. It allow you to add extra information about the users such as user’s full name, phone number etc. This field use by finger command. 
+6. **Home directory**
+7. **Command/shell**: The absolute path of a command or shell \(/bin/bash\). Typically, this is a shell. It does not have to be a shell.
+
+> There are some users with /bin/false shell, They are actually system accounts that run a service and no one can interactively login using them.
 
 Every user should have read access to /etc/passwd  :
 
@@ -226,7 +262,7 @@ root@ubuntu16-1:~# ls -l /etc/passwd
 -rw-r--r-- 1 root root 2469 Feb 12 02:53 /etc/passwd
 ```
 
-In old days there was a place that  all users information even the user's password, and it is not so hard thick about security issue that it caused. To solve the problem /etc/shadow was invented. x inside /etc/passwd means go look at /etc/shadow for password.
+In old days there was a place that  all users information even the user's password, and it is not so hard thick about security issue that it caused. To solve the problem /etc/shadow was invented.  An x character indicates that encrypted password is stored in /etc/shadow file
 
 ### /etc/shadow
 
@@ -316,6 +352,8 @@ Number of days of warning before password expires	: 7
 
 > `chage -d 0 user-name` will force user to change his password in next login.
 
+> **passwd** can also change or reset the account's validity period — how much time can pass before the password expires and must be changed.
+
 ### /etc/group
 
  /etc/group is the _group_ file containing basic information about groups and which users belong to them. The /etc/group file contains one line for each group in the system.
@@ -367,6 +405,10 @@ postdrop:!::
 mysecuregroup:Aa12345::
 ```
 
+> its format is : 
+>
+> `Group name:Encrypted password:Group administrators: Group members`
+
 > ! :groups can have passwords but it have never been used in any distribution!
 
 ### getent
@@ -401,11 +443,21 @@ payam:x:1000:
 
 [https://developer.ibm.com/technologies/linux/tutorials/l-lpic1-map/](https://developer.ibm.com/technologies/linux/tutorials/l-lpic1-map/)
 
+[https://www.computerhope.com/unix/upasswor.htm](https://www.computerhope.com/unix/upasswor.htm)
+
+[https://jadi.gitbooks.io/lpic1/content/1071\_manage\_user\_and\_group\_accounts\_and\_related\_system\_files.html](https://jadi.gitbooks.io/lpic1/content/1071_manage_user_and_group_accounts_and_related_system_files.html)
+
 [https://askubuntu.com/questions/639990/what-is-the-group-id-of-this-group-name](https://askubuntu.com/questions/639990/what-is-the-group-id-of-this-group-name)
+
+[https://www.cyberciti.biz/faq/understanding-etcpasswd-file-format/](https://www.cyberciti.biz/faq/understanding-etcpasswd-file-format/)
 
 [https://www.cyberciti.biz/faq/understanding-etcshadow-file/](https://www.cyberciti.biz/faq/understanding-etcshadow-file/)
 
 [https://en.wikipedia.org/wiki/Unix\_time](https://en.wikipedia.org/wiki/Unix_time)
+
+[https://www.cyberciti.biz/faq/understanding-etcgroup-file/](https://www.cyberciti.biz/faq/understanding-etcgroup-file/)
+
+[https://access.redhat.com/documentation/en-US/Red\_Hat\_Enterprise\_Linux/4/html/Introduction\_To\_System\_Administration/s3-acctsgrps-gshadow.html](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/4/html/Introduction_To_System_Administration/s3-acctsgrps-gshadow.html)
 
 [https://www.geeksforgeeks.org/chage-command-in-linux-with-examples/](https://www.geeksforgeeks.org/chage-command-in-linux-with-examples/)
 
