@@ -169,6 +169,8 @@ as an example add bellow line to above and it would send and email every 5 mintu
 5 * * * * echo "Hello" | mail -s "Cron Test" user1@localhost.com
 ```
 
+crontab -e also check the syntax before exiting the file , which is really helpful.
+
 crontab -l would show the above contents. Lets check if user crontab file has been created:
 
 ```text
@@ -414,6 +416,10 @@ user1@ubuntu16-1:~$ atq
 ```
 
   atq command only shows the list of jobs but if you want to check what script/commands are scheduled with that task use `at -c JobNum` command and see the last line.
+
+{% hint style="info" %}
+both cron and are system services.
+{% endhint %}
 
 ## Configure user access to job scheduling
 
