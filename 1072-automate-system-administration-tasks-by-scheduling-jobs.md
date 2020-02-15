@@ -181,9 +181,11 @@ total 4
 
  In addition to the user crontab files in /var/spool/cron, the `cron` daemon also checks /etc/crontab and any crontabs in the /etc/cron.d directory. 
 
-### /etc/crontab
+### /etc/crontab , /etc/cron.d
 
- `/etc/crontab` and the files inside the `/etc/cron.d` directory are system-wide crontab files that can be edited only by the system administrators.
+ `/etc/crontab` and the files inside the `/etc/cron.d` directory are system-wide **crontab** files that can be edited only by the system administrators.
+
+> /etc/crontab is  updated by direct editing. You cannot use the `crontab` command to update file files or files in the /etc/cron.d directory.
 
 #### System-wide Crontab Files <a id="system-wide-crontab-files"></a>
 
@@ -217,7 +219,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 "/etc/crontab" 15L, 722C                                      14,27-35      All
 ```
 
-### /etc/cron.{d,daily,hourly,monthly,weekly}/
+### /etc/cron.{daily,hourly,monthly,weekly}/
 
 In most Linux distributions you can also put **scripts** inside the `/etc/cron.{hourly,daily,weekly,monthly}` directories and the scripts will be executed every `hour/day/week/month`.
 
@@ -271,6 +273,67 @@ for FILE in passwd group shadow gshadow; do
         cmp -s $FILE.bak /etc/$FILE     && continue
         cp -p /etc/$FILE $FILE.bak && chmod 600 $FILE.bak
 done
+```
+
+### anacron
+
+The cron facility works well for systems that run continuously.If the system is down when the cron should run a task, that cron job wont run till the next occurrence! But anacron creates the timestamp each time a daily, weekly or monthly job runs. 
+
+> Note: anacron checks the timestamps at BOOT TIME and does not handle jobs that must run hourly or every minute.
+
+> ### /etc/anacron
+
+ The table of jobs for `anacron` is stored in /etc/anacrontab, which has a slightly different format from /etc/crontab.
+
+```text
+root@ubuntu16-1:/# cat /etc/anacrontab 
+# /etc/anacrontab: configuration file for anacron
+
+# See anacron(8) and anacrontab(5) for details.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+HOME=/root
+LOGNAME=root
+
+# These replace cron's entries
+1	5	cron.daily	run-parts --report /etc/cron.daily
+7	10	cron.weekly	run-parts --report /etc/cron.weekly
+@monthly	15	cron.monthly	run-parts --report /etc/cron.monthly
+```
+
+> just like/etc/crontab , /etc/anacrontab is updated by direct editing.
+
+{% hint style="info" %}
+#### Anacrontab Format
+
+```text
+period   delay   job-identifier   command
+```
+
+*  **period in days** : specifies the frequency of execution of a job in  _N_ days.
+*  **delay in minutes**: number of minutes anacron should wait before executing the job after reboot.
+*  **job-identifier :**It is the name for the job’s timestamp file. It should be unique for each job. This will be available as a file under the /var/spool/anacron directory.
+*  **command**: specifies the command to execute. 
+{% endhint %}
+
+### /var/spool/anacron
+
+ `anacron` keeps a time stamp file in /var/spool/anacron for each job to record when the job runs. When `anacron` runs, it checks to see if the required number of days has passed since a job last ran and runs the job if necessary.
+
+```text
+root@ubuntu16-1:/# ls -l /var/spool/anacron/
+total 12
+-rw------- 1 root root 9 Feb 15 07:35 cron.daily
+-rw------- 1 root root 9 Feb  1 07:45 cron.monthly
+-rw------- 1 root root 9 Feb 10 00:46 cron.weekly
+```
+
+This file will contain a single line that indicates the last time when this job was executed.
+
+```text
+root@ubuntu16-1:/# cat /var/spool/anacron/cron.daily 
+20200215
 ```
 
 ### at
@@ -401,6 +464,12 @@ The cron daemon automatically sets several environment variables.
 [https://developer.ibm.com/tutorials/l-lpic1-107-2/](https://developer.ibm.com/tutorials/l-lpic1-107-2/)
 
 [https://linuxize.com/post/scheduling-cron-jobs-with-crontab/](https://linuxize.com/post/scheduling-cron-jobs-with-crontab/)
+
+[https://jadi.gitbooks.io/lpic1/content/1072\_automate\_system\_administration\_tasks\_by\_scheduling\_jobs.html](https://jadi.gitbooks.io/lpic1/content/1072_automate_system_administration_tasks_by_scheduling_jobs.html)
+
+[https://www.thegeekdiary.com/centos-rhel-anacron-basics-what-is-anacron-and-how-to-configure-it/](https://www.thegeekdiary.com/centos-rhel-anacron-basics-what-is-anacron-and-how-to-configure-it/)
+
+[https://www.thegeekstuff.com/2011/05/anacron-examples/](https://www.thegeekstuff.com/2011/05/anacron-examples/)
 
 [https://www.computerhope.com/unix/uat.htm](https://www.computerhope.com/unix/uat.htm)
 
