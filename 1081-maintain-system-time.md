@@ -299,7 +299,17 @@ root@ubuntu16-1:~# ntpq -pn
 *91.189.89.199   17.253.34.251    2 u   18   64  377   85.408   11.230   6.346
 ```
 
-In this output a \* means that the ntp is using this server as the main reference, + means that this is a good server and - shows an out of range server which will be neglected.
+the meaning :
+
+```text
+* Synchronized to this peer
+# Almost synchronized to this peer
++ Peer selected for possible synchronization
+– Peer is a candidate for selection
+~ Peer is statically configured
+```
+
+tha's all.
 
 .
 
@@ -326,6 +336,8 @@ In this output a \* means that the ntp is using this server as the main referenc
 [https://linux.die.net/man/8/ntpdate](https://linux.die.net/man/8/ntpdate)
 
 [https://docs.ntpsec.org/latest/ntpd.html](https://docs.ntpsec.org/latest/ntpd.html)
+
+[https://detailed.wordpress.com/2017/10/22/understanding-ntpq-output/](https://detailed.wordpress.com/2017/10/22/understanding-ntpq-output/)
 
 .
 
