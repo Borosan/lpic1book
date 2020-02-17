@@ -139,7 +139,7 @@ Mon Feb 17 21:40:55 +0330 2020
 
 ```
 
-the hwclock --localtime  -w would do the same thing , it would set hardware clock to what our system time is. 
+the hwclock --localtime  -w would do the same thing , but setting  hardware clock to your local time is not a good idea, so use hwclock -u -w instead. 
 
 ### NTP
 
@@ -159,13 +159,17 @@ The pool is being used by hundreds of millions of systems around the world. It's
 
 ### ntpdate
 
- **ntpdate** sets the local date and time by polling the Network Time Protocol \(NTP\) **server**\(s\) given as the server arguments to determine the correct time. It must be run as root on the local host. \(you might need to install it\)
+ **ntpdate** sets the local date and time by polling the Network Time Protocol \(NTP\) **server**\(s\) given as the server arguments to determine the correct time. It must be run as root on the local host. \(you might need to install it\). `-v` : verbose 
 
 ```text
 root@ubuntu16-1:~# ntpdate -v pool.ntp.org
 17 Feb 22:59:34 ntpdate[4365]: ntpdate 4.2.8p4@1.3265-o Tue Jan  7 15:08:24 UTC 2020 (1)
 17 Feb 22:59:46 ntpdate[4365]: adjust time server 194.225.150.25 offset -0.005153 sec
 ```
+
+After this, we need to set the hwclock to the just corrected system time by sudo `hwclock -w` or `hwclock -u -w` to make sure you are setting that on utc .
+
+> -q switch will query for time and just show the result with out setting that.
 
 ### ntpd
 
@@ -174,9 +178,10 @@ Instead of manually setting the time each time, we can use a linux service calle
 ```text
 root@ubuntu16-1:~# apt install ntp
 root@ubuntu16-1:~# systemctl start ntp
+root@ubuntu16-1:~# systemctl enable ntp
 ```
 
-Funny fact: we can not use natpdate while ntp service is running:
+Fun fact: we can not use natpdate while ntp service is running:
 
 ```text
 root@ubuntu16-1:~# ntpdate pool.ntp.org
@@ -257,7 +262,7 @@ restrict source notrap nomodify noquery
 #fudge 127.127.22.1 flag3 1            # enable PPS API
 ```
 
-You can change the ntp servers to the ntp server\(s\) you want.
+You can change the ntp servers to the ntp server\(s\) you want. Do not forget to restart the service after any modifications.
 
 ### ntpq
 
