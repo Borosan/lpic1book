@@ -88,7 +88,7 @@ NTP synchronized: yes
 
 #### Configuring user time zone
 
-We can configure our time zone during OS installation process, using GUI, or we can use date and time setting in the GUI panel But as always there are some terminal tools which help us. In old days tzconfig command were used but it has been deprecated, instead use tzselect:
+We can configure our time zone during OS installation process, using GUI, or we can use date and time setting in the panel/ But as always there are some terminal tools which help us. In old days tzconfig command were used but it has been deprecated, instead use tzselect:
 
 ### tzselect 
 
@@ -180,13 +180,11 @@ There are some other  ways to configure the time zone on Linux distributions.
 
 ## Configuring Languages
 
-We can configure system languages from settings \(Regional&Languages\) but there is always terminal tools
-
 ### locale
 
  A **locale** is a set of environmental variables that defines the language, country, and character encoding settings \(or any other special variant preferences\) for your applications and shell session on a Linux system. These environmental variables are used by system libraries and locale-aware applications on the system.
 
-> To view information about the current installed locale, use the **locale** :
+ To view information about the current installed locale, use the **locale** :
 
 ```text
 root@ubuntu16-1:~# locale
@@ -206,8 +204,6 @@ LC_MEASUREMENT="en_US.UTF-8"
 LC_IDENTIFICATION="en_US.UTF-8"
 LC_ALL=
 ```
-
-> variables format is like: "Language\_COUNTRY._ENCODING"_
 
 ### LANG
 
@@ -261,8 +257,8 @@ LC_ALL=en_GB.UTF-8
 root@ubuntu16-1:~# unset LC_ALL
 ```
 
-> we can also use bellow command to work with locale ans set or install languages :
->
+> we can also use bellow command to work with locale variables: ``
+
 > * `dpkg-reconfigure locales` \(Debian\) 
 > * `system-config-language` \(Redhat\)
 >
@@ -315,8 +311,6 @@ A computer represents information in numbers and, when they need to be communica
 * UTF-8: 8-32 bits \(1-4 bytes\). 1,112,064 code points.
 
 > Check for available encoding on your system with `locale -m` command.
-
-> use `file` command to see character encoding of a file.
 
 ### iconv
 
