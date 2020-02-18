@@ -256,7 +256,7 @@ The config file of journalctl is located at /etc/systemd/journald.conf \(CentOS7
 The Linux logger command provides an easy way to generate some logs\(centOS6\)
 
 ```text
-[root@centos6-1 ~]# logger Hello! This is my log!
+[root@centos6-1 ~]# logger local1.emerg Hello! This is my log!
 ```
 
  and it will appear at /var/log/syslog \(or /var/log/messages\):
