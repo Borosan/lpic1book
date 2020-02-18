@@ -39,12 +39,36 @@ The syslog daemon is a server process that provides a message logging facility f
 
 ### syslog.conf
 
- The syslog.conf file is the main configuration file for the **syslogd.** Whenever syslogd   receives a log message, it acts based on the message's type \(or facility\) and its priority.
+ The syslog.conf file is the main configuration file for the **syslogd.** Whenever syslogd   receives a log message, it acts based on the message's type \(or facility\) and its priority \(called selector fields\).
 
-* **Facilities** are simply categories. Some facilities in Linux are: **`auth, user, kern, cron, daemon, mail, user, local1, local2, ...`**
-* **priorities** Unlike facilities, which have no relationship to each other, priorities are hierarchical. Possible priorities in Linux are: **`emerg/panic, alert, crit, err/error, warn/warning, notice, info, debug`**
+```text
+type (facility).priority (severity)  destination(where to send the log)
+```
 
-Each line in this file specifies one or more facility/priority selectors followed by an action. On the action field we can have things like:
+**Facilities** are simply categories. Some facilities in Linux are: **`auth, user, kern, cron, daemon, mail, local1, local2, ...`**
+
+* **`auth`** ``: Security/authentication messages
+* **`user`** : User-level messages
+* **`kern`** : Kernel messages
+* **`corn`** : Clock daemon
+* **`daemon`** : System daemons
+* **`mail`** : Mail system
+* **`local0 – local7`** : Locally used facilities
+
+**priorities** Unlike facilities, which have no relationship to each other, priorities are hierarchical. Possible priorities in Linux are: **`emerg/panic, alert, crit, err/error, warn/warning, notice, info, debug`**
+
+1. **`emerg :`** System is unusable
+2. **`alert :`** Action must be taken immediately
+3. **`critical :`** Critical conditions
+4. **`err :`** Error conditions
+5. **`warning :`** Warning conditions
+6. **`notice :`** Normal but significant conditions
+7. **`info :`** Informational messages 
+8. **`debug :`** Debug-level messages
+
+> if we log some specific priority , all the more important things will be logged too
+
+**Action:** Each line in this file specifies one or more facility/priority selectors followed by an action . On the action field we can have things like:
 
 | action | example | notes |
 | :--- | :--- | :--- |
@@ -52,9 +76,208 @@ Each line in this file specifies one or more facility/priority selectors followe
 | username | user2 | Will notify that person on the screen |
 | @ip | @192.168.10.42 | Will send logs to specified log server and that server decides how to treat logs based on its configs. |
 
- 
+ In the following syslog.conf line, mail.notice is the selector and /var/log/mail is the action \(i.e., “write messages to /var/log/mail”\):
+
+```text
+mail.notice     /var/log/mail
+```
+
+Within the selector, “mail” is the facility \(message category\) and “notice” is the level of priority. You can see part of syslog.conf \(CentOS6\)  :
+
+```text
+#### RULES ####
+
+# Log all kernel messages to the console.
+# Logging much else clutters up the screen.
+#kern.*                                                 /dev/console
+
+# Log anything (except mail) of level info or higher.
+# Don't log private authentication messages!
+*.info;mail.none;authpriv.none;cron.none                /var/log/messages
+
+# The authpriv file has restricted access.
+authpriv.*                                              /var/log/secure
+
+# Log all the mail messages in one place.
+mail.*                                                  -/var/log/maillog
 
 
+# Log cron stuff
+cron.*                                                  /var/log/cron
+
+# Everybody gets emergency messages
+*.emerg                                                 *
+
+# Save news errors of level crit and higher in a special file.
+uucp,news.crit                                          /var/log/spooler
+
+# Save boot messages also to boot.log
+local7.*                                                /var/log/boot.log
+
+```
+
+> `*`: wildcard .  signifying “any facility” or "any priority"
+>
+> dash - : means it can use memory cache \(:don't waist time constantly writing to the disk \)
+>
+> equal sign = : to log ONLY one specific level of priority. `facility.=priority action`
+
+There is also  /etc/rsyslog.d/ directory and it is better for different softwares and admins to add their specific configs there, instead of editing the main configuration file \(See Ubuntu16\).
+
+### klogd
+
+ How do boot-time kernel messages get logged before a file system is even mounted? The kernel stores messages in a ring buffer in memory. The `klogd` daemon processes these messages directly to a console, or a file such as /var/log/dmesg, or through the syslog facility.
+
+### /var/log
+
+Almost all logfiles are located under /var/log directory and its sub-directories on Linux\(CentOS6\).
+
+```text
+[root@server1 ~]# ls /var/log
+anaconda.ifcfg.log    cron              messages-20200217  tallylog
+anaconda.log          cron-20200217     ntpstats           vmware-caf
+anaconda.program.log  cups              pm-powersave.log   vmware-install.log
+anaconda.storage.log  dmesg             ppp                vmware-tools-upgrader.log
+anaconda.syslog       dmesg.old         prelink            vmware-vgauthsvc.log.0
+anaconda.xlog         dracut.log        sa                 vmware-vmsvc.log
+anaconda.yum.log      gdm               samba              wpa_supplicant.log
+audit                 httpd             secure             wtmp
+boot.log              lastlog           secure-20200217    Xorg.0.log
+btmp                  maillog           spice-vdagent.log  Xorg.0.log.old
+btmp-20200217         maillog-20200217  spooler            yum.log
+ConsoleKit            messages          spooler-20200217   yum.log-20200217
+```
+
+You can use your favorite text editor or less or tail commands in conjunction with grep to read these log files.
+
+### creating rsyslog listener
+
+We can creating rsyslog listener and catch other systems log messages. That is pretty easy. 
+
+```text
+###CentOS 6
+vi /etc/rsyslog.conf
+
+###Change from 
+#$UDPServerRun 514
+#$ModLoad imtcp
+#$InputTCPServerRun 514
+
+### to
+$UDPServerRun 514
+$ModLoad imtcp
+$InputTCPServerRun 514
+```
+
+```text
+###ubuntu 16
+vim /etc/default/rsyslog
+
+### Change From
+RSYSLOGD_OPTIONS=""
+
+### To
+RSYSLOGD_OPTIONS="-r"
+```
+
+and finally do not forget to restart the service `systemctl restart rsyslog` .
+
+### journalctl
+
+Systemd also has its own  journaling program called **journald**  and it stores things in binary files. We can't go and see text files \(like what we did in syslog/rsyslog\), so  we have to use special tool called journalctl to access them\(CentOS7\):
+
+```text
+[root@centos7-1 ~]# journalctl 
+-- Logs begin at Mon 2020-02-10 02:51:48 EST, end at Tue 2020-02-18 09:19:13 EST. --
+Feb 10 02:51:48 localhost.localdomain systemd-journal[106]: Runtime journal is using 8.
+Feb 10 02:51:48 localhost.localdomain kernel: Initializing cgroup subsys cpuset
+Feb 10 02:51:48 localhost.localdomain kernel: Initializing cgroup subsys cpu
+Feb 10 02:51:48 localhost.localdomain kernel: Initializing cgroup subsys cpuacct
+Feb 10 02:51:48 localhost.localdomain kernel: Linux version 3.10.0-693.el7.x86_64 (buil
+Feb 10 02:51:48 localhost.localdomain kernel: Command line: BOOT_IMAGE=/vmlinuz-3.10.0-
+Feb 10 02:51:48 localhost.localdomain kernel: Disabled fast string operations
+Feb 10 02:51:48 localhost.localdomain kernel: e820: BIOS-provided physical RAM map:
+Feb 10 02:51:48 localhost.localdomain kernel: BIOS-e820: [mem 0x0000000000000000-0x0000
+Feb 10 02:51:48 localhost.localdomain kernel: BIOS-e820: [mem 0x000000000009ec00-0x0000
+Feb 10 02:51:48 localhost.localdomain kernel: BIOS-e820: [mem 0x00000000000dc000-0x0000
+```
+
+As we mentioned earlier ,  linux logging is one of aspects of linux which is in  under change. Distributions with systemd has journald, beside that some of them still preserve rsyslog and some other not. Try to find out your linux logging system
+
+### /etc/systemd/journald.conf
+
+The config file of journalctl is located at /etc/systemd/journald.conf \(CentOS7\)
+
+```text
+[root@centos7-1 ~]# cat  /etc/systemd/journald.conf 
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation; either version 2.1 of the License, or
+#  (at your option) any later version.
+#
+# Entries in this file show the compile time defaults.
+# You can change settings by editing this file.
+# Defaults can be restored by simply deleting this file.
+#
+# See journald.conf(5) for details.
+
+[Journal]
+#Storage=auto
+#Compress=yes
+#Seal=yes
+#SplitMode=uid
+#SyncIntervalSec=5m
+#RateLimitInterval=30s
+#RateLimitBurst=1000
+#SystemMaxUse=
+#SystemKeepFree=
+#SystemMaxFileSize=
+#RuntimeMaxUse=
+#RuntimeKeepFree=
+#RuntimeMaxFileSize=
+#MaxRetentionSec=
+#MaxFileSec=1month
+#ForwardToSyslog=yes
+#ForwardToKMsg=no
+#ForwardToConsole=no
+#ForwardToWall=yes
+#TTYPath=/dev/console
+#MaxLevelStore=debug
+#MaxLevelSyslog=debug
+#MaxLevelKMsg=notice
+#MaxLevelConsole=info
+#MaxLevelWall=emerg
+```
+
+### logger
+
+The Linux logger command provides an easy way to generate some logs\(centOS6\)
+
+```text
+[root@server1 ~]# logger Hello! This is my log!
+```
+
+ and it will appear at /var/log/syslog \(or /var/log/messages\):
+
+```text
+[root@server1 ~]# tail -5 /var/log/messages
+Feb 18 06:54:42 server1 NetworkManager[2183]: <info>   nameserver '172.16.43.2'
+Feb 18 06:54:42 server1 NetworkManager[2183]: <info>   domain name 'localdomain'
+Feb 18 06:54:42 server1 dhclient[29269]: bound to 172.16.43.137 -- renewal in 693 seconds.
+Feb 18 06:54:42 server1 nm-dispatcher.action: Script '/etc/NetworkManager/dispatcher.d/13-named' exited with error status 1.
+Feb 18 06:59:34 server1 payam: Hello! This is my log!
+
+```
+
+### /etc/logrotate.conf
+
+### /etc/logrotate.d
+
+
+
+\*\*\*\*
 
 
 
@@ -85,6 +308,12 @@ Each line in this file specifies one or more facility/priority selectors followe
 [https://www.linuxjournal.com/article/5476](https://www.linuxjournal.com/article/5476)
 
 [https://jadi.gitbooks.io/lpic1/content/1082\_system\_logging.html](https://jadi.gitbooks.io/lpic1/content/1082_system_logging.html)
+
+[https://en.wikipedia.org/wiki/Syslog](https://en.wikipedia.org/wiki/Syslog)
+
+[https://renenyffenegger.ch/notes/Linux/logging/klogd/index](https://renenyffenegger.ch/notes/Linux/logging/klogd/index)
+
+[https://www.tecmint.com/create-centralized-log-server-with-rsyslog-in-centos-7/](https://www.tecmint.com/create-centralized-log-server-with-rsyslog-in-centos-7/)
 
 .
 
