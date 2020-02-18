@@ -133,7 +133,7 @@ There is also  /etc/rsyslog.d/ directory and it is better for different software
 Almost all logfiles are located under /var/log directory and its sub-directories on Linux\(CentOS6\).
 
 ```text
-[root@server1 ~]# ls /var/log
+[root@centos6-1 ~]# ls /var/log
 anaconda.ifcfg.log    cron              messages-20200217  tallylog
 anaconda.log          cron-20200217     ntpstats           vmware-caf
 anaconda.program.log  cups              pm-powersave.log   vmware-install.log
@@ -256,13 +256,13 @@ The config file of journalctl is located at /etc/systemd/journald.conf \(CentOS7
 The Linux logger command provides an easy way to generate some logs\(centOS6\)
 
 ```text
-[root@server1 ~]# logger Hello! This is my log!
+[root@centos6-1 ~]# logger Hello! This is my log!
 ```
 
  and it will appear at /var/log/syslog \(or /var/log/messages\):
 
 ```text
-[root@server1 ~]# tail -5 /var/log/messages
+[root@centos6-1 ~]# tail -5 /var/log/messages
 Feb 18 06:54:42 server1 NetworkManager[2183]: <info>   nameserver '172.16.43.2'
 Feb 18 06:54:42 server1 NetworkManager[2183]: <info>   domain name 'localdomain'
 Feb 18 06:54:42 server1 dhclient[29269]: bound to 172.16.43.137 -- renewal in 693 seconds.
@@ -271,9 +271,82 @@ Feb 18 06:59:34 server1 payam: Hello! This is my log!
 
 ```
 
+### logrotate
+
+ With the amount of logging that is possible, we need to be able to control the size of log files. This is done using the `logrotate`utility , which is usually run as a cron job.
+
+The important files to pay attention to are:
+
+* /usr/sbin/logrotate -- the logrotate command itself \(the executable\)
+* /etc/cron.daily/logrotate -- the shell script that runs logrotate on a daily basis \(note that it might be /etc/cron.daily/logrotate.cron on some systems\)
+* /etc/logrotate.conf -- the log rotation configuration file
+
+Another important file is /etc/logrotate.d, included in the process through this line in the /etc/logrotate.conf file:
+
 ### /etc/logrotate.conf
 
+Use the /etc/logrotate.conf configuration file to specify how your log rotating and archiving should happen\(CentOS6\).
+
+```text
+[root@centos6-1 ~]# cat /etc/logrotate.conf 
+# see "man logrotate" for details
+# rotate log files weekly
+weekly
+
+# keep 4 weeks worth of backlogs
+rotate 4
+
+# create new (empty) log files after rotating old ones
+create
+
+# use date as a suffix of the rotated file
+dateext
+
+# uncomment this if you want your log files compressed
+#compress
+
+# RPM packages drop log rotation information into this directory
+include /etc/logrotate.d
+
+# no packages own wtmp and btmp -- we'll rotate them here
+/var/log/wtmp {
+    monthly
+    create 0664 root utmp
+	minsize 1M
+    rotate 1
+}
+
+/var/log/btmp {
+    missingok
+    monthly
+    create 0600 root utmp
+    rotate 1
+}
+
+# system-specific logs may be also be configured here.
+```
+
+### 
+
 ### /etc/logrotate.d
+
+
+
+```text
+[root@centos6-1 ~]# ls /etc/logrotate.d/
+ConsoleKit  cups  dracut  httpd  named  ppp  psacct  syslog  wpa_supplicant  yum
+
+[root@centos6-1 ~]# cat /etc/logrotate.d/httpd 
+/var/log/httpd/*log {
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    postrotate
+        /sbin/service httpd reload > /dev/null 2>/dev/null || true
+    endscript
+}
+```
 
 
 
