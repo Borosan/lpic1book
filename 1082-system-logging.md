@@ -333,6 +333,7 @@ Each log file may be handled daily, weekly, monthly, or when it grows too large.
 | missingok | don’t write an error message if the log file is missing |
 | daily, weekly, monthly | rotate logs daily, weekly, monthly |
 | rotate _N_ | keep the latest _N_ logs and delete the older ones |
+| compress | compress the log \(creates  gz files\) |
 |  **create** mode owner group |  Immediately after rotation \(before the **postrotate** script is run\) the log file is created with this acces and owner |
 | minsize N | Log files are rotated when they grow bigger than size bytes, but not before the additionally specified time interval\(daily,...\) |
 
