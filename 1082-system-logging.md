@@ -285,7 +285,7 @@ Another important file is /etc/logrotate.d, included in the process through this
 
 ### /etc/logrotate.conf
 
-Use the /etc/logrotate.conf configuration file to specify how your log rotating and archiving should happen\(CentOS6\).
+Use the /etc/logrotate.conf configuration file to specify how your log rotating and archiving should happen.
 
 ```text
 [root@centos6-1 ~]# cat /etc/logrotate.conf 
@@ -326,11 +326,21 @@ include /etc/logrotate.d
 # system-specific logs may be also be configured here.
 ```
 
-### 
+Each log file may be handled daily, weekly, monthly, or when it grows too large. 
+
+| parameter | meaning |
+| :--- | :--- |
+| missingok | don’t write an error message if the log file is missing |
+| daily, weekly, monthly | rotate logs daily, weekly, monthly |
+| rotate _N_ | keep the latest _N_ logs and delete the older ones |
+|  **create** mode owner group |  Immediately after rotation \(before the **postrotate** script is run\) the log file is created with this acces and owner |
+| minsize N | Log files are rotated when they grow bigger than size bytes, but not before the additionally specified time interval\(daily,...\) |
+
+this file contains some default settings and sets up rotation for a few logs that are not owned by any system packages. It also uses an `include` statement to pull in configuration from any file in the `/etc/logrotate.d` directory\(CentOS6\).
 
 ### /etc/logrotate.d
 
-
+Any packages we install that need help with log rotation will place their Logrotate configuration here.
 
 ```text
 [root@centos6-1 ~]# ls /etc/logrotate.d/
@@ -348,21 +358,18 @@ ConsoleKit  cups  dracut  httpd  named  ppp  psacct  syslog  wpa_supplicant  yum
 }
 ```
 
+These are the meaning of some of these parameters:
 
+| parameter | meaning |
+| :--- | :--- |
+| missingok | don’t write an error message if the log file is missing |
+| notifempty | don’t rotate the log file if it is empty. |
+| shared scripts |  Run **prerotate** and **postrotate** scripts for every log file which is rotated |
+| delaycompress | Postpone compression of the previous log file to the next rotation cycle |
 
-\*\*\*\*
+That's all!
 
-
-
-
-
-
-
-
-
-
-
-
+.
 
 .
 
@@ -387,6 +394,12 @@ ConsoleKit  cups  dracut  httpd  named  ppp  psacct  syslog  wpa_supplicant  yum
 [https://renenyffenegger.ch/notes/Linux/logging/klogd/index](https://renenyffenegger.ch/notes/Linux/logging/klogd/index)
 
 [https://www.tecmint.com/create-centralized-log-server-with-rsyslog-in-centos-7/](https://www.tecmint.com/create-centralized-log-server-with-rsyslog-in-centos-7/)
+
+[https://www.digitalocean.com/community/tutorials/how-to-manage-logfiles-with-logrotate-on-ubuntu-16-04](https://www.digitalocean.com/community/tutorials/how-to-manage-logfiles-with-logrotate-on-ubuntu-16-04)
+
+[https://linux.die.net/man/8/logrotate](https://linux.die.net/man/8/logrotate)
+
+[https://www.digitalocean.com/community/tutorials/how-to-manage-logfiles-with-logrotate-on-ubuntu-16-04](https://www.digitalocean.com/community/tutorials/how-to-manage-logfiles-with-logrotate-on-ubuntu-16-04)
 
 .
 
