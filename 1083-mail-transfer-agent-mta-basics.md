@@ -123,17 +123,125 @@ The last line tell that payam is reading root emails. This let payam to read roo
 
 There are plenty of ways for sending email while using GUI , using browser or with an email client. But options are limited when it comes to command line interface.
 
-   The `mail` command is an old standby that can be used to script the sending of mail as well as receive and manage your incoming mail.
+   The `mail` command is an old standby that can be used to script the sending of mail as well as receive and manage your incoming mail. \(CentOS: install mailx\)
 
 | mail command example | usage |
 | :--- | :--- |
 | mail -s “subject” user1@domain.com | sending an email |
+| mail -s “subject” user1@domain.com &lt; /root/test.txt | send an email from a file |
+| mail -s “subject” user1@domain.com -a /path/to/file | add an attachment |
 
+> It also can send email from within the scripts like 'echo -e "email content" \| mail -s "email subject" "example@example.com"'
 
+We can use `mail` interactively to send messages by passing a list of addressees, or with no arguments you can use it to look at your incoming mail.
 
+```text
+[user1@centos7-1 ~]$ mail lpic1@localhost
+Subject: test lpic1
+Hi this is my first email.
+I am sending it to lpic1 email address.
+EOT
+```
 
+Because of aliases we have modified, Any email which is sent to lpic1 email address would be forwarded to root,  as we have define payam as a person who should get root's emails :
 
+```text
+[payam@centos7-1 ~]$ mail
+Heirloom Mail version 12.5 7/5/10.  Type ? for help.
+"/var/spool/mail/payam": 1 message 1 new
+>N  1 user1@centos7-1.loca  Wed Feb 19 05:10  19/683   "test lpic1"
+& 1
+Message  1:
+From user1@centos7-1.localdomain  Wed Feb 19 05:10:35 2020
+Return-Path: <user1@centos7-1.localdomain>
+X-Original-To: lpic1@localhost
+Delivered-To: lpic1@localhost.localdomain
+Date: Wed, 19 Feb 2020 05:10:35 -0500
+To: lpic1@localhost.localdomain
+Subject: test lpic1
+User-Agent: Heirloom mailx 12.5 7/5/10
+Content-Type: text/plain; charset=us-ascii
+From: user1@centos7-1.localdomain
+Status: R
 
+Hi this is my first email.
+I am sending it to lpic1 email address.
+
+& d
+& q
+```
+
+> Whenever a mail is sent, initially the mail command calls the mail binary, which in turns connects to the local MTA to send the mail to its destination. The local MTA is a locally running smtp server that accepts mails on port 25.
+
+### local forward
+
+The aliases file must be managed by a system administrator. Individual users can enable forwarding of their own mail using a .forward file in their own home directory. You can put anything in your .forward file that is allowed on the right side of the aliases file. The file contains plain text and does not need to be compiled. When mail is destined for you, sendmail checks for a .forward file in your home directory and processes the entries the same way it processes aliases.
+
+```text
+[user1@centos7-1 ~]$ pwd
+/home/user1
+[user1@centos7-1 ~]$ ls -la | grep -i forward
+[user1@centos7-1 ~]$ vi .forward
+[user1@centos7-1 ~]$ cat .forward 
+user2
+```
+
+now lets end an email to user1 and check its mail box:
+
+```text
+[payam@centos7-1 ~]$ mail user1@localhost
+Subject: mail to user1
+Hello!!!
+EOT
+```
+
+```text
+[user1@centos7-1 ~]$ mail
+No mail for user1
+```
+
+```text
+[user2@centos7-1 ~]$ mail
+Heirloom Mail version 12.5 7/5/10.  Type ? for help.
+"/var/spool/mail/user2": 1 message 1 new
+>N  1 payam@centos7-1.loca  Wed Feb 19 06:33  21/771   "mail to user1"
+& 1
+Message  1:
+From payam@centos7-1.localdomain  Wed Feb 19 06:33:28 2020
+Return-Path: <payam@centos7-1.localdomain>
+X-Original-To: user1@localhost
+Delivered-To: user2@centos7-1.localdomain
+Delivered-To: user1@localhost.localdomain
+Date: Wed, 19 Feb 2020 06:33:27 -0500
+To: user1@localhost.localdomain
+Subject: mail to user1
+User-Agent: Heirloom mailx 12.5 7/5/10
+Content-Type: text/plain; charset=us-ascii
+From: payam@centos7-1.localdomain
+Status: R
+
+Hello!!!
+
+& d
+& q
+[user2@centos7-1 ~]$ 
+```
+
+### mailq
+
+ Linux mail handling uses a store-and-forward model. You have already seen that your incoming mail is stored in a file in /var/mail until you read it. Outgoing mail is also stored until a receiving server connection is available. You use the `mailq` command to see what mail is queued.
+
+```text
+[root@centos7-1 ~]# mailq
+Mail queue is empty
+[root@centos7-1 ~]# mailq
+-Queue ID- --Size-- ----Arrival Time---- -Sender/Recipient-------
+E085461E470C      473 Wed Feb 19 06:39:07  payam@centos7-1.localdomain
+(Host or domain name not found. Name service error for name=gmail.com type=MX: Host not found, try again)
+                                         test@gmail.com
+
+-- 0 Kbytes in 1 Request.
+```
 
 .
 
