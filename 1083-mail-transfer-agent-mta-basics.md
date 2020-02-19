@@ -173,7 +173,7 @@ I am sending it to lpic1 email address.
 
 > Whenever a mail is sent, initially the mail command calls the mail binary, which in turns connects to the local MTA to send the mail to its destination. The local MTA is a locally running smtp server that accepts mails on port 25.
 
-### local forward
+### ~/.forward
 
 The aliases file must be managed by a system administrator. Individual users can enable forwarding of their own mail using a .forward file in their own home directory. You can put anything in your .forward file that is allowed on the right side of the aliases file. The file contains plain text and does not need to be compiled. When mail is destined for you, sendmail checks for a .forward file in your home directory and processes the entries the same way it processes aliases.
 
