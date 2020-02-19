@@ -40,7 +40,7 @@ Qmail is the one of the most secure Linux mail server software solutions on the 
 
 Qmail is also faster, and scales better with higher mail loads than Sendmail. However, Qmail is not easy to configure, or easy to extend.
 
-> qmail is not a GPL software it is publicdomain.
+> qmail is not a GPL software it is public domain.
 
 ### exim
 
@@ -106,9 +106,9 @@ decode:		root
 root:    payam   ###<-----------
 ```
 
-So it if there is a message for "lpic1" it will be sent to the root user. 
+So it if there is a message for `"lpic1"` it will be sent to the `root` user. 
 
-The last line tell that payam is reading root emails. This let payam to read root emails without login with root.
+The last line tell that `payam` is reading `root` emails  . This let `payam` to read `root` emails without login with root.
 
 ### newaliases
 
@@ -242,6 +242,8 @@ E085461E470C      473 Wed Feb 19 06:39:07  payam@centos7-1.localdomain
 
 -- 0 Kbytes in 1 Request.
 ```
+
+Obviously in a health system mailq should be always empty.
 
 .
 
