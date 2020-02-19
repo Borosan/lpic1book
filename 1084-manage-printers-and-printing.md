@@ -223,14 +223,14 @@ Rank    Owner   Job     File(s)                         Total Size
 [root@earth ~]# lpq
 HP-LaserJet-p2055d is not ready
 Rank    Owner   Job     File(s)                         Total Size
-1st     mahmoud 15      Untitled Document 1             13312 bytes
-2nd     mahmoud 16      MOP template.docx               16384 bytes
+1st     payam   15      Untitled Document 1             13312 bytes
+2nd     payam   16      MOP template.docx               16384 bytes
 3rd     root    17      minicom.log                     2048 bytes
 [root@earth ~]# lprm 15
 [root@earth ~]# lpq
 HP-LaserJet-p2055d is not ready
 Rank    Owner   Job     File(s)                         Total Size
-1st     mahmoud 16      MOP template.docx               16384 bytes
+1st     payam   16      MOP template.docx               16384 bytes
 2nd     root    17      minicom.log                     2048 bytes
 [root@earth ~]# lprm
 [root@earth ~]# lpq
