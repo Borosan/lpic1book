@@ -58,7 +58,76 @@ Postfix also runs faster with less system resources than most other MTAs \(or at
 
  As sendmail has been around so long , no matter which email server we use, it comes with send mail emulation layer. In other words, all of other MTAs include tools which are backward compatible.  so if we type `sendmail` or `mailq` commands they  respond and act as if sendmail is installed.
 
+### Mail aliases <a id="mail-aliases"></a>
 
+Sometimes you might want all the mail for a user to go to some other place. For example, you may have a server farm and want all the root mail to go to a central system administrator. Or you may want to create a mailing list where mail goes to several people. To do this, we use aliases that allow us to define one or more destinations for a given user name. 
+
+mail aliases are located in `/etc/aliases .` You must first become root before modifying this file: \(CentOS7, output has been truncate\)
+
+```text
+[root@centos7-1 ~]# cat /etc/aliases
+#
+#  Aliases in this file will NOT be expanded in the header from
+#  Mail, but WILL be visible over networks or from /bin/mail.
+#
+#	>>>>>>>>>>	The program "newaliases" must be run after
+#	>> NOTE >>	this file is updated for any changes to
+#	>>>>>>>>>>	show through to sendmail.
+#
+
+# Basic system aliases -- these MUST be present.
+mailer-daemon:	postmaster
+postmaster:	root
+
+# General redirections for pseudo accounts.
+bin:		root
+daemon:		root
+adm:		root
+lp:		root
+sync:		root
+shutdown:	root
+halt:		root
+mail:		root
+ftp:		root
+nobody:		root
+amandabackup:		root
+xfs:		root
+gdm:		root
+
+
+lpic1:  root     ###<---------
+
+
+# trap decode to catch security attacks
+decode:		root
+
+# Person who should get root's mail
+#root:		marc
+root:    payam   ###<-----------
+```
+
+So it if there is a message for "lpic1" it will be sent to the root user. 
+
+The last line tell that payam is reading root emails. This let payam to read root emails without login with root.
+
+### newaliases
+
+ Modifications to the `/etc/aliases` file are not complete until the `newaliases` command is run to build `/etc/aliases.db`.
+
+```text
+[root@centos7-1 ~]# newaliases
+[root@centos7-1 ~]# 
+```
+
+### mail command
+
+There are plenty of ways for sending email while using GUI , using browser or with an email client. But options are limited when it comes to command line interface.
+
+   The `mail` command is an old standby that can be used to script the sending of mail as well as receive and manage your incoming mail.
+
+| mail command example | usage |
+| :--- | :--- |
+| mail -s “subject” user1@domain.com | sending an email |
 
 
 
