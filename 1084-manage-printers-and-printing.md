@@ -41,13 +41,15 @@ CUPS consists of:
 
 ![](.gitbook/assets/manageprinters-cupsweb.jpg)
 
-> If you are asked for a username and password when accessing the CUPS web interface \(localhost:631\), use your login name and password.
+> If you are asked for a username and password when accessing the CUPS web interface \(localhost:631\), use your login name and password. 
+>
+> Obviously adding printer requires root access.\(in ubuntu members of cups admin group are accepted too\)
 
 ```text
 ### cups tree of menus:
 -Home
 -Administration ---> For Adding printers, managing jobs,
-                      and configuring the CUPS server.
+                     and configuring the CUPS works as server.
 -classes
 -Help
 -Jobs ---> to check the jobs the CUPS is handling
@@ -182,6 +184,8 @@ ErrorPolicy stop-printer
 
 In UNIX and Linux systems, printing initially used the Berkeley Software Distribution \(BSD\) printing subsystem, consisting of a line printer daemon \(lpd\) running as a server, and client commands such as lpr to submit jobs for printing.
 
+Nowadays many of these legacy tools still exist to keep backward compatibility.
+
 | command | usage |
 | :--- | :--- |
 | lpr | send file to printer |
@@ -191,8 +195,8 @@ In UNIX and Linux systems, printing initially used the Berkeley Software Distrib
 
  **lpq : q** stands for **queue** and it is use full when we want to see printer jobs
 
-* -P : show the jobs of specific printer
-* -a : show jobs of all printers.
+* `-P` : show the jobs of specific printer
+* `-a` : show jobs of all printers.
 
 ```text
 [root@earth ~]# lpq -PHP-LaserJet-p2055d
@@ -202,9 +206,9 @@ Rank    Owner   Job     File(s)                         Total Size
 2nd     payam    16      MOP template.docx               16384 bytes
 ```
 
-> There should be no space between P and Printer's name!
+> There should be no space between -P and Printer's name! `-Pprintername`
 
-**lpr :**  The simplest way to print any file is to use the `lpr` command and provide the file name. Again use -P to specify printer:
+**lpr :**  The simplest way to print any file is to use the `lpr` command and provide the file name. Again use `-P` to specify printer:
 
 ```text
 [root@earth ~]#  lpr -PHP-LaserJet-p2055d minicom.log 
@@ -240,9 +244,11 @@ Rank    Owner   Job     File(s)                         Total Size
 [root@earth ~]# 
 ```
 
-> again -P can be used to specify the printer. Also we can use `lprm -Pprintername -` to remove all printer's jobs. And `lprm -` will remove all jobs from all printers.
+> again -P can be used to specify the printer. Also we can use `lprm -Pprintername -` to remove all printer's jobs. And `lprm -` will remove all jobs from the default printer.
+>
+> Each user can remove his/her own jobs, but root can do any thing!
 
-**lpc**  : we can use lpc status command in order to check the printer health and troubleshoot.
+**lpc**  : we can use lpc status command in order to check the printer health and troubleshoot \(become root for better results!\).
 
 ```text
 [root@earth ~]# lpc status
@@ -263,10 +269,10 @@ In my case, my printer is out of paper. But there are some other cups command wh
 
 | command | describe |
 | :--- | :--- |
-| cupsaccept | tells the printer queue to accept new jobs |
-| cupsreject | tells the printer to reject any new job |
-| cupsenable | enables the actual/physical printing of the jobs |
-| cupsdisable | disables the physical printing of the jobs |
+| **cupsaccept** | tells the printer queue to accept new jobs |
+| **cupsreject** | tells the printer to reject any new job |
+| **cupsenable** | enables the actual/physical printing of the jobs |
+| **cupsdisable** | disables the physical printing of the jobs |
 
  with all commands we can specify printer's name without -P switch !
 
