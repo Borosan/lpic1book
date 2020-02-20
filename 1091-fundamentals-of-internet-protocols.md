@@ -71,21 +71,104 @@ The maximum value of a 32-bit number is 232, or 4,294,967,296. So the maximum nu
 
 A major advantage of IPv6 is that it uses 128 bits of data to store an address, permitting 2128 unique addresses, or 340,282,366,920,938,463,463,374,607,431,768,211,456. The size of IPv6's address space — 340 duodecillion — is much, much larger than IPv4.
 
+#### subnetmask
+
+Each IP class is equipped with its own default subnet mask \(netmask\). netmask  is a 32-bit binary which bounds that IP class to have prefixed number of Networks and prefixed number of Hosts per network.
+
+* Netid: The part of an IP address that identifies the network. 
+* Hostid: The part of an IP address that identifies a host in a network.
+
+The netid and hostid are of varying lengths, depending on the class of the address.
+
 #### IP address classes
 
-With an IPv4 IP address, there are five classes of available IP ranges: Class A, Class B, Class C, Class D and Class E, while only A, B, and C are commonly used. Each class allows for a range of valid IP addresses, shown in the following table.
+With an IPv4 IP address, there are five classes of available IP ranges: Class A, Class B, Class C, Class D and Class E, while only A, B, and C are commonly used.
 
-| Class | Address range | Supports |
-| :--- | :--- | :--- |
-| **Class A** | 1.0.0.1 to 126.255.255.254 | Supports 16 million hosts on each of 127 networks. |
-| **Class B** | 128.1.0.1 to 191.255.255.254 | Supports 65,000 hosts on each of 16,000 networks. |
-| **Class C** | 192.0.1.1 to 223.255.254.254 | Supports 254 hosts on each of 2 million networks. |
-| **Class D** | 224.0.0.0 to 239.255.255.255 | Reserved for multicast groups. |
-| **Class E** | 240.0.0.0 to 254.255.255.254 | Reserved for future use, or research and development purposes. |
+ Each class allows for a range of valid IP addresses, shown in the following table.
+
+| Class | Address range | subnetmask | Supports |
+| :--- | :--- | :--- | :--- |
+| **Class A** | 1.0.0.1 to 126.255.255.254 | 255.0.0.0 | Supports 16 million hosts on each of 127 networks. |
+| **Class B** | 128.1.0.1 to 191.255.255.254 | 255.255.0.0 | Supports 65,000 hosts on each of 16,000 networks. |
+| **Class C** | 192.0.1.1 to 223.255.254.254 | 255.255.255.0 | Supports 254 hosts on each of 2 million networks. |
+| **Class D** | 224.0.0.0 to 239.255.255.255 | N/A | Reserved for multicast groups. |
+| **Class E** | 240.0.0.0 to 254.255.255.254 | N/A | Reserved for future use, or research and development purposes. |
 
 > Ranges 127.x.x.x are reserved for the loopback or localhost, for example, **127.0.0.1** is the loopback address. Range **255.255.255.255** broadcasts to all hosts on the local network.
 
 
 
+Classful IP addressing does not provide any flexibility of having less number of Hosts per Network or more Networks per IP Class, where subnetting comes to play.
 
+#### subnetting
+
+The process of  deviding an IP Class into  smaller blocks, or groups of IPs, known as subnetting. 
+
+Subnetting can improve security and help to balance overall network traffic. 
+
+{% hint style="info" %}
+**CIDR**
+
+CIDR **** or **Classless Inter Domain Routing** is based on subnetting concept.CIDR and subnetting are virtually the same thing. The term Subnetting is generally used when you use it at the organizational level. CIDR is generally used when you it at the ISP level or higher.
+{% endhint %}
+
+**How subnetting works ?**subnetting is a bitwise operation on a network of ip addresses which take place using netmask \(subnetmask\).
+
+ it provides the flexibility of borrowing bits of Host part of the IP address and using them as Network in Network, called Subnet. By using subnetting, one single Class A IP address can be used to have smaller sub-networks which provides better network management capabilities.
+
+* **Class A Subnets**
+
+  In Class A, only the first octet is used as Network identifier and rest of three octets are used to be assigned to Hosts \(i.e. 16777214 Hosts per Network\). To make more subnet in Class A, bits from Host part are borrowed and the subnet mask is changed accordingly.
+
+![](.gitbook/assets/fundamentalip-classasub.jpg)
+
+* **Class B Subnets**
+
+  By default, using Classful Networking, 14 bits are used as Network bits providing \(2^14\) 16384 Networks and \(\(2^16\)-2\) 65534 Hosts. Class B IP Addresses can be subnetted the same way as Class A addresses, by borrowing bits from Host bits. Below is given all possible combination of Class B subnetting.
+
+![](.gitbook/assets/fundamentalip-classbsub.jpg)
+
+* **Class C Subnets**
+
+  Class C IP addresses are normally assigned to a very small size network because it can only have 254 hosts in a network. Given below is a list of all possible combination of subnetted Class B IP address
+
+![](.gitbook/assets/fundamentalip-classcsub.jpg)
+
+#### Communication Protocols
+
+tcp
+
+udp
+
+icmp
+
+ports
+
+ 
+
+
+
+
+
+.
+
+.
+
+.
+
+[https://www.computerhope.com/jargon/i/ip.htm](https://www.computerhope.com/jargon/i/ip.htm)
+
+[https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html](https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html)
+
+[https://www.computerhope.com/jargon/n/netmask.htm](https://www.computerhope.com/jargon/n/netmask.htm)
+
+[http://compunetworx.blogspot.com/2013/01/difference-between-hostid-and-netid-in.html](http://compunetworx.blogspot.com/2013/01/difference-between-hostid-and-netid-in.html)
+
+[https://www.computerhope.com/jargon/s/subnetma.htm](https://www.computerhope.com/jargon/s/subnetma.htm)
+
+[https://www.tutorialspoint.com/ipv4/ipv4\_subnetting.htm](https://www.tutorialspoint.com/ipv4/ipv4_subnetting.htm)
+
+[http://www.itgeared.com/articles/1347-cidr-and-subnetting-tutorial/](http://www.itgeared.com/articles/1347-cidr-and-subnetting-tutorial/)
+
+.
 
