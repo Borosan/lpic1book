@@ -159,11 +159,11 @@ CIDR **** or **Classless Inter Domain Routing** is based on subnetting concept.C
 A network protocol defines the rules and procedures in which data communication occurs between devices over a network. Without predefined rules or procedures, the messages traversing a network would be without any particular formatting and may not be meaningful to the receipt device.
 
 {% hint style="info" %}
-OSI model OSI \(Open Systems Interconnection\) model was created by the International Organization for Standardization \(ISO\), an international standard-setting body. It was designed to be a reference model for describing the functions of a communication system. The OSI model has seven layers.
+**OSI model :**OSI \(Open Systems Interconnection\) model was created by the International Organization for Standardization \(ISO\), an international standard-setting body. It was designed to be a reference model for describing the functions of a communication system. The OSI model has seven layers.
 
 ![](.gitbook/assets/fundamentalip-osi.jpg)
 
-TCP/IP model The TCP/IP model was created in the 1970s by the Defense Advance Research Project Agency \(DARPA\) as an open, vendor-neutral, public networking model. Just like the OSI model, it describes general guidelines for designing and implementing computer protocols. It consists of four layers.
+**TCP/IP model :**The TCP/IP model was created in the 1970s by the Defense Advance Research Project Agency \(DARPA\) as an open, vendor-neutral, public networking model. Just like the OSI model, it describes general guidelines for designing and implementing computer protocols. It consists of four layers.
 
 ![](.gitbook/assets/fundamentalip-tcp%20%282%29.jpg)
 
