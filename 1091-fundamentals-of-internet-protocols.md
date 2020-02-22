@@ -115,7 +115,7 @@ Address ranges to be use by private networks are:
 * Class B: `172.16.0.0` to `172.31.255.255`
 * Class C: `192.168.0.0` to `192.168.255.255`
 
-.Any private network that needs to use IP addresses internally can use any address within these ranges without any coordination. Addresses within this private address space are only unique within a given private network.
+Any private network that needs to use IP addresses internally can use any address within these ranges without any coordination. Addresses within this private address space are only unique within a given private network.
 {% endhint %}
 
 Classful IP addressing does not provide any flexibility of having less number of Hosts per Network or more Networks per IP Class, where subnetting comes to play.
