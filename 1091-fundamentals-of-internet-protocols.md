@@ -30,7 +30,7 @@ The IP \(Internet Protocol\) is the fundamental protocol for communications on t
 
  An **IP address** is a number identifying of a computer or another device on the Internet. It is similar to a mailing address, which identifies where postal mail comes from and where it should be delivered. IP addresses uniquely identify the source and destination of data transmitted with the Internet Protocol.
 
-### IPv4 and IPv6 addresses
+### IPv4
 
 IPv4 addresses are 32 bits long \(four bytes\). An example of an IPv4 address is 216.58.216.164, which is the front page of Google.com.
 
@@ -69,9 +69,11 @@ The maximum value of a 32-bit number is 232, or 4,294,967,296. So the maximum nu
 
 > Technologies such as NAT have delayed the problem by allowing many devices to use a single IP address, but a larger address space is needed to serve the modern Internet.
 
+### IPv6
+
 A major advantage of IPv6 is that it uses 128 bits of data to store an address, permitting 2128 unique addresses, or 340,282,366,920,938,463,463,374,607,431,768,211,456. The size of IPv6's address space — 340 duodecillion — is much, much larger than IPv4.
 
-#### 
+![](.gitbook/assets/fundamentalip-ipv6oct.jpg)
 
 #### IP address classes
 
@@ -79,14 +81,18 @@ With an IPv4 IP address, there are five classes of available IP ranges: Class A,
 
 #### subnetmask
 
-Each IP class is equipped with its own default subnet mask \(netmask\). netmask  is a 32-bit binary which bounds that IP class to have prefixed number of Networks and prefixed number of Hosts per network.
+Within an Internet Protocol or IP network, every connected host must have both an IP host address and a subnet mask to operate properly. Any device using the IP protocol can refer to itself with the IP address 127.0.0.1 and subnet mask 255.0.0.0, but to communicate with other devices on the network, each device must have  a \(private or public\) IP address and subnet mask.
+
+ netmask  is a 32-bit binary which bounds that IP class to have prefixed number of Networks and prefixed number of Hosts per network.
+
+![](.gitbook/assets/fundamentalip-ipv4format.jpg)
 
 * Netid: The part of an IP address that identifies the network. 
 * Hostid: The part of an IP address that identifies a host in a network.
 
 The netid and hostid are of varying lengths, depending on the class of the address.
 
- Each class allows for a range of valid IP addresses, shown in the following table.
+ Each IP class is equipped with its own default subnet mask \(netmask\) and  allows for a range of valid IP addresses, shown in the following table:
 
 | Class | Address range | subnetmask | Supports |
 | :--- | :--- | :--- | :--- |
@@ -98,7 +104,19 @@ The netid and hostid are of varying lengths, depending on the class of the addre
 
 > Ranges 127.x.x.x are reserved for the loopback or localhost, for example, **127.0.0.1** is the loopback address. Range **255.255.255.255** broadcasts to all hosts on the local network.
 
+{% hint style="success" %}
+**Private  IPs**
 
+The Internet Assigned Numbers Authority \(IANA\) has assigned several address ranges to be used by private networks.
+
+Address ranges to be use by private networks are:
+
+* Class A: `10.0.0.0` to `10.255.255.255`
+* Class B: `172.16.0.0` to `172.31.255.255`
+* Class C: `192.168.0.0` to `192.168.255.255`
+
+.Any private network that needs to use IP addresses internally can use any address within these ranges without any coordination. Addresses within this private address space are only unique within a given private network.
+{% endhint %}
 
 Classful IP addressing does not provide any flexibility of having less number of Hosts per Network or more Networks per IP Class, where subnetting comes to play.
 
@@ -286,11 +304,17 @@ and so on ... .
 
 [https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html](https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html)
 
+[https://itstillworks.com/calculate-host-id-7542379.html](https://itstillworks.com/calculate-host-id-7542379.html)
+
 [https://www.computerhope.com/jargon/n/netmask.htm](https://www.computerhope.com/jargon/n/netmask.htm)
 
 [http://compunetworx.blogspot.com/2013/01/difference-between-hostid-and-netid-in.html](http://compunetworx.blogspot.com/2013/01/difference-between-hostid-and-netid-in.html)
 
 [https://www.computerhope.com/jargon/s/subnetma.htm](https://www.computerhope.com/jargon/s/subnetma.htm)
+
+[https://www.ibm.com/support/knowledgecenter/en/SSSHRK\_4.2.0/disco/concept/dsc\_private\_addr\_ranges.html](https://www.ibm.com/support/knowledgecenter/en/SSSHRK_4.2.0/disco/concept/dsc_private_addr_ranges.html)
+
+[https://en.wikipedia.org/wiki/IPv6\_address\#/media/File:Ipv6\_address\_leading\_zeros.svg](https://en.wikipedia.org/wiki/IPv6_address#/media/File:Ipv6_address_leading_zeros.svg)
 
 [https://www.tutorialspoint.com/ipv4/ipv4\_subnetting.htm](https://www.tutorialspoint.com/ipv4/ipv4_subnetting.htm)
 
