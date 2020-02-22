@@ -35,7 +35,7 @@ The IP \(Internet Protocol\) is the fundamental protocol for communications on t
 IPv4 addresses are 32 bits long \(four bytes\). An example of an IPv4 address is 216.58.216.164, which is the front page of Google.com.
 
 {% hint style="info" %}
- **IP address breakdown**
+ **IP v4 address breakdown**
 
 The address is made up of 32 binary bits.
 
