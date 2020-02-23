@@ -352,7 +352,12 @@ rtt min/avg/max/mdev = 40.262/44.107/47.040/2.851 ms
 
 With the `ping` command, we can determine whether a remote destination IP is active or inactive. You can also find the round-trip delay in communicating with the destination and check whether there is a packet loss.
 
-> we can specify which interface to use with -I switch.
+| ping command switch | description |
+| :--- | :--- |
+|  **-n** | Numeric output only.do not try to resolve hostname |
+|  **-i interval** | Wait interval seconds between sending each packet |
+|  **-I interface** | Set source address to specified interface address |
+| **-a** | Audible ping |
 
 ### /etc/nsswitch
 
