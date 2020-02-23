@@ -414,6 +414,10 @@ that's all.
 
 [https://www.tecmint.com/ip-command-examples/](https://www.tecmint.com/ip-command-examples/)
 
+[https://linuxize.com/post/linux-ping-command/](https://linuxize.com/post/linux-ping-command/)
+
+[https://linux.die.net/man/8/ping](https://linux.die.net/man/8/ping)
+
 [https://developers.redhat.com/blog/2018/11/26/etc-nsswitch-conf-non-complexity/](https://developers.redhat.com/blog/2018/11/26/etc-nsswitch-conf-non-complexity/)
 
 .
