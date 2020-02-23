@@ -178,6 +178,8 @@ gateway 172.16.43.2
 dns-nameservers 8.8.8.8
 ```
 
+there might be `/etc/network/interfaces.d` directory for configuration files.
+
 > ifdown and ifup commands use this configuration file.
 
 #### DNS configuration  file
