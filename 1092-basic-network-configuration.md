@@ -328,6 +328,29 @@ rtt min/avg/max/mdev = 40.262/44.107/47.040/2.851 ms
 
 With the `ping` command, we can determine whether a remote destination IP is active or inactive. You can also find the round-trip delay in communicating with the destination and check whether there is a packet loss.
 
+> we can specify which interface to use with -I switch.
+
+### /etc/nsswitch
+
+This file determines where the system finds things like host names, passwords, and protocol numbers:
+
+Here’s a snippet from a sample /etc/nsswitch.conf file
+
+```text
+passwd:   files nis
+group:    files nis
+
+hosts:    files dns myhostname
+```
+
+In this example, user information \(the passwd and group services\) come first from “files” \(like /etc/passwd or /etc/group\), and if no entries are found there, a query to an NIS server \(configured elsewhere\) will be used. 
+
+Host information first comes from /etc/hosts \(files\), then a DNS server \(dns\), and if neither of those work, at least a fallback of “myhostname” so that the local machine has _some_ name.
+
+> The non-complexity comes in the “and if that doesn’t work” rule. When multiple services are listed, they’re tried in order, and a sevice either succeeds or fails. If it fails, the next is tried, etc.
+
+that's all.
+
 .
 
 .
@@ -361,6 +384,8 @@ With the `ping` command, we can determine whether a remote destination IP is act
 [https://www.geeksforgeeks.org/ip-command-in-linux-with-examples/](https://www.geeksforgeeks.org/ip-command-in-linux-with-examples/)
 
 [https://www.tecmint.com/ip-command-examples/](https://www.tecmint.com/ip-command-examples/)
+
+[https://developers.redhat.com/blog/2018/11/26/etc-nsswitch-conf-non-complexity/](https://developers.redhat.com/blog/2018/11/26/etc-nsswitch-conf-non-complexity/)
 
 .
 
