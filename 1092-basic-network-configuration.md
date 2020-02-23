@@ -114,24 +114,15 @@ Unfortunately the network configuration files in linux are placed in different p
 In Redhat , CentOS, and fedora the files are located at  `/etc/sysconfig/network-scripts/` . 
 
 ```text
-[root@centos6-1 ~]# ifconfig
-eth0      Link encap:Ethernet  HWaddr 00:0C:29:6D:D2:C5  
-          inet addr:172.16.43.127  Bcast:172.16.43.255  Mask:255.255.255.0
-          inet6 addr: fe80::20c:29ff:fe6d:d2c5/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:235756 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:81964 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000 
-          RX bytes:309991277 (295.6 MiB)  TX bytes:5063448 (4.8 MiB)
+[root@server1 ~]# ls /etc/sysconfig/network-scripts/
+ifcfg-eth0   ifdown-ippp    ifdown-sit     ifup-ib     ifup-post      init.ipv6-global
+ifcfg-lo     ifdown-ipv6    ifdown-tunnel  ifup-ippp   ifup-ppp       net.hotplug
+ifdown       ifdown-isdn    ifup           ifup-ipv6   ifup-routes    network-functions
+ifdown-bnep  ifdown-post    ifup-aliases   ifup-isdn   ifup-sit       network-functions-ipv6
+ifdown-eth   ifdown-ppp     ifup-bnep      ifup-plip   ifup-tunnel
+ifdown-ib    ifdown-routes  ifup-eth       ifup-plusb  ifup-wireless
 
-lo        Link encap:Local Loopback  
-          inet addr:127.0.0.1  Mask:255.0.0.0
-          inet6 addr: ::1/128 Scope:Host
-          UP LOOPBACK RUNNING  MTU:65536  Metric:1
-          RX packets:3120 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:3120 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:0 
-          RX bytes:404801 (395.3 KiB)  TX bytes:404801 (395.3 KiB)
+
 ```
 
 and the default gateway is configured via file:  `/etc/sysconfig/network`
@@ -141,6 +132,33 @@ and the default gateway is configured via file:  `/etc/sysconfig/network`
 NETWORKING=yes
 HOSTNAME=server1
 GATEWAY=172.16.43.2
+```
+
+lets take a look at  eth0 configuration file:
+
+```text
+[root@server1 ~]# cat  /etc/sysconfig/network-scripts/ifcfg-eth0
+DEVICE="eth0"
+BOOTPROTO=none
+IPV6INIT="yes"
+NM_CONTROLLED="yes"
+ONBOOT="yes"
+TYPE="Ethernet"
+UUID="8f5774e8-607e-4629-8d54-a9cc4d12e851"
+IPADDR=172.16.43.127
+PREFIX=24
+GATEWAY=172.16.43.2
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+NAME="System eth0"
+HWADDR=00:0C:29:6D:D2:C5
+DNS1=8.8.8.8
+IPV6_PEERDNS=yes
+IPV6_PEERROUTES=yes
+LAST_CONNECT=1582381005
 ```
 
 #### Debian Based Systems
