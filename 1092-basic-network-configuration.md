@@ -184,6 +184,8 @@ there might be `/etc/network/interfaces.d` directory for configuration files.
 
 #### DNS configuration  file
 
+### /etc/resolv.conf:
+
 As you have noticed DNS configuration is in the same file that interface configuration is located but there is another place in linux which contains DNS information `/etc/resolv.conf` :
 
 ```text
@@ -302,6 +304,8 @@ default         172.16.43.2     0.0.0.0         UG    0      0        0 eth0
 ```
 
 > Kernel maintains the routing cache information to route the packets faster. We can list the kernel’s routing cache information by using the -C flag.
+
+> `netstat -rn` also shows routing table.
 
 ### ip
 
