@@ -359,6 +359,8 @@ With the `ping` command, we can determine whether a remote destination IP is act
 |  **-I interface** | Set source address to specified interface address |
 | **-a** | Audible ping |
 
+> for ipv6 environment use ping6 command.
+
 ### /etc/nsswitch
 
 This file determines where the system finds things like host names, passwords, and protocol numbers:
