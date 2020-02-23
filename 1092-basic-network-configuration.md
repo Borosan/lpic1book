@@ -299,6 +299,7 @@ ip [ OPTIONS ] OBJECT { COMMAND | help }
 | ip address show eth0 | view the information of any particular interface |
 | ip addr add 192.168.50.5/24 dev eth0 | Assign a IP Address to Specific Interface |
 | ip addr del 192.168.50.5/24 dev eth0 | Remove an IP Address |
+| ip link show  | Display Network Interface\(s\) |
 | ip link set eth0 up | Enable Network Interface |
 | ip link set eth0 down | Disable Network Interface |
 | ip route show | Show routing table information |
@@ -307,13 +308,27 @@ ip [ OPTIONS ] OBJECT { COMMAND | help }
 
 > All the above settings  will be lost after a system restart. use config files instead.
 
+### ping 
 
+The `ping` command is one of the most used utilities for troubleshooting, testing, and diagnosing network connectivity issues.
 
-ping
+Ping works by sending one or more ICMP \(Internet Control Message Protocol\) Echo Request packages to a specified destination IP on the network and waits for a reply. When the destination receives the package, it will respond back with an ICMP echo reply.
 
+```text
+[root@server1 ~]# ping 8.8.8.8 -c3
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=128 time=45.0 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=128 time=47.0 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=128 time=40.2 ms
 
+--- 8.8.8.8 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2043ms
+rtt min/avg/max/mdev = 40.262/44.107/47.040/2.851 ms
+```
 
-\(nsswitch\)
+With the `ping` command, we can determine whether a remote destination IP is active or inactive. You can also find the round-trip delay in communicating with the destination and check whether there is a packet loss.
+
+.
 
 .
 
@@ -340,6 +355,12 @@ ping
 [https://www.computerhope.com/unix/route.htm](https://www.computerhope.com/unix/route.htm)
 
 [https://www.thegeekstuff.com/2012/04/route-examples/](https://www.thegeekstuff.com/2012/04/route-examples/)
+
+[https://linuxize.com/post/linux-ip-command/](https://linuxize.com/post/linux-ip-command/)
+
+[https://www.geeksforgeeks.org/ip-command-in-linux-with-examples/](https://www.geeksforgeeks.org/ip-command-in-linux-with-examples/)
+
+[https://www.tecmint.com/ip-command-examples/](https://www.tecmint.com/ip-command-examples/)
 
 .
 
