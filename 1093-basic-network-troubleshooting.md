@@ -29,3 +29,7 @@ Description: Candidates should be able to troubleshoot networking issues on clie
 * tracepath6
 * netcat
 
+Till now we have learned about fundamentals of internet protocols and we have get familiar with some of network configuration files and utilities. The truth is that some times things doesn't work as we expected and need troubleshooting. In this we try to emulate some of these situations and introduce you some new commands.
+
+
+
