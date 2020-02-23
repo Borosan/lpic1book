@@ -359,6 +359,8 @@ With the `ping` command, we can determine whether a remote destination IP is act
 |  **-I interface** | Set source address to specified interface address |
 | **-a** | Audible ping |
 
+> for ipv6 environment use ping6 command.
+
 ### /etc/nsswitch
 
 This file determines where the system finds things like host names, passwords, and protocol numbers:
@@ -383,6 +385,22 @@ that's all.
 .
 
 .
+
+.
+
+{% hint style="info" %}
+### Consistent network device naming
+
+ Red Hat Enterprise Linux provides methods for consistent and predictable network device naming for network interfaces. These features change the name of network interfaces on a system in order to make locating and differentiating the interfaces easier.
+
+Traditionally, network interfaces in Linux are enumerated as `eth[0123…]`, but these names do not necessarily correspond to actual labels on the chassis. Modern server platforms with multiple network adapters can encounter non-deterministic and counter-intuitive naming of these interfaces. This affects both network adapters embedded on the motherboard \(_Lan-on-Motherboard_, or _LOM_\) and add-in \(single and multiport\) adapters.
+
+In Red Hat Enterprise Linux, **udev** supports a number of different naming schemes. The default is to assign fixed names based on firmware, topology, and location information. This has the advantage that the names are fully automatic, fully predictable, that they stay fixed even if hardware is added or removed \(no re-enumeration takes place\), and that broken hardware can be replaced seamlessly. The disadvantage is that they are sometimes harder to read than the eth0 or wlan0 names traditionally used. For example: enp5s0.
+
+* for disabling that \(how ever it is not recommanded Add both `net.ifnames=0` and `biosdevname=0` as kernel parameter values to the `GRUB_CMDLINE_LINUX` variable  \)
+{% endhint %}
+
+
 
 .
 
@@ -419,6 +437,10 @@ that's all.
 [https://linux.die.net/man/8/ping](https://linux.die.net/man/8/ping)
 
 [https://developers.redhat.com/blog/2018/11/26/etc-nsswitch-conf-non-complexity/](https://developers.redhat.com/blog/2018/11/26/etc-nsswitch-conf-non-complexity/)
+
+.
+
+[https://access.redhat.com/documentation/en-us/red\_hat\_enterprise\_linux/7/html/networking\_guide/ch-consistent\_network\_device\_naming](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/ch-consistent_network_device_naming)
 
 .
 
