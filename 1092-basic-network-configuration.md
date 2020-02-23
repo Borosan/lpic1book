@@ -26,7 +26,7 @@ In this tutorial, we learn hat make network configurations persistent in linux.
 
 ### ifconfig
 
- **ifconfig** \( **interface configuration\)** utility is used to configure, or view the configuration of, a network interface via command line interface.
+ **ifconfig** \( **interface configuration\)** utility is used to configure, or view the configuration of, a network interface via command line interface\(CentOS6\).
 
 ```text
 ifconfig [...OPTIONS] [INTERFACE]
@@ -174,17 +174,144 @@ nameserver 8.8.8.8
 
 Again setting in this file are not permanent and it is not recommended to change this file by hand , except for temporary  tests.
 
-hostname
+### hostname
 
-/etc/hostanme
+ **Hostname** is the program that is used to either set or display the current host, domain or node name of the system \(we are usiong centOS\).
 
-hosts
+```text
+[root@server1 Desktop]# hostname
+server1
+[root@server1 Desktop]# hostname centos6-1
+[root@server1 Desktop]# hostname
+centos6-1
+```
 
-route
+The new hostname will appear if you open a new terminal but get vanished if you restart the system. To configure hostname permanently there are a couple of other places which should be changed
+
+1. `/etc/hostname` \(Ubuntu\) OR `/etc/sysconfig/network` \(CentOS\)
+2. `/etc/hosts` \(both Ubuntu , CentOS\)
+
+### /etc/hostname
+
+/etc/hostname contains name of the machine and is one of the configuration files that should be modified  in order to make a new hostname persistent in Debian based systems.\(ubuntu16 here\)
+
+```text
+root@ubuntu16-1:~# cat /etc/hostname 
+ubuntu16-1
+```
+
+### /etc/sysconfig/network
+
+Another place which contains hostname and should be changed in RedHat based systems to have persistent hostname\(CentOS6\)
+
+```text
+[root@server1 Desktop]# cat /etc/sysconfig/network
+NETWORKING=yes
+HOSTNAME=server1   ###<---- change it to centos6-1 in our ex
+GATEWAY=172.16.43.2
+```
+
+### /etc/hosts
+
+ The **/etc/hosts** is an operating system file that translate hostnames or domain names to IP addresses , it do the same thing that DNS do. We can using for testing purposes or when DNS server is absent. Do not forget that it has a highr priority than DNS, \(means that operating system first look inside /etc/hosts file to gain the ip address of a host, if it wasn't successful then it would query DNS Server\).
+
+```text
+[root@server1 Desktop]# cat /etc/hosts
+127.0.0.1	centos6-1 localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1	server1	localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+```
+
+For making new hostname permanent it is another file which should be modified.
+
+### route
+
+All network devices, whether they are hosts, routers, or other types of network nodes such as network attached printers, need to make decisions about where to route TCP/IP data packets. The routing table provides the configuration information required to make those decisions. the **route** command is used to view and make changes to the kernel routing table. 
+
+{% hint style="danger" %}
+route command make temporary setting, use config files instead!
+{% endhint %}
+
+ Running **route**  command  without any options displays the routing table entries:
+
+```text
+[root@server1 Desktop]# route
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+172.16.43.0     *               255.255.255.0   U     1      0        0 eth0
+default         172.16.43.2     0.0.0.0         UG    0      0        0 eth0
+```
+
+> This shows us how the system is currently configured. If a packet comes into the system and has a destination in the range **172.16.43.0** through **172.16.43.255**, then it is forwarded to the gateway **\***, which is **0.0.0.0** — a special address which represents an invalid or non-existant destination. So, in this case, our system will not route these packets.
+>
+> If the destination is not in this IP address range, it is forwarded to the default gateway \(in this case, **172.16.43.2**, and that system will determine how to forward the traffic on to the next step towards its destination.
+
+By default route command displays the host name in its output. We can request it to display the numerical IP address using `-n` option:
+
+```text
+[root@server1 Desktop]# route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+172.16.43.0     0.0.0.0         255.255.255.0   U     1      0        0 eth0
+0.0.0.0         172.16.43.2     0.0.0.0         UG    0      0        0 eth0
+```
+
+ The following route add command will set the default gateway as 172.16.43.2:
+
+```text
+[root@server1 ~]# route add default gw 172.16.43.1
+[root@server1 ~]# route
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+172.16.43.0     *               255.255.255.0   U     0      0        0 eth0
+link-local      *               255.255.0.0     U     1002   0        0 eth0
+default         172.16.43.1     0.0.0.0         UG    0      0        0 eth0
+default         172.16.43.2     0.0.0.0         UG    0      0        0 eth0
+```
+
+use route del for deleting:
+
+```text
+[root@server1 ~]# route del  default gw 172.16.43.1
+[root@server1 ~]# route
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+172.16.43.0     *               255.255.255.0   U     0      0        0 eth0
+link-local      *               255.255.0.0     U     1002   0        0 eth0
+default         172.16.43.2     0.0.0.0         UG    0      0        0 eth0
+```
+
+> Kernel maintains the routing cache information to route the packets faster. We can list the kernel’s routing cache information by using the -C flag.
+
+### ip
+
+This command replaces old good and now deprecated ifconfig command, however, **ifconfig**  command is still works and available for most of the Linux distributions.
+
+It can be used to assign and remove addresses , bring interfaces up or down,  manipulate routing,  and many more things.
+
+```text
+ip [ OPTIONS ] OBJECT { COMMAND | help }
+```
+
+| ip command example | description |
+| :--- | :--- |
+| ip address show | show all IP addresses associated on all network devices |
+| ip address show eth0 | view the information of any particular interface |
+| ip addr add 192.168.50.5/24 dev eth0 | Assign a IP Address to Specific Interface |
+| ip addr del 192.168.50.5/24 dev eth0 | Remove an IP Address |
+| ip link set eth0 up | Enable Network Interface |
+| ip link set eth0 down | Disable Network Interface |
+| ip route show | Show routing table information |
+| ip route add 10.10.20.0/24 via 192.168.50.100 dev eth0 | Add static route |
+| ip route del 10.10.20.0/24 | Remove static route |
+
+> All the above settings  will be lost after a system restart. use config files instead.
+
+
 
 ping
 
-\(ip\)
+
 
 \(nsswitch\)
 
@@ -205,6 +332,14 @@ ping
 [https://www.unixmen.com/how-to-find-default-gateway-in-linux/](https://www.unixmen.com/how-to-find-default-gateway-in-linux/)
 
 [https://jadi.gitbooks.io/lpic1/content/1092\_basic\_network\_configuration.html](https://jadi.gitbooks.io/lpic1/content/1092_basic_network_configuration.html)
+
+[https://www.tecmint.com/setup-local-dns-using-etc-hosts-file-in-linux/](https://www.tecmint.com/setup-local-dns-using-etc-hosts-file-in-linux/)
+
+[https://opensource.com/business/16/8/introduction-linux-network-routing](https://opensource.com/business/16/8/introduction-linux-network-routing)
+
+[https://www.computerhope.com/unix/route.htm](https://www.computerhope.com/unix/route.htm)
+
+[https://www.thegeekstuff.com/2012/04/route-examples/](https://www.thegeekstuff.com/2012/04/route-examples/)
 
 .
 
