@@ -304,6 +304,7 @@ So we usually use a combination of switches with netstat :
 | netstat command example  | usage |
 | :--- | :--- |
 | netstat -a | Listing all the LISTENING Ports of TCP and UDP connections |
+| netstat -na | all LISTENING  ports, but shows numerical addresses |
 | netstat -at | Listing TCP Ports connections |
 | netstat -au | Listing UDP Ports connections |
 | netstat -l | Listing all LISTENING\(TCP&UDP\) Connections |
