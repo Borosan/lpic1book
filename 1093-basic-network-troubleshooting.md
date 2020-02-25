@@ -318,6 +318,17 @@ So we usually use a combination of switches with netstat :
 
 The `nc` \(or netcat\) utility is used for just about anything under the sun involving TCP or UDP. It can open TCP connections, send UDP packets, listen on arbitrary TCP and UDP ports, do port scanning, and deal with both IPv4 and IPv6. Unlike telnet, nc scripts nicely, and separates error messages onto standard error instead of sending them to standard output, as telnet does with some.
 
+```text
+root@ubuntu16-1:~# netcat -l 8888
+```
+
+The -l parameter means that netcat is in listen \(server\) mode, and 8888 is the port it listens to; netcat will create a socket server and wait for connections on port 8888 . The terminal will remain on hold for a client to connect to the open server with netcat. We can verify that a host service listens on port 8888.We need to open a new terminal to the host station and run the command:
+
+```text
+root@ubuntu16-1:~# netstat -na | grep 8888
+tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN 
+```
+
 
 
 
@@ -345,6 +356,8 @@ The `nc` \(or netcat\) utility is used for just about anything under the sun inv
 [https://www.tecmint.com/20-netstat-commands-for-linux-network-management/](https://www.tecmint.com/20-netstat-commands-for-linux-network-management/)
 
 [https://linux.die.net/man/1/nc](https://linux.die.net/man/1/nc)
+
+[https://www.mvps.net/docs/what-is-netcat-and-how-to-use-it/](https://www.mvps.net/docs/what-is-netcat-and-how-to-use-it/)
 
 .
 
