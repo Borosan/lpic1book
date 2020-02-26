@@ -19,3 +19,7 @@
 * dig
 * getent
 
+We have seen all of these topics in previous lessons, so in this lesson first  we take a quick look at them and then we will talk about steps of Name Resolution on client side.
+
+
+
