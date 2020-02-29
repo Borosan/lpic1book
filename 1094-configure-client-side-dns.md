@@ -180,9 +180,16 @@ The hosts  line specifies the order in which various name resolution services wi
 * `[NOTFOUND=return]` stops the resolving process if that `.local` hostname was not found
 * `dns` probably does DNS resolution
 
+> you can change the the order of name resolution here.
 
+### getent
 
+As we said  **getent** is a Linux command that helps the user to get the entries in a number of important text files called databases. This includes the _passwd_ and _the group_ of databases which stores the user information. The fact is that The **getent** command displays entries from databases supported by the Name Service Switch libraries, which are configured in /etc/nsswitch.conf. 
 
+```text
+root@ubuntu16-1:~# getent hosts thisismyexample
+172.217.164.238 thisismyexample
+```
 
 .
 
@@ -205,6 +212,10 @@ The hosts  line specifies the order in which various name resolution services wi
 [https://www.shellhacks.com/setup-dns-resolution-resolvconf-example/](https://www.shellhacks.com/setup-dns-resolution-resolvconf-example/)[https://www.linuxtopia.org/online\_books/introduction\_to\_linux/linux\_\_etc\_nsswitch.conf.html](https://www.linuxtopia.org/online_books/introduction_to_linux/linux__etc_nsswitch.conf.html)[https://www.reddit.com/r/linuxquestions/comments/co02ui/hosts\_and\_mdns\_configuration\_in\_etcnsswitchconf/](https://www.reddit.com/r/linuxquestions/comments/co02ui/hosts_and_mdns_configuration_in_etcnsswitchconf/)
 
 [https://ubuntuforums.org/showthread.php?t=971693](https://ubuntuforums.org/showthread.php?t=971693)
+
+[https://www.geeksforgeeks.org/getent-command-in-linux-with-examples/](https://www.geeksforgeeks.org/getent-command-in-linux-with-examples/)
+
+[https://linux.die.net/man/1/getent](https://linux.die.net/man/1/getent)
 
 .
 
