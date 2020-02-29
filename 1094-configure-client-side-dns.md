@@ -27,6 +27,71 @@ The DNS \(Domain Name System\) resolves the names of internet sites with their u
 
 ![](.gitbook/assets/clientdns-howdns.jpg)
 
+#### Query remote DNS servers
+
+### dig
+
+Dig \(Domain Information Groper\) is a powerful command-line tool for querying DNS name servers. It is the most commonly used tool among system administrators for troubleshooting DNS problems because of its flexibility and ease of use.
+
+In its simplest form, when used to query a single host \(domain\) without any additional options, the `dig` command is pretty verbose.
+
+```text
+root@ubuntu16-1:~# dig lpi.org
+
+; <<>> DiG 9.10.3-P4-Ubuntu <<>> lpi.org
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 23520
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;lpi.org.			IN	A
+
+;; ANSWER SECTION:
+lpi.org.		599	IN	A	65.39.134.165
+
+;; Query time: 501 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8)
+;; WHEN: Sat Feb 29 17:16:01 +0330 2020
+;; MSG SIZE  rcvd: 52
+```
+
+> don't forget, by default, dig sends the DNS query to name servers listed in the resolver\(/etc/resolv.conf\), how ever, we can query different DNS server usnig @.
+
+### host
+
+the host command is a DNS lookup utility, finding the IP address of a domain name. It also performs reverse lookups, finding the domain name associated with an IP address.
+
+```text
+root@ubuntu16-1:~# host yahoo.com
+yahoo.com has address 72.30.35.10
+yahoo.com has address 98.137.246.7
+yahoo.com has address 98.138.219.231
+yahoo.com has address 98.138.219.232
+yahoo.com has address 98.137.246.8
+yahoo.com has address 72.30.35.9
+yahoo.com has IPv6 address 2001:4998:c:1023::4
+yahoo.com has IPv6 address 2001:4998:58:1836::10
+yahoo.com has IPv6 address 2001:4998:44:41d::4
+yahoo.com has IPv6 address 2001:4998:58:1836::11
+yahoo.com has IPv6 address 2001:4998:44:41d::3
+yahoo.com has IPv6 address 2001:4998:c:1023::5
+yahoo.com mail is handled by 1 mta6.am0.yahoodns.net.
+yahoo.com mail is handled by 1 mta7.am0.yahoodns.net.
+yahoo.com mail is handled by 1 mta5.am0.yahoodns.net.
+```
+
+ And vica-versa To find out the hostname of the host with the IP address**:**
+
+```text
+root@ubuntu16-1:~# host 72.30.35.10
+10.35.30.72.in-addr.arpa domain name pointer media-router-fp2.prod1.media.vip.bf1.yahoo.com.
+```
+
+> If no arguments or options are given, _host_ prints a short summary of its command line arguments and options:
+
 #### Client Name Resolution 
 
 When client  wants to access any other computers in the  network, first it needs to know about target  ip address. There are different places inside os which keeps information, lets review them togther :
@@ -128,6 +193,12 @@ The hosts  line specifies the order in which various name resolution services wi
 [https://www.networkworld.com/article/3268449/what-is-dns-and-how-does-it-work.html](https://www.networkworld.com/article/3268449/what-is-dns-and-how-does-it-work.html)
 
 [https://computer.howstuffworks.com/dns3.htm](https://computer.howstuffworks.com/dns3.htm)
+
+[https://linuxize.com/post/how-to-use-dig-command-to-query-dns-in-linux/](https://linuxize.com/post/how-to-use-dig-command-to-query-dns-in-linux/)
+
+\*\*\*\*[https://www.computerhope.com/unix/host.htm](https://www.computerhope.com/unix/host.htm)
+
+[https://www.geeksforgeeks.org/host-command-in-linux-with-examples/](https://www.geeksforgeeks.org/host-command-in-linux-with-examples/)
 
 [https://geek-university.com/linux/etc-hosts-file/](https://geek-university.com/linux/etc-hosts-file/)
 
