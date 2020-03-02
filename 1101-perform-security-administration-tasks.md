@@ -31,3 +31,13 @@
 * ulimit
 * who, w, last
 
+find suid/guid 
+
+look for open ports
+
+netstat 
+
+nmap  
+
+examine sudo configuration 
+
