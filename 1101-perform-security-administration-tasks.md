@@ -31,6 +31,8 @@
 * ulimit
 * who, w, last
 
+In this lesson we just take a look at basic security audits. First we review several commands we have learned from the  security perspective and then get introduced to some other new commands.
+
 find suid/guid 
 
 look for open ports
