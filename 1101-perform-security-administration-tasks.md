@@ -219,7 +219,26 @@ By default, the fuser tool will look in both IPv6 and IPv4 sockets, but the defa
 
 ### nmap  
 
+ The **Nmap** aka **Network Mapper** is an open source and a very versatile tool for Linux system/network administrators. **Nmap** is used for **exploring networks**, **perform security scans**, **network audit** and **finding open ports** on local or  remote machine.
 
+```text
+root@ubuntu16-1:~# nmap localhost
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2020-03-18 00:47 +0330
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.000025s latency).
+Not shown: 995 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+631/tcp  open  ipp
+3306/tcp open  mysql
+
+Nmap done: 1 IP address (1 host up) scanned in 1.62 seconds
+```
+
+By **default**, **Nmap** scans the most common 1,000 ports for each protocol.
 
 examine sudo configuration 
 
@@ -244,6 +263,8 @@ examine sudo configuration
 [https://linux.die.net/man/8/lsof](https://linux.die.net/man/8/lsof)
 
 [https://www.digitalocean.com/community/tutorials/how-to-use-the-linux-fuser-command](https://www.digitalocean.com/community/tutorials/how-to-use-the-linux-fuser-command)
+
+[https://www.tecmint.com/nmap-command-examples/](https://www.tecmint.com/nmap-command-examples/)
 
 .
 
