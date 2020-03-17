@@ -33,7 +33,17 @@
 
 In this lesson we just take a look at basic security audits. First we review several commands we have learned from the  security perspective and then get introduced to some other new commands.
 
-find suid/guid 
+### find suid/guid 
+
+We have learned about suid/guid  when we talked about managing file permissions and owner ship, as a quick review see table bellow:
+
+| access mode |  **on file** | **on directory** |
+| :--- | :--- | :--- |
+| **SUID** | executes with permissions of file owner | nothing |
+| **GUID** | executes with the permissions of group | new files have group membership of directory |
+| **Sticky Bit** | nothing | only owner can delete files |
+
+There are some  security concern while using suid/guid  such as, what will happen if a destructive program has suid/guid permission set on it? 
 
 look for open ports
 
