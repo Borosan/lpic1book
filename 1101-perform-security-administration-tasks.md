@@ -43,7 +43,7 @@ We have learned about suid/guid  when we talked about managing file permissions 
 | **GUID** | executes with the permissions of group | new files have group membership of directory |
 | **Sticky Bit** | nothing | only owner can delete files |
 
-There are some  security concern while using suid/guid  such as, what will happen if a destructive program has suid/guid permission set on it?  Why should dangerous programs such as rm has suid permission? To search for all suid/guid files we use find command:
+There are some  security concerns while using suid/guid  such as, what will happen if a destructive program has suid/guid permission set on it?  Why should dangerous programs such as rm has suid permission? To search for all suid/guid files we use find command:
 
 > sudo find / -perm -u+s
 >
@@ -148,11 +148,11 @@ udp     6144      0 0.0.0.0:5353            0.0.0.0:*
 ...
 ```
 
- Before a TCP connection can be opened, we need to have a **server** with a listener. The listener will listen on incoming connections on a specific port. This state is represented as `LISTEN`.  If everything worked properly,  the connection is marked as `ESTABLISHED` on both end-point.  In these tables `0.0.0.0` dictates _any address_ or _any interface_.
+ Before a TCP connection can be opened, we need to have a **server** with a listener. The listener will listen on incoming connections on a specific port, This state is represented as `LISTEN`.  If everything worked properly,  the connection is marked as `ESTABLISHED` on both end-point.  In these tables `0.0.0.0` dictates _any address_ or _any interface_.
 
 ### lsof
 
- **lsof** meaning **‘LiSt Open Files’** is used to find out which files are open by which process. As we know that in Linux everything is a file, so we can even check the files that are opened by some network connections in the system using lsof command with -i switch, -i list all network connections:
+ **lsof** meaning **‘LiSt Open Files’** is used to find out which files are open by which process. As we know, in Linux everything is a file, so we can even check the files that are opened by some network connections in the system using lsof command with -i switch, -i list all network connections:
 
 ```text
 root@ubuntu16-1:~# lsof -i
@@ -221,6 +221,10 @@ By default, the fuser tool will look in both IPv6 and IPv4 sockets, but the defa
 
  The **Nmap** aka **Network Mapper** is an open source and a very versatile tool for Linux system/network administrators. **Nmap** is used for **exploring networks**, **perform security scans**, **network audit** and **finding open ports** on local or  remote machine.
 
+{% hint style="danger" %}
+Please note that scanning websites from Nmap is not legal, in some cases if you are trying to too much in deep then you will need written permissions from the owner of the website and the IP holder.
+{% endhint %}
+
 ```text
 root@ubuntu16-1:~# nmap localhost
 
@@ -238,9 +242,148 @@ PORT     STATE SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 1.62 seconds
 ```
 
-By **default**, **Nmap** scans the most common 1,000 ports for each protocol.
+By **default**, **Nmap** scans the most common 1,000 ports for each protocol. 
 
-examine sudo configuration 
+| nmap Target selection | Description |
+| :--- | :--- |
+| nmap 192.168.10.151 | scan a single IP |
+| nmap scanme.nmap.org | scan a host |
+| nmap 192.168.10.150-155 | scan a range of IPs |
+| nmap 192.168.10.0/24 | scan a subnet |
+| nmap -iL myserverlist.txt | scan targets from a text file |
+| nmap -6 \[IP-V6-HERE\] | enables IP v6 scanning |
+
+nmap has lots of switches to gain more information about hosts.
+
+| nmap switch | usage |
+| :--- | :--- |
+| -v |  gives more detailed information  |
+| -p _&lt;port\#&gt;_ | scan for information regarding a specific port |
+| -A | discover the operating system information |
+| -O | reveal further operating system information |
+
+#### su and sudo
+
+sudo and su, the very important and mostly used commands in Linux. It is very important for a Linux user to understand these two to increase security and prevent unexpected things that a user may have to go through. Firstly we will see what these commands do then we’ll know the difference between both of them. So let’s get started.
+
+### su
+
+The Linux command ‘su’ is used to switch from one account to another. User will be prompted for the password of the user switching to.
+
+```text
+user1@ubuntu16-1:~$ su payam
+Password: 
+payam@ubuntu16-1:/home/user1$ 
+```
+
+Users can also use su to switch to root account. If user types only ‘su’ without any option then It will be considered as root and user will be prompted to enter root user password.
+
+```text
+payam@ubuntu16-1:/home/user1$ su 
+Password: 
+root@ubuntu16-1:/home/user1# pwd
+/home/user1
+root@ubuntu16-1:/home/user1# exit
+exit
+payam@ubuntu16-1:
+```
+
+{% hint style="info" %}
+**what's the difference between 'su' and 'su -' ?** 
+
+Well, difference is  environment variables. su - change environment, su don't. the su keeps the environment of the old/original user even after the switch to root has been made, while the su - creates a new environment \(as dictated by the ~/.bashrc of the root user\), similar to the case when you explicitly log in as root user from the log-in screen.
+
+```text
+payam@ubuntu16-1:/home/user1$ su -
+Password: 
+root@ubuntu16-1:~# pwd
+/root
+```
+
+note: -, -l, --login are all the same.
+{% endhint %}
+
+### sudo
+
+As we all know, Linux in many ways protects users’ computer being used for bad purposes by some nasty people around us. Using sudo is one of those good ways. Whenever a user tries to install, remove and change any piece of software, the user has to have the root privileges to perform such tasks. sudo, linux command is used to give such permissions to any particular command that a user wants to execute. sudo requires the user to enter user password to give system based permissions. For example user wants to update the operating system by passing command:
+
+```text
+payam@ubuntu16-1:~$ apt-get update
+Reading package lists... Done
+W: chmod 0700 of directory /var/lib/apt/lists/partial failed - SetupAPTPartialDirectory (1: Operation not permitted)
+E: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)
+E: Unable to lock directory /var/lib/apt/lists/
+W: Problem unlinking the file /var/cache/apt/pkgcache.bin - RemoveCaches (13: Permission denied)
+W: Problem unlinking the file /var/cache/apt/srcpkgcache.bin - RemoveCaches (13: Permission denied)
+```
+
+This error is due to not having root privileges to the user ‘payam’. The root privileges can be required by passing sudo at the very beginning, like below:
+
+```text
+payam@ubuntu16-1:~$ sudo apt-get update
+[sudo] password for payam: 
+Hit:1 http://ppa.launchpad.net/peek-developers/stable/ubuntu xenial InRelease                         
+Hit:2 http://archive.ubuntu.com/ubuntu xenial InRelease
+Get:3 http://archive.ubuntu.com/ubuntu xenial-updates InRelease [109 kB]
+Get:4 http://archive.ubuntu.com/ubuntu xenial-backports InRelease [107 kB]
+Get:5 http://archive.ubuntu.com/ubuntu xenial-security InRelease [109 kB]
+0% [5 InRelease 240 B/109 kB 0%]
+...
+```
+
+but how sudo knows who should has root permission? which command could be run under root privilages? sudo keeps its configurations in /etc/sudoers file:
+
+```text
+root@ubuntu16-1:~# cat /etc/sudoers
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# Please consider adding local content in /etc/sudoers.d/ instead of
+# directly modifying this file.
+#
+# See the man page for details on how to write a sudoers file.
+#
+Defaults	env_reset
+Defaults	mail_badpass
+Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+
+# Host alias specification
+
+# User alias specification
+
+# Cmnd alias specification
+
+# User privilege specification
+root	ALL=(ALL:ALL) ALL
+
+# Members of the admin group may gain root privileges
+%admin ALL=(ALL) ALL
+
+# Allow members of group sudo to execute any command
+%sudo	ALL=(ALL:ALL) ALL
+
+# See sudoers(5) for more information on "#include" directives:
+
+#includedir /etc/sudoers.d
+```
+
+ The syntax specification for a rule in the `sudoers` file is:
+
+> user \(host\)=\(user:group\) commands
+
+the 3 important lines:  
+
+* \(root ALL=\(ALL\) ALL\) just lets root do everything on any machine as any user. 
+*  \(%admin ALL=\(ALL\) ALL\) lets anybody in the admin group run anything as any user. 
+* %sudo ALL=\(ALL:ALL\) ALL all users in the sudo group have the privileges to run any command
+
+
+
+
+
+#### examine sudo configuration 
+
+
 
 .
 
@@ -265,6 +408,20 @@ examine sudo configuration
 [https://www.digitalocean.com/community/tutorials/how-to-use-the-linux-fuser-command](https://www.digitalocean.com/community/tutorials/how-to-use-the-linux-fuser-command)
 
 [https://www.tecmint.com/nmap-command-examples/](https://www.tecmint.com/nmap-command-examples/)
+
+[https://www.tecmint.com/nmap-command-examples/](https://www.tecmint.com/nmap-command-examples/)
+
+[https://phoenixnap.com/kb/nmap-command-linux-examples](https://phoenixnap.com/kb/nmap-command-linux-examples)
+
+[https://www.linux.com/training-tutorials/how-use-sudo-and-su-commands-linux-introduction/](https://www.linux.com/training-tutorials/how-use-sudo-and-su-commands-linux-introduction/)
+
+[https://superuser.com/questions/580568/any-differences-between-su-vs-su-beside-the-pathing](https://superuser.com/questions/580568/any-differences-between-su-vs-su-beside-the-pathing)
+
+[https://www.howtoforge.com/tutorial/sudo-vs-su/](https://www.howtoforge.com/tutorial/sudo-vs-su/)
+
+[https://help.ubuntu.com/community/Sudoers](https://help.ubuntu.com/community/Sudoers)
+
+[https://www.hostinger.com/tutorials/sudo-and-the-sudoers-file/](https://www.hostinger.com/tutorials/sudo-and-the-sudoers-file/)
 
 .
 
