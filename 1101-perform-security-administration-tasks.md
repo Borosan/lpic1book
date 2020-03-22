@@ -501,9 +501,102 @@ root@ubuntu16-1:~# cat /etc/security/limits.conf
 # End of file
 ```
 
-There are two types of limits: A **soft limit** is like a warning and **hard limit** is a real max limit. For example, following will prevent anyone in the faculty group from having more than 50 processes, and a warning will be given at 20 processes.
+There are two types of limits: A **soft limit** is like a warning and **hard limit** is a real max limit. For example, following will prevent anyone in the faculty group from having more than 50 processes, and a warning will be given at 20 processes. 
+
+note: soft limit cannot be higher than the hard limit.
 
 > ulimits is a part of  pluggable authentication module\(PAM\) system  which will be discussed in lpic-2 book.
+
+## checking the users in the system
+
+As a system administrator, you may want to know who is on the system at any give point in time. You may also want to know what they are doing. In this article let us review 3 different methods to identify who is on your Linux system.
+
+### w
+
+ **w** command in Linux is used to show who is logged on and what they are doing. This command shows the information about the users currently on the machine and their processes.
+
+```text
+root@ubuntu16-1:~# w
+ 01:24:45 up  4:33,  4 users,  load average: 0.00, 0.00, 0.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+user1    tty7     :0               15:11   10:13m 40.45s  0.27s /sbin/upstart -
+payam    pts/19   127.0.0.1        01:11   12:47   0.04s  0.04s -bash
+user2    pts/21   127.0.0.1        01:24   13.00s  0.04s  0.04s -bash
+root     pts/22   192.168.52.133   01:16    3:41   0.03s  0.03s -bash
+```
+
+The output of the w command contains the following columns:
+
+1. The header shows, in this order, the current time, how long the system has been running, how many users are currently logged on, and the system load averages for the past 1, 5, and 15 minutes. 
+2. The following entries are displayed for each user:
+
+* `Name of the user`
+* `User’s machine number or tty number`
+* `Remote machine address`
+* `User’s Login time`
+* `Idle time (not usable time)`
+* `Time used by all processes attached to the tty (JCPU time)`
+* `Time used by the current process (PCPU time)`
+* `Command currently getting executed by the users`
+
+`w` has some options, try `w --help` to see them.
+
+### who
+
+The who command is used to get information about currently logged in user on to system.
+
+```text
+root@ubuntu16-1:~# who
+user1    tty7         2020-03-22 15:11 (:0)
+payam    pts/19       2020-03-23 01:11 (127.0.0.1)
+user2    pts/21       2020-03-23 01:24 (127.0.0.1)
+root     pts/22       2020-03-23 01:16 (192.168.52.133)
+```
+
+The who command displays the following information for each user currently logged in to the system if no option is provided :
+
+1. `Login name of the users`
+2. `Terminal line numbers`
+3. `Login time of the users in to system`
+4. `Remote host name of the user`
+
+who has lots of option try `who --help`.
+
+{% hint style="info" %}
+w and who reads their information from /var/run/utmp file. This file contains information about the users who are currently logged onto the system.
+{% endhint %}
+
+so we need another command to get information about logged out people, and that is `last` .
+
+### last
+
+ The **last** command in Linux is used to display the list of all the users **logged in and out**.
+
+```text
+root@ubuntu16-1:~# last
+user2    pts/21       127.0.0.1        Mon Mar 23 01:24   still logged in
+root     pts/22       192.168.52.133   Mon Mar 23 01:16   still logged in
+user2    pts/21       127.0.0.1        Mon Mar 23 01:13 - 01:21  (00:08)
+payam    pts/19       127.0.0.1        Mon Mar 23 01:11   still logged in
+
+wtmp begins Mon Mar 23 01:11:58 2020
+```
+
+The output of this command contains the following columns:
+
+1. `User name`
+2. `Tty device number`
+3. `Login date and time`
+4. `Logout time`
+5. `Total working time`
+
+{% hint style="info" %}
+the last command uses /var/log/wtmp file to display listing of last logged in users. This file is like history for utmp file, i.e. it maintains the logs of all logged in and logged out users \(in the past\).
+{% endhint %}
+
+{% hint style="info" %}
+/var/log/btmp keeps track of failed login attempts. So try `last -f /var/log/btmp` to check last failed logins .
+{% endhint %}
 
 
 
@@ -556,6 +649,14 @@ There are two types of limits: A **soft limit** is like a warning and **hard lim
 [http://geekswing.com/geek/quickie-tutorial-ulimit-soft-limits-hard-limits-soft-stack-hard-stack/](http://geekswing.com/geek/quickie-tutorial-ulimit-soft-limits-hard-limits-soft-stack-hard-stack/)
 
 [https://gerardnico.com/os/linux/limits.conf](https://gerardnico.com/os/linux/limits.conf)
+
+[https://www.thegeekstuff.com/2009/03/4-ways-to-identify-who-is-logged-in-on-your-linux-system/](https://www.thegeekstuff.com/2009/03/4-ways-to-identify-who-is-logged-in-on-your-linux-system/)
+
+[https://www.geeksforgeeks.org/w-command-in-linux-with-examples/](https://www.geeksforgeeks.org/w-command-in-linux-with-examples/)
+
+[https://www.geeksforgeeks.org/who-command-in-linux/](https://www.geeksforgeeks.org/who-command-in-linux/)
+
+[https://www.geeksforgeeks.org/last-command-in-linux-with-examples/](https://www.geeksforgeeks.org/last-command-in-linux-with-examples/)
 
 .
 
