@@ -33,7 +33,7 @@
 
 In this lesson we just take a look at basic security audits. First we review several commands we have learned from the  security perspective and then get introduced to some other new commands.
 
-### find suid/guid 
+## find suid/guid 
 
 We have learned about suid/guid  when we talked about managing file permissions and owner ship, as a quick review see table bellow:
 
@@ -95,7 +95,7 @@ find: ‘/run/user/1001/gvfs’: Permission denied
 
 obviously going to each of these files and finding out what they do is beyond the scope of this course, but we should keep our eyes open to find if any of these don't make sense, like thing might be find in home directory of users.
 
-#### looking for open ports
+## looking for open ports
 
 It is important to verify which ports are listening on the server’s network interfaces. Below are the different categories of ports:
 
@@ -262,9 +262,15 @@ nmap has lots of switches to gain more information about hosts.
 | -A | discover the operating system information |
 | -O | reveal further operating system information |
 
-#### su and sudo
+## examine sudo configuration 
+
+#### su vs sudo
 
 sudo and su, the very important and mostly used commands in Linux. It is very important for a Linux user to understand these two to increase security and prevent unexpected things that a user may have to go through. Firstly we will see what these commands do then we’ll know the difference between both of them. So let’s get started.
+
+{% hint style="info" %}
+before beginning, in some distributions like ubuntu the default root password is not set by default when you install a fresh os, so  set it using`sudo passwd root`command first.
+{% endhint %}
 
 ### su
 
@@ -300,7 +306,7 @@ root@ubuntu16-1:~# pwd
 /root
 ```
 
-note: -, -l, --login are all the same.
+plaese note that `-, -l, --login`switches are all the same.
 {% endhint %}
 
 ### sudo
@@ -330,6 +336,8 @@ Get:5 http://archive.ubuntu.com/ubuntu xenial-security InRelease [109 kB]
 0% [5 InRelease 240 B/109 kB 0%]
 ...
 ```
+
+### /etc/sudoers
 
 but how sudo knows who should has root permission? which command could be run under root privilages? sudo keeps its configurations in /etc/sudoers file:
 
@@ -377,11 +385,125 @@ the 3 important lines:
 *  \(%admin ALL=\(ALL\) ALL\) lets anybody in the admin group run anything as any user. 
 * %sudo ALL=\(ALL:ALL\) ALL all users in the sudo group have the privileges to run any command
 
+> note:  In CentOS, the _**wheel**_ **group** is often found instead of _**sudo**_ **group**.
+
+{% hint style="info" %}
+#### The difference between _wheel/sudo_ group and _sudo_ user
+
+In CentOS and Debian, a user belonging to the _wheel /sudo_ group can execute _**su**_ and directly ascend to _root_. Meanwhile, a _sudo_ user would have use the _sudo su_ first. Essentially, there is no real difference except for the syntax used to _**become root**_, and users belonging to both groups can use the _sudo_ command.
+{% endhint %}
+
+How to edit /etc/sudors file ? If you use a plain editor, mess up the syntax, and save... `sudo` will \(probably\) stop working, and, since `/etc/sudoers` is only modifiable by `root`, you're stuck! so we use **visudo** instead. **visudo** edits the `sudoers` file in a safe fashion, by doing two things:
+
+* **visudo** checks the file syntax _before_ actually overwriting the `sudoers` file. 
+* Additionally, **visudo** locks the`sudoers` file against multiple simultaneous edits. This locking is important if you need to ensure nobody else can mess up your carefully considered config changes.
+
+## Managing system resources
+
+Linux operating systems have the ability to limit the amount of various system resources available to a user process. These limitations include how many files a process can have open, how large of a file the user can create, and how much memory can be used by the different components of the process. **ulimit** is the command used to accomplish this.
+
+### ulimit
+
+The ulimit command provides control over the resources available to the shell and/or to processes started by it.
+
+```text
+user1@ubuntu16-1:~$ ulimit 
+unlimited
+```
+
+To get the report in details, add the “-a” flag at the end. This will print all the resource limits for the current user.
+
+![](.gitbook/assets/performsecadmin-ulimit.jpg)
+
+To set ulimit value on a parameter use the below command:
+
+`ulimit -<letter Option> <NewValue>`
+
+as an example lets put limits on file size in the current shell:
+
+```text
+user1@ubuntu16-1:~$ ulimit -f 0
+
+user1@ubuntu16-1:~$ ulimit -a | grep file
+core file size          (blocks, -c) 0
+file size               (blocks, -f) 0
+open files                      (-n) 1024
+file locks                      (-x) unlimited
+
+user1@ubuntu16-1:~$ vim new.txt 
+Vim: Caught deadly signal XFSZ
+Vim: Finished.
 
 
 
+File size limit exceeded (core dumped)
+```
 
-#### examine sudo configuration 
+ For the ulimits to persists across reboots we need to set the ulimit values in the configuration file **/etc/security/limits.conf**. it is also used for system wide limits:
+
+```text
+root@ubuntu16-1:~# cat /etc/security/limits.conf 
+# /etc/security/limits.conf
+#
+#Each line describes a limit for a user in the form:
+#
+#<domain>        <type>  <item>  <value>
+#
+#Where:
+#<domain> can be:
+#        - a user name
+#        - a group name, with @group syntax
+#        - the wildcard *, for default entry
+#        - the wildcard %, can be also used with %group syntax,
+#                 for maxlogin limit
+#        - NOTE: group and wildcard limits are not applied to root.
+#          To apply a limit to the root user, <domain> must be
+#          the literal username root.
+#
+#<type> can have the two values:
+#        - "soft" for enforcing the soft limits
+#        - "hard" for enforcing hard limits
+#
+#<item> can be one of the following:
+#        - core - limits the core file size (KB)
+#        - data - max data size (KB)
+#        - fsize - maximum filesize (KB)
+#        - memlock - max locked-in-memory address space (KB)
+#        - nofile - max number of open files
+#        - rss - max resident set size (KB)
+#        - stack - max stack size (KB)
+#        - cpu - max CPU time (MIN)
+#        - nproc - max number of processes
+#        - as - address space limit (KB)
+#        - maxlogins - max number of logins for this user
+#        - maxsyslogins - max number of logins on the system
+#        - priority - the priority to run user process with
+#        - locks - max number of file locks the user can hold
+#        - sigpending - max number of pending signals
+#        - msgqueue - max memory used by POSIX message queues (bytes)
+#        - nice - max nice priority allowed to raise to values: [-20, 19]
+#        - rtprio - max realtime priority
+#        - chroot - change root to directory (Debian-specific)
+#
+#<domain>      <type>  <item>         <value>
+#
+
+#*               soft    core            0
+#root            hard    core            100000
+#*               hard    rss             10000
+#@student        hard    nproc           20
+#@faculty        soft    nproc           20
+#@faculty        hard    nproc           50
+#ftp             hard    nproc           0
+#ftp             -       chroot          /ftp
+#@student        -       maxlogins       4
+
+# End of file
+```
+
+There are two types of limits: A **soft limit** is like a warning and **hard limit** is a real max limit. For example, following will prevent anyone in the faculty group from having more than 50 processes, and a warning will be given at 20 processes.
+
+> ulimits is a part of  pluggable authentication module\(PAM\) system  which will be discussed in lpic-2 book.
 
 
 
@@ -422,6 +544,18 @@ the 3 important lines:
 [https://help.ubuntu.com/community/Sudoers](https://help.ubuntu.com/community/Sudoers)
 
 [https://www.hostinger.com/tutorials/sudo-and-the-sudoers-file/](https://www.hostinger.com/tutorials/sudo-and-the-sudoers-file/)
+
+[https://support.hostway.com/hc/en-us/articles/115001509750-How-To-Install-and-Configure-Sudo](https://support.hostway.com/hc/en-us/articles/115001509750-How-To-Install-and-Configure-Sudo)
+
+[https://unix.stackexchange.com/questions/27594/why-do-we-need-to-use-visudo-instead-of-directly-modifying-the-sudoers-file](https://unix.stackexchange.com/questions/27594/why-do-we-need-to-use-visudo-instead-of-directly-modifying-the-sudoers-file)
+
+[https://www.computerhope.com/unix/visudo.htm](https://www.computerhope.com/unix/visudo.htm)
+
+[https://www.thegeekdiary.com/understanding-etc-security-limits-conf-file-to-set-ulimit/](https://www.thegeekdiary.com/understanding-etc-security-limits-conf-file-to-set-ulimit/)
+
+[http://geekswing.com/geek/quickie-tutorial-ulimit-soft-limits-hard-limits-soft-stack-hard-stack/](http://geekswing.com/geek/quickie-tutorial-ulimit-soft-limits-hard-limits-soft-stack-hard-stack/)
+
+[https://gerardnico.com/os/linux/limits.conf](https://gerardnico.com/os/linux/limits.conf)
 
 .
 
