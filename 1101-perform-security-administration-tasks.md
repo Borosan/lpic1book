@@ -598,7 +598,7 @@ the last command uses /var/log/wtmp file to display listing of last logged in us
 /var/log/btmp keeps track of failed login attempts. So try `last -f /var/log/btmp` to check last failed logins .
 {% endhint %}
 
-
+do not forget to take a look at `last --help`.
 
 .
 
