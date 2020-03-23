@@ -93,7 +93,7 @@ find: ‘/run/user/1001/gvfs’: Permission denied
 ...
 ```
 
-obviously going to each of these files and finding out what they do is beyond the scope of this course, but we should keep our eyes open to find if any of these don't make sense, like thing might be find in home directory of users.
+obviously going to each of these files and finding out what they do is beyond the scope of this course, but we should keep our eyes open to find if any of these don't make sense, like thing might be find in home directory of users. It is recommended to save this list for future  comparing and detecting new changes.
 
 ## looking for open ports
 
@@ -393,7 +393,7 @@ the 3 important lines:
 In CentOS and Debian, a user belonging to the _wheel /sudo_ group can execute _**su**_ and directly ascend to _root_. Meanwhile, a _sudo_ user would have use the _sudo su_ first. Essentially, there is no real difference except for the syntax used to _**become root**_, and users belonging to both groups can use the _sudo_ command.
 {% endhint %}
 
-How to edit /etc/sudors file ? If you use a plain editor, mess up the syntax, and save... `sudo` will \(probably\) stop working, and, since `/etc/sudoers` is only modifiable by `root`, you're stuck! so we use **visudo** instead. **visudo** edits the `sudoers` file in a safe fashion, by doing two things:
+**How to edit `/etc/sudors` file ?** If you use a plain editor, mess up the syntax, and save... `sudo` will \(probably\) stop working, and, since `/etc/sudoers` is only modifiable by `root`, you're stuck! so we use **visudo** instead. **visudo** edits the `sudoers` file in a safe fashion, by doing two things:
 
 * **visudo** checks the file syntax _before_ actually overwriting the `sudoers` file. 
 * Additionally, **visudo** locks the`sudoers` file against multiple simultaneous edits. This locking is important if you need to ensure nobody else can mess up your carefully considered config changes.
@@ -598,7 +598,7 @@ the last command uses /var/log/wtmp file to display listing of last logged in us
 /var/log/btmp keeps track of failed login attempts. So try `last -f /var/log/btmp` to check last failed logins .
 {% endhint %}
 
-do not forget to take a look at `last --help`.
+`last` also gives us information about latest system reboots, do not forget to take a look at `last --help`.
 
 .
 
