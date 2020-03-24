@@ -97,17 +97,30 @@ root@ubuntu16-1:~# ls -l /etc/shadow
 
 ### /etc/nologin
 
+```text
+root@ubuntu16-1:~# cat /etc/nologin
+cat: /etc/nologin: No such file or directory
+```
 
+ If the file /etc/nologin exists and is readable, login will allow access only to root. Other users will be shown the contents of this file and their logins will be refused. Delete this file and the users will be able to login again.
 
-turn off network services
+> /etc/nologin removed during reboot by shutdown script.
 
-If you are a sysadmin, you’ll deal with the service regularly
+### turn off network services
 
-stopping network services not in use
+ As an system administrator it is our task to find unnecessary running services and disable them in order to minimize security risks. Previously we learned different linux distributions use different initialization solutions when system boots up, so use appropriate commands based on your  service manager for disabling services:
 
-super servers
+| Linux Distro | service manager | command |
+| :--- | :--- | :--- |
+| older linux systems \(pre 2006\) | SysV | **chkconfig** _ServiceName_ **off** **sysv-rc-conf** _ServiceName_ **off** |
+| Ubuntu\(2006-2019\),CentOS\(2011-2020\) | Upstart | **update-rc.d** _ServiceName_ **remove** |
+| ubuntu\(2015-????\),CentOS\(2014-????\) | systemd | **systemctl disable** _ServiceName_ |
 
-tcp wrappers
+ Please note that these commands prevent the service from starting on system boot. But the package is still installed on the machine and we can run it if we need.
+
+### super servers
+
+### tcp wrappers
 
 .
 
@@ -122,6 +135,10 @@ tcp wrappers
 [https://www.cyberciti.biz/faq/understanding-etcshadow-file/](https://www.cyberciti.biz/faq/understanding-etcshadow-file/)
 
 [https://www.computernetworkingnotes.com/rhce-study-guide/etc-shadow-file-in-linux-explained-with-examples.html](https://www.computernetworkingnotes.com/rhce-study-guide/etc-shadow-file-in-linux-explained-with-examples.html)
+
+[https://linux.die.net/man/5/nologin](https://linux.die.net/man/5/nologin)
+
+[https://jadi.gitbooks.io/lpic1/content/1102\_setup\_host\_security.html](https://jadi.gitbooks.io/lpic1/content/1102_setup_host_security.html)
 
 .
 
