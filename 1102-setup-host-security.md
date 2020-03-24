@@ -120,6 +120,23 @@ cat: /etc/nologin: No such file or directory
 
 ### super servers
 
+In most other Unix systems, networking services are implemented as daemons. Each networking daemon responds to requests on a particular port. The Telnet service, for example, operates on port 23. For networking services to function properly, some process must be alive and listening on each corresponding port. There are two ways to offer TCP/IP services: 
+
+* by running server applications standalone as a daemon 
+* or by using the Internet **super server**
+
+This **super-server** is a special daemon that listens to the ports of all the enabled networking services. When a request comes in from a particular port, the corresponding networking daemon is started, and the request is passed on to it for service.
+
+![](.gitbook/assets/securehost-superserver.jpg)
+
+There are two main benefits to this scheme. First, only the minimal set of needed daemons is active at all times, and therefore, no system resources are wasted. Second, there is a centralized mechanism for managing and monitoring network services.
+
+
+
+#### inetd , xinetd
+
+There are two main internet super-servers available for Linux, inetd and xinetd. Though inetd used to be the standard super-server for most Linux distributions, it is gradually being replaced by xinetd, which contains more features. But because inetd contains fewer features than xinetd, it is also smaller and may be better for an embedded Linux system.
+
 ### tcp wrappers
 
 .
