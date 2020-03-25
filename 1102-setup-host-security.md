@@ -193,6 +193,10 @@ service telnet
 
  For any changes to take effect, the administrator must restart the `xinetd` service.
 
+{% hint style="info" %}
+ `/etc/services` file contains list of network services and ports mapped to them. `inetd` or `xinetd` looks at these details so that it can call particular program when packet hits respective port and demand for service.
+{% endhint %}
+
 ### tcp wrappers
 
  As you can see in /etc/inetd.conf connections for most protocols are made through **tcpd**, instead of directly passing the connection to a service program. For example:
@@ -247,6 +251,10 @@ Both files have one rule on each line of the following form:`service: hosts`
 
 Hosts can be specified by hostname or IP address. The ALL keyword specifies all hosts or all services.
 
+For  example, adding  `telnet 192.168.` to `/etc/hosts.allow`  causes only  telnet connections  from 192.168.x.x ip range  accepted.
+
+Adding the same line to `/etc/hosts.deny` causes telnet connections from 192.168.x.x ip range denied , but telnet connetions would be accepted from any other addresses.
+
 > after changing these files, xinetd should be restarted
 
 that's all.
@@ -284,6 +292,8 @@ that's all.
 [https://access.redhat.com/documentation/en-us/red\_hat\_enterprise\_linux/4/html/reference\_guide/s1-tcpwrappers-xinetd-config](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s1-tcpwrappers-xinetd-config)
 
 [https://access.redhat.com/documentation/en-us/red\_hat\_enterprise\_linux/4/html/reference\_guide/s2-tcpwrappers-xinetd-config-files](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s2-tcpwrappers-xinetd-config-files)
+
+[https://kerneltalks.com/linux/understanding-etc-services-file-in-linux/](https://kerneltalks.com/linux/understanding-etc-services-file-in-linux/)
 
 [https://www.tecmint.com/secure-linux-tcp-wrappers-hosts-allow-deny-restrict-access/](https://www.tecmint.com/secure-linux-tcp-wrappers-hosts-allow-deny-restrict-access/)
 
