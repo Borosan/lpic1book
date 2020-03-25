@@ -133,6 +133,10 @@ There are two main benefits to this scheme. First, only the minimal set of neede
 
 The Disadvantages of Super Server is that Starting of the super server is time consuming, which increases the reaction time according to the availability of network service.
 
+{% hint style="info" %}
+super servers are not being used anymore and most distributions use standalone services running on them.
+{% endhint %}
+
 ### inetd , xinetd
 
 There are two main internet super-servers available for Linux, inetd and xinetd. Though inetd used to be the standard super-server for most Linux distributions, it is gradually being replaced by xinetd, which contains more features. But because inetd contains fewer features than xinetd, it is also smaller and may be better for an embedded Linux system.
@@ -239,21 +243,15 @@ root@ubuntu16-1:~# cat /etc/hosts.deny
 # ALL: PARANOID
 ```
 
-Both files have one rule on each line of the following form:
-
-`service: hosts`
+Both files have one rule on each line of the following form:`service: hosts`
 
 Hosts can be specified by hostname or IP address. The ALL keyword specifies all hosts or all services.
 
 > after changing these files, xinetd should be restarted
 
-As mentioned, super servers are not being used anymore and most distributions use standalone services running on them.
+that's all.
 
-
-
-
-
-
+.
 
 .
 
@@ -286,6 +284,8 @@ As mentioned, super servers are not being used anymore and most distributions us
 [https://access.redhat.com/documentation/en-us/red\_hat\_enterprise\_linux/4/html/reference\_guide/s1-tcpwrappers-xinetd-config](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s1-tcpwrappers-xinetd-config)
 
 [https://access.redhat.com/documentation/en-us/red\_hat\_enterprise\_linux/4/html/reference\_guide/s2-tcpwrappers-xinetd-config-files](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s2-tcpwrappers-xinetd-config-files)
+
+[https://www.tecmint.com/secure-linux-tcp-wrappers-hosts-allow-deny-restrict-access/](https://www.tecmint.com/secure-linux-tcp-wrappers-hosts-allow-deny-restrict-access/)
 
 .
 
