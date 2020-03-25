@@ -131,13 +131,129 @@ This **super-server** is a special daemon that listens to the ports of all the e
 
 There are two main benefits to this scheme. First, only the minimal set of needed daemons is active at all times, and therefore, no system resources are wasted. Second, there is a centralized mechanism for managing and monitoring network services.
 
+The Disadvantages of Super Server is that Starting of the super server is time consuming, which increases the reaction time according to the availability of network service.
 
-
-#### inetd , xinetd
+### inetd , xinetd
 
 There are two main internet super-servers available for Linux, inetd and xinetd. Though inetd used to be the standard super-server for most Linux distributions, it is gradually being replaced by xinetd, which contains more features. But because inetd contains fewer features than xinetd, it is also smaller and may be better for an embedded Linux system.
 
+#### inetd configuration files
+
+### /etc/inetd.conf
+
+ The **/etc/inetd.conf** file is the default configuration file for the inetd daemon. This file enables you to specify the daemons to start by default and supply the arguments that correspond to the desired style of functioning for each daemon. Let's have a look at an example line from inetd.conf:
+
+```text
+# File Transfer Protocol (FTP) server:
+ftp     stream  tcp     nowait  root    /usr/sbin/tcpd  proftpd
+```
+
+### /etc/inetd.d/
+
+/etc/inet.d directory contains the configuration files for each service managed by `inetd` and the names of the files correlate to the service.
+
+#### xinetd configuration files
+
+### /etc/xinetd.conf
+
+ The `/etc/xinetd.conf` file contains general configuration settings which effect every service under `xinetd`'s control. It is read once when the `xinetd` service is started, so for configuration changes to take effect, the administrator must restart the `xinetd` service.  The following is a sample `/etc/xinetd.conf` file:
+
+```text
+defaults
+{
+        instances               = 60
+        log_type                = SYSLOG authpriv
+        log_on_success          = HOST PID
+        log_on_failure          = HOST
+        cps                     = 25 30
+}
+includedir /etc/xinetd.d
+```
+
+### /etc/xinetd.d/
+
+ The `/etc/xinetd.d/` directory contains the configuration files for each service managed by `xinetd` and the names of the files correlate to the service. As with `xinetd.conf`, this directory is read only when the `xinetd` service is started. To gain an understanding of how these files are structured, consider the `/etc/xinetd.d/telnet` file:
+
+```text
+service telnet
+{
+        flags           = REUSE
+        socket_type     = stream
+        wait            = no
+        user            = root
+        server          = /usr/sbin/in.telnetd
+        log_on_failure  += USERID
+        disable         = yes
+}
+```
+
+ For any changes to take effect, the administrator must restart the `xinetd` service.
+
 ### tcp wrappers
+
+ As you can see in /etc/inetd.conf connections for most protocols are made through **tcpd**, instead of directly passing the connection to a service program. For example:
+
+```text
+# File Transfer Protocol (FTP) server:
+ftp     stream  tcp     nowait  root    /usr/sbin/tcpd  proftpd
+```
+
+ In this example ftp connections are passed through **tcpd**. **tcpd** logs the connection through syslog and allows for additional checks. One of the most used features of **tcpd** is host-based access control. A TCP Wrapper is a host-based networking access control list \(ACL\) system and used to filter network access to Internet.
+
+### /etc/host.allow , /etc/host.deny
+
+   When a network request reaches your server, TCP wrappers uses `hosts.allow` and `hosts.deny` \(in that order\) to determine if the client should be allowed to use a given service.
+
+By default, these files are empty, all commented out, or do not exist. Thus, everything is allowed through the TCP wrappers layer and your system is left to rely on the firewall for full protection.
+
+```text
+root@ubuntu16-1:~# cat /etc/hosts.allow 
+# /etc/hosts.allow: list of hosts that are allowed to access the system.
+#                   See the manual pages hosts_access(5) and hosts_options(5).
+#
+# Example:    ALL: LOCAL @some_netgroup
+#             ALL: .foobar.edu EXCEPT terminalserver.foobar.edu
+#
+# If you're going to protect the portmapper use the name "rpcbind" for the
+# daemon name. See rpcbind(8) and rpc.mountd(8) for further information.
+#
+```
+
+```text
+root@ubuntu16-1:~# cat /etc/hosts.deny 
+# /etc/hosts.deny: list of hosts that are _not_ allowed to access the system.
+#                  See the manual pages hosts_access(5) and hosts_options(5).
+#
+# Example:    ALL: some.host.name, .some.domain
+#             ALL EXCEPT in.fingerd: other.host.name, .other.domain
+#
+# If you're going to protect the portmapper use the name "rpcbind" for the
+# daemon name. See rpcbind(8) and rpc.mountd(8) for further information.
+#
+# The PARANOID wildcard matches any host whose name does not match its
+# address.
+#
+# You may wish to enable this to ensure any programs that don't
+# validate looked up hostnames still leave understandable logs. In past
+# versions of Debian this has been the default.
+# ALL: PARANOID
+```
+
+Both files have one rule on each line of the following form:
+
+`service: hosts`
+
+Hosts can be specified by hostname or IP address. The ALL keyword specifies all hosts or all services.
+
+> after changing these files, xinetd should be restarted
+
+As mentioned, super servers are not being used anymore and most distributions use standalone services running on them.
+
+
+
+
+
+
 
 .
 
@@ -156,6 +272,20 @@ There are two main internet super-servers available for Linux, inetd and xinetd.
 [https://linux.die.net/man/5/nologin](https://linux.die.net/man/5/nologin)
 
 [https://jadi.gitbooks.io/lpic1/content/1102\_setup\_host\_security.html](https://jadi.gitbooks.io/lpic1/content/1102_setup_host_security.html)
+
+[http://etutorials.org/Linux+systems/embedded+linux+systems/Chapter+10.+Setting+Up+Networking+Services/10.1+The+Internet+Super-Server/](http://etutorials.org/Linux+systems/embedded+linux+systems/Chapter+10.+Setting+Up+Networking+Services/10.1+The+Internet+Super-Server/)
+
+[https://en.wikipedia.org/wiki/Super-server](https://en.wikipedia.org/wiki/Super-server)
+
+[https://thecustomizewindows.com/2011/11/super-server-what-is-it-how-it-works/](https://thecustomizewindows.com/2011/11/super-server-what-is-it-how-it-works/)
+
+[https://www.ibm.com/support/knowledgecenter/ssw\_aix\_72/filesreference/inetd.conf.html](https://www.ibm.com/support/knowledgecenter/ssw_aix_72/filesreference/inetd.conf.html)
+
+[https://book.huihoo.com/slackware-linux-basics/html/inetd.html](https://book.huihoo.com/slackware-linux-basics/html/inetd.html)
+
+[https://access.redhat.com/documentation/en-us/red\_hat\_enterprise\_linux/4/html/reference\_guide/s1-tcpwrappers-xinetd-config](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s1-tcpwrappers-xinetd-config)
+
+[https://access.redhat.com/documentation/en-us/red\_hat\_enterprise\_linux/4/html/reference\_guide/s2-tcpwrappers-xinetd-config-files](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s2-tcpwrappers-xinetd-config-files)
 
 .
 
