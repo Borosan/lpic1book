@@ -433,6 +433,46 @@ logout
 
 Until we exit from the bash that uses associated key with that, then we would need to enter passphrase again.
 
+#### What is SSH Tunneling ?
+
+SSH tunneling is a method of transporting arbitrary networking data over an encrypted SSH connection. It can be used to add encryption to legacy applications. It can also be used to implement VPNs \(Virtual Private Networks\) and access intranet services across firewalls.
+
+SSH is a standard for secure remote logins and file transfers over untrusted networks. It also provides a way to secure the data traffic of any given application using port forwarding, basically tunneling any TCP/IP port over SSH. This means that the application data traffic is directed to flow inside an encrypted SSH connection so that it cannot be eavesdropped or intercepted while it is in transit. SSH tunneling enables adding network security to legacy applications that do not natively support encryption.
+
+![](.gitbook/assets/ssh-tunneling.jpg)
+
+#### what is ssh port forwarding?
+
+ SSH port forwarding is a mechanism in SSH for tunneling application ports from the client machine to the server machine, or vice versa. some system administrators and IT professionals use it for opening backdoors into the internal network from their home machines. It can also be abused by hackers and malware to open access from the Internet to the internal network.
+
+There are three types of SSH port forwarding:
+
+* **Local port forwarding** - connections from an SSH client are forwarded, via the SSH server, to a destination server.
+
+![](.gitbook/assets/ssh-portfwl1.jpg)
+
+![](.gitbook/assets/ssh-portfwl2.jpg)
+
+* **Remote port forwarding** - connections from an SSH server are forwarded, via the SSH client, to a destination server
+
+![](.gitbook/assets/ssh-portfwlr1.jpg)
+
+![](.gitbook/assets/ssh-portfwlr2.jpg)
+
+* **Dynamic port forwarding** - connections from various programs are forwarded, via the SSH client to an SSH server, and finally to several destination servers.
+
+### ssh
+
+Like other command ssh has also some options.Lets take a look at most usefull switches:
+
+| SSH commands | Description |
+| :--- | :--- |
+| ssh -V | Shows ssh client version |
+| ssh user1@server1.example.com | Connect to the remote host, add "-v" for verbose mode |
+| ssh -l login\_name server1.example.com | Specifies the user to log in as on the remote machine. |
+| ssh user1@server1.example.com &lt;command&gt; | Running &lt;command&gt; on the remote host over ssh |
+| ssh -X user@server1.example.com | Enable Xforwarding on the clients side,  X11Forwarding should be enabled on the server side in sshd\_config file. |
+
 
 
 .
@@ -452,6 +492,16 @@ Until we exit from the bash that uses associated key with that, then we would ne
 [https://www.ssh.com/ssh/protocol](https://www.ssh.com/ssh/protocol)
 
 [https://www.hivelocity.net/kb/what-is-openssh/](https://www.hivelocity.net/kb/what-is-openssh/)
+
+[https://www.ssh.com/ssh/agent](https://www.ssh.com/ssh/agent)
+
+[https://www.ssh.com/ssh/tunneling](https://www.ssh.com/ssh/tunneling)
+
+[https://www.ssh.com/ssh/tunneling/example](https://www.ssh.com/ssh/tunneling/example)
+
+[https://unix.stackexchange.com/questions/115897/whats-ssh-port-forwarding-and-whats-the-difference-between-ssh-local-and-remot](https://unix.stackexchange.com/questions/115897/whats-ssh-port-forwarding-and-whats-the-difference-between-ssh-local-and-remot)
+
+[https://www.ssh.com/ssh/command](https://www.ssh.com/ssh/command)
 
 .
 
