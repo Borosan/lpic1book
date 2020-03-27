@@ -91,7 +91,7 @@ OpenSSH is a free, open source implementation of the SSH \(Secure Shell\) protoc
 All communications and user credentials using OpenSSH are encrypted, they are also protected from man in the middle attacks. If a third party tries to intercept our connection, OpenSSH detects it and informs us about that.
 
 {% hint style="success" %}
-We use CentOS7 as ssh server and Ubuntu 16 as client.
+We use Ubuntu16-1 as ssh server and Ubuntu16-2 as client.
 {% endhint %}
 
 #### /etc/ssh
@@ -99,16 +99,19 @@ We use CentOS7 as ssh server and Ubuntu 16 as client.
 OpenSSH has two different sets of configuration files: one for client programs \(ssh, scp, and sftp\) and one for the server daemon \(sshd\).
 
 ```text
-[root@centos7-1 ~]# ls -1 /etc/ssh
+root@ubuntu16-1:~# ls -1 /etc/ssh
 moduli
 ssh_config
 sshd_config
+ssh_host_dsa_key
+ssh_host_dsa_key.pub
 ssh_host_ecdsa_key
 ssh_host_ecdsa_key.pub
 ssh_host_ed25519_key
 ssh_host_ed25519_key.pub
 ssh_host_rsa_key
 ssh_host_rsa_key.pub
+ssh_import_id
 ```
 
 The`sshd_config`is the ssh  **daemon**\(or ssh server process\) configuration file, Whereas, the `ssh_config` file is the ssh client configuration file. The client configuration file only has bearing on when you use the ssh command to connect to another ssh host . As you can see there are public keys and private keys here with different algorithems and they can be used by SSH to encrypt the session.
@@ -117,24 +120,43 @@ The`sshd_config`is the ssh  **daemon**\(or ssh server process\) configuration fi
 
 Till now we have understood how ssh works. As we mentioned when ssh connection is started, the public key of ssh server is tranfered to the client\(stored in ./ssh/known\_hosts\) and the client will use it to continue negotiation with the server and user will be required to get authenticated by sending username and password.
 
-Lets start by connecting to Centos7-1 from ubuntu and see the keys:
+Lets start by connecting toUbuntu16-1 from Ubuntu16-2 and see the keys:
 
 ```text
-user1@ubuntu16-1:~$ ssh 192.168.52.137
-The authenticity of host '192.168.52.137 (192.168.52.137)' can't be established.
-ECDSA key fingerprint is SHA256:QtfM2iXh5pxZeFdAUXEBEnRXNSP40MWIhnSYvpOBMoY.
+user1@ubuntu16-2:~$ ssh user1@192.168.52.146
+The authenticity of host '192.168.52.146 (192.168.52.146)' can't be established.
+ECDSA key fingerprint is SHA256:GV/PpX9YGvMZTAbuz6w3zBDreokesZHhVSM1zrXmHLw.
 Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added '192.168.52.137' (ECDSA) to the list of known hosts.
-user1@192.168.52.137's password: 
-Last login: Sun Jan 12 21:33:13 2020
-[user1@centos7-1 ~]$ 
-[user1@centos7-1 ~]$ cat /etc/ssh/ssh_host_ecdsa_key.pub 
-ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKuy5+nza9QN5cqDE2E7jJLEdqDrIkOprS8n/HP7Cj3V31kx4rOShL61zjuevHROlt4niShqS1wy584SGBMmHgg=
+Warning: Permanently added '192.168.52.146' (ECDSA) to the list of known hosts.
+user1@192.168.52.146's password: 
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.15.0-39-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+445 packages can be updated.
+365 updates are security updates.
+
+New release '18.04.4 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+Last login: Fri Mar 27 15:51:55 2020 from 192.168.52.133
+user1@ubuntu16-1:~$ 
+user1@ubuntu16-1:~$ cat /etc/ssh/ssh_host_ecdsa_key.pub 
+ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIjnKq9Wr0C2faQCf4+gcqPN4bOMFyx1nywTjLS/mh/S30V0r/mvy9cvfWvA2LY/y7zqxg+/gMvELQznikQiaTo= root@server1
+
 ```
 
 ```text
-user1@ubuntu16-1:~$ cat .ssh/known_hosts 
-|1|dsPtZ+AslxquZV2cOGGCKL/lARQ=|GyaxhGWOxDR/EtMyLjkdbajtK10= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKuy5+nza9QN5cqDE2E7jJLEdqDrIkOprS8n/HP7Cj3V31kx4rOShL61zjuevHROlt4niShqS1wy584SGBMmHgg=
+user1@ubuntu16-2:~$ tree .ssh/
+.ssh/
+└── known_hosts
+
+0 directories, 1 file
+user1@ubuntu16-2:~$ cat .ssh/known_hosts 
+|1|gD2R1tW6jKBSyL1A0XpynmG8Vok=|1X2nzVcwHLQGT5T8FOUxeCejtvQ= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIjnKq9Wr0C2faQCf4+gcqPN4bOMFyx1nywTjLS/mh/S30V0r/mvy9cvfWvA2LY/y7zqxg+/gMvELQznikQiaTo=
+
 ```
 
 ### Configuring SSH Key Based authentication
@@ -150,7 +172,7 @@ Now lets generate public and private keys for client and copy client public key 
 ssh-keygen - creates a key pair for public key authentication:
 
 ```text
-user1@ubuntu16-1:~$ ssh-keygen 
+user1@ubuntu16-2:~$ ssh-keygen 
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/user1/.ssh/id_rsa): 
 Enter passphrase (empty for no passphrase): 
@@ -158,29 +180,31 @@ Enter same passphrase again:
 Your identification has been saved in /home/user1/.ssh/id_rsa.
 Your public key has been saved in /home/user1/.ssh/id_rsa.pub.
 The key fingerprint is:
-SHA256:7fzHSMYAEMzQK3qP/yWksLyfLV6mf9nzmEBQsNTDmWU user1@ubuntu16-1
+SHA256:rer76yQU+8Mmrg33xCA51RtnpTUVHT1cVMX7kB2+aUI user1@ubuntu16-2
 The key's randomart image is:
 +---[RSA 2048]----+
-|    .=ooo+.+E    |
-|      +..o*.     |
-|       .o. .     |
-|    . .  o.      |
-|   ...  S oo     |
-|  ...o o +  +    |
-|   .oo. + == o   |
-|    ..o* ooo+oo  |
-|    .+*++.  ++.  |
+|            +.+*@|
+|       .   + . ++|
+|      o o +   .o+|
+|     o o *   Eoo.|
+|    + + S . .  .+|
+|     + = .   . +.|
+|    . + X     o  |
+|     = O .       |
+|    .o*+=.       |
 +----[SHA256]-----+
-user1@ubuntu16-1:~$ 
-user1@ubuntu16-1:~$ tree .ssh/
-.ssh/
+user1@ubuntu16-2:~$ 
+user1@ubuntu16-2:~$ tree .ssh
+.ssh
 ├── id_rsa
 ├── id_rsa.pub
 └── known_hosts
 
 0 directories, 3 files
-user1@ubuntu16-1:~$ cat .ssh/id_rsa.pub 
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3CdIwtXbhX/Uxr5qC3RWc6V5EtczvgMWkD8oWMlnc994dVMJoSuyPeUrXG3j/iemhaHrrh5jvILEmZDiEy5njQxXOMFwW5qa6PyaaARbpOwc+Axc88uzEolrPbt9aLAbxNWLYjkgFNNdOmQCz2UNynF3Tx+mMEWWTdEPDlPMtkH6xDc5G6uMzSzhrt8ndLJoWXezh27UbU/Gq2wh6odXZvnQg5vlsKTFuOaWjLbjz1+fll40RcWTIkJnhLSUqjrv4eE+PKVhNOKWws9ncAKxHon6nd6Kc3oyQvZMjVbZ2N+htSwwtt5KtVPuRHhyMvD1wg7xgzokhJpc/+plno9wp user1@ubuntu16-1
+user1@ubuntu16-2:~$ cat .ssh/id_rsa.pub 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC818rxUXbwnwwxtFhUKvgtZV+Ygao1nUEHcaBvYEsXsBa4hQcV0+ITPEMHfk0zUag3sKyQZWckKmREK+lpiF+7Nrw83eKxjgHdwZC0ibxPTenklZNSBEMZMBDeq8H3bKoAfuyczX0IfVDA2Iyebsg2KYIIZQ/Otw7hAm2IH3perUqzeYliLhIYb0Gd3jyOpl4VMaPb2p+f5+fG87MnzjDplyorruhZyUcv8CMUc6XZ3dJjeiSsNNCRKLEb6Cm6msQxuCUq+Xz1n0+ay6fsaJbbhzFwNvbRH2YSzBg5BmtBXVt68U6XM3SzynWAqQaDS44Cuv3M1q88baTlOTjRkFRZ user1@ubuntu16-2
+user1@ubuntu16-2:~$ 
+
 
 ```
 
@@ -191,34 +215,225 @@ We haven't set passphrase in our demonstration but if we set we would be asked t
 we use ssh-copy-id - configures a public key as authorized on a server 
 
 ```text
-user1@ubuntu16-1:~$ ssh-copy-id -i .ssh/id_rsa.pub user1@192.168.52.137
+user1@ubuntu16-2:~$ ssh-copy-id -i .ssh/id_rsa.pub user1@192.168.52.146
 /usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: ".ssh/id_rsa.pub"
 /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
 /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
-user1@192.168.52.137's password: 
+user1@192.168.52.146's password: 
 
 Number of key(s) added: 1
 
-Now try logging into the machine, with:   "ssh 'user1@192.168.52.137'"
+Now try logging into the machine, with:   "ssh 'user1@192.168.52.146'"
 and check to make sure that only the key(s) you wanted were added.
 ```
 
 Now lets take a look the server side:
 
 ```text
-[root@centos7-1 ~]# cat ~user1/.ssh/authorized_keys 
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3CdIwtXbhX/Uxr5qC3RWc6V5EtczvgMWkD8oWMlnc994dVMJoSuyPeUrXG3j/iemhaHrrh5jvILEmZDiEy5njQxXOMFwW5qa6PyaaARbpOwc+Axc88uzEolrPbt9aLAbxNWLYjkgFNNdOmQCz2UNynF3Tx+mMEWWTdEPDlPMtkH6xDc5G6uMzSzhrt8ndLJoWXezh27UbU/Gq2wh6odXZvnQg5vlsKTFuOaWjLbjz1+fll40RcWTIkJnhLSUqjrv4eE+PKVhNOKWws9ncAKxHon6nd6Kc3oyQvZMjVbZ2N+htSwwtt5KtVPuRHhyMvD1wg7xgzokhJpc/+plno9wp user1@ubuntu16-1
+user1@ubuntu16-1:~$ cat .ssh/authorized_keys 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC818rxUXbwnwwxtFhUKvgtZV+Ygao1nUEHcaBvYEsXsBa4hQcV0+ITPEMHfk0zUag3sKyQZWckKmREK+lpiF+7Nrw83eKxjgHdwZC0ibxPTenklZNSBEMZMBDeq8H3bKoAfuyczX0IfVDA2Iyebsg2KYIIZQ/Otw7hAm2IH3perUqzeYliLhIYb0Gd3jyOpl4VMaPb2p+f5+fG87MnzjDplyorruhZyUcv8CMUc6XZ3dJjeiSsNNCRKLEb6Cm6msQxuCUq+Xz1n0+ay6fsaJbbhzFwNvbRH2YSzBg5BmtBXVt68U6XM3SzynWAqQaDS44Cuv3M1q88baTlOTjRkFRZ user1@ubuntu16-2
 ```
 
 now lets check the result from the client:
 
 ```text
-user1@ubuntu16-1:~$ ssh user1@192.168.52.137
-Last login: Fri Mar 27 04:40:38 2020 from 192.168.52.146
-[user1@centos7-1 ~]$ 
+user1@ubuntu16-2:~$ ssh user1@192.168.52.146
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.15.0-39-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+445 packages can be updated.
+365 updates are security updates.
+
+New release '18.04.4 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+Last login: Fri Mar 27 15:57:29 2020 from 192.168.52.133
+user1@ubuntu16-1:~$ 
+
 ```
 
 and it seems okey.We can copy and paste the keys for other users if you like, but do not forget that these keys give power to users to login with out the password.
+
+#### Why use passphrase? Why it is for?
+
+We have configured a password less ssh connection using key based authentication. But what would happened if our system compromised? An evil hacker would be able to get connected to other servers using key based authentication without knowning the passwords.
+
+Passphrase can help us to avoid this kinds of security issues by requiring a passphrase at the beginning of every ssh key-based authentication. So let clear previous authorized\_key, and start:
+
+```text
+user1@ubuntu16-1:~$ 
+user1@ubuntu16-1:~$ vim .ssh/authorized_keys 
+user1@ubuntu16-1:~$ cat .ssh/authorized_keys 
+user1@ubuntu16-1:~$ exit
+logout
+Connection to 192.168.52.146 closed.
+```
+
+Now generate a new key pairs with passphrase on the client \(Let it over write current private and public key\):
+
+```text
+user1@ubuntu16-2:~$ ssh-keygen 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/user1/.ssh/id_rsa): 
+/home/user1/.ssh/id_rsa already exists.
+Overwrite (y/n)? y
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/user1/.ssh/id_rsa.
+Your public key has been saved in /home/user1/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:NYUt7TiSY2pBH7jtmZqGDdV545CRZxTFvOg3KJ3trxo user1@ubuntu16-2
+The key's randomart image is:
++---[RSA 2048]----+
+|       . ooOo    |
+|      o + =.=    |
+|     . = Oo= .   |
+|      + %.*.o    |
+|     . =S@ *     |
+|    . o = * +    |
+|     = o .Eo .   |
+|    . =    ..    |
+|     .    ...o.  |
++----[SHA256]-----+
+user1@ubuntu16-2:~$ 
+user1@ubuntu16-2:~$ tree .ssh/
+.ssh/
+├── id_rsa
+├── id_rsa.pub
+└── known_hosts
+
+0 directories, 3 files
+user1@ubuntu16-2:~$ cat .ssh/id_rsa.pub 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjF4K2XDLQIysT9QvwQKFFvJ6LeBN3XsmEO9cTZfnRPhPjKOpcwvyCPaFJwXpiSXLE+RUjy2lwghZ6sOIXezGG9+oqkVegBOJ9RonQfvg5nUCr/Khx+dT/5ZV8JEjJVYqWnrgxKiKgzFHfzInE3qKG4kN2yuanomqIPFGQs0Mk/ShmYCPEEDIxyapRWkSJMa1OeS4/Elk1gGcna0TwgNVF8zmGkg5JO3ruwia2uSbdDWxA2vVtae2qA02lFh0Gb/LJO8vR24MAwlyMMHU2UdszA4eWqQBrZtpKmQ0A4plT8EUkh2cZHgaUeMVloWDmFRyiU2LIFgC5AacnwRIFTtTD user1@ubuntu16-2
+user1@ubuntu16-2:~$ 
+```
+
+Now lets tranfer our new public key to the server:
+
+```text
+user1@ubuntu16-2:~$ ssh-copy-id -i .ssh/id_rsa.pub user1@192.168.52.146
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: ".ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+user1@192.168.52.146's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'user1@192.168.52.146'"
+and check to make sure that only the key(s) you wanted were added.
+```
+
+Lets check the key we have copied on the server:
+
+```text
+user1@ubuntu16-1:~$ cat .ssh/authorized_keys 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjF4K2XDLQIysT9QvwQKFFvJ6LeBN3XsmEO9cTZfnRPhPjKOpcwvyCPaFJwXpiSXLE+RUjy2lwghZ6sOIXezGG9+oqkVegBOJ9RonQfvg5nUCr/Khx+dT/5ZV8JEjJVYqWnrgxKiKgzFHfzInE3qKG4kN2yuanomqIPFGQs0Mk/ShmYCPEEDIxyapRWkSJMa1OeS4/Elk1gGcna0TwgNVF8zmGkg5JO3ruwia2uSbdDWxA2vVtae2qA02lFh0Gb/LJO8vR24MAwlyMMHU2UdszA4eWqQBrZtpKmQ0A4plT8EUkh2cZHgaUeMVloWDmFRyiU2LIFgC5AacnwRIFTtTD user1@ubuntu16-2
+```
+
+Now when we ssh to the remote server \(ubuntu16-1\) from our client\(ubuntu16-2\), we are asked to enter our local key passphrase intead of remote user account password:
+
+```text
+user1@ubuntu16-2:~$ ssh user1@192.168.52.146
+Enter passphrase for key '/home/user1/.ssh/id_rsa': 
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.15.0-39-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+445 packages can be updated.
+365 updates are security updates.
+
+New release '18.04.4 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+Last login: Fri Mar 27 16:19:57 2020 from 192.168.52.133
+
+```
+
+lets exit and ssh again and again:
+
+```text
+user1@ubuntu16-1:~$ exit
+logout
+Connection to 192.168.52.146 closed.
+
+user1@ubuntu16-2:~$ ssh user1@192.168.52.146
+Enter passphrase for key '/home/user1/.ssh/id_rsa': 
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.15.0-39-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+445 packages can be updated.
+365 updates are security updates.
+
+New release '18.04.4 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+Last login: Fri Mar 27 16:30:00 2020 from 192.168.52.133
+user1@ubuntu16-1:~$ exit
+logout
+Connection to 192.168.52.146 closed.
+
+```
+
+as you can see each time we are asked to enter passphrase and that was what we were seeking for inorder to stop a hacker if our system get compromised. There is way to stick passphrase to the current user session and keept if for next ssh connections inorder to avoid entering passphrase again and again.
+
+### ssh-agent
+
+ The **ssh**-**agent** is a helper program that keeps track of user's identity keys and their passphrases. The **agent** can then use the keys to log into other servers without having the user type in a password or passphrase again. This implements a form of single sign-on \(SSO\). The SSH agent is used for SSH public key authentication.
+
+```text
+user1@ubuntu16-2:~$ ssh-agent /bin/bash 
+user1@ubuntu16-2:~$ 
+```
+
+### ssh-add
+
+By default, the agent uses SSH keys stored in the `.ssh` directory under the user's home directory. The **ssh-add** command is used for adding identities to the agent. In the simplest form, just run if without argument to add the default files `~/.ssh/id_rsa`, `.ssh/id_dsa`, `~/.ssh/id_ecdsa`, `~/.ssh/id_ed25519`, and `~/.ssh/identity`. Otherwise, give it the name of the private key file to add as an argument.
+
+```text
+user1@ubuntu16-2:~$ ssh-add 
+Enter passphrase for /home/user1/.ssh/id_rsa: 
+Identity added: /home/user1/.ssh/id_rsa (/home/user1/.ssh/id_rsa)
+
+user1@ubuntu16-2:~$ ssh-add -l
+2048 SHA256:NYUt7TiSY2pBH7jtmZqGDdV545CRZxTFvOg3KJ3trxo /home/user1/.ssh/id_rsa (RSA)
+user1@ubuntu16-2:~$ 
+```
+
+`-l`  will list private keys currently accessible to the agent:
+
+And then we can login to OpenSSH server \(ubuntu16-1\) without any password or passphrase again and again:
+
+```text
+user1@ubuntu16-2:~$ ssh user1@192.168.52.146
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.15.0-39-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+445 packages can be updated.
+365 updates are security updates.
+
+New release '18.04.4 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+Last login: Fri Mar 27 16:31:26 2020 from 192.168.52.133
+user1@ubuntu16-1:~$ exit
+logout
+
+```
+
+Until we exit from the bash that uses associated key with that, then we would need to enter passphrase again.
+
+
 
 .
 
