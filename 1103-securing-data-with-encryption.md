@@ -169,7 +169,6 @@ now lets compare the keys in server and client:
 ### server
 user1@ubuntu16-1:~$ cat /etc/ssh/ssh_host_ecdsa_key.pub 
 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIjnKq9Wr0C2faQCf4+gcqPN4bOMFyx1nywTjLS/mh/S30V0r/mvy9cvfWvA2LY/y7zqxg+/gMvELQznikQiaTo= root@server1
-
 ```
 
 ```text
@@ -413,9 +412,13 @@ as you can see each time we are asked to enter passphrase and that was what we w
  The **ssh**-**agent** is a helper program that keeps track of user's identity keys and their passphrases. The **agent** can then use the keys to log into other servers without having the user type in a password or passphrase again. This implements a form of single sign-on \(SSO\). The SSH agent is used for SSH public key authentication.
 
 ```text
-user1@ubuntu16-2:~$ ssh-agent /bin/bash 
-user1@ubuntu16-2:~$ 
+user1@ubuntu16-2:~$ ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-7dlnU2k64PSA/agent.65150; export SSH_AUTH_SOCK;
+SSH_AGENT_PID=65151; export SSH_AGENT_PID;
+echo Agent pid 65151;
 ```
+
+> if you got an error try ssh-agent /bin/bash first.
 
 ### ssh-add
 
@@ -431,7 +434,9 @@ user1@ubuntu16-2:~$ ssh-add -l
 user1@ubuntu16-2:~$ 
 ```
 
-`-l`  will list private keys currently accessible to the agent:
+`-l`  will list private keys currently accessible to the agent, 
+
+`-D`Deletes all identities from the agent, if you like!
 
 And then we can login to OpenSSH server \(ubuntu16-1\) without any password or passphrase again and again:
 
@@ -577,6 +582,8 @@ uid                  RealUser1 (created by user1) <user1@localhost>
 sub   2048R/F00A0A74 2020-03-28
 ```
 
+> it create keys inside ~/.gupg directory.
+
 lets see the created key-pair using `gpg --list-key` commmand:
 
 ```text
@@ -691,6 +698,67 @@ user1@ubuntu16-1:~$ cat from_user2
 water boils at 100 degrees celsius!
 ```
 
+### Generating a Revocation Certificate
+
+If your private key becomes known to others, you will need to disassociate the old keys from your identity, so that you can generate new ones. To do this, you will require a revocation certificate. We’ll do this now and store it somewhere safe.
+
+```text
+user1@ubuntu16-1:~$ gpg --output revoke_User1.crt --gen-revoke user1@localhost
+
+sec  2048R/6D187851 2020-03-28 RealUser1 (created by user1) <user1@localhost>
+
+Create a revocation certificate for this key? (y/N) y
+Please select the reason for the revocation:
+  0 = No reason specified
+  1 = Key has been compromised
+  2 = Key is superseded
+  3 = Key is no longer used
+  Q = Cancel
+(Probably you want to select 1 here)
+Your decision? 0
+Enter an optional description; end it with an empty line:
+> 
+Reason for revocation: No reason specified
+(No description given)
+Is this okay? (y/N) y
+
+You need a passphrase to unlock the secret key for
+user: "RealUser1 (created by user1) <user1@localhost>"
+2048-bit RSA key, ID 6D187851, created 2020-03-28
+
+ASCII armored output forced.
+Revocation certificate created.
+
+Please move it to a medium which you can hide away; if Mallory gets
+access to this certificate he can use it to make your key unusable.
+It is smart to print this certificate and store it away, just in case
+your media become unreadable.  But have some caution:  The print system of
+your machine might store the data and make it available to others!
+```
+
+The `--output` option must be followed by the filename of the certificate you wish to create. The `--gen-revoke` option causes `gpg` to generate a revocation certificate. You must provide the email address that you used when the keys were generated.
+
+```text
+user1@ubuntu16-1:~$ cat revoke_User1.crt 
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1
+Comment: A revocation certificate should follow
+
+iQEfBCABAgAJBQJef1iqAh0AAAoJEOBsMxdtGHhRuU0H/RHrxodSkniRE+iD15PW
+dfcWcPZVAv9m2SWzmPN0vU/ywgUE5G60pNsOC6bxWbtmxbxm/PutCA+ipC/KPTcZ
+RwZvU8ge0PLulrQ5km9xea2295b2dOBEPCzOkgv6BTeAMADrBmi2shhLqUWeoRRr
+7H6oTC6RFr76o1jPb9UUMVDh840ttMlpYPAlir6JqCvwSL2ZJE58vWSuC/rou1ds
+4Z1Q0EFjpMQ5S1TmukVF4h4xxGsiZpgoubKJb++1CtYfqoPgCV/yiQFjaSGdiQbL
+0uqjfEERjOUUc5FKAY9fmvfAjmRzUBhit1U9wWiQ7O+JBxzMUDda3eas5OzpweeK
+0Lw=
+=z2hv
+-----END PGP PUBLIC KEY BLOCK-----
+```
+
+### signing 
+
+What if 
+
 .
 
 .
@@ -726,6 +794,8 @@ water boils at 100 degrees celsius!
 [https://www.taoeffect.com/espionage/EspionageHelp/pages/faq-encryption.html](https://www.taoeffect.com/espionage/EspionageHelp/pages/faq-encryption.html)
 
 [https://www.privex.io/articles/what-is-gpg/](https://www.privex.io/articles/what-is-gpg/)
+
+[https://www.howtogeek.com/427982/how-to-encrypt-and-decrypt-files-with-gpg-on-linux/](https://www.howtogeek.com/427982/how-to-encrypt-and-decrypt-files-with-gpg-on-linux/)
 
 .
 
