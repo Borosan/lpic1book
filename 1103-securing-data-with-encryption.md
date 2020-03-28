@@ -55,6 +55,14 @@ Any message \(text, binary files, or documents\) that are encrypted by using the
   
 This means that you do not have to worry about passing public keys over the Internet \(the keys are supposed to be public\).
 
+{% hint style="info" %}
+**encryption vs signing**
+
+When encrypting, you use **their public key** to write a message and they use **their private key** to read it.
+
+When signing, you use **your private key** to write message's signature, and they use **your public key** to check if it's really yours.
+{% endhint %}
+
 > A problem with asymmetric encryption, however, is that it is slower than symmetric encryption. It requires far more processing power to both encrypt and decrypt the content of the message.
 
 With that introduction lets talk about SSH.
@@ -473,7 +481,199 @@ Like other command ssh has also some options.Lets take a look at most usefull sw
 | ssh user1@server1.example.com &lt;command&gt; | Running &lt;command&gt; on the remote host over ssh |
 | ssh -X user@server1.example.com | Enable Xforwarding on the clients side,  X11Forwarding should be enabled on the server side in sshd\_config file. |
 
+## data encryption
 
+ Encryption **is important** because it allows you to securely protect data that you don't want anyone else to have access to. 
+
+### gpg
+
+GnuPG \(more commonly known as GPG\) is an implementation of a standard known as PGP \(Pretty Good Privacy\). It uses a system of "public" and "private" keys for the encryption and signing of messages or data.
+
+for demonstration, we use  two users on ubuntu16, user1 and user2.
+
+![](.gitbook/assets/securedata-gpgencrypt.jpg)
+
+okey, lets login via user1 and start creating keypairs using `gpg --gen-key` command:
+
+```text
+user1@ubuntu16-1:~$ gpg --gen-key 
+gpg (GnuPG) 1.4.20; Copyright (C) 2015 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+gpg: keyring `/home/user1/.gnupg/secring.gpg' created
+Please select what kind of key you want:
+   (1) RSA and RSA (default)
+   (2) DSA and Elgamal
+   (3) DSA (sign only)
+   (4) RSA (sign only)
+Your selection? 1
+RSA keys may be between 1024 and 4096 bits long.
+What keysize do you want? (2048) 
+Requested keysize is 2048 bits
+Please specify how long the key should be valid.
+         0 = key does not expire
+      <n>  = key expires in n days
+      <n>w = key expires in n weeks
+      <n>m = key expires in n months
+      <n>y = key expires in n years
+Key is valid for? (0) 
+Key does not expire at all
+Is this correct? (y/N) y
+
+You need a user ID to identify your key; the software constructs the user ID
+from the Real Name, Comment and Email Address in this form:
+    "Heinrich Heine (Der Dichter) <heinrichh@duesseldorf.de>"
+
+Real name: RealUser1
+Email address: user1@localhost
+Comment: created by user1
+You selected this USER-ID:
+    "RealUser1 (created by user1) <user1@localhost>"
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? o
+You need a Passphrase to protect your secret key.
+
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+.+++++
++++++
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+
+Not enough random bytes available.  Please do some other work to give
+the OS a chance to collect more entropy! (Need 74 more bytes)
+....+++++
+
+gpg: key 6D187851 marked as ultimately trusted
+public and secret key created and signed.
+
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+pub   2048R/6D187851 2020-03-28
+      Key fingerprint = 8772 5C1E 3F2F 88DB DBB7  7F37 E06C 3317 6D18 7851
+uid                  RealUser1 (created by user1) <user1@localhost>
+sub   2048R/F00A0A74 2020-03-28
+```
+
+lets see the created key-pair using `gpg --list-key` commmand:
+
+```text
+user1@ubuntu16-1:~$ gpg --list-key
+/home/user1/.gnupg/pubring.gpg
+------------------------------
+pub   2048R/6D187851 2020-03-28
+uid                  RealUser1 (created by user1) <user1@localhost>
+sub   2048R/F00A0A74 2020-03-28
+```
+
+Then we need to share our public key to other people. To export our public key file we need to run:
+
+```text
+user1@ubuntu16-1:~$ gpg --export RealUser1 > user1.pub
+```
+
+lets put in /tmp directory for user2:
+
+```text
+user1@ubuntu16-1:~$ mv user1.pub /tmp/
+```
+
+now login as user2 and import user1 public key via `gpg --import` :
+
+```text
+user2@ubuntu16-1:~$ gpg --import /tmp/user1.pub 
+gpg: directory `/home/user2/.gnupg' created
+gpg: new configuration file `/home/user2/.gnupg/gpg.conf' created
+gpg: WARNING: options in `/home/user2/.gnupg/gpg.conf' are not yet active during this run
+gpg: keyring `/home/user2/.gnupg/secring.gpg' created
+gpg: keyring `/home/user2/.gnupg/pubring.gpg' created
+gpg: /home/user2/.gnupg/trustdb.gpg: trustdb created
+gpg: key 6D187851: public key "RealUser1 (created by user1) <user1@localhost>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+```
+
+next create a sample file for encrypting:
+
+```text
+user2@ubuntu16-1:~$ vim user2file 
+user2@ubuntu16-1:~$ cat user2file 
+water boils at 100 degrees celsius!
+```
+
+every thing is ready for encrypting user2 file:
+
+```text
+### list keys
+user2@ubuntu16-1:~$ gpg --list-key
+/home/user2/.gnupg/pubring.gpg
+------------------------------
+pub   2048R/6D187851 2020-03-28
+uid                  RealUser1 (created by user1) <user1@localhost>
+sub   2048R/F00A0A74 2020-03-28
+```
+
+```text
+### encrypt
+user2@ubuntu16-1:~$ gpg --output user2secret --recipient Realuser1 --encrypt user2file
+gpg: F00A0A74: There is no assurance this key belongs to the named user
+
+pub  2048R/F00A0A74 2020-03-28 RealUser1 (created by user1) <user1@localhost>
+ Primary key fingerprint: 8772 5C1E 3F2F 88DB DBB7  7F37 E06C 3317 6D18 7851
+      Subkey fingerprint: 28DD 00C2 443C EA3B CD1A  9D5F 901E 5A02 F00A 0A74
+
+It is NOT certain that the key belongs to the person named
+in the user ID.  If you *really* know what you are doing,
+you may answer the next question with yes.
+
+Use this key anyway? (y/N) y
+```
+
+```text
+### take a look at inside encrypted file!
+user2@ubuntu16-1:~$ cat user2secret 
+�
+  �Z�
+
+t�}�D?�Y���Ky
+               ��Ƹ�TB$+��!�M�z�(�s}jc�_�#,$u�z��]�K�Kܮ�H�g���m˚�o���^;J��IvI������ �&(���W��Y'Y�Mm,���*���F)��-��$vj�U򳶜m����M���(Xr�����I�+H�ko�%k^��Lߍ5h�7�s�[�N.2 o�fe�d ���Ż�[Dӿ�'�^�fⳐKn{AS&#,��̊ښ��}�5�!01e;Ē�h�j1������Jkt��VY6���k�H�߳�rt�-nA
+      ?gzȬ��#j1)]
+(�
+  L�1Ey���CJ�Ĭ�cуk��QP�
+                             I2y_���8G�user2@ubuntu16-1:~$ 
+```
+
+time to send user 2 secret to user1:
+
+```text
+user2@ubuntu16-1:~$ mv user2secret /tmp/
+```
+
+Log in as user1 and try to decrypt  user2 secret:
+
+```text
+user1@ubuntu16-1:~$ gpg --out from_user2 --decrypt /tmp/user2secret 
+
+You need a passphrase to unlock the secret key for
+user: "RealUser1 (created by user1) <user1@localhost>"
+2048-bit RSA key, ID F00A0A74, created 2020-03-28 (main key ID 6D187851)
+
+gpg: encrypted with 2048-bit RSA key, ID F00A0A74, created 2020-03-28
+      "RealUser1 (created by user1) <user1@localhost>"
+```
+
+lets see what is user2 secret information?
+
+```text
+user1@ubuntu16-1:~$ cat from_user2 
+water boils at 100 degrees celsius!
+```
 
 .
 
@@ -489,6 +689,8 @@ Like other command ssh has also some options.Lets take a look at most usefull sw
 
 [https://support.microsoft.com/en-us/help/246071/description-of-symmetric-and-asymmetric-encryption](https://support.microsoft.com/en-us/help/246071/description-of-symmetric-and-asymmetric-encryption)
 
+[https://stackoverflow.com/questions/454048/what-is-the-difference-between-encrypting-and-signing-in-asymmetric-encryption](https://stackoverflow.com/questions/454048/what-is-the-difference-between-encrypting-and-signing-in-asymmetric-encryption)
+
 [https://www.ssh.com/ssh/protocol](https://www.ssh.com/ssh/protocol)
 
 [https://www.hivelocity.net/kb/what-is-openssh/](https://www.hivelocity.net/kb/what-is-openssh/)
@@ -502,6 +704,8 @@ Like other command ssh has also some options.Lets take a look at most usefull sw
 [https://unix.stackexchange.com/questions/115897/whats-ssh-port-forwarding-and-whats-the-difference-between-ssh-local-and-remot](https://unix.stackexchange.com/questions/115897/whats-ssh-port-forwarding-and-whats-the-difference-between-ssh-local-and-remot)
 
 [https://www.ssh.com/ssh/command](https://www.ssh.com/ssh/command)
+
+[https://www.taoeffect.com/espionage/EspionageHelp/pages/faq-encryption.html](https://www.taoeffect.com/espionage/EspionageHelp/pages/faq-encryption.html)
 
 .
 
