@@ -755,7 +755,7 @@ RwZvU8ge0PLulrQ5km9xea2295b2dOBEPCzOkgv6BTeAMADrBmi2shhLqUWeoRRr
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-### signing 
+## signing 
 
  By encrypting a document using your private key, you let everyone to try to open it using your public key and if they succeed, they will be sure that you have signed it using YOUR private key! `gpg` has a specific command to sign documents:
 
