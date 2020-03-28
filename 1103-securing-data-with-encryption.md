@@ -757,7 +757,58 @@ RwZvU8ge0PLulrQ5km9xea2295b2dOBEPCzOkgv6BTeAMADrBmi2shhLqUWeoRRr
 
 ### signing 
 
-What if 
+ By encrypting a document using your private key, you let everyone to try to open it using your public key and if they succeed, they will be sure that you have signed it using YOUR private key! `gpg` has a specific command to sign documents:
+
+```text
+user1@ubuntu16-1:~$ vim notice
+user1@ubuntu16-1:~$ cat notice 
+Lets start learning LPIC-2!
+user1@ubuntu16-1:~$ 
+user1@ubuntu16-1:~$ gpg --clearsign notice
+
+You need a passphrase to unlock the secret key for
+user: "RealUser1 (created by user1) <user1@localhost>"
+2048-bit RSA key, ID 6D187851, created 2020-03-28
+```
+
+here the --clearsign tells the gpg to include the clear text message in the output file too. The output file will be `originalfile.asc` :
+
+```text
+user1@ubuntu16-1:~$ cat notice.asc 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Lets start learning LPIC-2!
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQEcBAEBAgAGBQJef2DyAAoJEOBsMxdtGHhReQoH/j33csnEJUlS6IqdlzeIDyw3
+D6HVli8TaywfdZLTCXhSRHNM7NISCIsPdULHVs1J8vwYKLqshNOlx7F+HNAmkYtv
+WqHlNL03x2TOEca+qr31iUFdtpRKrMsQ3mpai2aaI8MoILO1gRYGMZ717O31YGGh
+yQ5Teft6q2QorWXpbACN0JlWcKs5OiFCgcCOOp2RHnjM4NtCJEmI+ZGBuqVJL98P
+Aa/fP5AteexMuj4GwRfC542f9Tsaw03je4SlAcgq7cJ+iwpy5vHGwN0sPwbRoqbS
+ABL1zaTA2TZmnS5Jx5ii8IyndObuVHtDUEGROaqxiVWZ/JrMAAfAjtv/mnL79HQ=
+=W+EU
+-----END PGP SIGNATURE-----
+```
+
+copy notice.asc file to /tmp and other users can verify that a document is singed correctly:
+
+```text
+user2@ubuntu16-1:~$ gpg --verify /tmp/notice.asc 
+gpg: Signature made Sat 28 Mar 2020 07:06:34 PM +0430 using RSA key ID 6D187851
+gpg: Good signature from "RealUser1 (created by user1) <user1@localhost>"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 8772 5C1E 3F2F 88DB DBB7  7F37 E06C 3317 6D18 7851
+user2@ubuntu16-1:~$ 
+```
+
+and that's all folks!
+
+## Congratulation we have done lpic1-102 !!! do not forget to give a [start](https://github.com/Borosan) and [donate](https://payping.ir/@borosan) :-\)
+
+## You can start studying my LPIC-2 book: [https://borosan.gitbook.io/lpic2-exam-guide/](https://borosan.gitbook.io/lpic2-exam-guide/)
 
 .
 
@@ -796,6 +847,8 @@ What if
 [https://www.privex.io/articles/what-is-gpg/](https://www.privex.io/articles/what-is-gpg/)
 
 [https://www.howtogeek.com/427982/how-to-encrypt-and-decrypt-files-with-gpg-on-linux/](https://www.howtogeek.com/427982/how-to-encrypt-and-decrypt-files-with-gpg-on-linux/)
+
+[https://jadi.gitbooks.io/lpic1/content/1103\_securing\_data\_with\_encryption.html](https://jadi.gitbooks.io/lpic1/content/1103_securing_data_with_encryption.html)
 
 .
 
