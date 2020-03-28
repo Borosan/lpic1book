@@ -55,6 +55,8 @@ Any message \(text, binary files, or documents\) that are encrypted by using the
   
 This means that you do not have to worry about passing public keys over the Internet \(the keys are supposed to be public\).
 
+> A problem with asymmetric encryption, however, is that it is slower than symmetric encryption. It requires far more processing power to both encrypt and decrypt the content of the message.
+
 {% hint style="info" %}
 **encryption vs signing**
 
@@ -63,7 +65,11 @@ When encrypting, you use **their public key** to write a message and they use **
 When signing, you use **your private key** to write message's signature, and they use **your public key** to check if it's really yours.
 {% endhint %}
 
-> A problem with asymmetric encryption, however, is that it is slower than symmetric encryption. It requires far more processing power to both encrypt and decrypt the content of the message.
+{% hint style="success" %}
+#### Whats is a key server?
+
+Key server \(cryptographic\), a server on which public keys are stored for others to use
+{% endhint %}
 
 With that introduction lets talk about SSH.
 
@@ -151,12 +157,23 @@ Run 'do-release-upgrade' to upgrade to it.
 
 Last login: Fri Mar 27 15:51:55 2020 from 192.168.52.133
 user1@ubuntu16-1:~$ 
+```
+
+{% hint style="info" %}
+**What is fingerprint ?** a public key fingerprint is a short sequence of bytes used to identify a longer public key. Fingerprints are created by applying a cryptographic hash function to a public key. Since fingerprints are shorter than the keys they refer to, they can be used to simplify certain key management tasks.
+{% endhint %}
+
+now lets compare the keys in server and client:
+
+```text
+### server
 user1@ubuntu16-1:~$ cat /etc/ssh/ssh_host_ecdsa_key.pub 
 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIjnKq9Wr0C2faQCf4+gcqPN4bOMFyx1nywTjLS/mh/S30V0r/mvy9cvfWvA2LY/y7zqxg+/gMvELQznikQiaTo= root@server1
 
 ```
 
 ```text
+### client
 user1@ubuntu16-2:~$ tree .ssh/
 .ssh/
 └── known_hosts
@@ -164,7 +181,6 @@ user1@ubuntu16-2:~$ tree .ssh/
 0 directories, 1 file
 user1@ubuntu16-2:~$ cat .ssh/known_hosts 
 |1|gD2R1tW6jKBSyL1A0XpynmG8Vok=|1X2nzVcwHLQGT5T8FOUxeCejtvQ= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIjnKq9Wr0C2faQCf4+gcqPN4bOMFyx1nywTjLS/mh/S30V0r/mvy9cvfWvA2LY/y7zqxg+/gMvELQznikQiaTo=
-
 ```
 
 ### Configuring SSH Key Based authentication
@@ -691,6 +707,8 @@ water boils at 100 degrees celsius!
 
 [https://stackoverflow.com/questions/454048/what-is-the-difference-between-encrypting-and-signing-in-asymmetric-encryption](https://stackoverflow.com/questions/454048/what-is-the-difference-between-encrypting-and-signing-in-asymmetric-encryption)
 
+[https://en.wikipedia.org/wiki/Key\_server](https://en.wikipedia.org/wiki/Key_server)
+
 [https://www.ssh.com/ssh/protocol](https://www.ssh.com/ssh/protocol)
 
 [https://www.hivelocity.net/kb/what-is-openssh/](https://www.hivelocity.net/kb/what-is-openssh/)
@@ -706,6 +724,8 @@ water boils at 100 degrees celsius!
 [https://www.ssh.com/ssh/command](https://www.ssh.com/ssh/command)
 
 [https://www.taoeffect.com/espionage/EspionageHelp/pages/faq-encryption.html](https://www.taoeffect.com/espionage/EspionageHelp/pages/faq-encryption.html)
+
+[https://www.privex.io/articles/what-is-gpg/](https://www.privex.io/articles/what-is-gpg/)
 
 .
 
