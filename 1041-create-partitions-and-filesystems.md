@@ -94,7 +94,9 @@ GUID Partition Table \(GPT\) is a standard for the layout of the partition table
       </td>
     </tr>
   </tbody>
-</table>> Both GPT disk and MBR disk can be basic or dynamic.
+</table>
+
+> Both GPT disk and MBR disk can be basic or dynamic.
 
 ### BIOS vs UEFI
 
@@ -532,7 +534,9 @@ Following is a brief summary of the types you need to know about for the LPI exa
         considered a filesystem.</td>
     </tr>
   </tbody>
-</table>We must create a file system before you can use any data storage device connected to a Linux computer.
+</table>
+
+We must create a file system before you can use any data storage device connected to a Linux computer.
 
 ### partitioning
 
