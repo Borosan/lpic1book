@@ -360,6 +360,12 @@ user1@ubuntu16-1:~$ echo "Body!" | mail -s "Subject" root@localhost
 
 > If you need to mail a log file, use the `<` redirection function to redirect it as input to the `mail` command. If you need to send several files, you can use `cat` to combine them and pipe the output to `mail`.
 
+{% hint style="info" %}
+**bash scripting cheatsheet**
+
+I also encourage you to visit my bash scripting cheatsheet at: [https://borosan.gitbook.io/bash-scripting/](https://borosan.gitbook.io/bash-scripting/)
+{% endhint %}
+
 .
 
 .
