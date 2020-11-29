@@ -6,7 +6,8 @@ You can see the overview of LPIC1 Certification [here](http://www.lpi.org/our-ce
 
 By Payam Borosan
 
-* Site: www.linuxcert.ir
+* Site: [www.linuxcert.ir](http://linuxcert.ir/)
+* GitBook: [https://borosan.gitbook.io/lpic1-exam-guide/](https://borosan.gitbook.io/lpic1-exam-guide/)
 * e-mail: p.borosan \[at\] gmail.com
 
 Donation :
