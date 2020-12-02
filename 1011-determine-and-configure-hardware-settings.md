@@ -317,7 +317,7 @@ what is modprobe?
 3 . udev next reads its rules . udev allows us to ban devices based on their properties, like vendor ID and device ID, ... .
 
 * Default rules are in /lib/udev/rules.d
-* Cutom rules are in /etc/udev/rules.d
+* Custom rules are in /etc/udev/rules.d
 
 Lets see it in action, we use and then attach a usb storage:
 
