@@ -515,7 +515,7 @@ avahi-autoipd/xenial-updates 0.6.32~rc+dfsg-1ubuntu2.2 amd64 [upgradable from: 0
 
 The ‘upgrade‘ command is used to upgrade all the currently installed software packages on the system. Under any circumstances currently installed packages are not removed or packages which are not already installed neither retrieved and installed to satisfy upgrade dependencies.
 
-New versions of currently installed packages that cannot be upgraded without changing the install status of another package ill be left at their current version.
+New versions of currently installed packages that cannot be upgraded without changing the install status of another package will be left at their current version.
 
 An update must be performed first so that apt-get knows that new versions of packages are available.
 
