@@ -36,7 +36,7 @@ Linux supports two classes of libraries, namely:
 * When a program uses a shared library instead, the program binary does not include a copy of the code, but only a reference to the library. The run time loader, finds the library and loads it into memory at the same time as the program. ****One advantage of using dynamic library is that when a library is updated \( security issues \) all other programs take advantage of new code without recompiling.
 
 {% hint style="info" %}
-Dynamic or shared libraries can further be categorized into\( beyond the scope of LPIC exam\):
+Dynamic or shared libraries can further be categorized into two groups \( beyond the scope of LPIC exam\):
 
 * **Dynamically linked libraries** – here a program is linked with the shared library and the kernel loads the library \(in case it’s not in memory\) upon execution.
 * **Dynamically loaded libraries** – the program takes full control by calling functions with the library.
@@ -77,7 +77,7 @@ root@ubuntu16-1:~# ls /usr/local/lib/
 python2.7  python3.5
 ```
 
-Also **/var/lib** Direcotry, holds **dynamic data libraries/files** like the rpm/dpkg database and game scores.
+Also **/var/lib** Directory, holds **dynamic data libraries/files** like the rpm/dpkg database and game scores.
 
 ```text
 root@ubuntu16-1:~# ls /var/lib/
