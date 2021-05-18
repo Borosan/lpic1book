@@ -1281,14 +1281,45 @@ drwxr-xr-x 2 root root    4096 Oct  5 05:25 dir2
 
 also we can use -d option to decompress a file using the “gzip” command.ex : `gzip -d mydoc.gz`
 
-| gzip command example | Description |
-| :--- | :--- |
-| gzip -r testfolder | compress every file in a folder and its subfolders |
-| gzip -k mydoc.txt | compress the file and keep the original file |
-| gzip -f myfile1.txt | fore to compress already compressed file |
-| gzip -v mydoc.txt | displays the name and percentage reduction for each file compressed or decompressed. we can use -l with compressed files. |
-| gzip -L filename.gz | displays the gzip license |
-| gzip -9 mydoc.txt | -\[1-9\] option : It allows to change the compression level |
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">gzip command example</th>
+      <th style="text-align:left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">gzip -r testfolder</td>
+      <td style="text-align:left">compress every file in a folder and its subfolders</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">gzip -k mydoc.txt</td>
+      <td style="text-align:left">compress the file and keep the original file</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">gzip -f myfile1.txt</td>
+      <td style="text-align:left">fore to compress already compressed file</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">gzip -v mydoc.txt</td>
+      <td style="text-align:left">displays the name and percentage reduction for each file compressed or
+        decompressed. we can use -l with compressed files.</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">gzip -L filename.gz</td>
+      <td style="text-align:left">displays the gzip license</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">gzip -9 mydoc.txt</td>
+      <td style="text-align:left">
+        <p>-[1-9] option : It allows to change the compression level.</p>
+        <p>1 : fastest compression speed but lower ratio</p>
+        <p>9 : highest compression ratio but at a lower speed</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### bzip2
 
