@@ -1580,7 +1580,7 @@ dd if = /dev/sda of = /dev/sdb
 We can even use dd to copy any kind of block devices and as dd works on block devices itself it doesn't matter if partion ups.
 
 * If there are any errors, the above command will fail. If you give the parameter _“conv=noerror”_ then it will continue to copy if there are read errors.`dd if = /dev/sda of = /dev/sdb conv=noerror`
-* Input file and output file should be mentioned very carefully. Just in case, you mention source device in the target and vice versa, you might loss all your data.
+* Input and output should be mentioned very carefully. Just in case, you mention source device in the target and vice versa, you might loss all your data.
 * To copy, hard drive to hard drive using dd command given below, sync option allows you to copy everything using synchronized I/O.`dd if = /dev/sda of = /dev/sdb conv=noerror, sync`
 
 | dd comand examples | Description |
@@ -1597,7 +1597,7 @@ conv can do many thing such as Converting a file to uppercase or visa versa.
 
 ### cpio
 
-`cpio` stands for “**C**o**p**y **i**n, c**o**py out“. It is used for processing the archive files like _.cpio or_ .tar. This command can copy files to and from archives.
+`cpio` stands for “**C**o**p**y **i**n, copy **o**ut“. It is used for processing the archive files like _.cpio or_ .tar. This command can copy files to and from archives.
 
 * **Copy-out Mode:** Copy files named in name-list to the archive `command | cpio -o  > archive`
 * **Copy-in Mode:** Extract files from the archive `cpio -i < archive`
