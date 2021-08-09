@@ -1171,7 +1171,7 @@ join combines lines of files on a common field, which is the first field by defa
 ## sed
 
 The name **Sed** is short for **\_s\_tream \_ed\_itor**.  
-S stream editor is used to perform basic text transformations on an input stream \(a file or input from a pipeline\). sed uses regular expressions and the most basic \(and popular\) usage of sed is the substitution of characters.
+**S** stream editor is used to perform basic text transformations on an input stream \(a file or input from a pipeline\). sed uses regular expressions and the most basic \(and popular\) usage of sed is the substitution of characters.
 
 As an example lets replace 'l' with "L" in a sample text file:
 
