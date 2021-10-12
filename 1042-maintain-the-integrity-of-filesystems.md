@@ -20,7 +20,7 @@
 * debugfs
 * dumpe2fs
 * tune2fs
-* XFS tools \(such as xfs\_metadump and xfs\_info\)
+* XFS tools (such as xfs_metadump and xfs_info)
 
 
 
@@ -36,7 +36,7 @@ You should always back up your filesystem before attempting any repairs!
 
  The main tool for checking and repairing  filesystems is `fsck`, which, like `mkfs`, is really a front end to filesystem-checking routines for the various filesystem types.
 
-```text
+```
 root@ubuntu16-1:~# fsck
 fsck          fsck.ext3     fsck.fat      fsck.nfs      
 fsck.cramfs   fsck.ext4     fsck.minix    fsck.vfat     
@@ -50,9 +50,9 @@ root@ubuntu16-1:~# ls /sbin/fsck*
 
 > Some of these are just links to e2fsck command and they are the same
 
-The fsck command in Linux allows us to manually check for file system inconsistencies,  Fsck command needs to be run with superuser privileges or **root**\(ubuntu 16.04 here\):
+The fsck command in Linux allows us to manually check for file system inconsistencies,  Fsck command needs to be run with superuser privileges or **root**(ubuntu 16.04 here):
 
-```text
+```
 root@ubuntu16-1:~# fsck /dev/sda1
 fsck from util-linux 2.27.1
 e2fsck 1.42.13 (17-May-2015)
@@ -64,9 +64,9 @@ e2fsck: Cannot continue, aborting.
 In order to use fsck the partition should be unmounted, otherwise it might cause damages!
 {% endhint %}
 
-Lets simply check file system on an unmounted ext3 partition \(sdb1\) and try to fix errors :
+Lets simply check file system on an unmounted ext3 partition (sdb1) and try to fix errors :
 
-```text
+```
 root@ubuntu16-1:~# fsck /dev/sdb1
 fsck from util-linux 2.27.1
 e2fsck 1.42.13 (17-May-2015)
@@ -86,24 +86,24 @@ e2fsck 1.42.13 (17-May-2015)
 
  `-N` option just shows what would be executed but do not attempt to repair them:
 
-```text
+```
 root@ubuntu16-1:~# fsck -N /dev/sdb1
 fsck from util-linux 2.27.1
 [/sbin/fsck.ext3 (1) -- /dev/sdb1] fsck.ext3 /dev/sdb1
 ```
 
- `-n`  causes these commands not to fix anything and just show what was going to be done:
+ `-n ` causes these commands not to fix anything and just show what was going to be done:
 
-```text
+```
 root@ubuntu16-1:~# fsck -n /dev/sdb1
 fsck from util-linux 2.27.1
 e2fsck 1.42.13 (17-May-2015)
 /dev/sdb1: clean, 11/1310720 files, 126322/5242624 blocks
 ```
 
-Normally, **fsck** will skip parts of the filesystem marked as "clean" — meaning all pending writes were successfully made. The **-f** \("force"\) option specifies that **fsck** should check parts of the filesystem even if they are not "dirty". The result is a less efficient, but a more thorough check.
+Normally, **fsck** will skip parts of the filesystem marked as "clean" — meaning all pending writes were successfully made. The **-f** ("force") option specifies that **fsck** should check parts of the filesystem even if they are not "dirty". The result is a less efficient, but a more thorough check.
 
-```text
+```
 root@ubuntu16-1:~# fsck -f /dev/sdb1
 fsck from util-linux 2.27.1
 e2fsck 1.42.13 (17-May-2015)
@@ -119,12 +119,12 @@ Pass 5: Checking group summary information
 {% hint style="success" %}
 **What are inodes?**
 
-As we said Linux  treating everything as a file \(even the hardware devices\). The keyboard, mouse, printers, monitor, hard disk, processes, even the directories are treated as files in Linux. The regular files contain data such as text \(text files\), music, videos \(multimedia files\) etc. Set aside the regular data, there are some other data about these files, such as their size, ownership, permissions, timestamp etc. This meta-data about a file is managed with a data structure known as an inode \(index node\).
+As we said Linux  treating everything as a file (even the hardware devices). The keyboard, mouse, printers, monitor, hard disk, processes, even the directories are treated as files in Linux. The regular files contain data such as text (text files), music, videos (multimedia files) etc. Set aside the regular data, there are some other data about these files, such as their size, ownership, permissions, timestamp etc. This meta-data about a file is managed with a data structure known as an inode (index node).
 {% endhint %}
 
-> We can also check file systems using their UUID.\(use blkid command \):
+> We can also check file systems using their UUID.(use blkid command ):
 >
-> ```text
+> ```
 > root@ubuntu16-1:~# blkid /dev/sdb1
 > /dev/sdb1: UUID="b9ca56aa-4ea3-4f61-92c8-18c867fd991f" SEC_TYPE="ext2" TYPE="ext3" PARTUUID="4d71bc84-01"
 > root@ubuntu16-1:~# fsck -N UUID="b9ca56aa-4ea3-4f61-92c8-18c867fd991f"
@@ -133,30 +133,30 @@ As we said Linux  treating everything as a file \(even the hardware devices\). T
 > /dev/sdb1: clean, 11/1310720 files, 126322/5242624 blocks
 > ```
 
-| fsck command example | description |
-| :--- | :--- |
-| fsck -M /dev/sda1 | prevents  running fsck on mounted filesystem |
-| fsck -t ext3 /dev/sdb1 | Check Only a Specific Filesystem Type |
-| fsck -y -f /dev/sdb1 | pass “yes” to all the questions to fix |
+| fsck command example   | description                                  |
+| ---------------------- | -------------------------------------------- |
+| fsck -M /dev/sda1      | prevents  running fsck on mounted filesystem |
+| fsck -t ext3 /dev/sdb1 | Check Only a Specific Filesystem Type        |
+| fsck -y -f /dev/sdb1   | pass “yes” to all the questions to fix       |
 
-> For checking  a XFS filesystem, wehave to use xfs\_check command
+> For checking  a XFS filesystem, wehave to use xfs_check command
 
 ## Advanced tools
 
 There are several more advanced tools that we can use to examine or repair a filesystem.
 
-#### Tools for ext2 and ext3 filesystems <a id="tools-for-ext2-and-ext3-filesystems"></a>
+#### Tools for ext2 and ext3 filesystems <a href="tools-for-ext2-and-ext3-filesystems" id="tools-for-ext2-and-ext3-filesystems"></a>
 
 * **tune2fs:**Adjusts parameters on ext2 and ext3 filesystems. Use this to add a journal
-* **dumpe2fs:** shows all super blocks info
-* **debugfs:** interactive file system editor
+* **dumpe2fs: **shows all super blocks info
+* **debugfs: **interactive file system editor
 
 {% hint style="info" %}
 **Super Blocks**
 
  You may be wondering how all these checking and repairing tools know where to start. Linux and UNIX filesystems usually have a _superblock_, which describes the filesystem _metadata_, or data describing the filesystem itself. This is usually stored at a known location, frequently at or near the beginning of the filesystem, and replicated at other well-known locations. You can use the `-n` option of `mke2fs` to display the superblock locations for an existing filesystem.
 
-```text
+```
 root@ubuntu16-1:~# mke2fs -n /dev/sdb1
 mke2fs 1.42.13 (17-May-2015)
 /dev/sdb1 contains a ext3 file system
@@ -172,7 +172,7 @@ Superblock backups stored on blocks:
 
 ### tune2fs
 
- The ext family of file systems also has a utility called `tune2fs`, which can be used to inspect information about the block count as well as information about whether the filesystem is journaled \(ext3 or ext4\) or not \(ext2\). 
+ The ext family of file systems also has a utility called `tune2fs`, which can be used to inspect information about the block count as well as information about whether the filesystem is journaled (ext3 or ext4) or not (ext2). 
 
 {% hint style="success" %}
 The tune2fs command allows you to set assorted filesystem parameters on a mounted ext2 or ext3 filesystem.
@@ -180,7 +180,7 @@ The tune2fs command allows you to set assorted filesystem parameters on a mounte
 
 `-l` shows contents of the filesystem superblock, including the current values of the parameters:
 
-```text
+```
 root@ubuntu16-1:~# tune2fs -l /dev/sdb1
 tune2fs 1.42.13 (17-May-2015)
 Filesystem volume name:   <none>
@@ -227,11 +227,11 @@ Journal backup:           inode blocks
 
 ```
 
-> The command can also be used to set many parameters or convert an ext2 filesystem to ext3 by adding a journal using -j option: `tune2fs -j /dev/sdd1`
+> The command can also be used to set many parameters or convert an ext2 filesystem to ext3 by adding a journal using -j option:` tune2fs -j /dev/sdd1`
 
 Also we can use tune2fs for changing or modifying partition label:
 
-```text
+```
 root@ubuntu16-1:~# tune2fs -L myroot /dev/sda1
 tune2fs 1.42.13 (17-May-2015)
 ```
@@ -244,7 +244,7 @@ dumpe2fs command is used to print the super block and blocks group information f
 printed information may be old or inconsistent when it is used with a mounted filesystem. Don’t forget to unmount your partition before using this command.
 {% endhint %}
 
-```text
+```
 root@ubuntu16-1:~# dumpe2fs  /dev/sdb1 | grep superblock
 dumpe2fs 1.42.13 (17-May-2015)
   Primary superblock at 0, Group descriptors at 1-2
@@ -263,13 +263,13 @@ dumpe2fs 1.42.13 (17-May-2015)
 
 ### debugfs
 
-Is an interactive filesystem debugger. Use it to examine or change the state of an ext2 or ext3 filesystem.  It opens the filesystem in read-only mode unless we tell it not to \(with `-w` option\).
+Is an interactive filesystem debugger. Use it to examine or change the state of an ext2 or ext3 filesystem.  It opens the filesystem in read-only mode unless we tell it not to (with `-w` option).
 
 {% hint style="danger" %}
  if  the filesystem is mounted,  is alright for inspecting, but **Do not** attempt repair on a mounted filesystem.
 {% endhint %}
 
-```text
+```
 root@ubuntu16-1:~# debugfs /dev/sda1
 debugfs 1.42.13 (17-May-2015)
 debugfs:  cd /etc/
@@ -298,17 +298,17 @@ Inode	Pathname
 debugfs:  q
 ```
 
-### xfs\_info
+### xfs_info
 
-xfs file system has it's own family commands. xfs\_info is the same as tune2fs but for xfs.
+xfs file system has it's own family commands. xfs_info is the same as tune2fs but for xfs.
 
 {% hint style="success" %}
-xfs\_info should be used on a mounted file system.
+xfs_info should be used on a mounted file system.
 {% endhint %}
 
-> xfsprogs package must be installed
+> xfsprogs package must be installed 
 
-```text
+```
 root@ubuntu16-1:~# xfs_info /dev/sdb1
 meta-data=/dev/sdb1              isize=512    agcount=4, agsize=1310656 blks
          =                       sectsz=512   attr=2, projid32bit=1
@@ -321,14 +321,14 @@ log      =internal               bsize=4096   blocks=2560, version=2
 realtime =none                   extsz=4096   blocks=0, rtextents=0
 ```
 
-| xfs command | description |
-| :--- | :--- |
-| xfs\_info | shows information |
-| xfs\_check | complete check of file system |
-| xfs\_repair | check and fixes problems |
-| xfs\_check -n | same as xfs\_check |
+| xfs command  | description                   |
+| ------------ | ----------------------------- |
+| xfs_info     | shows information             |
+| xfs_check    | complete check of file system |
+| xfs_repair   | check and fixes problems      |
+| xfs_check -n | same as xfs_check             |
 
-```text
+```
 root@ubuntu16-1:~# xfs_repair -n /dev/sdb1
 xfs_repair: /dev/sdb1 contains a mounted and writable filesystem
 
@@ -336,10 +336,10 @@ fatal error -- couldn't initialize XFS library
 ```
 
 {% hint style="danger" %}
-obviously xfs\_repair does not work on mounted file system.
+obviously xfs_repair does not work on mounted file system.
 {% endhint %}
 
-```text
+```
 root@ubuntu16-1:~# xfs_repair  /dev/sdb1
 Phase 1 - find and verify superblock...
 Phase 2 - using internal log
@@ -374,25 +374,25 @@ done
 
 > In XFS, you can only extend file system and can not reduce it.
 
-### Monitoring free space <a id="monitoring-free-space"></a>
+### Monitoring free space <a href="monitoring-free-space" id="monitoring-free-space"></a>
 
  On a storage device, a file or directory is contained in a collection of _blocks_. Information about a file is contained in an _inode._
 
-> **Reminder :** inodes keeps information such as who the owner is, when the file was last accessed, how large it is, whether it is a directory, and who can read from or write to it. The inode number is also known as the file serial number and is unique within a particular filesystem.
+> **Reminder : **inodes keeps information such as who the owner is, when the file was last accessed, how large it is, whether it is a directory, and who can read from or write to it. The inode number is also known as the file serial number and is unique within a particular filesystem.
 
 Data blocks and inodes each take space on a filesystem, so we need to monitor the space usage to ensure that your filesystems have space for growth.
 
 ### df
 
-The `df`  \(DiskFree\) command is used to find out about the free and used space of file systems.
+The `df  `(DiskFree) command is used to find out about the free and used space of file systems.
 
-```text
+```
 df [OPTION]...[FILE]...
 ```
 
  If no file name is passed as an argument with df command then it shows the space available on all currently **mounted** file systems
 
-```text
+```
 root@ubuntu16-1:~# df
 Filesystem     1K-blocks    Used Available Use% Mounted on
 udev              462796       0    462796   0% /dev
@@ -404,9 +404,9 @@ tmpfs             492540       0    492540   0% /sys/fs/cgroup
 tmpfs              98508      48     98460   1% /run/user/1001
 ```
 
--T  print file system type,  -h, –human-readable  ****print sizes \(in power of 1024\):
+\-T  print file system type,  -h, –human-readable**  **print sizes (in power of 1024):
 
-```text
+```
 root@ubuntu16-1:~# df -Th
 Filesystem     Type      Size  Used Avail Use% Mounted on
 udev           devtmpfs  452M     0  452M   0% /dev
@@ -418,11 +418,11 @@ tmpfs          tmpfs     481M     0  481M   0% /sys/fs/cgroup
 tmpfs          tmpfs      97M   48K   97M   1% /run/user/1001
 ```
 
-> `-H` make numbers human readable also  \(in powers of 1000\).
+> `-H` make numbers human readable also  (in powers of 1000).
 
--i list inode information instead of block usage:
+\-i list inode information instead of block usage:
 
-```text
+```
 root@ubuntu16-1:~# df -i
 Filesystem      Inodes  IUsed   IFree IUse% Mounted on
 udev            115699    456  115243    1% /dev
@@ -436,33 +436,33 @@ tmpfs           123135     27  123108    1% /run/user/1001
 
 > Remember?  there is no owner or access rights on vfat filesystems. vfat file format has no inodes!
 
-| df command example | description |
-| :--- | :--- |
-| df -a  |  dislpay all information includes pseudo, duplicate and inaccessible file systems. |
-| df -Th /home | Display Information of /home File System |
-| df -k or -m or -h | displays information in Bytes, MB , GB |
-| df -t ext3 | include specific file system type |
-| df -x xfs | exclude specific file system type |
+| df command example | description                                                                        |
+| ------------------ | ---------------------------------------------------------------------------------- |
+| df -a              |  dislpay all information includes pseudo, duplicate and inaccessible file systems. |
+| df -Th /home       | Display Information of /home File System                                           |
+| df -k or -m or -h  | displays information in Bytes, MB , GB                                             |
+| df -t ext3         | include specific file system type                                                  |
+| df -x xfs          | exclude specific file system type                                                  |
 
  The `df` command gives information about a whole filesystem. Sometimes you might want to know how much space is used by a specific file or  directory, To answer this kind of question, we  use the `du` command.
 
 ### du
 
- The Linux `du` \(Disk Usage\)  command, used to check the information of **disk usage of files and directories** on a machine.
+ The Linux `du `(Disk Usage)  command, used to check the information of **disk usage of files and directories** on a machine.
 
-```text
+```
 du [OPTION]... [FILE]...
 ```
 
-| useful switch | description |
-| :--- | :--- |
-| -a | write count of all files, not just directories |
-| -h  |  human readable Means we can see sizes in Bytes, KB, MB, GB,... |
-| -c | grand total usage disk space at the last line |
-|  –max-depth=N | go N or fewer sub directories further |
-| -s | display only total for each directory |
+| useful switch | description                                                     |
+| ------------- | --------------------------------------------------------------- |
+| -a            | write count of all files, not just directories                  |
+| -h            |  human readable Means we can see sizes in Bytes, KB, MB, GB,... |
+| -c            | grand total usage disk space at the last line                   |
+|  –max-depth=N | go N or fewer sub directories further                           |
+| -s            | display only total for each directory                           |
 
-```text
+```
 root@ubuntu16-1:~# du
 16	./.aptitude
 8	./.cache/dconf
@@ -495,30 +495,30 @@ root@ubuntu16-1:~# du -sh
 
 **--exclude=PATTERN** will exclude files that match PATTERN example: `du -ah --exclude="*.txt" /home/payam`
 
-#### 
+####
 
 #### summary
 
 Lets take a look at some other repairing tools beside tools which we have learned in this lesson:
 
-| file system | command | description |
-| :--- | :--- | :--- |
-| ext |  **tune2fs** | Adjusts parameters on ext2 and ext3 filesystems and can set journaling . |
-| ext |  **dumpe2fs** | Prints the super block and block group descriptor information for an ext2 or ext3 filesystem. |
-| ext |  **debugfs** | Is an interactive filesystem debugger. Use it to examine or change the state of an ext2 or ext3 filesystem. |
-| Reiserfs |  **reiserfstune** | Displays and adjusts parameters on ReiserFS filesystems. |
-| Reiserfs |  **debugreiserfs** | Performs similar functions to dumpe2fs and debugfs for ReiserFS filesystems. |
-| xfs |  **xfs\_info** | Displays XFS filesystem information. |
-| xfs |  **xfs\_growfs** | Expands an XFS filesystem |
-| xfs |  **xfs\_admin** | Changes the parameters of an XFS filesystem. |
-| xfs |  **xfs\_repair** | Repairs an XFS filesystem when the mount checks are not sufficient to repair the system. |
-| xfs |  **xfs\_db** | Examines or debugs an XFS filesystem. |
-| btrfs |  **btrfs** | Displays many aspects of btrfs filesystem information |
-| btrfs |  **btrfsck** | Check btrfs filesystems |
-| btrfs |  **btrfs-find-root** | Finds the block that is the root of the btrfs filesystem |
-| btrfs |  **btrfs-debug-tree** | Displays btrfs internal metadata |
-| btrfs |  **btrfstune** | Tune various btrfs filesystem parameters, and enables or disables some extended features |
-| btrfs |  **btrfs-restore** | Attempt to restore files from a damaged btrfs filesystem |
+| file system | command               | description                                                                                                 |
+| ----------- | --------------------- | ----------------------------------------------------------------------------------------------------------- |
+| ext         |  **tune2fs**          | Adjusts parameters on ext2 and ext3 filesystems and can set journaling .                                    |
+| ext         |  **dumpe2fs**         | Prints the super block and block group descriptor information for an ext2 or ext3 filesystem.               |
+| ext         |  **debugfs**          | Is an interactive filesystem debugger. Use it to examine or change the state of an ext2 or ext3 filesystem. |
+| Reiserfs    |  **reiserfstune**     | Displays and adjusts parameters on ReiserFS filesystems.                                                    |
+| Reiserfs    |  **debugreiserfs**    | Performs similar functions to dumpe2fs and debugfs for ReiserFS filesystems.                                |
+| xfs         |  **xfs_info**         | Displays XFS filesystem information.                                                                        |
+| xfs         |  **xfs_growfs**       | Expands an XFS filesystem                                                                                   |
+| xfs         |  **xfs_admin**        | Changes the parameters of an XFS filesystem.                                                                |
+| xfs         |  **xfs_repair**       | Repairs an XFS filesystem when the mount checks are not sufficient to repair the system.                    |
+| xfs         |  **xfs_db**           | Examines or debugs an XFS filesystem.                                                                       |
+| btrfs       |  **btrfs**            | Displays many aspects of btrfs filesystem information                                                       |
+| btrfs       |  **btrfsck**          | Check btrfs filesystems                                                                                     |
+| btrfs       |  **btrfs-find-root**  | Finds the block that is the root of the btrfs filesystem                                                    |
+| btrfs       |  **btrfs-debug-tree** | Displays btrfs internal metadata                                                                            |
+| btrfs       |  **btrfstune**        | Tune various btrfs filesystem parameters, and enables or disables some extended features                    |
+| btrfs       |  **btrfs-restore**    | Attempt to restore files from a damaged btrfs filesystem                                                    |
 
 
 
@@ -534,7 +534,7 @@ Lets take a look at some other repairing tools beside tools which we have learne
 
 [https://www.computerhope.com/unix/fsck.htm](https://www.computerhope.com/unix/fsck.htm)
 
-[https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/](https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/)[https://www.serverwatch.com/tutorials/article.php/3797306/tune2fs-Makes-It-Easy-to-Play-With-Filesystems.htm](https://www.serverwatch.com/tutorials/article.php/3797306/tune2fs-Makes-It-Easy-to-Play-With-Filesystems.htm)[https://jadi.gitbooks.io/lpic1/content/1042\_maintain\_the\_integrity\_of\_filesystems.html](https://jadi.gitbooks.io/lpic1/content/1042_maintain_the_integrity_of_filesystems.html)
+[https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/](https://www.geeksforgeeks.org/file-system-consistency-checker-fsck/)[https://www.serverwatch.com/tutorials/article.php/3797306/tune2fs-Makes-It-Easy-to-Play-With-Filesystems.htm](https://www.serverwatch.com/tutorials/article.php/3797306/tune2fs-Makes-It-Easy-to-Play-With-Filesystems.htm)[https://jadi.gitbooks.io/lpic1/content/1042\_maintain_the_integrity_of_filesystems.html](https://jadi.gitbooks.io/lpic1/content/1042\_maintain_the_integrity_of_filesystems.html)
 
 [https://linoxide.com/linux-command/linux-inode/](https://linoxide.com/linux-command/linux-inode/)
 
@@ -559,6 +559,4 @@ With the special thanks of shawn powers.
 .
 
 .
-
-
 

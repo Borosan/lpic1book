@@ -1,8 +1,8 @@
 # 105.3. SQL data management
 
-**Weight:** 2
+**Weight: **2
 
-**Description:** Candidates should be able to query databases and manipulate data using basic SQL commands. This objective includes performing queries involving joining of 2 tables and/or subselects.
+**Description: **Candidates should be able to query databases and manipulate data using basic SQL commands. This objective includes performing queries involving joining of 2 tables and/or subselects.
 
 **Key Knowledge Areas:**
 
@@ -23,17 +23,17 @@
 
  So far in this series of tutorials, we used flat text files to store data. Flat text files can be suitable for small amounts of data, but they are not good for storing large amounts of data or to querying that data. Over the years, several kinds of databases were developed for that purpose, the most common is now the **relational database**. 
 
-Several relational database systems exist today, including commercial products such as   Oracle Database and IBM DB2®, and open source projects such as MySQL, PostgreSQL SQLite, and MariaDB \(a fork of MySQL\). Relational databases use SQL as a data definition and query language.
+Several relational database systems exist today, including commercial products such as   Oracle Database and IBM DB2®, and open source projects such as MySQL, PostgreSQL SQLite, and MariaDB (a fork of MySQL). Relational databases use SQL as a data definition and query language.
 
 {% hint style="info" %}
-SQL \(pronounced "ess-que-el"\) stands for Structured Query Language. SQL is used to communicate with a database. it is the standard language for relational database management systems. SQL statements are used to perform tasks such as update data on a database, or retrieve data from a database.
+SQL (pronounced "ess-que-el") stands for Structured Query Language. SQL is used to communicate with a database. it is the standard language for relational database management systems. SQL statements are used to perform tasks such as update data on a database, or retrieve data from a database.
 {% endhint %}
 
-### Databases, tables, columns, and rows <a id="databases-tables-columns-and-rows"></a>
+### Databases, tables, columns, and rows <a href="databases-tables-columns-and-rows" id="databases-tables-columns-and-rows"></a>
 
- A relational database consists of a set of _tables_. Think of each _row_ of data in the table as a record, with each _column_ of the table corresponding to the fields in the record for the corresponding row. The data in a column is all of the same _type_— such as character, integer, date, or binary data \(such as images\).
+ A relational database consists of a set of _tables_. Think of each _row_ of data in the table as a record, with each _column_ of the table corresponding to the fields in the record for the corresponding row. The data in a column is all of the same _type_— such as character, integer, date, or binary data (such as images).
 
-We are not going to install MySQL or create some databases from zero, our focus is on SQL and we use existing Data Base \(ubuntu16.04\):
+We are not going to install MySQL or create some databases from zero, our focus is on SQL and we use existing Data Base (ubuntu16.04):
 
 ![](.gitbook/assets/sql-mydata.jpg)
 
@@ -41,14 +41,14 @@ We are not going to install MySQL or create some databases from zero, our focus 
 
 mysql has simple SQL shell command line which we use to ineteractivly connect to a mysql-server. 
 
-```text
+```
 # mysql -u root -p
 Enter password: 
 ```
 
 it means that I'm going to use `u` ser root and the `p`assword which i will provide. It is also possible to type the password on the command and define which database  i am going to use , which is not a great idea!
 
-```text
+```
 # mysql -u root -p password cars
 ```
 
@@ -60,7 +60,7 @@ After connecting to the mysql-server, we should define which database we are goi
 Usually MySQL commands are typed with CAPITAL LETTERS and names and values , ... in lower case. There should be a ; at the end of each MySQL command.
 {% endhint %}
 
-```text
+```
 root@ubuntu16-1:~# mysql -u root -p
 Enter password: 
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -97,7 +97,7 @@ Database changed
 
 lets see tables:
 
-```text
+```
 mysql> SHOW TABLES;
 +----------------+
 | Tables_in_cars |
@@ -108,16 +108,16 @@ mysql> SHOW TABLES;
 2 rows in set (0.00 sec)
 ```
 
-### Exploring tables and columns <a id="exploring-tables-and-columns"></a>
+### Exploring tables and columns <a href="exploring-tables-and-columns" id="exploring-tables-and-columns"></a>
 
 ### SELECT
 
- The **select** statement is used to query the database and retrieve selected data. We can select everything in the table using `*` , or we can select from particular columns:
+ The **select** statement is used to query the database and retrieve selected data. We can select everything in the table using` *` , or we can select from particular columns:
 
-> SELECT _column1_, _column2, ..._  
-> FROM _table\_name_;
+>  SELECT _column1_,_ column2, ..._\
+> FROM _table_name_;
 
-```text
+```
 mysql> SELECT * FROM hatchback;
 +--------+-------+---------+
 | name   | size  | country |
@@ -143,11 +143,11 @@ mysql> SELECT name FROM hatchback;
 
  We can choose which data to display by using the `WHERE :`
 
-> SELECT _column1_, _column2, ..._  
-> FROM _table\_name_  
+>  SELECT _column1_,_ column2, ..._\
+> FROM _table_name_\
 > WHERE _condition_;
 
-```text
+```
 mysql> SELECT *  FROM hatchback WHERE size = 'big';
 +--------+------+---------+
 | name   | size | country |
@@ -160,7 +160,7 @@ mysql> SELECT *  FROM hatchback WHERE size = 'big';
 
 it is also possible to make desired condition via AND and OR when using WHERE:
 
-```text
+```
 mysql> SELECT *  FROM hatchback WHERE size = 'big' AND country = 'germany';
 +------+------+---------+
 | name | size | country |
@@ -184,11 +184,11 @@ mysql> SELECT *  FROM hatchback WHERE size = 'big' OR country = 'korea';
 
 ORDERBY is used if we want to sort the data based on one field:
 
-> SELECT _column1_, _column2, ..._  
-> FROM _table\_name_  
+>  SELECT _column1_,_ column2, ..._\
+> FROM _table_name_\
 > ORDER BY _column1, column2, ..._
 
-```text
+```
 mysql> SELECT *  FROM hatchback ORDER BY name;
 +--------+-------+---------+
 | name   | size  | country |
@@ -202,7 +202,7 @@ mysql> SELECT *  FROM hatchback ORDER BY name;
 
 and it can sort results based on any fields:
 
-```text
+```
 mysql> SELECT *  FROM hatchback ORDER BY country;
 +--------+-------+---------+
 | name   | size  | country |
@@ -218,12 +218,12 @@ mysql> SELECT *  FROM hatchback ORDER BY country;
 
  Sometimes you want aggregate information from a table. For example, you want to know how many big hatchbacks you have. We can use the `GROUP BY` clause to group your data for this purpose:
 
-> SELECT _column\_name\(s\)_  
-> FROM _table\_name_  
-> WHERE _condition_  
-> GROUP BY _column\_name\(s\)_
+>  SELECT _column_name(s)_\
+> FROM _table_name_\
+> WHERE _condition_\
+> GROUP BY _column_name(s)_
 
-```text
+```
 mysql> SELECT *  FROM hatchback GROUP BY size;                                  +-------+-------+---------+
 | name  | size  | country |
 +-------+-------+---------+
@@ -235,7 +235,7 @@ mysql> SELECT *  FROM hatchback GROUP BY size;                                  
 
 it acts like unique command and group the result , to understand how many rows have been grouped by we can use count:
 
-```text
+```
 mysql> SELECT count(size)  FROM hatchback GROUP BY size;
 +-------------+
 | count(size) |
@@ -255,16 +255,16 @@ mysql> SELECT name,count(size)  FROM hatchback GROUP BY size;
 2 rows in set (0.00 sec)
 ```
 
-### Creating, changing, and deleting data and tables <a id="creating-changing-and-deleting-data-and-tables"></a>
+### Creating, changing, and deleting data and tables <a href="creating-changing-and-deleting-data-and-tables" id="creating-changing-and-deleting-data-and-tables"></a>
 
 ###  INSERT
 
  `INSERT` command  add one or more rows of data to a table.
 
-> INSERT INTO _table\_name_ \(_column1_, _column2_, _column3_, ...\)  
-> VALUES \(_value1_, _value2_, _value3_, ...\);
+>  INSERT INTO _table_name_ (_column1_,_ column2_,_ column3_, ...)\
+> VALUES (_value1_,_ value2_,_ value3_, ...);
 
-```text
+```
 mysql> INSERT INTO hatchback (name,size,country) VALUES ('yaris','small','japan');
 Query OK, 1 row affected (0.07 sec)
 
@@ -282,7 +282,7 @@ mysql> SELECT * FROM hatchback;
 
 > the order is not important and bellow query would have the same result:
 
-> ```text
+> ```
 > INSERT INTO hatchback (size,name,country) VALUES ('small','yaris','japan');
 > ```
 
@@ -290,11 +290,11 @@ mysql> SELECT * FROM hatchback;
 
 `UPDATE` command to fix this mistake . It update row but which row? we should specified that with WHERE command.
 
-> UPDATE _table\_name_  
-> SET _column1_ = _value1_, _column2_ = _value2_, ...  
+>  UPDATE _table_name_\
+> SET _column1 _=_ value1_,_ column2 _=_ value2_, ...\
 > WHERE _condition_;
 
-```text
+```
 mysql> UPDATE hatchback SET size= 'big' WHERE name= 'yaris';
 Query OK, 1 row affected (0.05 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
@@ -315,13 +315,13 @@ mysql> SELECT * FROM hatchback;
 
 The DELETE statement is used to delete existing records in a table.
 
-> DELETE FROM _table\_name_ WHERE _condition_;
+>  DELETE FROM _table_name _WHERE _condition_;
 
 {% hint style="danger" %}
-Be careful when deleting records in a table! Notice the at  WHERE  in the DELETE statement. The WHERE clause specifies which record\(s\) should be deleted. If you omit the WHERE clause, all records in the table will be deleted!
+Be careful when deleting records in a table! Notice the at  WHERE  in the DELETE statement. The WHERE clause specifies which record(s) should be deleted. If you omit the WHERE clause, all records in the table will be deleted!
 {% endhint %}
 
-```text
+```
 mysql> DELETE FROM hatchback WHERE name= 'yaris';
 Query OK, 1 row affected (0.03 sec)
 
@@ -338,9 +338,9 @@ mysql> SELECT * FROM hatchback;
 
 ### JOIN
 
-A JOIN clause is used to combine rows from two or more tables, based on a related column between them. If no related column is given, Every single row from second table \(sedan\) is copied in front of the first table \(hatchback\).
+A JOIN clause is used to combine rows from two or more tables, based on a related column between them. If no related column is given, Every single row from second table (sedan) is copied in front of the first table (hatchback).
 
-```text
+```
 mysql> SELECT * FROM hatchback;
 +--------+-------+---------+
 | name   | size  | country |
@@ -380,7 +380,7 @@ mysql> SELECT * FROM hatchback JOIN sedan;
 
 and if we give  JOIN a common field to JOIN the tables based on that, the magic happens:
 
-```text
+```
 mysql> SELECT * FROM hatchback JOIN sedan ON  hatchback.country = sedan.country; 
 +--------+-------+---------+---------+-------+---------+
 | name   | size  | country | name    | size  | country |
@@ -410,17 +410,17 @@ mysql> SELECT * FROM hatchback JOIN sedan ON  hatchback.size = sedan.size;
 
 Here are the different types of the JOINs in SQL:
 
-* **\(INNER\) JOIN**: Returns records that have matching values in both tables
-* **LEFT \(OUTER\) JOIN**: Returns all records from the left table, and the matched records from the right table
-* **RIGHT \(OUTER\) JOIN**: Returns all records from the right table, and the matched records from the left table
-* **FULL \(OUTER\) JOIN**: Returns all records when there is a match in either left or right table
+* **(INNER) JOIN**: Returns records that have matching values in both tables
+* **LEFT (OUTER) JOIN**: Returns all records from the left table, and the matched records from the right table
+* **RIGHT (OUTER) JOIN**: Returns all records from the right table, and the matched records from the left table
+* **FULL (OUTER) JOIN**: Returns all records when there is a match in either left or right table
 {% endhint %}
 
 ![](.gitbook/assets/sql-jointypes.jpg)
 
 finally use quit command to get out of MySQL command line.
 
-```text
+```
 mysql> quit
 Bye
 root@ubuntu16-1:~# 
@@ -442,11 +442,10 @@ that's all!
 
 [https://dev.mysql.com/doc/refman/8.0/en/mysql.html](https://dev.mysql.com/doc/refman/8.0/en/mysql.html)
 
-[https://jadi.gitbooks.io/lpic1/content/1053\_sql\_data\_management.html](https://jadi.gitbooks.io/lpic1/content/1053_sql_data_management.html)
+[https://jadi.gitbooks.io/lpic1/content/1053\_sql_data_management.html](https://jadi.gitbooks.io/lpic1/content/1053\_sql_data_management.html)
 
-\`\`[`https://www.w3schools.com/sql/sql_select.asp`](https://www.w3schools.com/sql/sql_select.asp)\`\`
+``[`https://www.w3schools.com/sql/sql_select.asp`](https://www.w3schools.com/sql/sql_select.asp)``
 
 [https://tableplus.com/blog/2018/08/mysql-how-to-turn-off-only-full-group-by.html](https://tableplus.com/blog/2018/08/mysql-how-to-turn-off-only-full-group-by.html)
 
 .
-

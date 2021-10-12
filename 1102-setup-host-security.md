@@ -1,8 +1,8 @@
 # 110.2. Setup host security
 
-**Weight:** 3
+**Weight: **3
 
-**Description:** Candidates should know how to set up a basic level of host security.
+**Description: **Candidates should know how to set up a basic level of host security.
 
 **Key Knowledge Areas:**
 
@@ -30,7 +30,7 @@ We have previously talked about /etc/passwd , /etc/nologin and /etc/shadow. So l
 
  **/etc/passwd** file stores essential information, which required during login. In other words, it stores user account information. The /etc/passwd is a plain text file.
 
-```text
+```
 root@ubuntu16-1:~# tail /etc/passwd
 pulse:x:117:124:PulseAudio daemon,,,:/var/run/pulse:/bin/false
 rtkit:x:118:126:RealtimeKit,,,:/proc:/bin/false
@@ -44,7 +44,7 @@ user3:x:1003:1003::/home/user3:
 user2:x:1004:1004::/home/user2:/bin/bash
 ```
 
- Each line in /etc/passwd file represents an individual user account and contains following seven fields separated by colons \(**:**\)
+ Each line in /etc/passwd file represents an individual user account and contains following seven fields separated by colons (**:**)
 
 1. Username or login name
 2. Encrypted password
@@ -56,7 +56,7 @@ user2:x:1004:1004::/home/user2:/bin/bash
 
 The /etc/passwd file should have general read permission as many command utilities use it to map user IDs to user names. However, write access to the /etc/passwd must only limit for the superuser/root account.
 
-```text
+```
 root@ubuntu16-1:~# ls -l /etc/passwd
 -rw-r--r-- 1 root root 2470 Mar 23 01:24 /etc/passwd
 ```
@@ -67,7 +67,7 @@ as we said, in old days /etc/passwd  was a place that  all users information eve
 
 The /etc/shadow file contains encrypted passwords, along with password- and account-expiration information.
 
-```text
+```
 root@ubuntu16-1:~# tail -5 /etc/shadow
 user1:$6$c9PN.175$.t.CG0E0Gtr/trq4pqquSe1BemMjB6Zc3E0ExUOVufuTkPNe3BSRv3DyUuXFHPiAbEujzuSMCeMsCbpg8cV2j.:17749:0:99999:7:::
 sshd:*:17749:0:99999:7:::
@@ -76,7 +76,7 @@ user3:$6$LPhxz61y$V0/HsC6SF6olabfoKuDKj3Gfm.wRVvbUI.GXWGJ2Icejs91ZQDgZHIAc153x4V
 user2:$6$sd2T1NDd$ihaP8mO7/rhSUFDccY3evqQqM/VwDVDYSQwZJstV6Dnjy3Me83faro6pk/Nb1GuvRqy8J66ZBHIGqIpIrzl5a0:18343:0:99999:7:::
 ```
 
- Each line in **/etc/shadow** file represents an individual user account and contains following nine fields separated by colons \(**:**\)
+ Each line in **/etc/shadow** file represents an individual user account and contains following nine fields separated by colons (**:**)
 
 1. Username
 2. Encrypted password
@@ -90,14 +90,14 @@ user2:$6$sd2T1NDd$ihaP8mO7/rhSUFDccY3evqQqM/VwDVDYSQwZJstV6Dnjy3Me83faro6pk/Nb1G
 
  Unlike **/etc/passwd** file, the **/etc/shadow** file is not world readable. It is readable only by the root user or super user. 
 
-```text
+```
 root@ubuntu16-1:~# ls -l /etc/shadow
 -rw-r----- 1 root shadow 1704 Mar 23 01:23 /etc/shadow
 ```
 
 ### /etc/nologin
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/nologin
 cat: /etc/nologin: No such file or directory
 ```
@@ -110,11 +110,11 @@ cat: /etc/nologin: No such file or directory
 
  As an system administrator it is our task to find unnecessary running services and disable them in order to minimize security risks. Previously we learned different linux distributions use different initialization solutions when system boots up, so use appropriate commands based on your  service manager for disabling services:
 
-| Linux Distro | service manager | command |
-| :--- | :--- | :--- |
-| older linux systems \(pre 2006\) | SysV | **chkconfig** _ServiceName_ **off** **sysv-rc-conf** _ServiceName_ **off** |
-| Ubuntu\(2006-2019\),CentOS\(2011-2020\) | Upstart | **update-rc.d** _ServiceName_ **remove** |
-| ubuntu\(2015-????\),CentOS\(2014-????\) | systemd | **systemctl disable** _ServiceName_ |
+| Linux Distro                        | service manager | command                                                                                                                                                |
+| ----------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| older linux systems (pre 2006)      | SysV            | <p><strong>chkconfig </strong><em>ServiceName</em> <strong>off</strong><br><strong>sysv-rc-conf</strong> <em>ServiceName</em> <strong>off</strong></p> |
+| Ubuntu(2006-2019),CentOS(2011-2020) | Upstart         | **update-rc.d** _ServiceName _**remove**                                                                                                               |
+| ubuntu(2015-????),CentOS(2014-????) | systemd         | **systemctl disable** _ServiceName_                                                                                                                    |
 
  Please note that these commands prevent the service from starting on system boot. But the package is still installed on the machine and we can run it if we need.
 
@@ -147,7 +147,7 @@ There are two main internet super-servers available for Linux, inetd and xinetd.
 
  The **/etc/inetd.conf** file is the default configuration file for the inetd daemon. This file enables you to specify the daemons to start by default and supply the arguments that correspond to the desired style of functioning for each daemon. Let's have a look at an example line from inetd.conf:
 
-```text
+```
 # File Transfer Protocol (FTP) server:
 ftp     stream  tcp     nowait  root    /usr/sbin/tcpd  proftpd
 ```
@@ -162,7 +162,7 @@ ftp     stream  tcp     nowait  root    /usr/sbin/tcpd  proftpd
 
  The `/etc/xinetd.conf` file contains general configuration settings which effect every service under `xinetd`'s control. It is read once when the `xinetd` service is started, so for configuration changes to take effect, the administrator must restart the `xinetd` service.  The following is a sample `/etc/xinetd.conf` file:
 
-```text
+```
 defaults
 {
         instances               = 60
@@ -178,7 +178,7 @@ includedir /etc/xinetd.d
 
  The `/etc/xinetd.d/` directory contains the configuration files for each service managed by `xinetd` and the names of the files correlate to the service. As with `xinetd.conf`, this directory is read only when the `xinetd` service is started. To gain an understanding of how these files are structured, consider the `/etc/xinetd.d/telnet` file:
 
-```text
+```
 service telnet
 {
         flags           = REUSE
@@ -201,20 +201,20 @@ service telnet
 
  As you can see in /etc/inetd.conf connections for most protocols are made through **tcpd**, instead of directly passing the connection to a service program. For example:
 
-```text
+```
 # File Transfer Protocol (FTP) server:
 ftp     stream  tcp     nowait  root    /usr/sbin/tcpd  proftpd
 ```
 
- In this example ftp connections are passed through **tcpd**. **tcpd** logs the connection through syslog and allows for additional checks. One of the most used features of **tcpd** is host-based access control. A TCP Wrapper is a host-based networking access control list \(ACL\) system and used to filter network access to Internet.
+ In this example ftp connections are passed through **tcpd**. **tcpd** logs the connection through syslog and allows for additional checks. One of the most used features of **tcpd** is host-based access control. A TCP Wrapper is a host-based networking access control list (ACL) system and used to filter network access to Internet.
 
 ### /etc/host.allow , /etc/host.deny
 
-   When a network request reaches your server, TCP wrappers uses `hosts.allow` and `hosts.deny` \(in that order\) to determine if the client should be allowed to use a given service.
+   When a network request reaches your server, TCP wrappers uses `hosts.allow` and `hosts.deny` (in that order) to determine if the client should be allowed to use a given service.
 
 By default, these files are empty, all commented out, or do not exist. Thus, everything is allowed through the TCP wrappers layer and your system is left to rely on the firewall for full protection.
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/hosts.allow 
 # /etc/hosts.allow: list of hosts that are allowed to access the system.
 #                   See the manual pages hosts_access(5) and hosts_options(5).
@@ -227,7 +227,7 @@ root@ubuntu16-1:~# cat /etc/hosts.allow
 #
 ```
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/hosts.deny 
 # /etc/hosts.deny: list of hosts that are _not_ allowed to access the system.
 #                  See the manual pages hosts_access(5) and hosts_options(5).
@@ -251,7 +251,7 @@ Both files have one rule on each line of the following form:`service: hosts`
 
 Hosts can be specified by hostname or IP address. The ALL keyword specifies all hosts or all services.
 
-For  example, adding  `telnet 192.168.` to `/etc/hosts.allow`  causes only  telnet connections  from 192.168.x.x ip range  accepted.
+For  example, adding `  telnet 192.168.  `to `/etc/hosts.allow`  causes only  telnet connections  from 192.168.x.x ip range  accepted.
 
 Adding the same line to `/etc/hosts.deny` causes telnet connections from 192.168.x.x ip range denied , but telnet connetions would be accepted from any other addresses.
 
@@ -277,7 +277,7 @@ that's all.
 
 [https://linux.die.net/man/5/nologin](https://linux.die.net/man/5/nologin)
 
-[https://jadi.gitbooks.io/lpic1/content/1102\_setup\_host\_security.html](https://jadi.gitbooks.io/lpic1/content/1102_setup_host_security.html)
+[https://jadi.gitbooks.io/lpic1/content/1102\_setup_host_security.html](https://jadi.gitbooks.io/lpic1/content/1102\_setup_host_security.html)
 
 [http://etutorials.org/Linux+systems/embedded+linux+systems/Chapter+10.+Setting+Up+Networking+Services/10.1+The+Internet+Super-Server/](http://etutorials.org/Linux+systems/embedded+linux+systems/Chapter+10.+Setting+Up+Networking+Services/10.1+The+Internet+Super-Server/)
 
@@ -285,17 +285,16 @@ that's all.
 
 [https://thecustomizewindows.com/2011/11/super-server-what-is-it-how-it-works/](https://thecustomizewindows.com/2011/11/super-server-what-is-it-how-it-works/)
 
-[https://www.ibm.com/support/knowledgecenter/ssw\_aix\_72/filesreference/inetd.conf.html](https://www.ibm.com/support/knowledgecenter/ssw_aix_72/filesreference/inetd.conf.html)
+[https://www.ibm.com/support/knowledgecenter/ssw_aix\_72/filesreference/inetd.conf.html](https://www.ibm.com/support/knowledgecenter/ssw_aix\_72/filesreference/inetd.conf.html)
 
 [https://book.huihoo.com/slackware-linux-basics/html/inetd.html](https://book.huihoo.com/slackware-linux-basics/html/inetd.html)
 
-[https://access.redhat.com/documentation/en-us/red\_hat\_enterprise\_linux/4/html/reference\_guide/s1-tcpwrappers-xinetd-config](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s1-tcpwrappers-xinetd-config)
+[https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s1-tcpwrappers-xinetd-config](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s1-tcpwrappers-xinetd-config)
 
-[https://access.redhat.com/documentation/en-us/red\_hat\_enterprise\_linux/4/html/reference\_guide/s2-tcpwrappers-xinetd-config-files](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s2-tcpwrappers-xinetd-config-files)
+[https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s2-tcpwrappers-xinetd-config-files](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/4/html/reference_guide/s2-tcpwrappers-xinetd-config-files)
 
 [https://kerneltalks.com/linux/understanding-etc-services-file-in-linux/](https://kerneltalks.com/linux/understanding-etc-services-file-in-linux/)
 
 [https://www.tecmint.com/secure-linux-tcp-wrappers-hosts-allow-deny-restrict-access/](https://www.tecmint.com/secure-linux-tcp-wrappers-hosts-allow-deny-restrict-access/)
 
 .
-

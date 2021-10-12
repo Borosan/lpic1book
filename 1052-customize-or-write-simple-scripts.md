@@ -1,16 +1,16 @@
 # 105.2. Customize or write simple scripts
 
-**Weight:** 4
+**Weight: **4
 
-**Description:** Candidates should be able to customize existing scripts, or write simple new Bash scripts.
+**Description: **Candidates should be able to customize existing scripts, or write simple new Bash scripts.
 
 **Key Knowledge Areas:**
 
-* Use standard sh syntax \(loops, tests\)
+* Use standard sh syntax (loops, tests)
 * Use command substitution
 * Test return values for success or failure or other information provided by a command
 * Perform conditional mailing to the superuser
-* Correctly select the script interpreter through the shebang \(\#!\) line
+* Correctly select the script interpreter through the shebang (#!) line
 * Manage the location, ownership, execution and suid-rights of scripts
 
 **Terms and Utilities:**
@@ -25,11 +25,11 @@
 
  This  lesson is all about shell scripting in linux and we start writing some simple scripts. We can put almost every command we use, inside a shell script. But before starting there are some notes to consider.
 
-### shebang \(\#!\)
+### shebang (#!)
 
-In Linux and opensource world script files are very important. There are different type of scripting language used to write script files. As file extension is just a label for a script,  **shebang** \(file script file interpreter line \)is used to specify the scripting language. 
+In Linux and opensource world script files are very important. There are different type of scripting language used to write script files. As file extension is just a label for a script,  **shebang** (file script file interpreter line )is used to specify the scripting language. 
 
-```text
+```
 #!/bin/bash
 
 echo "Hello World!
@@ -43,9 +43,9 @@ The shebang line must be the first line of your script, and the rest of the line
 
 ### variables
 
-In prior sections in this series, we  learned how to define a variable  `VARIABLE="value"` .  We can do the same thing in a script, as an example:
+In prior sections in this series, we  learned how to define a variable  `VARIABLE="value" `.  We can do the same thing in a script, as an example:
 
-```text
+```
 #!/bin/bash
 
 MYNAME="payam"
@@ -57,16 +57,16 @@ We have  assigned string values to variables. Bash supports shell arithmetic usi
 {% hint style="info" %}
 **declare**
 
-The **declare** is a builtin command of the **bash** shell. It is used to declare shell variables and functions, set their attributes and display their values. `-i` make a VARIABLE to have 'integer' attribute.
+The **declare** is a builtin command of the **bash** shell. It is used to declare shell variables and functions, set their attributes and display their values.`  -i  `make a VARIABLE to have 'integer' attribute.
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ declare VAR1="hello"
 user1@ubuntu16-1:~/sandbox$ declare -i VAR2="42"
 ```
 
-**`-p`** displays the options and attributes of each variable name if it is used with name arguments:
+**`-p` **displays the options and attributes of each variable name if it is used with name arguments:
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ declare -p VAR1 VAR2
 declare -- VAR1="hello"
 declare -i VAR2="42"
@@ -79,7 +79,7 @@ Sometimes we might need to use the result of a command for another command or a 
 
 If we  surround a command with `$(` and `)`, or with a pair of backticks,  we can substitute the command’s output as input to another command. This technique is called _command substitution_. 
 
-```text
+```
 $(command)
 ### OR
 `command`
@@ -87,7 +87,7 @@ $(command)
 
 example:
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ MYLIST=$(ls -l)
 user1@ubuntu16-1:~/sandbox$ echo $MYLIST
 total 4 -rw-rw-r-- 1 user1 user1 58 فوریه 4 12:24 script1
@@ -101,7 +101,7 @@ user1@ubuntu16-1:~/sandbox$ echo $MYSPACE
 
 Inorder to run a shell script, the script should be  executabe.
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ ls -l
 total 4
 -rw-rw-r-- 1 user1 user1 58 فوریه  4 12:24 script1
@@ -121,7 +121,7 @@ if our script is executable we can locate  that in 3 ways:
 * We can use absolute path `/home/user1/sandbox/scriptname`
 * putting our script in one of `$PATH` directories or editting `PATH` variable.
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ ./script1 
 Hello World
 
@@ -147,7 +147,7 @@ The simplest form is the **if** statement, which has the genaral form:
 
 ### if
 
-```text
+```
 if [expression]
 then
    command1 
@@ -160,7 +160,7 @@ fi
 
 > the esle part is optional and can be ommited.
 
-```text
+```
 #!/bin/bash
 
 MYOS="linux"
@@ -178,28 +178,28 @@ fi
 
 Expressions take the following forms:
 
-| Expression | Meaning |
-| :--- | :--- |
-| STRING1 **=** STRING2 | the strings are equal |
-| STRING1 != STRING2 | the strings are not equal |
-| INTEGER1 -eq INTEGER2 | INTEGER1 is equal to INTEGER2 |
+| Expression            | Meaning                                       |
+| --------------------- | --------------------------------------------- |
+| STRING1 **=** STRING2 | the strings are equal                         |
+| STRING1 != STRING2    | the strings are not equal                     |
+| INTEGER1 -eq INTEGER2 | INTEGER1 is equal to INTEGER2                 |
 | INTEGER1 -ge INTEGER2 | INTEGER1 is greater than or equal to INTEGER2 |
-| INTEGER1 -gt INTEGER2 | INTEGER1 is greater than INTEGER2 |
-| INTEGER1 -le INTEGER2 | INTEGER1 is less than or equal to INTEGER2 |
-| INTEGER1 -lt INTEGER2 | INTEGER1 is less than INTEGER2 |
-| INTEGER1 -ne INTEGER2 | INTEGER1 is not equal to INTEGER2 |
-| -n STRING | the length of STRING is nonzero |
-| -z STRING | the length of STRING is zero |
-| -f FILE | FILE exists and is a regular file |
-| -s FILE | FILE exists and has a size greater than zero |
-| -X FILE | FILE exists and execute \(or s |
-| -d FILE | FILE exists and is a directory |
+| INTEGER1 -gt INTEGER2 | INTEGER1 is greater than INTEGER2             |
+| INTEGER1 -le INTEGER2 | INTEGER1 is less than or equal to INTEGER2    |
+| INTEGER1 -lt INTEGER2 | INTEGER1 is less than INTEGER2                |
+| INTEGER1 -ne INTEGER2 | INTEGER1 is not equal to INTEGER2             |
+| -n STRING             | the length of STRING is nonzero               |
+| -z STRING             | the length of STRING is zero                  |
+| -f FILE               | FILE exists and is a regular file             |
+| -s FILE               | FILE exists and has a size greater than zero  |
+| -X FILE               | FILE exists and execute (or s                 |
+| -d FILE               | FILE exists and is a directory                |
 
 ### read
 
 `read` command read a line from the standard input.
 
-```text
+```
 #!/bin/bash
 
 MYOS="linux"
@@ -221,7 +221,7 @@ The purpose of loops is to repeat the same, or similar code a number of times. T
 
 The `for` loop processes each item in a sequence
 
-```text
+```
 for VAR in LIST;
 do
   command1
@@ -233,7 +233,7 @@ done
 
 > LIST can be a list of strings, an array or output of commands, etc
 
-```text
+```
 #!/bin/bash
 
 for i in 1 2 3 ;
@@ -244,9 +244,9 @@ done
 
 ### **seq**
 
-**seq is a very usefull command.** it generates squence of numbers for loop from FIRST to LAST in steps of INCREMENT. 
+**seq is a very usefull command. **it generates squence of numbers for loop from FIRST to LAST in steps of INCREMENT. 
 
-```text
+```
 seq [OPTION]... LAST
  ### or
 seq [OPTION]... FIRST LAST
@@ -254,7 +254,7 @@ seq [OPTION]... FIRST LAST
 seq [OPTION]... FIRST INCREMENT LAST
 ```
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ seq 3
 1
 2
@@ -274,7 +274,7 @@ user1@ubuntu16-1:~/sandbox$ seq 1 3 10
 
 seq in for loop :
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ for i in $(seq 1 3); do echo $i; done
 1
 2
@@ -285,7 +285,7 @@ user1@ubuntu16-1:~/sandbox$ for i in $(seq 1 3); do echo $i; done
 
 for loop works with strings too:
 
-```text
+```
 #!/bin/bash
 
 for MYFILE in $(ls);
@@ -298,7 +298,7 @@ done
 
 while loops evaluate a condition each time the loop starts and execute the command list if the condition is true. If the condition is not initially true, the commands are never executed.
 
-```text
+```
 while [condition]
 do
     command1
@@ -308,7 +308,7 @@ done
 
 example:
 
-```text
+```
 #!/bin/bash
 
 MYVAR=3
@@ -320,7 +320,7 @@ do
 done
 ```
 
-> The **let** is a builtin command and  used to evaluate arithmetic expressions on shell variables. What does it mean ? Without let MYVAR=MYVAR-1 whould have "3-1" value as string!
+> The **let** is a builtin command and  used to evaluate arithmetic expressions on shell variables. What does it mean ? Without let MYVAR=MYVAR-1 whould have "3-1" value as string! 
 
 > If you want to use a variable value in an arithmetic expression, you don’t need to use `$` before the variable name, although you can if you want.
 
@@ -333,19 +333,19 @@ infinite loops are not that much bad ! The OS is an infinite loop which constant
 {% endhint %}
 
 {% hint style="info" %}
-**until**  
+**until**\
 until loops execute the command list and evaluate a condition each time the loop ends. If the condition is true, the loop is executed again. Even if the condition is not initially true, the commands execute at least once.
 {% endhint %}
 
-### exec <a id="mailing-notifications-to-root"></a>
+### exec <a href="mailing-notifications-to-root" id="mailing-notifications-to-root"></a>
 
- **exec** command in Linux is used to execute a command from the bash itself. This command does not create a new process it just replaces the bash with the command to be executed. If the exec command is successful, it does not return to the calling process. try `exec BLAH` and `exec ls` and compare results.
+ **exec** command in Linux is used to execute a command from the bash itself. This command does not create a new process it just replaces the bash with the command to be executed. If the exec command is successful, it does not return to the calling process. try `exec BLAH `and `exec ls` and compare results.
 
-### Mailing notifications to root <a id="mailing-notifications-to-root"></a>
+### Mailing notifications to root <a href="mailing-notifications-to-root" id="mailing-notifications-to-root"></a>
 
 For sending mail first we need to have `mailutils` installed. Then we can send mail:
 
-```text
+```
 root@ubuntu16-1:~# mail root@localhost
 Cc: 
 Subject: test mail!
@@ -354,11 +354,11 @@ this is my first email!
 
 Suppose your script is running an administrative task on your system in the dead of night while you’re sound asleep. What happens when something goes wrong? Fortunately, it’s easy to mail error information or log files to yourself or to another administrator or to root. Simply pipe the message to the `mail` command, and use the `-s` option to add a subject line, 
 
-```text
+```
 user1@ubuntu16-1:~$ echo "Body!" | mail -s "Subject" root@localhost
 ```
 
-> If you need to mail a log file, use the `<` redirection function to redirect it as input to the `mail` command. If you need to send several files, you can use `cat` to combine them and pipe the output to `mail`.
+> If you need to mail a log file, use the `<` redirection function to redirect it as input to the `mail` command. If you need to send several files, you can use `cat` to combine them and pipe the output to `mail`. 
 
 {% hint style="info" %}
 **bash scripting cheatsheet**
@@ -378,9 +378,9 @@ I also encourage you to visit my bash scripting cheatsheet at: [https://borosan.
 
 [https://www.geeksforgeeks.org/declare-command-in-linux-with-examples/](https://www.geeksforgeeks.org/declare-command-in-linux-with-examples/)
 
-[https://www.gnu.org/software/bash/manual/html\_node/Command-Substitution.html](https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html)
+[https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html](https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html)
 
-[https://jadi.gitbooks.io/lpic1/content/1052\_customize\_or\_write\_simple\_scripts.html](https://jadi.gitbooks.io/lpic1/content/1052_customize_or_write_simple_scripts.html)
+[https://jadi.gitbooks.io/lpic1/content/1052\_customize_or_write_simple_scripts.html](https://jadi.gitbooks.io/lpic1/content/1052\_customize_or_write_simple_scripts.html)
 
 [https://www.computerhope.com/unix/test.htm](https://www.computerhope.com/unix/test.htm)
 
@@ -397,4 +397,3 @@ I also encourage you to visit my bash scripting cheatsheet at: [https://borosan.
 [https://www.geeksforgeeks.org/exec-command-in-linux-with-examples/](https://www.geeksforgeeks.org/exec-command-in-linux-with-examples/)
 
 .
-

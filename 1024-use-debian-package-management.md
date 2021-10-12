@@ -10,7 +10,7 @@
 
 * Install, upgrade and uninstall Debian binary packages
 * Find packages containing specific files or libraries which may or may not be installed
-* Obtain package information like version, content, dependencies, package integrity and installation status \(whether or not the package is installed\)
+* Obtain package information like version, content, dependencies, package integrity and installation status (whether or not the package is installed)
 
 **Terms and Utilities:**
 
@@ -42,7 +42,7 @@ The packet manager is the utility that handles the downloading, unpacking and pu
 
 ![](.gitbook/assets/debpack-packagemgmnt.png)
 
-The general workflow starts with the user requesting a package using the package manager available in the system. The Package manager then finds the requested package from a known location \(called software repository\) and downloads it. The Package Manager then installs the package and advises on any manual steps that it finds necessary.
+The general workflow starts with the user requesting a package using the package manager available in the system. The Package manager then finds the requested package from a known location (called software repository) and downloads it. The Package Manager then installs the package and advises on any manual steps that it finds necessary.
 
 Package management tools help System/Server Administrators in many ways such as:
 
@@ -65,7 +65,7 @@ Package Manager consists of two entities:
 
 ![](.gitbook/assets/debpack-all.jpg)
 
-a **low-level** tool \(such as **dpkg** or **rpm**\), takes care of the details of unpacking individual packages, running scripts, getting the software installed correctly, while a **high-level** tool \(such as **apt-get**, yum, or **zypper**\) works with groups of packages, downloads packages from the vendor, and figures out dependencies
+a **low-level** tool (such as **dpkg** or **rpm**), takes care of the details of unpacking individual packages, running scripts, getting the software installed correctly, while a** high-level** tool (such as **apt-get**, yum, or **zypper**) works with groups of packages, downloads packages from the vendor, and figures out dependencies
 
 The core parts of a linux distro and most of its add-on Software are installed via a Package Management System.
 
@@ -79,7 +79,7 @@ dpkg is a package manager for Debian-based systems. It can install, remove, and 
 
 The dpkg has database and its  is located under/var/lib/dpkg directory ;
 
-```text
+```
 root@ubuntu16-1:~# ls -l /var/lib/dpkg/
 total 4416
 drwxr-xr-x 2 root root    4096 Dec  2  2018 alternatives
@@ -104,9 +104,9 @@ the "status" file contains the list of installed software on the current system.
 
 **Lets take a look at most useful switches:**
 
--l \| --list list all packages installed on the system \( --get-selection does the same\):
+\-l | --list list all packages installed on the system ( --get-selection does the same):
 
-```text
+```
 root@ubuntu16-1:~# dpkg -l
 Desired=Unknown/Install/Remove/Purge/Hold
 | Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
@@ -123,13 +123,13 @@ ii  account-plugin 0.12+16.04.2 all          GNOME Control Center account plug
 
 To view a specific package installed or not use the option “-l” along with package-name.
 
-dpkg -i \| --install ,install a local .deb file :
+dpkg -i | --install ,install a local .deb file :
 
 {% hint style="success" %}
 .deb is extension of the software package format for the Linux distribution Debian.
 {% endhint %}
 
-```text
+```
 root@ubuntu16-1:~# dpkg -i zip_3.0-11_amd64.deb 
 (Reading database ... 192789 files and directories currently installed.)
 Preparing to unpack zip_3.0-11_amd64.deb ...
@@ -140,7 +140,7 @@ Processing triggers for man-db (2.7.5-1) ...
 
 And if a package requires any dependencies you would get into trouble:
 
-```text
+```
 root@ubuntu16-1:~# dpkg -i jcal_0.4.1-2_amd64.deb 
 dpkg: warning: downgrading jcal from 0.4.1-2build1 to 0.4.1-2
 (Reading database ... 192782 files and directories currently installed.)
@@ -160,13 +160,13 @@ Errors were encountered while processing:
 dpkg does not handle dependencies so and we try to install a package one of two thing will happend:
 
 * whether It will completely fail !
-* or it will install the package but leave it unconfigured until all dependencies are installed and the apt tool is used to finish the configuration\(`apt-get install -f`we will see it\).
+* or it will install the package but leave it unconfigured until all dependencies are installed and the apt tool is used to finish the configuration(`apt-get install -f`we will see it).
 
 We can also use `dpkg --force-depends`to omit dependencies or `--force-conflicts` to close its eyes to any possible conflicts or `--force-reinstall`for reinstalling, but do not forget that any `--force` command can cause a problem and make the system **inconsistent** state.
 
-dpkg -L \| --listfiles ,To list the files installed by a package:
+dpkg -L | --listfiles ,To list the files installed by a package:
 
-```text
+```
 root@ubuntu16-1:~# dpkg -L zip 
 /.
 /usr
@@ -191,18 +191,18 @@ root@ubuntu16-1:~# dpkg -L zip
 /usr/share/doc/zip/changelog.gz
 ```
 
-dpkg -S \| --serach ,If we are not sure which package installed a file, dpkg -S may be able to tell us :
+dpkg -S | --serach ,If we are not sure which package installed a file, dpkg -S may be able to tell us :
 
-```text
+```
 root@ubuntu16-1:~# dpkg -S /usr/bin/zipcloak 
 zip: /usr/bin/zipcloak
 ```
 
 note:We can also use `dpkg -S string` and it would do use regular expression search in the file system to find any matches with the string we have types.
 
-dpkg -s \| --status ,Check a Package is installed or not:
+dpkg -s | --status ,Check a Package is installed or not:
 
-```text
+```
 root@ubuntu16-1:~# dpkg -s zip
 Package: zip
 Status: deinstall ok installed
@@ -226,9 +226,9 @@ Original-Maintainer: Santiago Vila <sanvila@debian.org>
 Homepage: http://www.info-zip.org/Zip.html
 ```
 
-dpkg -c \| --contents ,will display the contents of a “.deb” package in long-list format:
+dpkg -c | --contents ,will display the contents of a “.deb” package in long-list format:
 
-```text
+```
 root@ubuntu16-1:~# dpkg -c zip_3.0-11_amd64.deb 
 drwxr-xr-x root/root         0 2015-08-16 22:10 ./
 drwxr-xr-x root/root         0 2015-08-16 22:10 ./usr/
@@ -263,26 +263,26 @@ Do not mess `-c` with -C, -C checks for partially installed packages.
 
 ### dpkg-reconfigure
 
-After package installation, it is possible to go back and change the configuration of a package by using the dpkg-reconfigure program \(or another program such as Synaptic\). For example try:
+After package installation, it is possible to go back and change the configuration of a package by using the dpkg-reconfigure program (or another program such as Synaptic). For example try:
 
-```text
+```
 root@ubuntu16-1:~# dpkg-reconfigure tzdata
 ```
 
-dpkg -r \| --remove , remove a package using  its name :
+dpkg -r | --remove , remove a package using  its name :
 
-```text
+```
 root@ubuntu16-1:~# dpkg -r telnet
 (Reading database ... 229441 files and directories currently installed.)
 Removing telnet (0.17-40) ...
 Processing triggers for man-db (2.7.5-1) ...
 ```
 
-dpkg cares about dependencies by  and does not remove them by default,\(which is why it doesn't get .deb file, instead it requires  package name inorder to explore dependencies\), how ever we can force it with`dpkg -r --force-depends` command but is NOT recommended. It is better to use a package manager that handles dependencies to ensure that the system is in a consistent state.
+dpkg cares about dependencies by  and does not remove them by default,(which is why it doesn't get .deb file, instead it requires  package name inorder to explore dependencies), how ever we can force it with`dpkg -r --force-depends` command but is NOT recommended. It is better to use a package manager that handles dependencies to ensure that the system is in a consistent state.
 
-note:dpkg -P \| --purge purge a package! We can also use ‘P‘ option in place of ‘r’ which will remove the package along with configuration file. The ‘r‘ option will only remove the package and not configuration files.
+note:dpkg -P | --purge purge a package! We can also use ‘P‘ option in place of ‘r’ which will remove the package along with configuration file. The ‘r‘ option will only remove the package and not configuration files.
 
-```text
+```
 root@ubuntu16-1:~# dpkg -P vsftpd
 (Reading database ... 229487 files and directories currently installed.)
 Removing vsftpd (3.0.3-3ubuntu2) ...
@@ -294,7 +294,7 @@ Do not get confused -P with -p , -p will print information about package.
 
 dpkg has lots of options and switches try dpkg --help for more information :
 
-```text
+```
 root@ubuntu16-1:~# dpkg --help
 Usage: dpkg [<option> ...] <command>
 
@@ -379,13 +379,13 @@ When we work with dpkg we have to have .deb package in hand in order to work wit
 
 ### /etc/apt/sources.list
 
-This file contains information about what repositories \[online / remote \] the system will use. This file contains lines in the following format:
+This file contains information about what repositories \[online / remote ] the system will use. This file contains lines in the following format:
 
-```text
+```
 deb location-of-resources distribution component(s)
 ```
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/apt/sources.list
 # deb cdrom:[Ubuntu 16.04.3 LTS _Xenial Xerus_ - Release amd64 (20170801)]/ xenial main restricted
 
@@ -440,8 +440,8 @@ deb http://security.ubuntu.com/ubuntu xenial-security multiverse
 # deb-src http://security.ubuntu.com/ubuntu xenial-security multiverse
 ```
 
-`deb` lines are relative to binary packages, that we can install with apt.  
-`deb-src` lines are relative to source packages \(as downloaded by apt-get source $package\) and next compiled. Source packages are needed only if we want to compile some package ourselves, or inspect the source code for a bug. Ordinary users don't need to include such repositories.
+`deb` lines are relative to binary packages, that we can install with apt.\
+`deb-src` lines are relative to source packages (as downloaded by apt-get source $package) and next compiled. Source packages are needed only if we want to compile some package ourselves, or inspect the source code for a bug. Ordinary users don't need to include such repositories.
 
 The repository components are:
 
@@ -452,7 +452,7 @@ The repository components are:
 
 Some distributions like Ubuntu also have `/etc/apt/sources.list.d` directory which provides a way to add sources.list entries in separate `.list` files.
 
-```text
+```
 root@ubuntu16-1:/# ls /etc/apt/sources.list.d
 peek-developers-ubuntu-stable-xenial.list
 root@ubuntu16-1:/# cat /etc/apt/sources.list.d/peek-developers-ubuntu-stable-xenial.list 
@@ -462,7 +462,7 @@ deb http://ppa.launchpad.net/peek-developers/stable/ubuntu xenial main
 
 All `.list` files are compiled and added to `/etc/apt/sources.list` file.
 
-## APT \(Advanced Packaging Tool\)
+## APT (Advanced Packaging Tool)
 
 It is a very popular, free, powerful and useful command line package management system that is a front end for dpkg package management system.Initially it was designed for Debian’s`.deb`packages
 
@@ -475,14 +475,14 @@ It is consist of two commands:
 
 ### **What is apt-get?**
 
-The apt-get is the command-line tool for working with APT software packages, that is used to work with Ubuntu’s APT \(Advanced Packaging Tool\) library to perform installation of new software packages, removing existing software packages, upgrading of existing software packages and even used to upgrading the entire operating system.     
+The apt-get is the command-line tool for working with APT software packages, that is used to work with Ubuntu’s APT (Advanced Packaging Tool) library to perform installation of new software packages, removing existing software packages, upgrading of existing software packages and even used to upgrading the entire operating system. **  **\
 ****
 
-**apt-get update** 
+**apt-get update **
 
-This will help us to download a **list of packages** from different repositories included on our system and updates them when there are new versions of packages and their dependencies. \(After any modification in repositories we have to run apt-update manually other wise, system local cache from previous repositories will be used\)
+This will help us to download a **list of packages** from different repositories included on our system and updates them when there are new versions of packages and their dependencies. (After any modification in repositories we have to run apt-update manually other wise, system local cache from previous repositories will be used)
 
-```text
+```
 root@ubuntu16-1:/# apt-get update 
 Hit:1 http://us.archive.ubuntu.com/ubuntu xenial InRelease                     
 Hit:2 http://security.ubuntu.com/ubuntu xenial-security InRelease              
@@ -497,7 +497,7 @@ Reading state information... Done
 
 to see what packages can be upgraded:
 
-```text
+```
 root@ubuntu16-1:/# apt-get list --upgradable 
 Listing... Done
 appstream/xenial-updates 0.9.4-1ubuntu4 amd64 [upgradable from: 0.9.4-1ubuntu3]
@@ -519,7 +519,7 @@ New versions of currently installed packages that cannot be upgraded without cha
 
 An update must be performed first so that apt-get knows that new versions of packages are available.
 
-```text
+```
 root@ubuntu16-1:/# apt-get upgrade 
 Reading package lists... Done
 Building dependency tree       
@@ -572,13 +572,13 @@ Processing triggers for man-db (2.7.5-1) ...
 
 **apt-get dist-upgrade**
 
-dist-upgrade in addition to performing the function of upgrade, also intelligently handles changing dependencies with new versions of packages \(including the kernel\)
+dist-upgrade in addition to performing the function of upgrade, also intelligently handles changing dependencies with new versions of packages (including the kernel)
 
 If we want to upgrade, unconcerned of whether software packages will be added or removed to fulfill dependencies, use the ‘dist-upgrade‘ sub command.
 
 apt-get has a "smart" conflict resolution system, and it will attempt to upgrade the most important packages at the expense of less important ones if necessary.
 
-```text
+```
 root@ubuntu16-1:~# apt-get dist-upgrade 
 Reading package lists... Done
 Building dependency tree       
@@ -631,7 +631,7 @@ Unpacking iucode-tool (1.5.1-1ubuntu0.1) ...
 
 The ‘autoremove‘ sub command is used to auto remove packages that were certainly installed to satisfy dependencies for other packages and but they were now no longer required. For example:
 
-```text
+```
 root@ubuntu16-1:~# apt-get autoremove
 Reading package lists... Done
 Building dependency tree       
@@ -654,7 +654,7 @@ Processing triggers for libc-bin (2.23-0ubuntu10) ...
 
 Install a package as follows by specify a single package name or install many packages at once by listing all their names:
 
-```text
+```
 root@ubuntu16-1:~# apt-get install vsftpd
 Reading package lists... Done
 Building dependency tree       
@@ -693,7 +693,7 @@ Processing triggers for ureadahead (0.100.0-19) ...
 
 Remove Packages without their Configuration Files:
 
-```text
+```
 root@ubuntu16-1:~# apt-get remove vsftpd 
 Reading package lists... Done
 Building dependency tree       
@@ -715,7 +715,7 @@ Processing triggers for man-db (2.7.5-1) ...
 
 apt with remove, it only removes the package files but configuration files remain on the system. Therefore to remove a package and it’s configuration files, we will have to use purge.
 
-```text
+```
 root@ubuntu16-1:~# apt-get purge vsftpd
 Reading package lists... Done
 Building dependency tree       
@@ -735,17 +735,17 @@ Purging configuration files for vsftpd (3.0.3-3ubuntu2) ...
 
 #### apt-get clean
 
-To delete downloaded packages \(.deb\) already installed \(and no longer needed\) and it would free up more space by cleaning the cache.
+To delete downloaded packages (.deb) already installed (and no longer needed) and it would free up more space by cleaning the cache.
 
-```text
+```
 root@ubuntu16-1:~# apt-get clean
 ```
 
 #### apt-get autoclean
 
-To remove all stored archives in your cache for packages that can not be downloaded anymore \(thus packages that are no longer in the repository or that have a newer version in the repository\).
+To remove all stored archives in your cache for packages that can not be downloaded anymore (thus packages that are no longer in the repository or that have a newer version in the repository).
 
-```text
+```
 root@ubuntu16-1:~# apt-get autoclean 
 Reading package lists... Done
 Building dependency tree       
@@ -756,7 +756,7 @@ Reading state information... Done
 
 Will check the the currently installed packages for any broken installation.
 
-```text
+```
 root@ubuntu16-1:~# apt-get check 
 Reading package lists... Done
 Building dependency tree       
@@ -769,7 +769,7 @@ The apt-cache command line tool is used for searching apt software package cache
 
 Before start using apt-cache it is good to do apt-get check first:
 
-```text
+```
 root@ubuntu16-1:~# apt-get check 
 Reading package lists... Done
 Building dependency tree       
@@ -780,9 +780,9 @@ Because this command builds new cache by comparing the current state with the st
 
 **apt-cache search**
 
-Find Out Package Name and Description of Software \(doesn't require root access because it is querying the cache\)
+Find Out Package Name and Description of Software (doesn't require root access because it is querying the cache)
 
-```text
+```
 root@ubuntu16-1:~# apt-cache search netcat
 netcat-openbsd - TCP/IP swiss army knife
 corkscrew - tunnel TCP connections through HTTP proxies
@@ -798,9 +798,9 @@ socat - multipurpose relay for bidirectional data transfer
 
 **apt-cache show**
 
-Check information of package along with it short description say \(version number, check sums, size, installed size, category etc\).
+Check information of package along with it short description say (version number, check sums, size, installed size, category etc).
 
-```text
+```
 root@ubuntu16-1:~# apt-cache show netcat
 Package: netcat
 Priority: optional
@@ -827,7 +827,7 @@ Bugs: https://bugs.launchpad.net/ubuntu/+filebug
 
 ‘showpkg‘ sub command to check the dependencies for particular software packages. whether those dependencies packages are installed or not.
 
-```text
+```
 root@ubuntu16-1:~# apt-cache showpkg netcat
 Package: netcat
 Versions: 
@@ -859,7 +859,7 @@ netcat-openbsd 1.105-7ubuntu1 (= )
 
 **apt-cache depends** and **apt-cache rdepends** allow us to query dependencies.
 
-```text
+```
 root@ubuntu16-1:~# apt-cache depends telnet
 telnet
   Depends: netbase
@@ -897,11 +897,11 @@ use **apt-cache stat** to show statistics of installed packages on your computer
 
 ## aptitude
 
-aptitude is another high-level package manager for Debian-based systems, and can be used to perform management tasks \(installing, upgrading, and removing packages, also handling dependency resolution automatically\) in a fast and easy way. It provides the same functionality as apt-get and additional ones, such as offering access to several versions of a package.
+aptitude is another high-level package manager for Debian-based systems, and can be used to perform management tasks (installing, upgrading, and removing packages, also handling dependency resolution automatically) in a fast and easy way. It provides the same functionality as apt-get and additional ones, such as offering access to several versions of a package.
 
-You might need to install aptitude first \( `apt-get install aptitude` \)
+You might need to install aptitude first ( `apt-get install aptitude` )
 
-```text
+```
 root@ubuntu16-1:~#apt-get install aptitude
 
 root@ubuntu16-1:~# aptitude --help
@@ -969,7 +969,7 @@ Usage: aptitude [-S fname] [-u|-i]
 
 As an example lets search and get info about netcat using aptitude:
 
-```text
+```
 root@ubuntu16-1:~# aptitude update
 Hit http://mirror.iranserver.com/ubuntu xenial InRelease                  
 Get: 1 http://mirror.iranserver.com/ubuntu xenial-updates InRelease [109 kB]
@@ -1025,20 +1025,20 @@ Apart from main difference being that Aptitude is a high-level package manager w
 
 Debian Family System
 
-**dpkg:**    
-
+**dpkg:  **\
+****
 
 * low-level or underlying packet manager
 * Unpacks, installs, removes and build packages
 * It can't download or resolve dependencies
 
-**Advance Package Tool \(apt\) :**
+**Advance Package Tool (apt) :**
 
-* Build on top of dpkg \(depends on it\)
+* Build on top of dpkg (depends on it)
 * works with groups of packages
 * It can automatically download and install packages to figure out and resolve dependencies.
 * Tts native user interface is through the apt-get and apt-cache commands
-* Usually a user interface is created on top of it for an specific distro \(SW update GUIs are an example of this\)
+* Usually a user interface is created on top of it for an specific distro (SW update GUIs are an example of this)
 
 .
 
@@ -1048,9 +1048,9 @@ Debian Family System
 
 sources:
 
-[http://www.pepedocs.com/notes?tid=linux&nid=lfs101x](http://www.pepedocs.com/notes?tid=linux&nid=lfs101x)
+[http://www.pepedocs.com/notes?tid=linux\&nid=lfs101x](http://www.pepedocs.com/notes?tid=linux\&nid=lfs101x)
 
-[https://www.dennyzhang.com/linux\_package\_mgmt](https://www.dennyzhang.com/linux_package_mgmt)
+[https://www.dennyzhang.com/linux_package_mgmt](https://www.dennyzhang.com/linux_package_mgmt)
 
 [https://www.networkworld.com/article/3305810/linux/how-to-list-repositories-on-linux.html](https://www.networkworld.com/article/3305810/linux/how-to-list-repositories-on-linux.html)
 
@@ -1058,7 +1058,7 @@ sources:
 
 [https://www.tecmint.com/dpkg-command-examples/](https://www.tecmint.com/dpkg-command-examples/)
 
-[https://geek-university.com/linux/dselect/](https://geek-university.com/linux/dselect/)\( like dpkg but has UI\)
+[https://geek-university.com/linux/dselect/](https://geek-university.com/linux/dselect/)( like dpkg but has UI)
 
 [https://unix.stackexchange.com/questions/20504/the-difference-between-deb-versus-deb-src-in-sources-list](https://unix.stackexchange.com/questions/20504/the-difference-between-deb-versus-deb-src-in-sources-list)
 
@@ -1081,4 +1081,3 @@ sources:
 [https://www.tecmint.com/linux-package-management/](https://www.tecmint.com/linux-package-management/)
 
 [https://www.tecmint.com/difference-between-apt-and-aptitude/](https://www.tecmint.com/difference-between-apt-and-aptitude/)
-

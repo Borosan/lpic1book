@@ -1,8 +1,8 @@
 # 106.2. Setup a display manager
 
-**Weight:** 1
+**Weight: **1
 
-**Description:** Candidates should be able to describe the basic features and configuration of the LightDM display manager. This objective covers awareness of the display managers XDM \(X Display Manger\), GDM \(Gnome Display Manager\) and KDM \(KDE Display Manager\).
+**Description: **Candidates should be able to describe the basic features and configuration of the LightDM display manager. This objective covers awareness of the display managers XDM (X Display Manger), GDM (Gnome Display Manager) and KDM (KDE Display Manager).
 
 **Key Knowledge Areas**:
 
@@ -24,7 +24,7 @@ A Linux desktop environment is a collection of applications designed to work wel
 
 The display manager is a bit of code that provides the GUI login screen for your Linux desktop. After you log in to a GUI desktop, the display manager turns control over to the window manager.
 
-> Kernel -&gt; X -&gt; DisplayManager -&gt; Desktop
+> Kernel -> X -> DisplayManager -> Desktop
 
  When you log out of the desktop, the display manager is given control again to display the login screen and wait for another login.
 
@@ -34,18 +34,18 @@ There are several display managers—some are provided with their respective des
 
  Any of the display managers can be used for your login screen regardless of which desktop you are using. Such is the flexibility of Linux and well-written, modular code.
 
-| Desktop | Display Manager | notes |
-| :--- | :--- | :--- |
-| GNOME | GDM | GNOME Display Manager |
-| KDE | KDM | KDE Display Manager \(up through Fedora 20\) |
-| KDE | SDDM | Simple Desktop Display Manager \(Fedora 21 and above\) |
-| LXDE | LXDM | LXDE Display Manager |
-|  | XDM | Default X Window System Display Manager |
-|  | LightDM | Lightweight Display Manage |
+| Desktop | Display Manager | notes                                                |
+| ------- | --------------- | ---------------------------------------------------- |
+| GNOME   | GDM             | GNOME Display Manager                                |
+| KDE     | KDM             | KDE Display Manager (up through Fedora 20)           |
+| KDE     | SDDM            | Simple Desktop Display Manager (Fedora 21 and above) |
+| LXDE    | LXDM            | LXDE Display Manager                                 |
+|         | XDM             | Default X Window System Display Manager              |
+|         | LightDM         | Lightweight Display Manage                           |
 
-to get the default display manager you can try : ``
+to get the default display manager you can try :` `
 
-```text
+```
 cat /etc/X11/default-display-manager 
 ###OR
 systemctl status display-manager
@@ -56,7 +56,7 @@ systemctl status display-manager
 
 In this lesson we use CentOS7 which uses gdm display manager by default. Lets switch to lightdm using bellow commands and check it:
 
-```text
+```
 yum install -y epel-release 
 yum search lightdm
 yum install -y lightdm.x86_64 
@@ -75,13 +75,13 @@ if you reboot the service your system will be crashed.
 
 LightDM is a free and open-source X display manager that aims to be lightweight, fast, extensible and multi-desktop.
 
-> **LightDM** is the display manager running in Ubuntu up to version 16.04 LTS. While it has been replaced by GDM in later Ubuntu releases
+>  **LightDM** is the display manager running in Ubuntu up to version 16.04 LTS. While it has been replaced by GDM in later Ubuntu releases
 
 ### /etc/lightdm
 
 LightDM configuration is located in /etc/lightdm directory:
 
-```text
+```
 [root@centos7-1 ~]# ls -l /etc/lightdm/
 total 20
 -rw-r--r-- 1 root root   40 Nov 27  2017 keys.conf
@@ -93,7 +93,7 @@ drwxr-xr-x 2 root root    6 Nov 27  2017 lightdm.conf.d
 
 lets see some confiurations inside /etc/lightdm/lightdm.conf :
 
-```text
+```
 ...
 [Seat:*]
 
@@ -106,9 +106,9 @@ lets see some confiurations inside /etc/lightdm/lightdm.conf :
 ...
 ```
 
-In some distributions \(ubuntu \)configuration files are located inside lightdm.conf.d directory:
+In some distributions (ubuntu )configuration files are located inside lightdm.conf.d directory:
 
-```text
+```
 [root@centos7-1 ~]# ls -l /etc/lightdm/lightdm.conf.d/
 total 0
 ```
@@ -117,7 +117,7 @@ total 0
 
 For instance lets install another greeter session for lightdm and test it
 
-```text
+```
 [root@centos7-1 lightdm]# yum search lightdm | grep greeter
 lightdm-autologin-greeter.noarch : Autologin greeter using LightDM
 slick-greeter.x86_64 : A slick-looking LightDM greeter
@@ -137,7 +137,7 @@ drwxr-xr-x 2 root root    6 Nov 27  2017 lightdm.conf.d
 
 next we need to edit lightdm.conf and change line bellow:
 
-```text
+```
 greeter-session=slick-greeter
 ```
 
@@ -168,4 +168,3 @@ For disabling Display Manager ang going to text mode it depends on your distribu
 [https://wiki.ubuntu.com/LightDM](https://wiki.ubuntu.com/LightDM)
 
 .
-

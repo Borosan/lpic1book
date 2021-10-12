@@ -4,7 +4,7 @@
 
 **Weight:** 2
 
-**Description:** Candidates should be able to install and configure X11.
+**Description: **Candidates should be able to install and configure X11.
 
 **Key Knowledge Areas:**
 
@@ -29,7 +29,7 @@ The X Window System, often known as X, is a windowing system for graphics workst
 
 ![X11 display server protocol](.gitbook/assets/x-overviewall.jpg)
 
-Beside  displaying  the windows for the clients\(applications \) The **X server also** handles input devices such as keyboards, mice, and touchscreens
+Beside  displaying  the windows for the clients(applications ) The **X server also **handles input devices such as keyboards, mice, and touchscreens
 
 {% hint style="info" %}
 **XOrg** Server was the free and open-source implementation of the display server for the X Window System managed by the X.Org Foundation. The X11 name points to X Windows version 11.
@@ -53,7 +53,7 @@ Lets take a quick look at most important ones:
 
 * Files - pathnames for files such as fontpath
 
-```text
+```
 Section "Files"
 	FontPath	"/usr/share/X11/fonts/misc"
 	FontPath	"/usr/share/X11/fonts/100dpi/:unscaled"
@@ -67,7 +67,7 @@ EndSection
 
 * Module - which modules to load
 
-```text
+```
 Section "Module"
 	Load	"bitmap"
 	Load	"ddc"
@@ -83,9 +83,9 @@ EndSection
 
 For example `glx` takes care of 3d graphical effects.
 
-* InputDevice - keyboard and pointer \(mouse\)
+* InputDevice - keyboard and pointer (mouse)
 
-```text
+```
 Section "InputDevice"
 	Identifier	"Generic Keyboard"
 	Driver		"kbd"
@@ -119,7 +119,7 @@ These InputDevice sections are configured for any input devices, such as touchpa
 
 * Monitor - display device description
 
-```text
+```
 Section "Monitor"
 	Identifier	"Generic Monitor"
 	Option		"DPMS"
@@ -128,7 +128,7 @@ EndSection
 
 * Device - video card description/information
 
-```text
+```
 Section "Device"
 	Identifier	"ATI Technologies, Inc. Radeon Mobility 7500 (M7 LW)"
 	Driver		"radeon"
@@ -147,7 +147,7 @@ EndSection
 
 * Screen - binds a video adapter to a monitor
 
-```text
+```
 Section "Screen"
     Identifier    "Screen0"
     Device        "Screen0 ATI Technologies, Inc. Radeon Mobility 7500 (M7 LW)"
@@ -182,7 +182,7 @@ EndSection
 
 * ServerLayout - binds one or more screens with one or more input devices
 
-```text
+```
 Section "ServerLayout"
 	Identifier	"DefaultLayout"
 	Screen		"Default Screen"
@@ -196,9 +196,9 @@ EndSection
 
 There may be situations where-in we need to fetch detailed information about an application window on our Linux system. For example, we might need to get the size and position of the window. 
 
-xwininfo is the tool that'll help us in this case. It's basically a window information utility for X \(or X-Windows system\). It gives Various information about that window depending on which options are selected. Information like size, position, color, depth, … .
+xwininfo is the tool that'll help us in this case. It's basically a window information utility for X (or X-Windows system). It gives Various information about that window depending on which options are selected. Information like size, position, color, depth, … .
 
-```text
+```
 root@ubuntu16-1:~# xwininfo
 
 xwininfo: Please select the window about which you
@@ -233,7 +233,7 @@ xwininfo: Window id: 0x320000a "root@ubuntu16-1: ~"
 
 Xdpyinfo is a utility for displaying information about an X server.
 
-```text
+```
 root@ubuntu16-1:~# xdpyinfo 
 name of display:    :0
 version number:    11.0
@@ -270,16 +270,16 @@ The primary command for executing these network activities is xhost — the serv
 
 * xhost with no option tells us the access status:
 
-```text
+```
 root@ubuntu16-1:~# xhost
 access control enabled, only authorized clients can connect
 SI:localuser:user1
 ```
 
-* xhost + : Turns off access control \(all remote hosts will have access to X server\)
+* xhost + : Turns off access control (all remote hosts will have access to X server)
 *  xhost - : Turns access control back on.
 
-```text
+```
 root@ubuntu16-1:~# xhost +
 access control disabled, clients can connect from any host
 root@ubuntu16-1:~# xhost -
@@ -289,7 +289,7 @@ access control enabled, only authorized clients can connect
 * xhost + hostname: Adds hostname to X server access control list. 
 * xhost - hostname: Removes hostname from X server access control list.
 
-```text
+```
 root@ubuntu16-1:~# xhost +172.16.43.136
 172.16.43.136 being added to access control list
 
@@ -304,10 +304,10 @@ root@ubuntu16-1:~# xhost -172.16.43.136
 
 The xhost program is used to add and delete  user names to the list allowed to make connections to the X server:
 
-* xhost +si:localuser:some\_user Grants "some\_user" access to the "localuser" X, \(localuser refers to the user who is currently logged in.\)
-*  xhost -si:localuser:some\_user Revokes access of "some\_user".
+* xhost +si:localuser:some_user Grants "some_user" access to the "localuser" X, (localuser refers to the user who is currently logged in.)
+*  xhost -si:localuser:some_user Revokes access of "some_user".
 
-```text
+```
 root@ubuntu16-1:~# xhost +si:localuser:payam
 localuser:payam being added to access control list
 
@@ -322,7 +322,7 @@ localuser:payam being removed from access control list
 
 ### DISPLAY
 
-The magic word in the X window system is DISPLAY. A display consists \(simplified\) of:
+The magic word in the X window system is DISPLAY. A display consists (simplified) of:
 
 * a keyboard, 
 * a mouse
@@ -330,7 +330,7 @@ The magic word in the X window system is DISPLAY. A display consists \(simplifie
 
 A DISPLAY is managed by X server program. The server serves displaying capabilities to other programs that connect to it. The remote server knows where it have to redirect the X network traffic via the definition of the DISPLAY environment variable which generally points to an X Display server located on your local computer.
 
-```text
+```
 root@ubuntu16-1:~# echo $DISPLAY
 :0
 ```
@@ -340,19 +340,19 @@ The value of the display environment variable is: **`hostname:D.S`**
 where: 
 
 * **hostname** is the name of the computer where the X server runs. An omitted hostname means the localhost. 
-* **D** is a sequence number \(usually 0\). It can be varied if there are multiple displays connected to one computer. 
+* **D** is a sequence number (usually 0). It can be varied if there are multiple displays connected to one computer. 
 * **S** is the screen number. A display can actually have multiple screens. Usually there's only one screen though where 0 is the default.
 
 > :0.0 means that we are talking about the first screen attached to your first display in your local host
 
 We can  change the DISPLAY environment and connect my graphical output to another machine.
 
-```text
+```
 root@ubuntu16-1:~# export DISPLAY=172.16.43.136:0
 root@ubuntu16-1:~# xeyes 
 ```
 
- In this case if  a graphical program is run , its output \(windows\) will be shown on another machine
+ In this case if  a graphical program is run , its output (windows) will be shown on another machine
 
 > When using the OpenSSH ssh command on Linux, the -X option can be used to specify X11 forwarding.
 
@@ -366,13 +366,12 @@ root@ubuntu16-1:~# xeyes
 
 [https://kb.iu.edu/d/adnu](https://kb.iu.edu/d/adnu)
 
-[https://commons.wikimedia.org/wiki/File:X11\_display\_server\_protocol.svg](https://commons.wikimedia.org/wiki/File:X11_display_server_protocol.svg)
+[https://commons.wikimedia.org/wiki/File:X11\_display_server_protocol.svg](https://commons.wikimedia.org/wiki/File:X11\_display_server_protocol.svg)
 
-[https://en.wikipedia.org/wiki/X.Org\_Server](https://en.wikipedia.org/wiki/X.Org_Server)
+[https://en.wikipedia.org/wiki/X.Org_Server](https://en.wikipedia.org/wiki/X.Org_Server)
 
 [https://mg.pov.lt/xorg.conf](https://mg.pov.lt/xorg.conf)
 
 [https://www.faqforge.com/linux/fetch-detailed-information-application-window-linux/](https://www.faqforge.com/linux/fetch-detailed-information-application-window-linux/) [https://www.x.org/releases/X11R7.7/doc/man/man1/xwininfo.1.xhtml](https://www.x.org/releases/X11R7.7/doc/man/man1/xwininfo.1.xhtml) [https://linux.die.net/man/1/xdpyinfo](https://linux.die.net/man/1/xdpyinfo) [https://www.x.org/releases/X11R7.7/doc/man/man1/xdpyinfo.1.xhtml](https://www.x.org/releases/X11R7.7/doc/man/man1/xdpyinfo.1.xhtml) [https://www.lifewire.com/linux-command-xhost-4093456](https://www.lifewire.com/linux-command-xhost-4093456) [https://beamtic.com/xhost-linux](https://beamtic.com/xhost-linux) [https://linux.die.net/man/1/xhost](https://linux.die.net/man/1/xhost) [https://askubuntu.com/questions/432255/what-is-the-display-environment-variable](https://askubuntu.com/questions/432255/what-is-the-display-environment-variable)
 
 .
-

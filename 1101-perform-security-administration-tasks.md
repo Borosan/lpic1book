@@ -4,7 +4,7 @@
 
 **Weight:** 3
 
-**Description:** Candidates should know how to review system configuration to ensure host security in accordance with local security policies.
+**Description: **Candidates should know how to review system configuration to ensure host security in accordance with local security policies.
 
 **Key Knowledge Areas:**
 
@@ -37,11 +37,11 @@ In this lesson we just take a look at basic security audits. First we review sev
 
 We have learned about suid/guid  when we talked about managing file permissions and owner ship, as a quick review see table bellow:
 
-| access mode |  **on file** | **on directory** |
-| :--- | :--- | :--- |
-| **SUID** | executes with permissions of file owner | nothing |
-| **GUID** | executes with the permissions of group | new files have group membership of directory |
-| **Sticky Bit** | nothing | only owner can delete files |
+| access mode    | ** on file**                            | **on directory**                             |
+| -------------- | --------------------------------------- | -------------------------------------------- |
+| **SUID**       | executes with permissions of file owner | nothing                                      |
+| **GUID**       | executes with the permissions of group  | new files have group membership of directory |
+| **Sticky Bit** | nothing                                 | only owner can delete files                  |
 
 There are some  security concerns while using suid/guid  such as, what will happen if a destructive program has suid/guid permission set on it?  Why should dangerous programs such as rm has suid permission? To search for all suid/guid files we use find command:
 
@@ -49,7 +49,7 @@ There are some  security concerns while using suid/guid  such as, what will happ
 >
 > sudo find / -perm -g+s
 
-```text
+```
 root@ubuntu16-1:~# find / -perm -u+s
 /bin/ping
 /bin/fusermount
@@ -111,14 +111,14 @@ It is important to verify which ports are listening on the server’s network in
 
  One of **netstat** command line tool usage is  for monitoring network  incoming and outgoing connections. By default, netstat displays a list of open sockets which is not very usefull so we usually use it along with `-tuna` switches.
 
-| netstat switch | usage |
-| :--- | :--- |
-| -t | show tcp ports |
-| -u  | show udp ports |
-| -n | Show numerical addresses instead of trying to determine symbolic host, port or user names |
-| -a | Show both listening and non-listening \(for TCP this means established connections\) |
+| netstat switch | usage                                                                                     |
+| -------------- | ----------------------------------------------------------------------------------------- |
+| -t             | show tcp ports                                                                            |
+| -u             | show udp ports                                                                            |
+| -n             | Show numerical addresses instead of trying to determine symbolic host, port or user names |
+| -a             | Show both listening and non-listening (for TCP this means established connections)        |
 
-```text
+```
 root@ubuntu16-1:~# netstat -tuna
 Active Internet connections (servers and established)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State      
@@ -148,13 +148,13 @@ udp     6144      0 0.0.0.0:5353            0.0.0.0:*
 ...
 ```
 
- Before a TCP connection can be opened, we need to have a **server** with a listener. The listener will listen on incoming connections on a specific port, This state is represented as `LISTEN`.  If everything worked properly,  the connection is marked as `ESTABLISHED` on both end-point.  In these tables `0.0.0.0` dictates _any address_ or _any interface_.
+ Before a TCP connection can be opened, we need to have a **server** with a listener. The listener will listen on incoming connections on a specific port, This state is represented as` LISTEN`.  If everything worked properly,  the connection is marked as `ESTABLISHED `on both end-point.  In these tables `0.0.0.0` dictates _any address_ or _any interface_.
 
 ### lsof
 
  **lsof** meaning **‘LiSt Open Files’** is used to find out which files are open by which process. As we know, in Linux everything is a file, so we can even check the files that are opened by some network connections in the system using lsof command with -i switch, -i list all network connections:
 
-```text
+```
 root@ubuntu16-1:~# lsof -i
 COMMAND     PID   USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 avahi-dae   791  avahi   12u  IPv4  24139      0t0  UDP *:mdns 
@@ -187,12 +187,12 @@ dhclient  14166   root    6u  IPv4 466685      0t0  UDP *:bootpc
 
 this command shows the command, PID, user running it and source and destination IP and tells of if this is a LISTENING or STABLISHED connection.
 
-| lsof switch | usage |
-| :--- | :--- |
-| -iTCP _or_ -iUDP | just show TCP or UDP Connections |
-| -i 4 _or_ -i 6 | you can have IPv4 and IPv6 files displayed separately |
-| -n  | Do not use DNS name |
-| -P | do not convert port numbers to port names |
+| lsof switch      | usage                                                 |
+| ---------------- | ----------------------------------------------------- |
+| -iTCP _or_ -iUDP | just show TCP or UDP Connections                      |
+| -i 4 _or_ -i 6   | you can have IPv4 and IPv6 files displayed separately |
+| -n               | Do not use DNS name                                   |
+| -P               | do not convert port numbers to port names             |
 
  If we want  to check which process is using specific port , we can grep the output of any above commands or simply use the `fuser` command.
 
@@ -202,14 +202,14 @@ The fuser command is a very smart utility used to find which process is using a 
 
 The following command creates a tcp listener on port 8080:
 
-```text
+```
 root@ubuntu16-1:~# nc -l -p 8080
 
 ```
 
-Since a tcp server is listening on port 8080, the fuser utility can be used to find the process which is using the server’s socket. The `-v` option is used to put the fuser utility in verbose mode and the `-n` option is used to select the tcp protocol as a name space:
+Since a tcp server is listening on port 8080, the fuser utility can be used to find the process which is using the server’s socket. The `-v `option is used to put the fuser utility in verbose mode and the `-n `option is used to select the tcp protocol as a name space:
 
-```text
+```
 root@ubuntu16-1:~# fuser -v -n tcp 8080
                      USER        PID ACCESS COMMAND
 8080/tcp:            root      15663 F.... nc
@@ -225,7 +225,7 @@ By default, the fuser tool will look in both IPv6 and IPv4 sockets, but the defa
 Please note that scanning websites from Nmap is not legal, in some cases if you are trying to too much in deep then you will need written permissions from the owner of the website and the IP holder.
 {% endhint %}
 
-```text
+```
 root@ubuntu16-1:~# nmap localhost
 
 Starting Nmap 7.01 ( https://nmap.org ) at 2020-03-18 00:47 +0330
@@ -244,23 +244,23 @@ Nmap done: 1 IP address (1 host up) scanned in 1.62 seconds
 
 By **default**, **Nmap** scans the most common 1,000 ports for each protocol. 
 
-| nmap Target selection | Description |
-| :--- | :--- |
-| nmap 192.168.10.151 | scan a single IP |
-| nmap scanme.nmap.org | scan a host |
-| nmap 192.168.10.150-155 | scan a range of IPs |
-| nmap 192.168.10.0/24 | scan a subnet |
+| nmap Target selection     | Description                   |
+| ------------------------- | ----------------------------- |
+| nmap 192.168.10.151       | scan a single IP              |
+| nmap scanme.nmap.org      | scan a host                   |
+| nmap 192.168.10.150-155   | scan a range of IPs           |
+| nmap 192.168.10.0/24      | scan a subnet                 |
 | nmap -iL myserverlist.txt | scan targets from a text file |
-| nmap -6 \[IP-V6-HERE\] | enables IP v6 scanning |
+| nmap -6 \[IP-V6-HERE]     | enables IP v6 scanning        |
 
 nmap has lots of switches to gain more information about hosts.
 
-| nmap switch | usage |
-| :--- | :--- |
-| -v |  gives more detailed information  |
-| -p _&lt;port\#&gt;_ | scan for information regarding a specific port |
-| -A | discover the operating system information |
-| -O | reveal further operating system information |
+| nmap switch   | usage                                          |
+| ------------- | ---------------------------------------------- |
+| -v            |  gives more detailed information               |
+| -p_ \<port#>_ | scan for information regarding a specific port |
+| -A            | discover the operating system information      |
+| -O            | reveal further operating system information    |
 
 ## examine sudo configuration 
 
@@ -276,7 +276,7 @@ before beginning, in some distributions like ubuntu the default root password is
 
 The Linux command ‘su’ is used to switch from one account to another. User will be prompted for the password of the user switching to.
 
-```text
+```
 user1@ubuntu16-1:~$ su payam
 Password: 
 payam@ubuntu16-1:/home/user1$ 
@@ -284,7 +284,7 @@ payam@ubuntu16-1:/home/user1$
 
 Users can also use su to switch to root account. If user types only ‘su’ without any option then It will be considered as root and user will be prompted to enter root user password.
 
-```text
+```
 payam@ubuntu16-1:/home/user1$ su 
 Password: 
 root@ubuntu16-1:/home/user1# pwd
@@ -295,11 +295,11 @@ payam@ubuntu16-1:
 ```
 
 {% hint style="info" %}
-**what's the difference between 'su' and 'su -' ?** 
+**what's the difference between 'su' and 'su -' ? **
 
-Well, difference is  environment variables. su - change environment, su don't. the su keeps the environment of the old/original user even after the switch to root has been made, while the su - creates a new environment \(as dictated by the ~/.bashrc of the root user\), similar to the case when you explicitly log in as root user from the log-in screen.
+Well, difference is  environment variables. su - change environment, su don't. the su keeps the environment of the old/original user even after the switch to root has been made, while the su - creates a new environment (as dictated by the \~/.bashrc of the root user), similar to the case when you explicitly log in as root user from the log-in screen.
 
-```text
+```
 payam@ubuntu16-1:/home/user1$ su -
 Password: 
 root@ubuntu16-1:~# pwd
@@ -313,7 +313,7 @@ plaese note that `-, -l, --login`switches are all the same.
 
 As we all know, Linux in many ways protects users’ computer being used for bad purposes by some nasty people around us. Using sudo is one of those good ways. Whenever a user tries to install, remove and change any piece of software, the user has to have the root privileges to perform such tasks. sudo, linux command is used to give such permissions to any particular command that a user wants to execute. sudo requires the user to enter user password to give system based permissions. For example user wants to update the operating system by passing command:
 
-```text
+```
 payam@ubuntu16-1:~$ apt-get update
 Reading package lists... Done
 W: chmod 0700 of directory /var/lib/apt/lists/partial failed - SetupAPTPartialDirectory (1: Operation not permitted)
@@ -325,7 +325,7 @@ W: Problem unlinking the file /var/cache/apt/srcpkgcache.bin - RemoveCaches (13:
 
 This error is due to not having root privileges to the user ‘payam’. The root privileges can be required by passing sudo at the very beginning, like below:
 
-```text
+```
 payam@ubuntu16-1:~$ sudo apt-get update
 [sudo] password for payam: 
 Hit:1 http://ppa.launchpad.net/peek-developers/stable/ubuntu xenial InRelease                         
@@ -341,7 +341,7 @@ Get:5 http://archive.ubuntu.com/ubuntu xenial-security InRelease [109 kB]
 
 but how sudo knows who should has root permission? which command could be run under root privilages? sudo keeps its configurations in /etc/sudoers file:
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/sudoers
 #
 # This file MUST be edited with the 'visudo' command as root.
@@ -377,25 +377,25 @@ root	ALL=(ALL:ALL) ALL
 
  The syntax specification for a rule in the `sudoers` file is:
 
-> user \(host\)=\(user:group\) commands
+> user (host)=(user:group) commands
 
 the 3 important lines:  
 
-* \(root ALL=\(ALL\) ALL\) just lets root do everything on any machine as any user. 
-*  \(%admin ALL=\(ALL\) ALL\) lets anybody in the admin group run anything as any user. 
-* %sudo ALL=\(ALL:ALL\) ALL all users in the sudo group have the privileges to run any command
+* (root ALL=(ALL) ALL) just lets root do everything on any machine as any user. 
+*  (%admin ALL=(ALL) ALL) lets anybody in the admin group run anything as any user. 
+* %sudo ALL=(ALL:ALL) ALL all users in the sudo group have the privileges to run any command
 
-> note:  In CentOS, the _**wheel**_ **group** is often found instead of _**sudo**_ **group**.
+> note:  In CentOS, the _**wheel **_**group **is often found instead of _**sudo **_**group**.
 
 {% hint style="info" %}
-#### The difference between _wheel/sudo_ group and _sudo_ user
+#### The difference between_ wheel/sudo_ group and _sudo_ user
 
-In CentOS and Debian, a user belonging to the _wheel /sudo_ group can execute _**su**_ and directly ascend to _root_. Meanwhile, a _sudo_ user would have use the _sudo su_ first. Essentially, there is no real difference except for the syntax used to _**become root**_, and users belonging to both groups can use the _sudo_ command.
+In CentOS and Debian, a user belonging to the _wheel /sudo _group can execute _**su**_ and directly ascend to _root_. Meanwhile, a _sudo _user would have use the _sudo su _first. Essentially, there is no real difference except for the syntax used to _**become root**_, and users belonging to both groups can use the _sudo _command.
 {% endhint %}
 
-**How to edit `/etc/sudors` file ?** If you use a plain editor, mess up the syntax, and save... `sudo` will \(probably\) stop working, and, since `/etc/sudoers` is only modifiable by `root`, you're stuck! so we use **visudo** instead. **visudo** edits the `sudoers` file in a safe fashion, by doing two things:
+**How to edit `/etc/sudors` file ?** If you use a plain editor, mess up the syntax, and save... `sudo` will (probably) stop working, and, since `/etc/sudoers` is only modifiable by `root`, you're stuck! so we use **visudo **instead. **visudo** edits the `sudoers `file in a safe fashion, by doing two things:
 
-* **visudo** checks the file syntax _before_ actually overwriting the `sudoers` file. 
+* **visudo **checks the file syntax _before_ actually overwriting the `sudoers` file. 
 * Additionally, **visudo** locks the`sudoers` file against multiple simultaneous edits. This locking is important if you need to ensure nobody else can mess up your carefully considered config changes.
 
 ## Managing system resources
@@ -406,7 +406,7 @@ Linux operating systems have the ability to limit the amount of various system r
 
 The ulimit command provides control over the resources available to the shell and/or to processes started by it.
 
-```text
+```
 user1@ubuntu16-1:~$ ulimit 
 unlimited
 ```
@@ -421,7 +421,7 @@ To set ulimit value on a parameter use the below command:
 
 as an example lets put limits on file size in the current shell:
 
-```text
+```
 user1@ubuntu16-1:~$ ulimit -f 0
 
 user1@ubuntu16-1:~$ ulimit -a | grep file
@@ -441,7 +441,7 @@ File size limit exceeded (core dumped)
 
  For the ulimits to persists across reboots we need to set the ulimit values in the configuration file **/etc/security/limits.conf**. it is also used for system wide limits:
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/security/limits.conf 
 # /etc/security/limits.conf
 #
@@ -505,7 +505,7 @@ There are two types of limits: A **soft limit** is like a warning and **hard lim
 
 note: soft limit cannot be higher than the hard limit.
 
-> ulimits is a part of  pluggable authentication module\(PAM\) system  which will be discussed in lpic-2 book.
+> ulimits is a part of  pluggable authentication module(PAM) system  which will be discussed in lpic-2 book.
 
 ## checking the users in the system
 
@@ -515,7 +515,7 @@ As a system administrator, you may want to know who is on the system at any give
 
  **w** command in Linux is used to show who is logged on and what they are doing. This command shows the information about the users currently on the machine and their processes.
 
-```text
+```
 root@ubuntu16-1:~# w
  01:24:45 up  4:33,  4 users,  load average: 0.00, 0.00, 0.00
 USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
@@ -545,7 +545,7 @@ The output of the w command contains the following columns:
 
 The who command is used to get information about currently logged in user on to system.
 
-```text
+```
 root@ubuntu16-1:~# who
 user1    tty7         2020-03-22 15:11 (:0)
 payam    pts/19       2020-03-23 01:11 (127.0.0.1)
@@ -572,7 +572,7 @@ so we need another command to get information about logged out people, and that 
 
  The **last** command in Linux is used to display the list of all the users **logged in and out**.
 
-```text
+```
 root@ubuntu16-1:~# last
 user2    pts/21       127.0.0.1        Mon Mar 23 01:24   still logged in
 root     pts/22       192.168.52.133   Mon Mar 23 01:16   still logged in
@@ -591,14 +591,14 @@ The output of this command contains the following columns:
 5. `Total working time`
 
 {% hint style="info" %}
-the last command uses /var/log/wtmp file to display listing of last logged in users. This file is like history for utmp file, i.e. it maintains the logs of all logged in and logged out users \(in the past\).
+the last command uses /var/log/wtmp file to display listing of last logged in users. This file is like history for utmp file, i.e. it maintains the logs of all logged in and logged out users (in the past).
 {% endhint %}
 
 {% hint style="info" %}
 /var/log/btmp keeps track of failed login attempts. So try `last -f /var/log/btmp` to check last failed logins .
 {% endhint %}
 
-`last` also gives us information about latest system reboots, do not forget to take a look at `last --help`.
+`last `also gives us information about latest system reboots, do not forget to take a look at `last --help`.
 
 .
 
@@ -610,9 +610,9 @@ the last command uses /var/log/wtmp file to display listing of last logged in us
 
 [https://www.tecmint.com/find-open-ports-in-linux/](https://www.tecmint.com/find-open-ports-in-linux/)
 
-[https://blog.confirm.ch/tcp-connection-states/](https://blog.confirm.ch/tcp-connection-states/) \(tcp 3-way handshake\)
+[https://blog.confirm.ch/tcp-connection-states/](https://blog.confirm.ch/tcp-connection-states/) (tcp 3-way handshake)
 
-[https://jadi.gitbooks.io/lpic1/content/1101\_perform\_security\_administration\_tasks.html](https://jadi.gitbooks.io/lpic1/content/1101_perform_security_administration_tasks.html)
+[https://jadi.gitbooks.io/lpic1/content/1101\_perform_security_administration_tasks.html](https://jadi.gitbooks.io/lpic1/content/1101\_perform_security_administration_tasks.html)
 
 [https://www.geeksforgeeks.org/lsof-command-in-linux-with-examples/](https://www.geeksforgeeks.org/lsof-command-in-linux-with-examples/)
 
@@ -659,4 +659,3 @@ the last command uses /var/log/wtmp file to display listing of last logged in us
 [https://www.geeksforgeeks.org/last-command-in-linux-with-examples/](https://www.geeksforgeeks.org/last-command-in-linux-with-examples/)
 
 .
-

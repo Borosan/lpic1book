@@ -35,27 +35,27 @@ By scheduling :
 * We are  sure that  jobs  always run the same way
 * System administrators can sleep more!
 
-### Run jobs at regular intervals <a id="run-jobs-at-regular-intervals"></a>
+### Run jobs at regular intervals <a href="run-jobs-at-regular-intervals" id="run-jobs-at-regular-intervals"></a>
 
 Linux systems have two facilities for scheduling jobs to run at regular intervals:
 
 * The original `cron` facility is best suited to servers and systems that are continuously powered on.
-* The `anacron` \(or anachronistic `cron`\) facility is suited to systems such as desktops or laptops that can be asleep or running on battery power.
+* The `anacron` (or anachronistic `cron`) facility is suited to systems such as desktops or laptops that can be asleep or running on battery power.
 
-| cron | anacron |
-| :--- | :--- |
-| Good for servers | Good for laptops and desktops |
-| Granularity from one minute to one year | Daily, weekly, and monthly granularity |
+| cron                                                 | anacron                                |
+| ---------------------------------------------------- | -------------------------------------- |
+| Good for servers                                     | Good for laptops and desktops          |
+| Granularity from one minute to one year              | Daily, weekly, and monthly granularity |
 | Job runs only if system is running at scheduled time | Job runs when system is next available |
-| Can be used by normal users | Needs root authority |
+| Can be used by normal users                          | Needs root authority                   |
 
-### Schedule periodic jobs with cron <a id="schedule-periodic-jobs-with-cron"></a>
+### Schedule periodic jobs with cron <a href="schedule-periodic-jobs-with-cron" id="schedule-periodic-jobs-with-cron"></a>
 
  The `cron` facility consists of the `cron` daemon and a set of tables that describe what work is to be done and with what frequency. The `cron` daemon is usually started by the `init`, `upstart`, or `systemd` process at system startup. 
 
 ### crontab file syntax and Operators
 
-Crontab \(cron table\) is a text file that specifies the schedule of cron jobs. The `cron` daemon wakes up every minute and checks each crontab for jobs that need to run. 
+Crontab (cron table) is a text file that specifies the schedule of cron jobs. The `cron` daemon wakes up every minute and checks each crontab for jobs that need to run. 
 
  There are two types of crontab files.  The  individual user crontab files and  system-wide crontab files.
 
@@ -63,7 +63,7 @@ Crontab \(cron table\) is a text file that specifies the schedule of cron jobs. 
 
 Each line in the user crontab file contains six fields separated by a space followed by the command to be run.
 
-```text
+```
 * * * * * command(s)
 - - - - -
 | | | | |
@@ -83,7 +83,7 @@ Each line in the user crontab file contains six fields separated by a space foll
 
 Lets see some examples:
 
-```text
+```
 @reboot      ### on reboot
 
 50 13 * * *  ### 1:50 PM daily
@@ -121,7 +121,7 @@ You can use the crontab command to view, add, remove, or modify cron jobs using 
 * `crontab -i` :Remove your current crontab file with a prompt before removal.
 * `crontab -u <username>` : Edit other user crontab file. Requires system administrator privileges.
 
-```text
+```
 user1@ubuntu16-1:~$ crontab -e
 no crontab for user1 - using an empty one
 
@@ -136,7 +136,7 @@ Choose 1-4 [2]: 3
 
 The crontab  -e command opens the crontab file using the editor specified by the `VISUAL` or `EDITOR` environment variables.
 
-```text
+```
 # Edit this file to introduce tasks to be run by cron.
 # 
 # Each task to run has to be defined through a single line
@@ -165,7 +165,7 @@ The crontab  -e command opens the crontab file using the editor specified by the
 
 as an example add bellow line to above and it would send and email every 5 mintues:
 
-```text
+```
 5 * * * * echo "Hello" | mail -s "Cron Test" user1@localhost.com
 ```
 
@@ -173,7 +173,7 @@ crontab -e also check the syntax before exiting the file , which is really helpf
 
 crontab -l would show the above contents. Lets check if user crontab file has been created:
 
-```text
+```
 root@ubuntu16-1:/var/spool/cron/crontabs# ls -l
 total 4
 -rw------- 1 user1 crontab 1154 Feb 15 05:07 user1
@@ -187,19 +187,19 @@ total 4
 
  `/etc/crontab` and the files inside the `/etc/cron.d` directory are system-wide **crontab** files that can be edited only by the system administrators.
 
-> /etc/crontab is  updated by direct editing. You cannot use the `crontab` command to update file files or files in the /etc/cron.d directory.
+>  /etc/crontab is  updated by direct editing. You cannot use the `crontab` command to update file files or files in the /etc/cron.d directory.
 
-#### System-wide Crontab Files <a id="system-wide-crontab-files"></a>
+#### System-wide Crontab Files <a href="system-wide-crontab-files" id="system-wide-crontab-files"></a>
 
 The syntax of system-wide crontab files is slightly different than user crontabs. It contains an additional mandatory user field that specifies which user will run the cron job.
 
-```text
+```
 * * * * * <username> command(s)
 ```
 
-This file should be edited with an editor directly and we can mention which user runs command\(s\).
+This file should be edited with an editor directly and we can mention which user runs command(s).
 
-```text
+```
 # /etc/crontab: system-wide crontab
 # Unlike any other crontab you don't have to run the `crontab'
 # command to install the new version when you edit this file
@@ -225,7 +225,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 In most Linux distributions you can also put **scripts** inside the `/etc/cron.{hourly,daily,weekly,monthly}` directories and the scripts will be executed every `hour/day/week/month`.
 
-```text
+```
 root@ubuntu16-1:~# tree /etc/cron*
 /etc/cron.d
 ├── anacron
@@ -264,7 +264,7 @@ root@ubuntu16-1:~# tree /etc/cron*
 
 as an example lets take look at one of them:
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/cron.daily/passwd 
 #!/bin/sh
 
@@ -287,7 +287,7 @@ The cron facility works well for systems that run continuously.If the system is 
 
  The table of jobs for `anacron` is stored in /etc/anacrontab, which has a slightly different format from /etc/crontab.
 
-```text
+```
 root@ubuntu16-1:/# cat /etc/anacrontab 
 # /etc/anacrontab: configuration file for anacron
 
@@ -304,16 +304,16 @@ LOGNAME=root
 @monthly	15	cron.monthly	run-parts --report /etc/cron.monthly
 ```
 
-> just like/etc/crontab , /etc/anacrontab is updated by direct editing.
+>  just like/etc/crontab , /etc/anacrontab is updated by direct editing. 
 
 {% hint style="info" %}
 #### Anacrontab Format
 
-```text
+```
 period   delay   job-identifier   command
 ```
 
-*  **period in days** : specifies the frequency of execution of a job in  _N_ days.
+* ** period in days** : specifies the frequency of execution of a job in  _N_ days.
 *  **delay in minutes**: number of minutes anacron should wait before executing the job after reboot.
 *  **job-identifier :**It is the name for the job’s timestamp file. It should be unique for each job. This will be available as a file under the /var/spool/anacron directory.
 *  **command**: specifies the command to execute. 
@@ -323,7 +323,7 @@ period   delay   job-identifier   command
 
  `anacron` keeps a time stamp file in /var/spool/anacron for each job to record when the job runs. When `anacron` runs, it checks to see if the required number of days has passed since a job last ran and runs the job if necessary.
 
-```text
+```
 root@ubuntu16-1:/# ls -l /var/spool/anacron/
 total 12
 -rw------- 1 root root 9 Feb 15 07:35 cron.daily
@@ -333,24 +333,24 @@ total 12
 
 This file will contain a single line that indicates the last time when this job was executed.
 
-```text
+```
 root@ubuntu16-1:/# cat /var/spool/anacron/cron.daily 
 20200215
 ```
 
 ### at
 
- Sometimes you need to run a job at a future time just once, rather than regularly. For this purpose you use the `at` command. \(ubuntu: `apt install at`\)
+ Sometimes you need to run a job at a future time just once, rather than regularly. For this purpose you use the `at` command. (ubuntu: `apt install at`)
 
  A typical **at** command sequence looks like this
 
-```text
+```
 at 5:45
 ```
 
-By running at command  It then places you at a special prompt, where you can type in the command \(or series of commands\) to be run at the scheduled time. When you're done, press **Control-D** on a new line, and your command will be placed in the queue.
+By running at command  It then places you at a special prompt, where you can type in the command (or series of commands) to be run at the scheduled time. When you're done, press **Control-D** on a new line, and your command will be placed in the queue.
 
-```text
+```
 user1@ubuntu16-1:~$ at 5:45
 warning: commands will be executed using /bin/sh
 at> touch BlaHBlaH 
@@ -365,7 +365,7 @@ user1@ubuntu16-1:~$ ls -ltrh | grep -i blah
 
 Some other examples of at command:
 
-```text
+```
   Example                  Schedule Task at
 -----------                -------------------
 at 10:00 AM                at coming 10:00 AM
@@ -388,7 +388,7 @@ at command has other members in its family:
 
 lists the pending jobs of users
 
-```text
+```
 user1@ubuntu16-1:~$ at 06:20
 warning: commands will be executed using /bin/sh
 at> touch file1
@@ -409,7 +409,7 @@ user1@ubuntu16-1:~$ atq
 
  delete jobs by their job number
 
-```text
+```
 user1@ubuntu16-1:~$ atrm 5
 user1@ubuntu16-1:~$ atq
 4	Sat Feb 15 06:20:00 2020 a user1
@@ -437,7 +437,7 @@ These access control files work together as follows:
 
 Superuser privileges are required to edit or create the cron.deny and cron.allow files.
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/cron.deny
 user2
 ```
@@ -453,14 +453,14 @@ The corresponding /etc/at.allow and /etc/at.deny files have similar effects for 
 .
 
 {% hint style="info" %}
-### Crontab Variables <a id="crontab-variables"></a>
+### Crontab Variables <a href="crontab-variables" id="crontab-variables"></a>
 
 The cron daemon automatically sets several environment variables.
 
 * The default path is set to `PATH=/usr/bin:/bin`. If the command you are calling is present in the cron specified path, you can either use the absolute path to the command or change the cron `$PATH` variable. You can’t implicitly append `:$PATH` as you would do with a regular script.
 * The default shell is set to `/bin/sh`. You can set a different shell by changing the `SHELL` variable.
 * Cron invokes the command from the user’s home directory. The `HOME` variable can be overridden by settings in the crontab.
-* The email notification is sent to the owner of the crontab. To overwrite the default behavior, you can use the `MAILTO` environment variable with a list \(comma separated\) of all the email addresses you want to receive the email notifications. If `MAILTO` is defined but empty \(`MAILTO=""`\), no mail is sent.
+* The email notification is sent to the owner of the crontab. To overwrite the default behavior, you can use the `MAILTO` environment variable with a list (comma separated) of all the email addresses you want to receive the email notifications. If `MAILTO` is defined but empty (`MAILTO=""`), no mail is sent.
 {% endhint %}
 
 .
@@ -471,7 +471,7 @@ The cron daemon automatically sets several environment variables.
 
 [https://linuxize.com/post/scheduling-cron-jobs-with-crontab/](https://linuxize.com/post/scheduling-cron-jobs-with-crontab/)
 
-[https://jadi.gitbooks.io/lpic1/content/1072\_automate\_system\_administration\_tasks\_by\_scheduling\_jobs.html](https://jadi.gitbooks.io/lpic1/content/1072_automate_system_administration_tasks_by_scheduling_jobs.html)
+[https://jadi.gitbooks.io/lpic1/content/1072\_automate_system_administration_tasks_by_scheduling_jobs.html](https://jadi.gitbooks.io/lpic1/content/1072\_automate_system_administration_tasks_by_scheduling_jobs.html)
 
 [https://www.thegeekdiary.com/centos-rhel-anacron-basics-what-is-anacron-and-how-to-configure-it/](https://www.thegeekdiary.com/centos-rhel-anacron-basics-what-is-anacron-and-how-to-configure-it/)
 
@@ -484,4 +484,3 @@ The cron daemon automatically sets several environment variables.
 [https://docs.oracle.com/cd/E19253-01/817-0403/sysrescron-23/index.html](https://docs.oracle.com/cd/E19253-01/817-0403/sysrescron-23/index.html)
 
 .
-

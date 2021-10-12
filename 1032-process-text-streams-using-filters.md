@@ -38,43 +38,43 @@ Everything in Linux revolves around streams of data—particularly text streams.
 
 A stream is nothing more than a sequence of bytes that is passed from one file, device, or program to another.
 
-Input and output in the Linux environment is distributed across three streams \(which are in fact special files\).
+Input and output in the Linux environment is distributed across three streams (which are in fact special files).
 
 These streams are:
 
-* **standard input stream \(stdin\)**, which provides input to commands.
-* **standard output stream \(stdout\)**, which displays output from commands.
-* **standard error stream \(stderr\)**, which displays error output from commands.
+* **standard input stream (stdin)**, which provides input to commands.
+* **standard output stream (stdout)**, which displays output from commands.
+* **standard error stream (stderr)**, which displays error output from commands.
 
-The streams are also numbered: **stdin \(0\)** ,**stdout \(1\)**, **stderr \(2\)**.
+The streams are also numbered: **stdin (0)** ,**stdout (1)**, **stderr (2)**.
 
 ![](.gitbook/assets/processtxt-streams.jpg)
 
-### piping with \|
+### piping with |
 
-Piping is a mechanism for sending data from one program to another. The operator we use is \( \| \) \(found above the backslash `\` key on most keyboards\). What this operator does is feed the output from the program on the left as input to the program on the right.
+Piping is a mechanism for sending data from one program to another. The operator we use is ( | ) (found above the backslash `\` key on most keyboards). What this operator does is feed the output from the program on the left as input to the program on the right.
 
-```text
+```
 command1 | command2
 ```
 
-Either command can have options or arguments. We can also use \| to redirect the output of the second command in the pipeline to a third command, and so on.
+Either command can have options or arguments. We can also use | to redirect the output of the second command in the pipeline to a third command, and so on.
 
-```text
+```
 command 1 | command 2 | command3 | command 4 | ...
 ```
 
 Constructing long pipelines of commands that each have limited capability is a common Linux and UNIX way of accomplishing tasks.
 
-```text
+```
 [root@centos7-1 ~]# dmesg | less
 ```
 
 ### Redirection 
 
-Linux includes redirection commands for each stream.We can use `>` in order to redirect output stream \(mostly to a file\).
+Linux includes redirection commands for each stream.We can use `>` in order to redirect output stream (mostly to a file).
 
-```text
+```
 [root@centos7-1 temp]# ls -1
 test.txt
 unexpanded.txt
@@ -91,9 +91,9 @@ zip-3.0-11.el7.x86_64.rpm
 zip.cpio
 ```
 
-> "\|" vs "&gt;"
+> "|" vs ">"
 >
-> The difference between &gt; \(redirection operator\) and \| \(pipeline operator\) is that while the &gt;  connects a command with a file, the \| connects the output of a command with another command.
+> The difference between > (redirection operator) and | (pipeline operator) is that while the >  connects a command with a file, the | connects the output of a command with another command.
 
 ### Text filtering
 
@@ -101,15 +101,15 @@ Text filtering is the process of taking an input stream of text and performing s
 
 ## cat
 
-The **cat** \(short for “**concatenate**“\) command is one of the most frequently used command in Linux/Unix like operating systems. cat command allows us to create single or multiple files, view contain of file, concatenate files and redirect output in terminal or files.
+The **cat **(short for “**concatenate**“) command is one of the most frequently used command in Linux/Unix like operating systems. cat command allows us to create single or multiple files, view contain of file, concatenate files and redirect output in terminal or files.
 
-```text
+```
 cat [OPTION] [FILE]...
 ```
 
 Simplest usage of cat is displaying the content of a file:
 
-```text
+```
 [root@centos7-1 ~]# cat file1
 This is 1st line of file1.
 
@@ -118,7 +118,7 @@ This is 3rd line of file1.
 
 is can show contents of Multiple Files :
 
-```text
+```
 [root@centos7-1 ~]# cat file1 file2
 This is 1st line of file1.
 
@@ -131,7 +131,7 @@ This is 4th line of file2.
 
 The cat command also used to concatenate number of files together:
 
-```text
+```
 [root@centos7-1 ~]# cat file1 file2 > newfile
 [root@centos7-1 ~]# cat newfile 
 This is 1st line of file1.
@@ -145,7 +145,7 @@ This is 4th line of file2.
 
 create a new file with cat:
 
-```text
+```
 [root@centos7-1 ~]# cat > newfile2
 This is my second new file with input redirection
 Ctrl+d
@@ -153,9 +153,9 @@ Ctrl+d
 This is my second new file with input redirection
 ```
 
-> "-" A hyphen \(used alone\) generally signifies that input will be taken from stdin as opposed to a named file:
+> "-" A hyphen (used alone) generally signifies that input will be taken from stdin as opposed to a named file:
 >
-> ```text
+> ```
 > [root@centos7-1 ~]# cat file1 - file2
 > This is 1st line of file1.
 >
@@ -170,7 +170,7 @@ This is my second new file with input redirection
 
 List of cat command options:
 
-```text
+```
   -A, --show-all           equivalent to -vET
   -b, --number-nonblank    number nonempty output lines, overrides -n
   -e                       equivalent to -vE
@@ -187,16 +187,16 @@ Now what’s the opposite of cat? Yeah it’s ‘tac‘. `tac` is a command unde
 
 ## od
 
-od \(Octal dump\) command in Linux is used to output the contents of a file in different formats with the octal format being the default.  
+od (Octal dump) command in Linux is used to output the contents of a file in different formats with the octal format being the default.\
 This command is especially useful when debugging Linux scripts for unwanted changes or characters.
 
-```text
+```
 od [OPTION]... [FILE]...
 ```
 
 as and example:
 
-```text
+```
 [root@centos7-1 ~]# cat testod.txt 
 1
 2
@@ -208,9 +208,9 @@ as and example:
 0000012
 ```
 
-With `-t` option we can select output format and display it. \(Traditional format specifications may be intermixed\):
+With `-t` option we can select output format and display it. (Traditional format specifications may be intermixed):
 
-```text
+```
 -a same as -t a, select named characters, ignoring high-order bit
 -b same as -t o1, select octal bytes
 -c same as -t c, select printable characters or backslash escapes
@@ -225,7 +225,7 @@ With `-t` option we can select output format and display it. \(Traditional forma
 
 example:
 
-```text
+```
 [root@centos7-1 ~]# od -ta testod.txt 
 0000000   1  nl   2  nl   3  nl   4  nl   5  nl
 0000012
@@ -234,13 +234,13 @@ example:
 0000012
 ```
 
-`-A` Option displays the contents of input in different format by concatenation some special character \(offsets\).
+`-A` Option displays the contents of input in different format by concatenation some special character (offsets).
 
-* **Hexadecimal \(using -x along with -A\)**
-* **Octal \(using -o along with -A\)**
-* **Decimal \(using -d along with -A\)**
+* **Hexadecimal (using -x along with -A)**
+* **Octal (using -o along with -A)**
+* **Decimal (using -d along with -A)**
 
-```text
+```
 [root@centos7-1 ~]# od -Ax -c testod.txt 
 000000   1  \n   2  \n   3  \n   4  \n   5  \n
 00000a
@@ -254,22 +254,22 @@ example:
 
 `-An` Option displays the contents of input in character format but with no offset information:
 
-```text
+```
 [root@centos7-1 ~]# od -An -c testod.txt 
    1  \n   2  \n   3  \n   4  \n   5  \n
 ```
 
 ## expand and unexpand
 
-The **expand** command is used to convert tabs in files to spaces.
+The **expand **command is used to convert tabs in files to spaces.
 
-```text
+```
  expand [OPTION]... [FILE]...
 ```
 
 lets try it :
 
-```text
+```
 [root@centos7-1 ~]# cat test.txt 
 this    is    my    test    file.
 [root@centos7-1 ~]# od -tc -An test.txt 
@@ -282,9 +282,9 @@ this    is    my    test    file.
    f   i   l   e   .  \n
 ```
 
-By default, expand converts tabs into the corresponding number of spaces. But it is possible to tweak the number of spaces using the -t \(– – tabs=N\) command line option. This option requires us to enter the new number of spaces\(N\) we want the tabs to get converted.
+By default, expand converts tabs into the corresponding number of spaces. But it is possible to tweak the number of spaces using the -t (– – tabs=N) command line option. This option requires us to enter the new number of spaces(N) we want the tabs to get converted.
 
-```text
+```
 [root@centos7-1 ~]# expand -t1 test.txt > expanded2.txt
 [root@centos7-1 ~]# od -tc -An expanded2.txt 
    t   h   i   s       i   s       m   y       t   e   s   t    
@@ -293,7 +293,7 @@ By default, expand converts tabs into the corresponding number of spaces. But it
 
 expand command options:
 
-```text
+```
   -i, --initial       do not convert tabs after non blanks
   -t, --tabs=NUMBER   have tabs NUMBER characters apart, not 8
   -t, --tabs=LIST     use comma separated list of explicit tab positions
@@ -301,15 +301,15 @@ expand command options:
       --version  output version information and exit
 ```
 
-The **unexpand** command is used to convert space characters \(blanks\) into tabs in each file\(unexpand needs at least two spaces\).
+The **unexpand **command is used to convert space characters (blanks) into tabs in each file(unexpand needs at least two spaces).
 
-```text
+```
 unexpand [OPTION]... [FILE]...
 ```
 
 Lets do reverse:
 
-```text
+```
 [root@centos7-1 ~]# unexpand expanded.txt > unexpanded.txt
 [root@centos7-1 ~]# od -tc -An unexpanded.txt 
    t   h   i   s                   i   s                        
@@ -321,7 +321,7 @@ unexpand with no options just initial blanks!!! `-a` option convert all blanks, 
 
 > unexpand only convert double spaces and more to tab, it doesn't convert single spaces!
 
-```text
+```
 [root@centos7-1 ~]# unexpand -a expanded.txt > unexpanded2.txt
 [root@centos7-1 ~]# od -tc -An unexpanded2.txt 
    t   h   i   s  \t   i   s  \t   m   y  \t   t   e   s   t  \t
@@ -330,7 +330,7 @@ unexpand with no options just initial blanks!!! `-a` option convert all blanks, 
 
 the unexpand command options:
 
-```text
+```
   -a, --all        convert all blanks, instead of just initial blanks
       --first-only  convert only leading sequences of blanks (overrides -a)
   -t, --tabs=N     have tabs N characters apart instead of 8 (enables -a)
@@ -341,52 +341,52 @@ the unexpand command options:
 
 ## tr command
 
-tr stands for **translate**. The tr utility copies the standard input to the standard output with substitution or deletion of selected characters. The syntax of tr command is:
+tr stands for** translate**. The tr utility copies the standard input to the standard output with substitution or deletion of selected characters. The syntax of tr command is:
 
-```text
+```
 tr [option] set1 [set2]
 ```
 
 Lets convert lower case to upper case:
 
-```text
+```
 [root@centos7-1 ~]# echo "this is  for   test 123" | tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ
 THIS IS  FOR   TEST 123
 ```
 
 The following command will also convert lower case to upper case:
 
-```text
+```
 [root@centos7-1 ~]# echo "this is  for   test 123" | tr [:lower:] [:upper:]
 THIS IS  FOR   TEST 123
 ```
 
 Translate white-space to tabs:
 
-```text
+```
 [root@centos7-1 ~]# echo "this is  for   test 123" | tr [:space:] '\t'
 this    is        for            test    123
 ```
 
 if there are two are more spaces present continuously, then the previous command will translate each spaces to a tab. We can use `-s` option to squeeze repetition of characters :
 
-```text
+```
 [root@centos7-1 ~]# echo "this is  for   test 123" | tr -s [:space:] '\t'
 this    is    for    test    123
 ```
 
-`-d` option can be used to delete specified characters :
+`-d `option can be used to delete specified characters :
 
-```text
+```
 [root@centos7-1 ~]# echo "this is  for   test 123" | tr -d 't'
 his is  for   es 123
 [root@centos7-1 ~]# echo "this is  for   test 123" | tr -d [:digit:]
 this is  for   test
 ```
 
-We complement the sets using `-c` option For example, to remove all characters except digits, you can use the following.:
+We complement the sets using `-c `option For example, to remove all characters except digits, you can use the following.:
 
-```text
+```
 [root@centos7-1 ~]# echo "this is  for   test 123" | tr -dc [:digit:]
 123
 ```
@@ -397,7 +397,7 @@ tr has many options and sets try tr --help for more information.
 
 The pr command is used to format files for printing. The default header includes the filename and file creation date and time, along with a page number and two lines of blank footer.
 
-```text
+```
 [root@centos7-1 ~]# cat note.txt 
 hi 
 this is my note file.
@@ -420,7 +420,7 @@ learn linux.
 
 We can print files side-by-side in columns and control many aspects of formatting through options.
 
-```text
+```
 [root@centos7-1 ~]# rpm -qa | pr --columns=2 -l 15
 2018-12-19 11:35                                                  Page 1
 
@@ -437,17 +437,17 @@ gnome-dictionary-libs-3.20.0-1.el7. libcgroup-tools-0.41-13.el7.x86_64
 gd-2.0.35-26.el7.x86_64             perl-Pod-Usage-1.63-3.el7.noarch
 ```
 
-`--column` defines number of columns created in the output.`-l`specifies page length \(default is 66 lines\).As usual, refer to the **man** page for details.
+`--column` defines number of columns created in the output.`-l`specifies page length (default is 66 lines).As usual, refer to the **man** page for details.
 
 ## nl
 
 nl is a linux command to number lines of the files, it copies its files to standard output, prepending line numbers.
 
-```text
+```
 nl [OPTION]... [FILE]...
 ```
 
-```text
+```
 [root@centos7-1 ~]# nl note.txt 
      1    hi 
      2    this is my note file.
@@ -457,10 +457,10 @@ nl [OPTION]... [FILE]...
 `-n Format`Uses the value of the Format variable as the line numbering format. Recognized formats are:
 
 * ln :Left-justified, leading zeros suppressed
-* rn :Right-justified, leading zeros suppressed \(default\)
+* rn :Right-justified, leading zeros suppressed (default)
 * rz: Right-justified, leading zeros kept
 
-```text
+```
 [root@centos7-1 ~]# nl -nln note.txt 
 1         hi 
 2         this is my note file.
@@ -481,7 +481,7 @@ nl [OPTION]... [FILE]...
 
 other ln options:
 
-```text
+```
   -b, --body-numbering=STYLE      use STYLE for numbering body lines
   -d, --section-delimiter=CC      use CC for separating logical pages
   -f, --footer-numbering=STYLE    use STYLE for numbering footer lines
@@ -497,17 +497,17 @@ other ln options:
       --version  output version information and exit
 ```
 
-`cat -n filename` does the same thing that `nl` command do.
+`cat -n filename` does the same thing that`  nl  `command do.
 
 ## fmt
 
 fmt simple optimal text formatter, it reformats paragraphs in specified file and prints results to the standard output.
 
-```text
+```
 fmt [-WIDTH] [OPTION]... [FILE]...
 ```
 
-```text
+```
 [root@centos7-1 ~]# cat note.txt 
 hi 
 this is my note file.
@@ -520,7 +520,7 @@ hi this is my note file.  linux is an operating system.  learn linux.
 
 By default fmt sets the column width at 75. This can be changed with the -w , --width=WIDTHoption.
 
-```text
+```
 [root@centos7-1 ~]# fmt -w 12  note.txt 
 hi this
 is my
@@ -534,7 +534,7 @@ linux.
 
 fmt command options:
 
-```text
+```
   -c, --crown-margin        preserve indentation of first two lines
   -p, --prefix=STRING       reformat only lines beginning with STRING,
                               reattaching the prefix to reformatted lines
@@ -549,13 +549,13 @@ fmt command options:
 
 ## sort and uniq
 
-**Sort** is a Linux program used for printing lines of input text files and concatenation of all files in sorted order. Sort command takes blank space as field separator and entire Input file as sort key. It is important to notice that sort command don’t actually sort the files but only print the sorted output, until your redirect the output.
+**Sort **is a Linux program used for printing lines of input text files and concatenation of all files in sorted order. Sort command takes blank space as field separator and entire Input file as sort key. It is important to notice that sort command don’t actually sort the files but only print the sorted output, until your redirect the output.
 
-```text
+```
 sort [OPTION]... [FILE]...
 ```
 
-```text
+```
 [root@centos7-1 ~]# cat 1.txt 
 D 1
 d 1
@@ -576,7 +576,7 @@ f 14
 
 If a file has words/lines beginning with both upper case and lower case characters, then sort displays those with upper case at top. However, we can change this behavior using the -f command line option:
 
-```text
+```
 [root@centos7-1 ~]# sort -f 1.txt 
 A 3
 B 4
@@ -587,9 +587,9 @@ d 1
 f 14
 ```
 
-The `-n` option sort the contents numerically. Also we can sort a file base on "`n"`**th** column with `-k`n option:
+The`  -n  `option sort the contents numerically. Also we can sort a file base on "`n"`**th** column with `-k`n option:
 
-```text
+```
 [root@centos7-1 ~]# sort  -n -k2 1.txt 
 d 1
 D 1
@@ -600,9 +600,9 @@ B 4
 f 14
 ```
 
-user `-r` to reverse the result of comparisons. Other options of sort command:
+user `-r `to reverse the result of comparisons. Other options of sort command:
 
-```text
+```
   -b, --ignore-leading-blanks  ignore leading blanks
   -d, --dictionary-order      consider only blanks and alphanumeric characters
   -f, --ignore-case           fold lower case to upper case characters
@@ -622,9 +622,9 @@ user `-r` to reverse the result of comparisons. Other options of sort command:
 
 Sort can sort the contents of two files on standard output in one go! `sort 1.txt 2.txt`
 
-**uniq** command is used to report or omit repeated lines, it filters lines from standard input and writes the outcome to standard output.
+**uniq **command is used to report or omit repeated lines, it filters lines from standard input and writes the outcome to standard output.
 
-```text
+```
 [root@centos7-1 ~]# cat assets.txt 
 motherboard
 motherboard
@@ -654,7 +654,7 @@ keyboard
 
 use -c to display number of repetitions for each line:
 
-```text
+```
 [root@centos7-1 ~]# uniq -c assets.txt 
       2 motherboard
       2 cpu
@@ -666,9 +666,9 @@ use -c to display number of repetitions for each line:
       2 keyboard
 ```
 
--d displays only the repeated lines and visa versa -u just shows uniq ones:
+\-d displays only the repeated lines and visa versa -u just shows uniq ones:
 
-```text
+```
 [root@centos7-1 ~]# uniq -d assets.txt 
 motherboard
 cpu
@@ -683,7 +683,7 @@ mouse
 
 try `-D` to see all duplicated lines. other options from uniq --help :
 
-```text
+```
   -c, --count           prefix lines by the number of occurrences
   -d, --repeated        only print duplicate lines, one for each group
   -D, --all-repeated[=METHOD]  print all duplicate lines
@@ -705,19 +705,19 @@ try `-D` to see all duplicated lines. other options from uniq --help :
 
 split command is used to split or break a file into the pieces.
 
-```text
+```
  split [options] filename prefix
 ```
 
 * Replace filename with the name of the large file you wish to split.
 * Replace prefix with the name you wish to give the small output files.
-* We can exclude \[options\], or replace it with either of the following:
+* We can exclude \[options], or replace it with either of the following:
 * `-l linenumber`
 * `-b bytes`
 
-If we use the -l \(a lowercase L\) option, replace line number with the number of lines we'd like in each of the smaller files \(the default is 1,000\).
+If we use the -l (a lowercase L) option, replace line number with the number of lines we'd like in each of the smaller files (the default is 1,000).
 
-```text
+```
 [root@centos7-1 split]# ls
 my7lines.txt
 [root@centos7-1 split]# cat my7lines.txt 
@@ -752,7 +752,7 @@ The split command will give each output file it creates the name prefix with an 
 
 If we use the -b option, replace bytes with the number of bytes you'd like in each of the smaller files.
 
-```text
+```
 [root@centos7-1 split2]# du -ah
 51M    ./dsl-4.11.rc2.iso
 51M    .
@@ -773,7 +773,7 @@ dsl-4.11.rc2.iso  xaa  xab  xac  xad  xae  xaf
 
 Some other options are:
 
-```text
+```
   -a, --suffix-length=N   generate suffixes of length N (default 2)
       --additional-suffix=SUFFIX  append an additional SUFFIX to file names
   -b, --bytes=SIZE        put SIZE bytes per output file
@@ -798,24 +798,24 @@ For joining the splitted files use `cat x* > orginalfile` .
 
 ## wc
 
-The wc \(word count\) command is used to find out number of newline count, word count, byte and characters count in a file.
+The wc (word count) command is used to find out number of newline count, word count, byte and characters count in a file.
 
-```text
+```
 wc [options] filenames
 ```
 
 A Basic Example of WC Command
 
-```text
+```
 [root@centos7-1 ~]# wc /etc/inittab 
  17  80 511 /etc/inittab
 ```
 
-Three numbers shown below are **17** \(number of **lines**\), **80** \(number of **words**_\[by default space delimited\]_\) and **511**\(number of **bytes**\) of the file.
+Three numbers shown below are **17** (number of **lines**), **80** (number of **words**_\[by default space delimited]_) and **511**(number of **bytes**) of the file.
 
 options:
 
-```text
+```
   -c, --bytes            print the byte counts
   -m, --chars            print the character counts
   -l, --lines            print the newline counts
@@ -836,13 +836,13 @@ options:
 
 The head command reads the first ten lines of a any given file name.
 
-```text
+```
 head [options] [file(s)]
 ```
 
 For example lets take a look at /var/log/yum.log file:
 
-```text
+```
 [root@centos7-1 ~]# head /var/log/yum.log 
 Aug 26 04:48:25 Updated: openldap-2.4.44-15.el7_5.x86_64
 Aug 26 04:48:25 Installed: openldap-clients-2.4.44-15.el7_5.x86_64
@@ -856,9 +856,9 @@ Oct 13 03:38:41 Installed: 1:perl-Compress-Raw-Zlib-2.061-4.el7.x86_64
 Oct 13 03:38:42 Installed: libecap-1.0.0-1.el7.x86_64
 ```
 
-For retrieving desired number of lines use -n&lt;number&gt; or simple -&lt;number&gt; options:
+For retrieving desired number of lines use -n\<number> or simple -\<number> options:
 
-```text
+```
 [root@centos7-1 ~]# head -n 2 /var/log/yum.log 
 Aug 26 04:48:25 Updated: openldap-2.4.44-15.el7_5.x86_64
 Aug 26 04:48:25 Installed: openldap-clients-2.4.44-15.el7_5.x86_64
@@ -869,7 +869,7 @@ Aug 26 04:48:25 Installed: openldap-clients-2.4.44-15.el7_5.x86_64
 
 Options from`head --help` :
 
-```text
+```
   -c, --bytes=[-]K         print the first K bytes of each file;
                              with the leading '-', print all but the last
                              K bytes of each file
@@ -890,13 +890,13 @@ GB 1000*1000*1000, G 1024*1024*1024, and so on for T, P, E, Z, Y.
 
 tail command displays last ten lines of any text file.
 
-```text
+```
 tail [options] [filenames]
 ```
 
 Similar to the head command above, tail command also support options -n number of lines and n number of characters.
 
-```text
+```
 [root@centos7-1 ~]# tail -n 5 /var/log/yum.log 
 Dec 05 10:02:37 Updated: firefox-60.3.0-1.el7.centos.x86_64
 Dec 05 10:02:37 Updated: nss-tools-3.36.0-7.el7_5.x86_64
@@ -905,9 +905,9 @@ Dec 08 11:54:14 Installed: zip-3.0-11.el7.x86_64
 Dec 08 13:10:52 Installed: vsftpd-3.0.2-22.el7.x86_64
 ```
 
--f option will cause tail will loop forever, checking for new data at the end of the file\(s\). When new data appears, it will be printed. It works great with log files and lets us see what is going on:
+\-f option will cause tail will loop forever, checking for new data at the end of the file(s). When new data appears, it will be printed. It works great with log files and lets us see what is going on:
 
-```text
+```
 [root@centos7-1 ~]# tail -f /var/log/dmesg
 [   19.126805] AES CTR mode by8 optimization enabled
 [   19.129902] ppdev: user-space parallel port driver
@@ -923,7 +923,7 @@ Dec 08 13:10:52 Installed: vsftpd-3.0.2-22.el7.x86_64
 
 options:
 
-```text
+```
   -c, --bytes=K            output the last K bytes; or use -c +K to output
                              bytes starting with the Kth of each file
   -f, --follow[={name|descriptor}]
@@ -954,11 +954,11 @@ options:
 
 less command allows you to view the contents of a file and navigate through file.
 
-```text
+```
 [root@centos7-1 ~]# dmesg |less
 ```
 
-```text
+```
 [    0.000000] BIOS-e820: [mem 0x00000000bfeff000-0x00000000bfefffff] ACPI NVS
 [    0.000000] BIOS-e820: [mem 0x00000000bff00000-0x00000000bfffffff] usable
 [    0.000000] BIOS-e820: [mem 0x00000000f0000000-0x00000000f7ffffff] reserved
@@ -979,7 +979,7 @@ By default the only way to exit less command is to hit q key. To change this beh
 
 `less +F /var/log/messages`
 
-This makes less to run in interactive mode \(live\) and display new content on-fly while waiting for new data to be written to file. This behavior is similar to tail -f command. To exit live mode just press`Ctrl+c`keys.
+This makes less to run in interactive mode (live) and display new content on-fly while waiting for new data to be written to file. This behavior is similar to tail -f command. To exit live mode just press`Ctrl+c`keys.
 
 **Tip**: In combination with a pattern you can watch the log file interactively with`Shift+f`key stroke while matching a keyword.
 
@@ -991,15 +991,15 @@ This makes less to run in interactive mode \(live\) and display new content on-f
 
 ## cut
 
-The cut command in UNIX is a command line utility for cutting sections from each line of files and writing the result to standard output. It can be used to cut parts of a line by byte **position**, **character** and **delimiter**.
+The cut command in UNIX is a command line utility for cutting sections from each line of files and writing the result to standard output. It can be used to cut parts of a line by byte **position**, **character **and **delimiter**.
 
-```text
+```
 cut OPTION... [FILE]...
 ```
 
 **cut by byte position:**
 
-```text
+```
 [root@centos7-1 ~]# echo "linux" | cut -b 1
 l
 [root@centos7-1 ~]# echo "linux" | cut -b 1,5
@@ -1010,7 +1010,7 @@ linu
 
 **cut by character:**
 
-```text
+```
 [root@centos7-1 ~]# echo '♣foobar' | cut -c 1,7
 ♣r
 [root@centos7-1 ~]# echo '♣foobar' | cut -c 5-7
@@ -1023,7 +1023,7 @@ bar
 
 To cut using a delimiter use the -d option. This is normally used in conjunction with the -f option to specify the field that should be cut. examples:
 
-```text
+```
 [root@centos7-1 ~]# cut 1.txt -d: -f1
 1
 2
@@ -1048,7 +1048,7 @@ z
 
 cut has lots of options:
 
-```text
+```
   -b, --bytes=LIST        select only these bytes
   -c, --characters=LIST   select only these characters
   -d, --delimiter=DELIM   use DELIM instead of TAB for field delimiter
@@ -1069,13 +1069,13 @@ cut has lots of options:
 
 The paste command displays the corresponding lines of multiple files side-by-side.
 
-```text
+```
 paste [OPTION]... [FILE]...
 ```
 
 ![](.gitbook/assets/processtxt-paste.jpg)
 
-```text
+```
 [root@centos7-1 ~]# paste 1.txt 2.txt 
 a    e
 b    f
@@ -1083,9 +1083,9 @@ c    g
 d    h
 ```
 
-paste writes lines consisting of the sequentially corresponding lines from each FILE, separated by tabs.To apply a colon \(:\) as a delimiting character instead of tabs, use -d option:
+paste writes lines consisting of the sequentially corresponding lines from each FILE, separated by tabs.To apply a colon (:) as a delimiting character instead of tabs, use -d option:
 
-```text
+```
 [root@centos7-1 ~]# paste -d: 1.txt 2.txt 
 a:e
 b:f
@@ -1095,7 +1095,7 @@ d:h
 
 paste command options:
 
-```text
+```
   -d, --delimiters=LIST   reuse characters from LIST instead of TABs
   -s, --serial            paste one file at a time instead of in parallel
       --help     display this help and exit
@@ -1106,15 +1106,15 @@ paste command options:
 
 Joins the lines of two files which share a common field of data.
 
-> When **using `join`**, the **input files must be sorted** _**by the join field ONLY**_, otherwise you may see the warning
+>  When **using `join`**, the **input files must be sorted **_**by the join field ONLY**_, otherwise you may see the warning
 
-```text
+```
 join [OPTION]... FILE1 FILE2
 ```
 
 ![](.gitbook/assets/processtxt-join.jpg)
 
-```text
+```
 [root@centos7-1 ~]# join 1.txt 2.txt 
 1 a w
 4 d z
@@ -1123,7 +1123,7 @@ join [OPTION]... FILE1 FILE2
 
 By default, the join command only prints pairable lines. unpairable lines are left out in the output. However, if we want, we can still have them in the output using the -a command line option. This option requires you to pass a file number so that the tool knows which file you are talking about.
 
-```text
+```
 [root@centos7-1 ~]# join 1.txt 2.txt -a 1
 1 a w
 2 b
@@ -1136,9 +1136,9 @@ By default, the join command only prints pairable lines. unpairable lines are le
 5 e q
 ```
 
-Inorder to print unpaired lines \(meaning, suppress the paired lines in output\),use the -v command line option. This options works exactly the way -a works.
+Inorder to print unpaired lines (meaning, suppress the paired lines in output),use the -v command line option. This options works exactly the way -a works.
 
-```text
+```
 [root@centos7-1 ~]# join 1.txt 2.txt -v 1
 2 b
 [root@centos7-1 ~]# join 1.txt 2.txt -v 2
@@ -1147,7 +1147,7 @@ Inorder to print unpaired lines \(meaning, suppress the paired lines in output\)
 
 join combines lines of files on a common field, which is the first field by default. However, if we want, we can specify a different field for each file using -1 and -2 command line options. for example `join -1 2 -2 2 file1 file2` uses second field of each line. join command options:
 
-```text
+```
   -a FILENUM        also print unpairable lines from file FILENUM, where
                       FILENUM is 1 or 2, corresponding to FILE1 or FILE2
   -e EMPTY          replace missing input fields with EMPTY
@@ -1170,12 +1170,12 @@ join combines lines of files on a common field, which is the first field by defa
 
 ## sed
 
-The name **Sed** is short for **\_s\_tream \_ed\_itor**.  
-**S** stream editor is used to perform basic text transformations on an input stream \(a file or input from a pipeline\). sed uses regular expressions and the most basic \(and popular\) usage of sed is the substitution of characters.
+The name **Sed **is short for **\_s_tream \_ed_itor**.\
+**S** stream editor is used to perform basic text transformations on an input stream (a file or input from a pipeline). sed uses regular expressions and the most basic (and popular) usage of sed is the substitution of characters.
 
 As an example lets replace 'l' with "L" in a sample text file:
 
-```text
+```
 [root@centos7-1 ~]# cat sample.txt 
 there are different operating systems in our planet.
 one of them is linux.
@@ -1191,7 +1191,7 @@ By default sed just perform the substitution just once for first instance of ter
 
 ![](.gitbook/assets/processtxt-seds.jpg)
 
-```text
+```
 [root@centos7-1 ~]# sed 's/l/L/g' sample.txt 
 there are different operating systems in our pLanet.
 one of them is Linux.
@@ -1200,7 +1200,7 @@ aLmost six hundred Linux distributions exist.
 
 Additionally, we can gi instead of g in order to ignore character case:
 
-```text
+```
 [root@centos7-1 ~]# sed 's/linux/LINUX/gi' sample.txt 
 there are different operating systems in our planet.
 one of them is LINUX.
@@ -1209,7 +1209,7 @@ almost six hundred LINUX distributions exist.
 
 Another example is replacing blank spaces with tab :
 
-```text
+```
 [root@centos7-1 ~]# cat sample.txt 
 there are different operating systems in our planet.
 one of them is linux.
@@ -1233,7 +1233,7 @@ sources:
 
 [https://developer.ibm.com/tutorials/l-lpic1-103-2/](https://developer.ibm.com/tutorials/l-lpic1-103-2/)
 
-[https://ryanstutorials.net/linuxtutorial/piping.php\#piping](https://ryanstutorials.net/linuxtutorial/piping.php#piping)
+[https://ryanstutorials.net/linuxtutorial/piping.php#piping](https://ryanstutorials.net/linuxtutorial/piping.php#piping)
 
 [https://www.tecmint.com/linux-io-input-output-redirection-operators/](https://www.tecmint.com/linux-io-input-output-redirection-operators/)
 
@@ -1247,7 +1247,7 @@ sources:
 
 [https://www.tecmint.com/view-contents-of-file-in-linux/](https://www.tecmint.com/view-contents-of-file-in-linux/)
 
-[http://landoflinux.com/linux\_expand\_unexpand\_command.html](http://landoflinux.com/linux_expand_unexpand_command.html)
+[http://landoflinux.com/linux_expand_unexpand_command.html](http://landoflinux.com/linux_expand_unexpand_command.html)
 
 [https://www.geeksforgeeks.org/expand-command-in-linux-with-examples/](https://www.geeksforgeeks.org/expand-command-in-linux-with-examples/)
 
@@ -1259,7 +1259,7 @@ sources:
 
 [https://www.tecmint.com/20-advanced-commands-for-linux-experts/](https://www.tecmint.com/20-advanced-commands-for-linux-experts/)
 
-[https://www.ibm.com/support/knowledgecenter/en/ssw\_aix\_72/com.ibm.aix.cmds4/nl.htm](https://www.ibm.com/support/knowledgecenter/en/ssw_aix_72/com.ibm.aix.cmds4/nl.htm)
+[https://www.ibm.com/support/knowledgecenter/en/ssw_aix\_72/com.ibm.aix.cmds4/nl.htm](https://www.ibm.com/support/knowledgecenter/en/ssw_aix\_72/com.ibm.aix.cmds4/nl.htm)
 
 [https://shapeshed.com/unix-fmt/](https://shapeshed.com/unix-fmt/)
 
@@ -1278,4 +1278,3 @@ sources:
 [https://www.tecmint.com/linux-sed-command-tips-tricks/](https://www.tecmint.com/linux-sed-command-tips-tricks/)
 
 .
-

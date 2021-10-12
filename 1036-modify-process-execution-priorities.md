@@ -17,13 +17,13 @@
 * renice
 * top
 
-Linux, like most modern operating systems, can run multiple processes. It does this by sharing the CPU and other resources among the processes. If one process can use 100 percent of the CPU, then other processes may become unresponsive. We’ll introduce you to the way Linux assigns priorities for tasks.\(We have already talked about ps and top commands in previous section\)
+Linux, like most modern operating systems, can run multiple processes. It does this by sharing the CPU and other resources among the processes. If one process can use 100 percent of the CPU, then other processes may become unresponsive. We’ll introduce you to the way Linux assigns priorities for tasks.(We have already talked about ps and top commands in previous section)
 
 ### nice
 
- In Linux we can set guidelines for the CPU to follow when it is looking at all the tasks it has to do. These guidelines are called _**niceness**_ or _**nice value.**_**\(**we _****_use ubuntu 16 here\)
+ In Linux we can set guidelines for the CPU to follow when it is looking at all the tasks it has to do. These guidelines are called _**niceness**_ or _**nice value.**_**(**we_** **_use ubuntu 16 here)
 
-```text
+```
 top - 03:15:57 up 3 days, 20:17,  1 user,  load average: 0.03, 0.01, 0.00
 Tasks: 235 total,   1 running, 171 sleeping,   0 stopped,   0 zombie
 %Cpu(s):  2.1 us,  1.4 sy,  0.0 ni, 96.2 id,  0.3 wa,  0.0 hi,  0.0 si,  0.0 st
@@ -41,22 +41,22 @@ KiB Swap:  1045500 total,   374404 free,   671096 used.   335984 avail Mem
      1 root      20   0  185244   3996   2500 S  0.0  0.4   0:08.10 systemd 
 ```
 
-**NI column**  Represents a Nice Value of task. The Linux niceness scale goes from -20 to 19. The lower the number the more priority that task gets. If the niceness value is high number like 19 the task will be set to the lowest priority and the CPU will process it whenever it gets a chance. The default nice value is **zero**.
+**NI column ** Represents a Nice Value of task. The Linux niceness scale goes from -20 to 19. The lower the number the more priority that task gets. If the niceness value is high number like 19 the task will be set to the lowest priority and the CPU will process it whenever it gets a chance. The default nice value is **zero**.
 
 ![](.gitbook/assets/modifyprocess-nice.jpg)
 
 Different OS distributions can have different default values for new processes. The simplest method to determine the default value is to simply run the nice command with no arguments. By default nice will simply return the current niceness value
 
-```text
+```
 root@ubuntu16-1:~# nice
 0
 ```
 
-#### Determining the niceness value of a current process <a id="determining-the-niceness-value-of-a-current-process"></a>
+#### Determining the niceness value of a current process <a href="determining-the-niceness-value-of-a-current-process" id="determining-the-niceness-value-of-a-current-process"></a>
 
 The niceness value of current processes are also pretty simple to find as they are visible in the ps command’s full long format :
 
-```text
+```
 root@ubuntu16-1:~# sleep 11111 &
 [1] 65128
 root@ubuntu16-1:~# sleep 22222 &
@@ -73,13 +73,13 @@ F S UID         PID   PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
 0 R root      65133  65098  0  80   0 -  9341 -      04:49 pts/17   00:00:00 ps -fl
 ```
 
-> `-f` do full-format listing and  `-l` is for Long format.
+> `-f` do full-format listing and  `-l `is for Long format.
 
-#### Changing the nice value of a new process <a id="changing-the-nice-value-of-a-new-process"></a>
+#### Changing the nice value of a new process <a href="changing-the-nice-value-of-a-new-process" id="changing-the-nice-value-of-a-new-process"></a>
 
-Changing the niceness value of a new process is fairly simple. The nice command itself will run the supplied command with the desired niceness value.\(Please note we are logged in  as a user here\)
+Changing the niceness value of a new process is fairly simple. The nice command itself will run the supplied command with the desired niceness value.(Please note we are logged in  as a user here)
 
-```text
+```
 user1@ubuntu16-1:~$ sleep 11111 &
 [1] 65043
 user1@ubuntu16-1:~$ nice -n 10 sleep 22222 &
@@ -91,11 +91,11 @@ user1@ubuntu16-1:~$ nice -n -10 sleep 44444 &
 user1@ubuntu16-1:~$ nice: cannot set niceness: Permission denied
 ```
 
-note: root user is the only person who can start an application with the high priority  \(lower than zero\), but, any body can start an application with low priority \(higher than zero\).
+note: root user is the only person who can start an application with the high priority  (lower than zero), but, any body can start an application with low priority (higher than zero).
 
 if we try to run an application with high priority without root permissions, it would trough an error and starts application with priority zero.
 
-```text
+```
 user1@ubuntu16-1:~$ ps -fl
 F S UID         PID   PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
 0 S user1     55624  55222  0  80   0 -  5669 wait   Oct21 pts/17   00:00:00 bash
@@ -109,7 +109,7 @@ F S UID         PID   PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
 
 Now lets try the last command using root :
 
-```text
+```
 user1@ubuntu16-1:~$ su - root
 Password: 
 root@ubuntu16-1:~# nice -n -20 sleep 55555 &
@@ -127,7 +127,7 @@ F S UID         PID   PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
 
 it good to know that nice command has there different syntax:
 
-```text
+```
 $ nice -n niceness-value [command args] 
 OR
 $ nice -niceness-value [command args] 	#it’s confusing for negative values
@@ -135,26 +135,26 @@ OR
 $ nice --adjustment=niceness-value [command args]
 ```
 
-| nice command example | Description |
-| :--- | :--- |
+| nice command example  | Description      |
+| --------------------- | ---------------- |
 | nice --20 application | highest priority |
-| nice --15 application | very high |
-| nice -10 application | medium low |
-| nice -19 application | lowest |
+| nice --15 application | very high        |
+| nice -10 application  | medium low       |
+| nice -19 application  | lowest           |
 
-#### Changing the nice value of a running process <a id="changing-the-nice-value-of-a-running-process"></a>
+#### Changing the nice value of a running process <a href="changing-the-nice-value-of-a-running-process" id="changing-the-nice-value-of-a-running-process"></a>
 
 ### renice
 
-To change the niceness of a running process to a negative value we will use the `renice` command again.
+To change the niceness of a running process to a negative value we will use the `renice `command again.
 
-```text
+```
 renice value PID
 ```
 
 It is important to note that changing a processes niceness value to a negative value requires root privileges. As the effects of giving a process a higher priority could have detrimental effects on a system.
 
-```text
+```
 user1@ubuntu16-1:~$ sleep 88888 &
 [1] 67534
 user1@ubuntu16-1:~$ ps -alf
@@ -181,7 +181,7 @@ renice: failed to set priority for 67534 (process ID): Permission denied
 
 > user can only raise nice level.
 
-```text
+```
 user1@ubuntu16-1:~$ su - root
 Password: 
 root@ubuntu16-1:~# renice -1 67534
@@ -200,12 +200,12 @@ F S UID         PID   PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD
 
 we can also use -p option before giving PID, but that is not necessary.
 
-| renice command example |  |
-| :--- | :--- |
-| renice -20 -p PID | highest priority |
-| renice -15 -p PID | very high |
-| renice 10 -p PID | medium low |
-| renice 19 -p PID | lowest |
+| renice command example |                  |
+| ---------------------- | ---------------- |
+| renice -20 -p PID      | highest priority |
+| renice -15 -p PID      | very high        |
+| renice 10 -p PID       | medium low       |
+| renice 19 -p PID       | lowest           |
 
 .
 
@@ -222,4 +222,3 @@ we can also use -p option before giving PID, but that is not necessary.
 [https://www.tecmint.com/set-linux-process-priority-using-nice-and-renice-commands/](https://www.tecmint.com/set-linux-process-priority-using-nice-and-renice-commands/)
 
 .
-

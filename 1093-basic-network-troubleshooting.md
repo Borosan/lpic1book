@@ -31,11 +31,11 @@ Description: Candidates should be able to troubleshoot networking issues on clie
 
 Till now we have learned about fundamentals of internet protocols and we have get familiar with some of network configuration files and utilities. The truth is that some times things doesn't work as we expected and need troubleshooting. In this section  we try to show some steps to resolve the problem, additionally some new commands will be introduced.
 
-### ifconfig & ip \(interface or ip address problems\)
+### ifconfig & ip (interface or ip address problems)
 
 The first command we have learned is ifconfig . Some times there might be an inactive interface which doesn't appear in results:
 
-```text
+```
 root@ubuntu16-1:~# ifconfig
 lo        Link encap:Local Loopback  
           inet addr:127.0.0.1  Mask:255.0.0.0
@@ -49,7 +49,7 @@ lo        Link encap:Local Loopback
 
 use -a with ifconfig or ip command instead:
 
-```text
+```
 root@ubuntu16-1:~# ifconfig -a
 ens33     Link encap:Ethernet  HWaddr 00:0c:29:e2:1b:3e  
           BROADCAST MULTICAST  MTU:1500  Metric:1
@@ -79,21 +79,21 @@ root@ubuntu16-1:~# ip a s
 
 ```
 
-Bring up the interface with `ifup ens33` or `ifconfig ens33` up , and next check for your ip address.  
+Bring up the interface with` ifup ens33` or` ifconfig ens33` up , and next check for your ip address.  
 
-```text
+```
 root@ubuntu16-1:~# ifup ens33
 ```
 
-> You can check your ip address either from GUI or trough config files.If you are on Automatic ip assignment use `dhclient -r` and `dhclient` to release and renew your ip address.
+> You can check your ip address either from GUI or trough config files.If you are on Automatic ip assignment use`  dhclient -r  `and `dhclient` to release and renew your ip address.
 
-### ping \(detecting the problem\)
+### ping (detecting the problem)
 
 ping is our best friend when we are troubleshooting network problems.
 
 Check whether you can ping another computer in the same network? 
 
-```text
+```
 root@ubuntu16-1:~# ping 172.16.43.127 -c 2
 PING 172.16.43.127 (172.16.43.127) 56(84) bytes of data.
 64 bytes from 172.16.43.127: icmp_seq=1 ttl=64 time=0.748 ms
@@ -106,7 +106,7 @@ rtt min/avg/max/mdev = 0.748/0.751/0.755/0.027 ms
 
 from a simple ping command we can determine whether the target is up and running or not. Also there might be a firewall in your network, which filters out ICMP packets, check for host firewall first and then hardware firewall if there are any. 
 
-```text
+```
 root@ubuntu16-1:~# ping 172.16.43.126 -c 2
 PING 172.16.43.126 (172.16.43.126) 56(84) bytes of data.
 From 172.16.43.135 icmp_seq=1 Destination Host Unreachable
@@ -121,13 +121,13 @@ Some times you might ping a wrong ip address or the server might have two interf
 
 ### ping6
 
-Regular ping command only works with IPv4 address. Use ping6 command to send ICMPv6 ECHO\_REQUEST packets to network hosts from a host or gateway.
+Regular ping command only works with IPv4 address. Use ping6 command to send ICMPv6 ECHO_REQUEST packets to network hosts from a host or gateway.
 
-### route \(gateway and routing problems\)
+### route (gateway and routing problems)
 
 If you cant reach any network except computers you are in the same subnet with, you should doubt about you gateway.
 
-```text
+```
 root@ubuntu16-1:~# route
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
@@ -138,7 +138,7 @@ link-local      *               255.255.0.0     U     1000   0        0 ens33
 
 we can also use netstat -rn command to see current gateway:
 
-```text
+```
 root@ubuntu16-1:~# netstat -rn
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
@@ -149,7 +149,7 @@ Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
 
 If there were no default gate way, you should use `route add default gw x.x.x.x` to  add a default gateway. Next check the gate way, and make sure packets are going out from the right interface:
 
-```text
+```
 root@ubuntu16-1:~# ping -c 3 172.16.43.2
 PING 172.16.43.2 (172.16.43.2) 56(84) bytes of data.
 64 bytes from 172.16.43.2: icmp_seq=1 ttl=128 time=0.434 ms
@@ -165,9 +165,9 @@ Every thing seems okey, but you cant reach specific ip address in another buildi
 
 ### traceroute
 
-The traceroute command maps the journey that a packet of information undertakes from its source to its destination.  This tool uses **ICMP** messages, but unlike _ping_, identifies every router in the path. **traceroute** is useful when troubleshooting network problems because it can help you to localize problems in network connectivity \(you might need to install it `apt install traceroute`\):
+The traceroute command maps the journey that a packet of information undertakes from its source to its destination.  This tool uses **ICMP** messages, but unlike _ping_, identifies every router in the path. **traceroute** is useful when troubleshooting network problems because it can help you to localize problems in network connectivity (you might need to install it `apt install traceroute`):
 
-```text
+```
 root@ubuntu16-1:~# traceroute google.com
 traceroute to google.com (172.217.18.142), 30 hops max, 60 byte packets
  1  172.16.43.2 (172.16.43.2)  0.272 ms  0.329 ms  0.172 ms
@@ -199,9 +199,9 @@ What is MTU ? , the maximum transmission unit is the size of the largest protoco
 
 ### tracepath
 
-Tracepath traces a path to a designated network address, reporting on the "time to live" or TTL lag and maximum transmission units \(MTU\) along the way. This command can be run by any user other with access to the command line prompt.
+Tracepath traces a path to a designated network address, reporting on the "time to live" or TTL lag and maximum transmission units (MTU) along the way. This command can be run by any user other with access to the command line prompt.
 
-```text
+```
 root@ubuntu16-1:~# tracepath google.com
  1?: [LOCALHOST]                                         pmtu 1500
  1:  172.16.43.2                                           0.148ms 
@@ -232,11 +232,11 @@ root@ubuntu16-1:~# tracepath google.com
 
 ### dig
 
- **Dig** stands for \(**Domain Information Groper**\) is a network administration command-line tool for querying **Domain Name System** \(**DNS**\) name servers. It is useful for verifying and troubleshooting **DNS** problems and also to perform **DNS** lookups and displays the answers that are returned from the name server that were queried.
+ **Dig** stands for (**Domain Information Groper**) is a network administration command-line tool for querying **Domain Name System** (**DNS**) name servers. It is useful for verifying and troubleshooting **DNS** problems and also to perform **DNS** lookups and displays the answers that are returned from the name server that were queried.
 
-> By default, dig sends the DNS query to name servers listed in the resolver\(/etc/resolv.conf\) unless it is asked to query a specific name server.
+> By default, dig sends the DNS query to name servers listed in the resolver(/etc/resolv.conf) unless it is asked to query a specific name server.
 
-```text
+```
 root@ubuntu16-1:~# dig aol.com
 
 ; <<>> DiG 9.10.3-P4-Ubuntu <<>> aol.com
@@ -265,7 +265,7 @@ aol.com.		587	IN	A	106.10.218.150
 
 The dig command output has several sections sections , to have just Answer section use +short switch :
 
-```text
+```
 root@ubuntu16-1:~# dig aol.com +short
 124.108.115.87
 66.218.87.12
@@ -276,7 +276,7 @@ root@ubuntu16-1:~# dig aol.com +short
 
 to query specific  Name server use `@NameServerIP` :
 
-```text
+```
 root@ubuntu16-1:~# dig aol.com  @64.6.65.6 +short
 106.10.218.150
 188.125.72.165
@@ -287,11 +287,11 @@ root@ubuntu16-1:~# dig aol.com  @64.6.65.6 +short
 
 ### netstat
 
-  **netstat** \(network statistics\) is a command-line tool that displays network connections \(both incoming and outgoing\), routing tables,  number of network interface and even network protocol statistics.
+  **netstat** (network statistics) is a command-line tool that displays network connections (both incoming and outgoing), routing tables,  number of network interface and even network protocol statistics.
 
-> By default, netstat displays a list of open sockets .\( A socket is one end-point of a two-way communication link between two programs running on the network.\) as an example X11:
+> By default, netstat displays a list of open sockets .( A socket is one end-point of a two-way communication link between two programs running on the network.) as an example X11:
 
-```text
+```
 root@ubuntu16-1:~# netstat  | grep X11 | head -n3
 unix  3      [ ]         STREAM     CONNECTED     34942    @/tmp/.X11-unix/X0
 unix  3      [ ]         STREAM     CONNECTED     33525    @/tmp/.X11-unix/X0
@@ -301,30 +301,30 @@ unix  3      [ ]         STREAM     CONNECTED     32753    @/tmp/.X11-unix/X0
 
 So we usually use a combination of switches with netstat :
 
-| netstat command example  | usage |
-| :--- | :--- |
-| netstat -a | Listing all the LISTENING Ports of TCP and UDP connections |
-| netstat -na | all LISTENING  ports, but shows numerical addresses |
-| netstat -at | Listing TCP Ports connections |
-| netstat -au | Listing UDP Ports connections |
-| netstat -l | Listing all LISTENING\(TCP&UDP\) Connections |
-| netstat -s | Showing Statistics by Protocol\(TCP&UDP&...\) |
-| netstat -tp | Displaying Service name with PID |
-| netstat -rn | Displaying Kernel IP routing |
+| netstat command example  | usage                                                      |
+| ------------------------ | ---------------------------------------------------------- |
+| netstat -a               | Listing all the LISTENING Ports of TCP and UDP connections |
+| netstat -na              | all LISTENING  ports, but shows numerical addresses        |
+| netstat -at              | Listing TCP Ports connections                              |
+| netstat -au              | Listing UDP Ports connections                              |
+| netstat -l               | Listing all LISTENING(TCP\&UDP) Connections                |
+| netstat -s               | Showing Statistics by Protocol(TCP\&UDP&...)               |
+| netstat -tp              | Displaying Service name with PID                           |
+| netstat -rn              | Displaying Kernel IP routing                               |
 
 > use netstat in conjunction with grep to get a better results.
 
 ### netcat
 
-The `nc` \(or netcat\) utility is used for just about anything under the sun involving TCP or UDP. It can open TCP connections, send UDP packets, listen on arbitrary TCP and UDP ports, do port scanning, and deal with both IPv4 and IPv6. Unlike telnet, nc scripts nicely, and separates error messages onto standard error instead of sending them to standard output, as telnet does with some.
+The `nc `(or netcat) utility is used for just about anything under the sun involving TCP or UDP. It can open TCP connections, send UDP packets, listen on arbitrary TCP and UDP ports, do port scanning, and deal with both IPv4 and IPv6. Unlike telnet, nc scripts nicely, and separates error messages onto standard error instead of sending them to standard output, as telnet does with some.
 
-```text
+```
 root@ubuntu16-1:~# netcat -l 8888
 ```
 
-The -l parameter means that netcat is in listen \(server\) mode, and 8888 is the port it listens to; netcat will create a socket server and wait for connections on port 8888 . The terminal will remain on hold for a client to connect to the open server with netcat. We can verify that a host service listens on port 8888.We need to open a new terminal to the host station and run the command:
+The -l parameter means that netcat is in listen (server) mode, and 8888 is the port it listens to; netcat will create a socket server and wait for connections on port 8888 . The terminal will remain on hold for a client to connect to the open server with netcat. We can verify that a host service listens on port 8888.We need to open a new terminal to the host station and run the command:
 
-```text
+```
 root@ubuntu16-1:~# netstat -na | grep 8888
 tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN 
 ```
@@ -347,7 +347,7 @@ tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN
 
 [https://www.techwalla.com/articles/differences-between-traceroute-tracepath](https://www.techwalla.com/articles/differences-between-traceroute-tracepath)
 
-[http://netstat.net/](http://netstat.net/)
+[http://netstat.net/](http://netstat.net)
 
 [http://journals.ecs.soton.ac.uk/java/tutorial/networking/sockets/definition.html](http://journals.ecs.soton.ac.uk/java/tutorial/networking/sockets/definition.html)
 
@@ -360,4 +360,3 @@ tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN
 [https://www.mvps.net/docs/what-is-netcat-and-how-to-use-it/](https://www.mvps.net/docs/what-is-netcat-and-how-to-use-it/)
 
 .
-

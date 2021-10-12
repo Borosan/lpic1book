@@ -6,19 +6,17 @@ You can see the overview of LPIC1 Certification [here](http://www.lpi.org/our-ce
 
 By Payam Borosan
 
-* Site: [www.linuxcert.ir](http://linuxcert.ir/)
+* Site: [www.linuxcert.ir](http://linuxcert.ir)
 * GitBook: [https://borosan.gitbook.io/lpic1-exam-guide/](https://borosan.gitbook.io/lpic1-exam-guide/)
-* e-mail: p.borosan \[at\] gmail.com
+* e-mail: p.borosan \[at] gmail.com
 
 Donation :
 
-* payping \(from IR\): [https://payping.ir/borosan](https://payping.ir/borosan)
+* payping (from IR): [https://payping.ir/borosan](https://payping.ir/borosan)
 * bitcoin: bc1qhm5nr98su6xupv4dd6zt2m0sq2dzxh69zejm85
 * ethereum: 0x6F3D43A6957CC61b74Fe85Ad52D05d91a2B13c67
 * litecoin: ltc1qvxu57q2f3ay9tzu6tffkayc65te80vax9wzxn7
-* payping: [https://payping.ir/borosan](https://payping.ir/borosan)
 
-![](.gitbook/assets/lpic1-101-and-102.jpg)
+![](.gitbook/assets/lpic1-101&102.jpg)
 
-![](.gitbook/assets/cc-by-nc-icon-88x31.png)
-
+![](.gitbook/assets/CC-BY-NC-icon-88x31.png)

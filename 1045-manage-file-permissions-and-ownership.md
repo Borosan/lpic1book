@@ -1,6 +1,6 @@
 # 104.5. Manage file permissions and ownership
 
-**Weight:** 3
+**Weight: **3
 
 **Description:** Candidates should be able to control file access through the proper use of permissions and ownerships.
 
@@ -18,19 +18,19 @@
 * chown
 * chgrp
 
-####  <a id="users-groups-and-file-ownership"></a>
+####  <a href="users-groups-and-file-ownership" id="users-groups-and-file-ownership"></a>
 
-#### Users, groups and file ownership <a id="users-groups-and-file-ownership"></a>
+#### Users, groups and file ownership <a href="users-groups-and-file-ownership" id="users-groups-and-file-ownership"></a>
 
 By now, you know that Linux is a multiuser system and that each user belongs to one primary group and possibly additional groups. It is also possible to log in as one user and become another user using the `su`  commands. Ownership of files in Linux and access authority are closely related to user ids and groups.
 
-### User and groups <a id="user-and-groups"></a>
+### User and groups <a href="user-and-groups" id="user-and-groups"></a>
 
 To start, let’s review some basic user and group information via some commands
 
-* whoami : It displays the username of the current user \(ubuntu16.04\)
+* whoami : It displays the username of the current user (ubuntu16.04)
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ whoami
 user1
 user1@ubuntu16-1:~/sandbox$ su -
@@ -41,7 +41,7 @@ root
 
 * groups: We can find out what groups you are in by using the `groups` command.
 
-```text
+```
 root@ubuntu16-1:~# groups
 root
 root@ubuntu16-1:~# exit
@@ -52,7 +52,7 @@ user1
 
 * id :  We can find out both user and group information using the `id` command.
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ id
 uid=1001(user1) gid=1001(user1) groups=1001(user1)
 user1@ubuntu16-1:~/sandbox$ su -
@@ -61,12 +61,12 @@ root@ubuntu16-1:~# id
 uid=0(root) gid=0(root) groups=0(root)
 ```
 
-> It can show numeric ID’s \(UID or group ID\) of the current user or any other user in the server.
+> It can show numeric ID’s (UID or group ID) of the current user or any other user in the server.
 
 {% hint style="info" %}
 users and groups information are stored in /etc/passwd and /etc/group along other information.
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/passwd | grep user1
 user1:x:1001:1001::/home/user1:
 root@ubuntu16-1:~# cat /etc/group | grep user1
@@ -80,7 +80,7 @@ Every file on a Linux system has one owner and one group associated with it.
 
  Use the ls -l`ls-l` command to display the owner and group.
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ ls -l
 total 4
 drwxrwxr-x 2 user1 user1 4096 Jan 27 21:49 dir1
@@ -89,7 +89,7 @@ drwxrwxr-x 2 user1 user1 4096 Jan 27 21:49 dir1
 
 > As you can see, the file1 belongs to user1 and a group called user1.
 
-The first character of a long listing describes the type of object. "-" for a regular file, "d" for a directory, "l" for a symbolic link\(we will see them\).
+The first character of a long listing describes the type of object. "-" for a regular file, "d" for a directory, "l" for a symbolic link(we will see them).
 
 ![](.gitbook/assets/permis-filepermis.jpg)
 
@@ -97,16 +97,16 @@ Permissions are specified separately for the file’s owner, members of the file
 
 The Linux permission model has three types of permission for each filesystem object.
 
-The permissions are read \(r\), write \(w\), and execute \(x\). Write permission includes the ability to alter or delete an object.   A `-` indicates that the corresponding permission is not granted. example:
+The permissions are read (r), write (w), and execute (x). Write permission includes the ability to alter or delete an object.   A `-` indicates that the corresponding permission is not granted. example:
 
-```text
+```
 root@ubuntu16-1:~# ls -l /sbin/fsck
 -rwxr-xr-x 1 root root 44184 May 16  2018 /sbin/fsck
 ```
 
-As you can see fsck can be read, written and executed by its owner \(root\) and all  root group members, but others can just read and execute that\(probably with limited results \)
+As you can see fsck can be read, written and executed by its owner (root) and all  root group members, but others can just read and execute that(probably with limited results )
 
-#### Directories ownership and permissions <a id="directories"></a>
+#### Directories ownership and permissions <a href="directories" id="directories"></a>
 
 ![](.gitbook/assets/permis-dirpermis.jpg)
 
@@ -118,14 +118,14 @@ Directories use the same permissions flags as regular files, but they are interp
 
 Without execute permission on a directory, the filesystem objects inside the directory are not accessible. Without read permission on a directory, the filesystem objects inside the directory are not viewable in a directory listing, but these objects can still be accessed as long as you know the full path to the object on disk. example:
 
-```text
+```
 root@ubuntu16-1:~# ls -l /home/
 total 8
 drwxr-xr-x 22 payam payam 4096 Oct 27  2018 payam
 drwxr-xr-x 19 user1 user1 4096 Jan 27 21:49 user1
 ```
 
-The first charcter indicates that this a directory. The owner \(user1\) has read,write, execute access but other members of user1 group and others have just read and execute access on this directory, \(as we mentioned, execute lets them to see files inside it \)
+The first charcter indicates that this a directory. The owner (user1) has read,write, execute access but other members of user1 group and others have just read and execute access on this directory, (as we mentioned, execute lets them to see files inside it )
 
 #### Changing permissions
 
@@ -140,30 +140,30 @@ The command you use to change the  permissions on files is called chmod , which 
 
 ![](.gitbook/assets/permis-chmodshortcodes.jpg)
 
-```text
+```
 chmod [reference][operator][mode] file... 
 ```
 
 reference can be
 
-*  u as user  \(file's owner\)
-* g as group \(users who are members of the file's grou\)
-* o as others \(users who are not the file's owner / members of the file's group\)
-* a as all \(All three of the above, same as ugo\)
+*  u as user  (file's owner)
+* g as group (users who are members of the file's grou)
+* o as others (users who are not the file's owner / members of the file's group)
+* a as all (All three of the above, same as ugo)
 
 Operator can be
 
-* +  Adds the specified modes to the specified classes
-*  - Removes the specified modes from the specified classes
-* = The modes specified are to be made the exact modes for the specified classes
+* \+  Adds the specified modes to the specified classes
+*  \- Removes the specified modes from the specified classes
+* \= The modes specified are to be made the exact modes for the specified classes
 
 obviously modes might be
 
 * r  :Permission to read the file
-* w :Permission to write \(or delete\) the file.
+* w :Permission to write (or delete) the file.
 * x : Permission to execute the file, or, in the case of a directory, search it.
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
 -rw-rw-r-- 1 user1 user1    0 Jan 27 21:49 file1
 
@@ -178,9 +178,9 @@ user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
 -rwxrw---- 1 user1 user1    0 Jan 27 21:49 file1
 ```
 
-> If we want to set different permissions for user, group, or other, we can separate different expressions by commas —for example, `ug=rwx,o=rx`
+>  If we want to set different permissions for user, group, or other, we can separate different expressions by commas —for example, `ug=rwx,o=rx`
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
 -rwxrw---- 1 user1 user1    0 Jan 27 21:49 file1
 
@@ -192,7 +192,7 @@ user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
 
 > using a as ugo with = operator to set exact mode easier
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
 -rw-rwxr-- 1 user1 user1    0 Jan 27 21:49 file1
 user1@ubuntu16-1:~/sandbox$ chmod a=rw file1
@@ -200,24 +200,24 @@ user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
 -rw-rw-rw- 1 user1 user1    0 Jan 27 21:49 file1
 ```
 
-**2- using ocatl codes :** So far we have used symbols \(ugoa and rxw\) to specify permissions. we can also set permissions using octal numbers instead of symbols.
+**2- using ocatl codes : **So far we have used symbols (ugoa and rxw) to specify permissions. we can also set permissions using octal numbers instead of symbols.
 
 ![](.gitbook/assets/permis-chmodoctalcodes.jpg)
 
 For using octal codes with chmod we have to create an octal string, and that's is nothing more than a simple sum of numbers:
 
-| Symbolic | note | Octal |
-| :--- | :--- | :--- |
-| rwx | 4+2+1 | 7 |
-| rw- | 4+2 | 6 |
-| r-x | 4+1 | 5 |
-| r-- | 4 | 4 |
-| -wx | 2+1 | 3 |
-| -w- | 2 | 2 |
-| --x | 1 | 1 |
-| --- | 0 | 0 |
+| Symbolic | note  | Octal |
+| -------- | ----- | ----- |
+| rwx      | 4+2+1 | 7     |
+| rw-      | 4+2   | 6     |
+| r-x      | 4+1   | 5     |
+| r--      | 4     | 4     |
+| -wx      | 2+1   | 3     |
+| -w-      | 2     | 2     |
+| --x      | 1     | 1     |
+| ---      | 0     | 0     |
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
 -rw-rw-rw- 1 user1 user1    0 Jan 27 21:49 file1
 
@@ -234,7 +234,7 @@ user1@ubuntu16-1:~/sandbox$ ls -l | grep file1
 
 To change permissions  recursively on directories and files use `-R` option:
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ chmor -R o+r dir1
 ```
 
@@ -244,7 +244,7 @@ When  we  log in, the new shell process runs with your user and group IDs. This 
 
 An important example is the /etc/passwd file, which cannot be changed by normal users directly, because write permission is enabled only for root. However, normal users need to be able to modify /etc/passwd somehow:
 
-```text
+```
 root@ubuntu16-1:~# which passwd
 /usr/bin/passwd
 root@ubuntu16-1:~# ls -l /usr/bin/passwd
@@ -255,9 +255,9 @@ So, if the user is unable to modify this file, how can this be done? What is tha
 
 ### suid , guid
 
-The Linux permissions model has two special access modes called suid \(set user id\) and sgid \(set group id\). When an executable program has the suid access modes set, it will run as if it had been started by the file’s owner, rather than by the user who really started it. Similarly, with the sgid access modes set, the program will run as if the initiating user belonged to the file’s group rather than to his own group.
+The Linux permissions model has two special access modes called suid (set user id) and sgid (set group id). When an executable program has the suid access modes set, it will run as if it had been started by the file’s owner, rather than by the user who really started it. Similarly, with the sgid access modes set, the program will run as if the initiating user belonged to the file’s group rather than to his own group.
 
-> #### Directories and sgid <a id="directories-and-sgid"></a>
+> #### Directories and sgid <a href="directories-and-sgid" id="directories-and-sgid"></a>
 >
 > When a directory has the sgid mode enabled, any files or directories created in it will inherit the group ID of the directory. This is particularly useful for directory trees that are used by a group of people working on the same project.
 
@@ -265,15 +265,15 @@ The Linux permissions model has two special access modes called suid \(set user 
 
 We have just seen how anyone with write permission to a directory can delete files in it. This might be acceptable for a group project, but is not desirable for globally shared file space such as the /tmp directory. Fortunately, there is a solution.  That  is called the _sticky_ bit.
 
-If set stickybit for a directory, it permits only the owning user or the superuser \(root\) to delete or unlink a file. 
+If set stickybit for a directory, it permits only the owning user or the superuser (root) to delete or unlink a file. 
 
 Okey lets wrap up what we have learned:
 
-| access mode |  **on file** | **on directory** |
-| :--- | :--- | :--- |
-| **SUID** | executes with permissions of file owner | nothing |
-| **GUID** | executes with the permissions of group | new files have group membership of directory |
-| **Sticky Bit** | nothing | only owner can delete files |
+| access mode    | ** on file**                            | **on directory**                             |
+| -------------- | --------------------------------------- | -------------------------------------------- |
+| **SUID**       | executes with permissions of file owner | nothing                                      |
+| **GUID**       | executes with the permissions of group  | new files have group membership of directory |
+| **Sticky Bit** | nothing                                 | only owner can delete files                  |
 
 #### How suid, guid and stickybit are implemented?
 
@@ -281,13 +281,13 @@ As there is no more room for setting Access modes, execution character is used. 
 
 ![](.gitbook/assets/permis-accessmodes.jpg)
 
-> As you have probably noticed, if the file or directory is already executable  **s** and **t**  would be displayed  after setting access modes. 
+> As you have probably noticed, if the file or directory is already executable  **s** and **t ** would be displayed  after setting access modes. 
 >
-> But if the file or directory hasn't been executable before setting access mode, **S** and **T** would be appear.
+> But if the file or directory hasn't been executable before setting access mode,** S** and **T **would be appear.
 
 As an example for suid consider ping command, as ping needs to access network card it needs root permissions, but an ordinary user can use it:
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ which ping
 /bin/ping
 user1@ubuntu16-1:~/sandbox$ ls -l /bin/ping
@@ -304,7 +304,7 @@ rtt min/avg/max/mdev = 39.793/39.862/39.932/0.211 ms
 
 Now we try setting guid on a directory and we will create a file with another user:
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ ls -l | grep dir1
 drwxrwxrwx 2 user1 user1 4096 Jan 27 21:49 dir1
 user1@ubuntu16-1:~/sandbox$ chmod g+s dir1
@@ -312,7 +312,7 @@ user1@ubuntu16-1:~/sandbox$ ls -l | grep dir1
 drwxrwsrwx 2 user1 user1 4096 Jan 27 21:49 dir1
 ```
 
-```text
+```
 user2@ubuntu16-1:~$ whoami
 user2
 user2@ubuntu16-1:~$ cd /home/user1/sandbox/dir1/
@@ -324,7 +324,7 @@ total 0
 
 And finally lets try how stickybit works on  /tmp:
 
-```text
+```
 user1@ubuntu16-1:/$ cd /
 user1@ubuntu16-1:/$ ls -l | grep tmp
 drwxrwxrwt  22 root  root   4096 Jan 29 02:03 tmp
@@ -334,7 +334,7 @@ user1@ubuntu16-1:/tmp$ ls -l | grep -i newfile
 -rw-rw-r-- 1 user1 user1    0 Jan 29 02:04 NewFileUser1
 ```
 
-```text
+```
 user2@ubuntu16-1:~$ whoami
 user2
 user2@ubuntu16-1:~$ cd /tmp/
@@ -347,15 +347,15 @@ rm: cannot remove 'NewFileUser1': Operation not permitted
 
 We can also use octal codes to set suid, guid and stickybit:
 
-| Access Mode | octal |
-| :--- | :--- |
-| **SUID** | 4000 |
-| **GUID** | 2000 |
-| **StickyBit** | 1000 |
+| Access Mode   | octal |
+| ------------- | ----- |
+| **SUID**      | 4000  |
+| **GUID**      | 2000  |
+| **StickyBit** | 1000  |
 
 And again we can use sum of digits.
 
-```text
+```
 ###SUID
 user1@ubuntu16-1:~/sandbox$ touch file2
 user1@ubuntu16-1:~/sandbox$ ls -l | grep file2
@@ -384,7 +384,7 @@ When a new file or directory is created, the creation process specifies the perm
 
  We can view your umask setting with the `umask` command:
 
-```text
+```
 root@ubuntu16-1:~# umask
 0022
 ```
@@ -393,9 +393,9 @@ root@ubuntu16-1:~# umask
 
 ![](.gitbook/assets/permis-umask.jpg)
 
- When a new file is created, the creation process specifies the permissions that the new file should have. Often, the mode requested is 0666, which makes the file readable and writable by anyone \(but not executable\). Directories usually default to 0777. However, this permissive creation is affected by a _umask_ value, which specifies what permissions a user does **not** want to grant automatically to newly created files or directories. The system uses the umask value to reduce the originally requested permissions.
+ When a new file is created, the creation process specifies the permissions that the new file should have. Often, the mode requested is 0666, which makes the file readable and writable by anyone (but not executable). Directories usually default to 0777. However, this permissive creation is affected by a _umask_ value, which specifies what permissions a user does **not** want to grant automatically to newly created files or directories. The system uses the umask value to reduce the originally requested permissions.
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ umask
 0002
 
@@ -409,15 +409,15 @@ user1@ubuntu16-1:~/sandbox$ ls -l | grep newdir
 drwxrwxr-x 2 user1 user1 4096 Jan 28 05:45 newdir
 ```
 
-Usually umask  is set system wide \(it could be set per user\) and we can find its configuration in one of these places \(based on your linux distribution\): 
+Usually umask  is set system wide (it could be set per user) and we can find its configuration in one of these places (based on your linux distribution): 
 
-> * /etc/profile \(usually\)
-> * /etc/bashrc \(usually\)
-> * /etc/logindefs \(ubuntu\)
+> * /etc/profile (usually)
+> * /etc/bashrc (usually)
+> * /etc/logindefs (ubuntu)
 
 as we are using ubuntu here lets take look at /etc/logindefs:
 
-```text
+```
 # If USERGROUPS_ENAB is set to "yes", that will modify this UMASK default value
 # for private user groups, i. e. the uid is the same as gid, and username is
 # the same as the primary group name: for these, the user permissions will be
@@ -430,9 +430,9 @@ KILLCHAR        025
 UMASK           022
 ```
 
-it say umask would be 002 if USERGROUPS\_ENAB is set, lets check it out:
+it say umask would be 002 if USERGROUPS_ENAB is set, lets check it out:
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/login.defs | grep -i USERGROUPS_ENAB
 # If USERGROUPS_ENAB is set to "yes", that will modify this UMASK default value
 USERGROUPS_ENAB yes
@@ -442,19 +442,19 @@ which is why umask is 002 in our system.
 
 #### Setting file owner and group
 
-All files in Linux belong to an owner and a group.  We can set the owner by using `chown`  command, and the group by the `chgrp` command.
+All files in Linux belong to an owner and a group.  We can set the owner by using `chown`  command, and the group by the `chgrp `command.
 
 ### chown
 
  The root user can change the ownership of a file using the `chown` command.We can use user name or user ID.
 
-```text
+```
 chown [OPTION]… [OWNER][:[GROUP]] FILE…
 ```
 
 The file’s group may be changed at the same time by adding a colon and a group name or ID right after the user name or ID.
 
-```text
+```
 root@ubuntu16-1:~/sandbox# touch file1
 root@ubuntu16-1:~/sandbox# ls -l
 total 0
@@ -467,26 +467,26 @@ total 0
 
 If only a colon is given, then the user’s default group is used:
 
-```text
+```
 root@ubuntu16-1:~/sandbox# chown user1: file1
 root@ubuntu16-1:~/sandbox# ls -l
 total 0
 -rw-r--r-- 1 user1 user1 0 Jan 29 03:00 file1
 ```
 
- the -R option will apply the change recursively and `-c`  Reports when a file change is made. We can also use other file ownership via `--referenece` switch.
+ the -R option will apply the change recursively and`  -c  ` Reports when a file change is made. We can also use other file ownership via `--referenece` switch.
 
 ### chgrp
 
  chgrp command in Linux is used to change the group ownership of a file or directory.
 
-```text
+```
 chgrp [OPTION]… GROUP FILE…
 ```
 
 **Note1:** We need to have administrator permission to add or delete groups 
 
-```text
+```
 root@ubuntu16-1:~/sandbox# ls -l
 total 0
 -rw-r--r-- 1 user1 user1 0 Jan 29 03:00 file1
@@ -502,7 +502,7 @@ total 0
 
 **Note2:** the owner of file can always change the group of his/her file or directory to its own group or one of the groups that him/her is a member of.
 
-```text
+```
 root@ubuntu16-1:~# cd ~user1/
 
 root@ubuntu16-1:/home/user1# cd sandbox/
@@ -514,7 +514,7 @@ total 0
 root@ubuntu16-1:/home/user1/sandbox# chown user1 file1 
 ```
 
-```text
+```
 user1@ubuntu16-1:~/sandbox$ whoami
 user1
 
@@ -534,7 +534,7 @@ total 0
 
 As with many of the commands covered in this tutorial, `chgrp` has a `-R` option to allow changes to be applied recursively to all selected files and subdirectories.
 
---refrence  Uses the groupname of a reference file to change the group of another file or folder.
+\--refrence  Uses the groupname of a reference file to change the group of another file or folder.
 
 .
 
@@ -551,7 +551,7 @@ The **primary group** is the one that’s recorded in the **/etc/passwd** file, 
 
  **Secondary groups** are those that users might be added to once they already have accounts. Secondary group memberships show up in the /etc/group file.
 
-A user can change his/her **primary group** \(**default group**\) with `newgrp` command, and after that all file/directories the user creates will have that group.
+A user can change his/her **primary group** (**default group**) with `newgrp `command, and after that all file/directories the user creates will have that group.
 {% endhint %}
 
 
@@ -564,7 +564,7 @@ A user can change his/her **primary group** \(**default group**\) with `newgrp` 
 
 [https://developer.ibm.com/tutorials/l-lpic1-104-5/](https://developer.ibm.com/tutorials/l-lpic1-104-5/)
 
-[https://jadi.gitbooks.io/lpic1/content/1045\_manage\_file\_permissions\_and\_ownership.html](https://jadi.gitbooks.io/lpic1/content/1045_manage_file_permissions_and_ownership.html)
+[https://jadi.gitbooks.io/lpic1/content/1045\_manage_file_permissions_and_ownership.html](https://jadi.gitbooks.io/lpic1/content/1045\_manage_file_permissions_and_ownership.html)
 
 [https://www.geeksforgeeks.org/chmod-command-linux/](https://www.geeksforgeeks.org/chmod-command-linux/)
 
@@ -581,4 +581,3 @@ A user can change his/her **primary group** \(**default group**\) with `newgrp` 
 .
 
 .
-

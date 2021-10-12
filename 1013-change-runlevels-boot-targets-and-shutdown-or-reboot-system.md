@@ -37,15 +37,15 @@ A runlevel is one of the modes that a Unix -based operating system will run in. 
 
 Conventionally, **seven** runlevels exist, numbered from zero to six. And there are some differences between Debian and RedHat based systems:
 
-| Runlevel | Debian | RedHat |
-| :--- | :--- | :--- |
-| **0** | **Halt** | **Halt** |
-| **1** | **Single User Mode** | **Single User Mode** |
-| **2** | Full,Multi-User,GUI | Multi-User, No Net |
-| **3** | Nothing | Multi-User, with Net, No GUI |
-| **4** | **Nothing** | **Not used** |
-| **5** | Nothing | Full,Multi-User,GUI |
-| **6** | **Reboot** | **Reboot** |
+| Runlevel | Debian               | RedHat                       |
+| -------- | -------------------- | ---------------------------- |
+| **0**    | **Halt**             | **Halt**                     |
+| **1**    | **Single User Mode** | **Single User Mode**         |
+| **2**    | Full,Multi-User,GUI  | Multi-User, No Net           |
+| **3**    | Nothing              | Multi-User, with Net, No GUI |
+| **4**    | **Nothing**          | **Not used**                 |
+| **5**    | Nothing              | Full,Multi-User,GUI          |
+| **6**    | **Reboot**           | **Reboot**                   |
 
 CentsOS 5 was the last version which used SysV and from CentOS 7 Systemd is used.
 
@@ -53,7 +53,7 @@ CentsOS 5 was the last version which used SysV and from CentOS 7 Systemd is used
 
 To find the current and previous runlevels , the runlevel command is used:
 
-```text
+```
 [root@centos5-1 ~]# runlevel
 N 5
 ```
@@ -66,13 +66,13 @@ Now that we now about runlevels, How we can switch between them? well just tell 
 
 telinit is used to change the SysV system runlevel.
 
-```text
+```
 telinit  RUNLEVEL
 ```
 
 Lets try it on a CentOS5 machine:
 
-```text
+```
 [root@centos5-1 ~]# runlevel
 N 5
 [root@centos5-1 ~]# telinit 3
@@ -80,15 +80,15 @@ N 5
 
 and system goes to runlevel 3 lets go back to runlevel 5:
 
-```text
+```
 [root@centos5-1 ~]# telinit 5
 ```
 
 ## init
 
-init \(as a command\) is a process control initialization like telinit.
+init (as a command) is a process control initialization like telinit.
 
-```text
+```
 [root@centos5-1 ~]# init 3
 ```
 
@@ -97,7 +97,7 @@ init \(as a command\) is a process control initialization like telinit.
 
 telinit is a smaller tool that informs init when it needs to switch runlevels. So we can use "telinit" to "tell init" that it needs to switch runlevel. telinit is actually linked to init command and it is possible to use init command instead but it is not recommanded.
 
-```text
+```
 [root@centos5-1 ~]# ls -l /sbin/telinit 
 lrwxrwxrwx 1 root root 4 Aug 26 23:20 /sbin/telinit -> init
 ```
@@ -107,9 +107,9 @@ There are several ways to change runlevels. To make a permanent change, we can e
 
 ### /etc/inttab
 
-After the Linux kernel has booted, the init program reads the /etc/inittab file to determine the **behavior for each runlevel**. Unless the user specifies another value as a kernel boot parameter, the system will attempt to enter \(start\) the default runlevel.\(CentOs5\)
+After the Linux kernel has booted, the init program reads the /etc/inittab file to determine the **behavior for each runlevel**. Unless the user specifies another value as a kernel boot parameter, the system will attempt to enter (start) the default runlevel.(CentOs5)
 
-```text
+```
 [root@centos5-1 ~]# cat /etc/inittab 
 #
 # inittab       This file describes how the INIT process should set up
@@ -174,7 +174,7 @@ The format of each line in inittab file is as follows:
 
 Here is a description of these fields:
 
-* **id \(identification code\)** – consists of a sequence of one to four characters that identifies its function.
+* **id (identification code)** – consists of a sequence of one to four characters that identifies its function.
 * **runlevels** – lists the run levels to which this entry applies.
 * **action** – specific codes in this field tell init how to treat the process. Possible values include: initdefault, sysinit, boot, bootwait, wait, and respawn.
 * **process** – defines the command or script to execute.
@@ -183,9 +183,9 @@ Now lets see how SysV implements the concept of run levels.
 
 ### /etc/init.d
 
-/etc/init.d contains scripts used by the System V init tools \(SysVinit\).
+/etc/init.d contains scripts used by the System V init tools (SysVinit).
 
-```text
+```
 [root@centos5-1 ~]# ls  /etc/init.d/
 acpid               hidd           netconsole       rpcidmapd
 anacron             httpd          netfs            rpcsvcgssd
@@ -209,9 +209,9 @@ haldaemon           microcode_ctl  restorecond
 halt                multipathd     rpcgssd
 ```
 
-As we said, in SysV, init program is the first process that is run and consequently some infrastructure services are started. Files in /etc/init.d are shell scripts that respond to start, stop, restart, and \(when supported\) reload commands to manage a particular service. But how SysV determine which services inside /etc/init.d should be started or stopped depend on default runlevel ?Lets draw a picture:
+As we said, in SysV, init program is the first process that is run and consequently some infrastructure services are started. Files in /etc/init.d are shell scripts that respond to start, stop, restart, and (when supported) reload commands to manage a particular service. But how SysV determine which services inside /etc/init.d should be started or stopped depend on default runlevel ?Lets draw a picture:
 
-![](.gitbook/assets/customizsysv-sysvscripts.jpg)
+![](.gitbook/assets/customizsysv-SysVScripts.jpg)
 
 ### /etc/rc.d/
 
@@ -219,7 +219,7 @@ SysV uses grouping. **Scripts of each runlevel are grouped and placed in /etc/rc
 
 As many services might be existed in different runlevels, the real script files are hold in /etc/init.d and /etc/rc{runlevel}.d/just point to required ones.
 
-```text
+```
 [root@centos5-1 etc]# ls | grep rc.
 rc0.d
 rc1.d
@@ -235,7 +235,7 @@ rc.sysinit
 
 Lets take a look at rc.5 for example:
 
-```text
+```
 [root@centos5-1 etc]# ls -l rc5.d/
 total 288
 lrwxrwxrwx 1 root root 17 Aug 26 23:21 K01dnsmasq -> ../init.d/dnsmasq
@@ -272,9 +272,9 @@ lrwxrwxrwx 1 root root 19 Aug 26 23:21 S15mdmonitor -> ../init.d/mdmonitor
 <output has been truncated>
 ```
 
-Each script in each runlevel is run with its startup or shutdown functions depending on if that runlevel is going up or going down. **S** means **starting** script and **K** shows that it is a **killing** script .The sequence of actions is defined by the numbers. try cat command to see what is inside :
+Each script in each runlevel is run with its startup or shutdown functions depending on if that runlevel is going up or going down.** S** means **starting** script and **K** shows that it is a **killing** script .The sequence of actions is defined by the numbers. try cat command to see what is inside :
 
-```text
+```
 [root@centos5-1 rc5.d]# cat S55sshd
 #!/bin/bash
 #
@@ -473,9 +473,9 @@ Lets go back to our topic and get familiar with runlevels equivalent in systemd.
 
 ### systemd targets
 
-Like runlevels there are some modes in systemd system that our system can run in, systemd runlevels are referred to as "**targets**". "**targets**" **are described as a collection of services**. Look at the equivalents: ****
+Like runlevels there are some modes in systemd system that our system can run in, systemd runlevels are referred to as "**targets**". "**targets**" **are described as a collection of services**. Look at the equivalents:** **
 
-```text
+```
    ┌─────────┬───────────────────┐
    │Runlevel │ Target            │
    ├─────────┼───────────────────┤
@@ -499,24 +499,24 @@ Systemctl is a systemd utility which is responsible for Controlling the systemd 
 
 To see the current boot target use `systemctl get-default` command:
 
-```text
+```
 [root@centos7-1 ~]# systemctl get-default 
 graphical.target
 ```
 
 To change the target use `systemctl isolate xxxxx.target` , for example:
 
-```text
+```
 [root@centos7-1 ~]# systemctl isolate rescue.target
 ```
 
-```text
+```
 [root@centos7-1 ~]# systemctl isolate multi-user.target
 ```
 
 To set the default target, run `systemctl set-default xxxxxx.target` command :
 
-```text
+```
 [root@centos7-1 ~]# systemctl set-default graphical.target 
 Removed symlink /etc/systemd/system/default.target.
 Created symlink from /etc/systemd/system/default.target to /usr/lib/systemd/system/graphical.target.
@@ -538,7 +538,7 @@ Unit files can be stored in a few different places on your system. systemd looks
 
 ### 1./etc/systemd/system
 
-```text
+```
 [root@centos7-1 ~]# ls -l /etc/systemd/system
 total 4
 drwxr-xr-x. 2 root root   31 Oct 28  2017 basic.target.wants
@@ -568,7 +568,7 @@ drwxr-xr-x. 2 root root   29 Oct 28  2017 vmtoolsd.service.requires
 
 ### 2./run/systemd/system 
 
-```text
+```
 [root@centos7-1 ~]# ls -l /run/systemd/system/
 total 8
 -rw-r--r-- 1 root root  17 Jan  2  2019 session-1.scope
@@ -579,7 +579,7 @@ drwxr-xr-x 2 root root 120 Jan  2  2019 user-1000.slice.d
 
 ### 3./usr/lib/systemd/system
 
-```text
+```
 [root@centos7-1 ~]# ls  /usr/lib/systemd/system
 
 <output has been trancuated>
@@ -621,14 +621,14 @@ plymouth-poweroff.service
 
 lets follow one of target unit files.Try `ls -al *.target` to see all of target files. As an instance _default.target_:
 
-```text
+```
 [root@centos7-1 ~]# ls -al /usr/lib/systemd/system/default.target
 lrwxrwxrwx. 1 root root 16 Oct 28  2017 /usr/lib/systemd/system/default.target -> graphical.target
 ```
 
 Lets take a look at that _graphical.target_:
 
-```text
+```
 [root@centos7-1 ~]# cat  /usr/lib/systemd/system/graphical.target
 #  This file is part of systemd.
 #
@@ -649,7 +649,7 @@ AllowIsolate=yes
 
 And what it requires is _multi-user.target_, lets see:
 
-```text
+```
 [root@centos7-1 ~]# cat  /usr/lib/systemd/system/multi-user.target
 #  This file is part of systemd.
 #
@@ -667,9 +667,9 @@ After=basic.target rescue.service rescue.target
 AllowIsolate=yes
 ```
 
-and it requires _basic.target_ :
+and it requires _basic.target _:
 
-```text
+```
 [root@centos7-1 ~]# cat  /usr/lib/systemd/system/basic.target
 #  This file is part of systemd.
 #
@@ -690,7 +690,7 @@ After=sockets.target paths.target slices.target
 
 Finally _sysinit.target_ :
 
-```text
+```
 [root@centos7-1 ~]# cat  /usr/lib/systemd/system/sysinit.target
 #  This file is part of systemd.
 #
@@ -713,15 +713,15 @@ Using unit files beside Targets concept make Systemd more flexible in comparison
 
 ## wall
 
-There are times when multiple users are logged in to a server computer, and we need to, say, restart the server to perform some maintenance task. Of course, the **correct way is to inform all** those who are logged in about the maintenance activity.
+There are times when multiple users are logged in to a server computer, and we need to, say, restart the server to perform some maintenance task. Of course, the **correct way is to inform all **those who are logged in about the maintenance activity.
 
-wall \(an abbreviation of write to all\) is a Unix command-line utility that displays the contents of a file or standard input to all logged-in users. It is typically used by root to send out shutting down message to all users just before poweroff.\(Ubuntu16\)
+wall (an abbreviation of write to all) is a Unix command-line utility that displays the contents of a file or standard input to all logged-in users. It is typically used by root to send out shutting down message to all users just before poweroff.(Ubuntu16)
 
-```text
+```
 wall [-n] [-t timeout] [-g group] [message | file]
 ```
 
-```text
+```
 OPTIONS         
        -n, --nobanner
               Suppress the banner.
@@ -745,7 +745,7 @@ OPTIONS
 
 Lets try sending out "we are going down" message:
 
-```text
+```
 [root@centos5-1 ~]# wall "we are going down"
 
 Broadcast message from root@centos6-1 (pts/1) (Sun Nov 11 00:46:58 2018):
@@ -755,7 +755,7 @@ we are going down
 
 and what will **user1** receive:
 
-```text
+```
 [user1@centos5-1 ~]$ 
 Broadcast message from root@centos6-1 (pts/1) (Sun Nov 11 00:46:58 2018):
 
@@ -768,11 +768,11 @@ options might not work is some old distributions.
 
 shutdown - Halt, power-off or reboot the machine
 
-```text
+```
 shutdown [OPTIONS...] [TIME] [WALL...]
 ```
 
-```text
+```
 OPTIONS         
        The following options are understood:
 
@@ -811,28 +811,28 @@ OPTIONS
            A message to be sent to all users, along with the standard shutdown notification.
 ```
 
-shutdown does its job by signalling the init process, asking it to change the runlevel. According to previous title, runlevel 0 is used to halt the system, runlevel 6 is used to reboot the system, and runlevel 1 is used to put the system into a state where administrative tasks can be performed \(single-user mode\).
+shutdown does its job by signalling the init process, asking it to change the runlevel. According to previous title, runlevel 0 is used to halt the system, runlevel 6 is used to reboot the system, and runlevel 1 is used to put the system into a state where administrative tasks can be performed (single-user mode).
 
-```text
+```
 root@ubuntu16-1:~# shutdown -r -t 15 +5 "Server will restart in 5 minutes. Please save your work."
 Shutdown scheduled for Sun 2018-11-11 03:19:56 PST, use 'shutdown -c' to cancel.
 root@ubuntu16-1:~# shutdown -c
 ```
 
-We may specify a time string \(which is usually “now” or “hh:mm” for hour/minutes\):
+We may specify a time string (which is usually “now” or “hh:mm” for hour/minutes):
 
-```text
+```
 root@ubuntu16-1:~# shutdown -r 10:10 "Server will be rebooted at 10:10am"
 Shutdown scheduled for Tue 2018-11-13 10:10:00 PST, use 'shutdown -c' to cancel.
 root@ubuntu16-1:~# shutdown -c
 ```
 
-#### 
+####
 
 {% hint style="info" %}
 #### halt vs poweroff ! it's a bit historical
 
-* halt was used before ACPI \(Advanced Configuration and Power Interface\)which today will turn off the power for us. It would halt the system and then print a message to the effect of "it's ok to power off now". Back then there were physical on/off switches, rather than the combo ACPI controlled power button of modern computers.
+* halt was used before ACPI (Advanced Configuration and Power Interface)which today will turn off the power for us. It would halt the system and then print a message to the effect of "it's ok to power off now". Back then there were physical on/off switches, rather than the combo ACPI controlled power button of modern computers.
 * poweroff, naturally will halt the system and then call ACPI power off.
 
 These days halt is smart enough to automatically call poweroff if ACPI is enabled. In fact, they are functionally equivalent now.
@@ -842,7 +842,7 @@ These days halt is smart enough to automatically call poweroff if ACPI is enable
 
 reboot command can be used to shutdown or reboot linux.
 
-```text
+```
 [root@centos7-1 ~]# reboot --help
 reboot [OPTIONS...] [ARG]
 
@@ -860,7 +860,7 @@ Reboot the system.
 
 To reboot linux just call the reboot command directly without any options.
 
-```text
+```
 [root@centos7-1 ~]# reboot
 ```
 
@@ -872,7 +872,7 @@ This will perform a graceful shutdown and restart of the machine. This is what h
 
 The next command is the halt command. This can shutdown a system but has some other options:
 
-```text
+```
 [root@centos7-1 ~]# halt --help
 halt [OPTIONS...]
 
@@ -894,7 +894,7 @@ the halt command also has force option but try not to use it, because it might p
 
 There is another command exactly same as the halt command. It does the same things and takes the same options.
 
-```text
+```
 [root@centos7-1 ~]# poweroff --help
 poweroff [OPTIONS...]
 
@@ -930,7 +930,7 @@ Sources:
 
 [https://www.ostechnix.com/check-runlevel-linux/](https://www.ostechnix.com/check-runlevel-linux/)
 
-[https://geek-university.com/linux/etc-inittab/](https://geek-university.com/linux/etc-inittab/)\`\`[https://developer.ibm.com/tutorials/l-lpic1-101-3/](https://developer.ibm.com/tutorials/l-lpic1-101-3/)
+[https://geek-university.com/linux/etc-inittab/](https://geek-university.com/linux/etc-inittab/)``[https://developer.ibm.com/tutorials/l-lpic1-101-3/](https://developer.ibm.com/tutorials/l-lpic1-101-3/)
 
 [https://www.liquidweb.com/kb/linux-runlevels-explained/](https://www.liquidweb.com/kb/linux-runlevels-explained/)
 
@@ -950,7 +950,7 @@ Sources:
 
 [https://www.howtoforge.com/linux-wall-command/](https://www.howtoforge.com/linux-wall-command/)
 
-[https://en.wikipedia.org/wiki/Wall\_\(Unix\)](https://en.wikipedia.org/wiki/Wall_%28Unix%29)
+[https://en.wikipedia.org/wiki/Wall\_(Unix)](https://en.wikipedia.org/wiki/Wall_\(Unix\))
 
 [http://man7.org/linux/man-pages/man1/wall.1.html](http://man7.org/linux/man-pages/man1/wall.1.html)
 
@@ -963,4 +963,3 @@ Sources:
 [https://www.tecmint.com/shutdown-poweroff-halt-and-reboot-commands-in-linux/](https://www.tecmint.com/shutdown-poweroff-halt-and-reboot-commands-in-linux/)
 
 [https://www.binarytides.com/linux-command-shutdown-reboot-restart-system/](https://www.binarytides.com/linux-command-shutdown-reboot-restart-system/)
-

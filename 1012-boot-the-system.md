@@ -37,7 +37,7 @@ Now lets explain more each of these steps:
 
 **1-**First system power on.
 
-**2-**BIOS load \(in modern systems it would be UEFI\)
+**2-**BIOS load (in modern systems it would be UEFI)
 
 ## BIOS
 
@@ -45,26 +45,26 @@ BIOS, which stands for Basic Input Output System, is software stored on a small 
 
 ![](.gitbook/assets/boot-bios.jpg)
 
-**3-**BIOS scans and goes for the primary \(or chosen\) disk's "boot sector" .A boot sector is a region of a hard disk, floppy disk, optical disc, or other data storage device that contains machine code to be loaded into random-access memory \(RAM\) by a computer system's built-in firmware like BIOS.
+**3-**BIOS scans and goes for the primary (or chosen) disk's "boot sector" .A boot sector is a region of a hard disk, floppy disk, optical disc, or other data storage device that contains machine code to be loaded into random-access memory (RAM) by a computer system's built-in firmware like BIOS.
 
 What exist on boot sector? MBR
 
 ## MBR
 
-A master boot record \(often shortened as MBR\) is a kind of boot sector stored on a hard disk drive or other storage device that contains the necessary computer code to start the boot process.
+A master boot record (often shortened as MBR) is a kind of boot sector stored on a hard disk drive or other storage device that contains the necessary computer code to start the boot process.
 
 The master boot record is located on the first sector of a disk. The specific address on the disk is Cylinder: 0, Head: 0, Sector: 1 and it is 512 bytes.
 
 What Master Boot Record includes and how it continues the boot sequence?
 
-![](.gitbook/assets/boot-mbr.JPG)
+![](.gitbook/assets/boot-MBR.JPG)
 
-The master boot record itself holds two things : the boot loader program\(or some of it\) and the partition table
+The master boot record itself holds two things : the boot loader program(or some of it) and the partition table
 
 When the BIOS loads, it looks for data stored in the first sector of the hard drive, the MBR; using the data stored in the MBR, the BIOS activates the boot loader.
 
 {% hint style="info" %}
-Whats magic Number? Located in the final two bytes of the **MBR** \(511-512\), this section must contain the hex value AA55, which officially classifies this as a valid **MBR**. An invalid **magic number** indicates a corrupt or missing **MBR**, therefore these bytes are critical to booting or using the disk.
+Whats magic Number? Located in the final two bytes of the **MBR** (511-512), this section must contain the hex value AA55, which officially classifies this as a valid **MBR**. An invalid **magic number** indicates a corrupt or missing **MBR**, therefore these bytes are critical to booting or using the disk.
 {% endhint %}
 
 **4-**Boot Loader is executed.
@@ -73,9 +73,9 @@ Whats magic Number? Located in the final two bytes of the **MBR** \(511-512\), t
 
 Most simply, a boot loader loads the operating system. Most boot loaders load in two stages.
 
-**A-** In the first stage of the boot, the BIOS loads a part of the boot loader known as the **initial program loader**, or **IPL**. The **IPL** **interrogates the partition table and subsequently is able to load data wherever it may exist on the various media.** This action is used initially to locate the second stage boot loader, which holds the remainder of the loader.
+**A-** In the first stage of the boot, the BIOS loads a part of the boot loader known as the **initial program loader**, or **IPL**. The **IPL** **interrogates the partition table and subsequently is able to load data wherever it may exist on the various media. **This action is used initially to locate the second stage boot loader, which holds the remainder of the loader.
 
-**B-**The second stage boot loader is the real meat of the boot loader; many consider it the only real part of the boot loader. This contains the more **disk-intensive parts** of the loader, such as \[bootloader\] user interfaces and kernel loaders. \(These user interfaces can range from a simple command line to the modern GUIs.\)
+**B-**The second stage boot loader is the real meat of the boot loader; many consider it the only real part of the boot loader. This contains the more **disk-intensive parts** of the loader, such as \[bootloader] user interfaces and kernel loaders. (These user interfaces can range from a simple command line to the modern GUIs.)
 
 **5-**Lilo / Grub / Grub2 begins.
 
@@ -83,13 +83,13 @@ There have been different boot loaders . Lilo, Grub and Grub2:
 
 ## Lilo
 
-LILO \(Linux Loader\) is a boot loader for Linux and was the default boot loader for most Linux distributions in the years after the popularity of loadlin. Today, many distributions use GRUB as the default boot loader, but LILO and its variant ELILO are still in wide use. Further development of LILO was discontinued in December 2015 along with a request by Joachim Wiedorn for potential developers.
+LILO (Linux Loader) is a boot loader for Linux and was the default boot loader for most Linux distributions in the years after the popularity of loadlin. Today, many distributions use GRUB as the default boot loader, but LILO and its variant ELILO are still in wide use. Further development of LILO was discontinued in December 2015 along with a request by Joachim Wiedorn for potential developers.
 
 ![](.gitbook/assets/boot-lilo.jpg)
 
 The configuration file of lilo is located at “/etc/lilo.conf”. Lilo reads this configuration file and it tells Lilo where it should place the bootloader. The sample configuration file is specified below:
 
-```text
+```
 boot=/dev/hda              # This tells LILO where to install the bootloader.
 map=/boot/map              # This file is automatically generated by LILO during bootup
 install=/boot/boot.b       # This file contains the “bootstrap” code that starts your operating system and it holds both the primary and secondary parts of the bootloader.
@@ -105,7 +105,7 @@ label=win                  # same as all other label options.
 
 lilo as a command has some options which might be help full:
 
-```text
+```
  -c config-file: Specifies the alternative configuration file other than default file /etc/lilo.conf.
  -q: Lists the mapped files.
  -V: Prints the Lilo version number.
@@ -117,7 +117,7 @@ lilo as a command has some options which might be help full:
 
 ## Grub
 
-GRUB \(GRand Unified Bootloader\) is a boot loader package developed to support multiple operating systems and allow the user to select among them during boot-up. It has been developed under the GNU project GNU GRUB.
+GRUB (GRand Unified Bootloader) is a boot loader package developed to support multiple operating systems and allow the user to select among them during boot-up. It has been developed under the GNU project GNU GRUB.
 
 ## Grub2
 
@@ -144,7 +144,7 @@ Regardless of the GRUB version, a boot loader allows the user to:
 
 Kernel command line parameters are parameters that we pass on the system during the boot process. They are also known as "boot options".
 
-We **must be at console** to pass kernel boot time command because when the system is booting up there is no Networking service. So reboot the system and Press Esc key during boot:
+We** must be at console** to pass kernel boot time command because when the system is booting up there is no Networking service. So reboot the system and Press Esc key during boot:
 
 ![](.gitbook/assets/boot-grubmenu.jpg)
 
@@ -154,17 +154,17 @@ Depending on the configuration the user may be able to choose from a menu of pot
 
 The Linux Kernel boot parameters are passed into a list of strings separated with white spaces:
 
-```text
+```
 name[=value_1] [,value_2]........[,value_10]
 ```
 
-Where ‘**name=unique keyword**‘ it **defines the part of kernel** where the value is to be associated. \(max 10\)
+Where ‘**name=unique keyword**‘ it **defines the part of kernel** where the value is to be associated. (max 10)
 
-`'linux'`defines the place of executable kernel \(vmlinuz/vmlinux\) to run ,and obviously kernel boot options come after it.
+`'linux'`defines the place of executable kernel (vmlinuz/vmlinux) to run ,and obviously kernel boot options come after it.
 
 There are many parameters that help us configure and determine all aspects of our system's operation during the boot process. Some of them are:
 
-```text
+```
 root=UUID=... : This argument tells the kernel what device (hard disk, floppy disk) to be used as the root filesystem while booting.
 ro : This argument tells the kernel to mount root file system as read-only.
 ```
@@ -173,7 +173,7 @@ One of famous Kernel boot options is pasword recovery using `single` kernel para
 
 `/proc/cmdline` This file shows the parameters passed to the kernel at the time it is started:
 
-```text
+```
 root@server2:~# cat /proc/cmdline 
 BOOT_IMAGE=/boot/vmlinuz-4.10.0-28-generic root=UUID=e4a2c83b-fb68-46f5-a7ec-a83bbad6e3fd ro find_preseed=/preseed.cfg auto noprompt priority=critical locale=en_US quiet
 ```
@@ -181,11 +181,11 @@ BOOT_IMAGE=/boot/vmlinuz-4.10.0-28-generic root=UUID=e4a2c83b-fb68-46f5-a7ec-a83
 **6-** Linux Kernel is read an executed. 
 
 {% hint style="info" %}
-As soon as the Linux kernel has been booted and the root file system \(/\) mounted, programs can be run and further kernel modules can be integrated to provide additional functions. 
+As soon as the Linux kernel has been booted and the root file system (/) mounted, programs can be run and further kernel modules can be integrated to provide additional functions. 
 
-To mount the root file system, certain conditions must be met. The kernel needs the corresponding drivers to access the device on which the root file system is located \(especially SCSI drivers\). The kernel must also contain the code needed to read the file system \(ext2, reiserfs, romfs, etc.\). It is also conceivable that the root file system is already encrypted. In this case, a password is needed to mount the file system.
+To mount the root file system, certain conditions must be met. The kernel needs the corresponding drivers to access the device on which the root file system is located (especially SCSI drivers). The kernel must also contain the code needed to read the file system (ext2, reiserfs, romfs, etc.). It is also conceivable that the root file system is already encrypted. In this case, a password is needed to mount the file system.
 
-The initial ramdisk \(also called initdisk or initrd\) solves precisely the problems described above.
+The initial ramdisk (also called initdisk or initrd) solves precisely the problems described above.
 {% endhint %}
 
 ## initramfs
@@ -196,11 +196,11 @@ The initrd contains a minimal set of directories and executables to achieve this
 
 Its lifetime is short, only serving as a bridge to the real root file system. 
 
-**7-** The 'init' program loads and become the first process ID.
+**7- **The 'init' program loads and become the first process ID.
 
 ### What is init?
 
-In Linux, init is a abbreviation for Initialization. The init is a daemon process which starts as soon as the computer starts and continue running till, it is shutdown. In-fact init is the first process that starts when a computer boots, making it the parent of all other running processes directly or indirectly and hence typically it is assigned “pid=1“.  
+In Linux, init is a abbreviation for Initialization. The init is a daemon process which starts as soon as the computer starts and continue running till, it is shutdown. In-fact init is the first process that starts when a computer boots, making it the parent of all other running processes directly or indirectly and hence typically it is assigned “pid=1“.\
 'init' on previous linux distributions was a process with a name /sbin/int . Today 'init' is not 'init' any more, it can be any thing.
 
 ## init program solutions
@@ -221,13 +221,13 @@ The way SysVinit does this is by setting a strict order for services to start in
 
 The order in which this happens is essential, serial loading is required for dependencies, but some times parallel loading can be used to increase speed. The problem with SysVinit is that it takes careful tuning, both upstart and Systemd have been developed to make loading system configurations much more efficient.
 
-```text
+```
 ### CentOS 5
 ```
 
 **Upstart**
 
-In an attempt to bring more features to the Linux initialization process, Canonical released Ubuntu 6.10 \(Edgy Eft\) in 2006 with Upstart. Upstart was designed with backward compatibility from the start. It could run daemons without any modification to the startup scripts. Because of this, many Linux distributions moved toward Upstart, but not all of them.
+In an attempt to bring more features to the Linux initialization process, Canonical released Ubuntu 6.10 (Edgy Eft) in 2006 with Upstart. Upstart was designed with backward compatibility from the start. It could run daemons without any modification to the startup scripts. Because of this, many Linux distributions moved toward Upstart, but not all of them.
 
 Upstart is an event-based replacement, it receives events and then runs jobs based on these events.
 
@@ -235,7 +235,7 @@ The problem with upstart is that it is using shell scripts and many features tha
 
 > if our system has /etc/init Directory, it is using upstart.
 
-```text
+```
 ### Ubuntu 14
 root@ubuntu:~# ls /etc/init
 init/            init.d/          initramfs-tools/
@@ -249,17 +249,17 @@ A systemd, may refer to all the packages, utilities and libraries around daemon.
 
 Systemd is designed to start processes in parallel, thus reducing the boot time and computational overhead. It has a lot other features as compared to init.
 
-Systemd is rapidly taking over the way how linux systems are starting services and it is the current standard on all major linux distributions\(even Ubuntu \). Systemd is not backward compatible how ever there are so mane scripts which convert sysv command into systemd command and lets you feel comfortable.
+Systemd is rapidly taking over the way how linux systems are starting services and it is the current standard on all major linux distributions(even Ubuntu ). Systemd is not backward compatible how ever there are so mane scripts which convert sysv command into systemd command and lets you feel comfortable.
 
 > if our system has a directory /usr/lib/systemd , we are on systemd
 
-```text
+```
 ### Ubuntu 16 or CentOS 7
 root@ubuntu16-1:~# ls /usr/lib/systemd
 boot  catalog  network  user  user-generators
 ```
 
-**8-** Sysv or upstart or systemd \(what ever your system service manager is\) starts every thing. Prerequisites, services, ... and shell. and one the shell is present the user can log in.
+**8-** Sysv or upstart or systemd (what ever your system service manager is) starts every thing. Prerequisites, services, ... and shell. and one the shell is present the user can log in.
 
 ## dmesg
 
@@ -269,9 +269,9 @@ The kernel ring buffer is a data structure that records messages related to the 
 
 ![](.gitbook/assets/boot-dmesgkrb.png)
 
-dmesg can be very useful when troubleshooting or just trying to obtain information about the hardware on a system. Its basic syntax is dmesg \[options\].
+dmesg can be very useful when troubleshooting or just trying to obtain information about the hardware on a system. Its basic syntax is dmesg \[options].
 
-```text
+```
 Options:
  -C, --clear                 clear the kernel ring buffer
  -c, --read-clear            read and clear all messages
@@ -302,7 +302,7 @@ Options:
 
 Using dmesg without any of its options causes it to write all the kernel messages to standard output. 
 
-```text
+```
 root@ubuntu16-1:~# dmesg 
 
 <Output has been truncated>
@@ -362,7 +362,7 @@ Sources:
 
 [https://unix.stackexchange.com/questions/89923/how-does-linux-load-the-initrd-image](https://unix.stackexchange.com/questions/89923/how-does-linux-load-the-initrd-image)
 
-[https://developer.ibm.com/articles/l-initrd/](https://developer.ibm.com/articles/l-initrd/)[https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy\_of\_the\_initrd\_and\_vmlinuz?lang=en](https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy_of_the_initrd_and_vmlinuz?lang=en)
+[https://developer.ibm.com/articles/l-initrd/](https://developer.ibm.com/articles/l-initrd/)[https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy_of_the_initrd_and_vmlinuz?lang=en](https://www.ibm.com/developerworks/community/blogs/mhhaque/entry/anatomy_of_the_initrd_and_vmlinuz?lang=en)
 
 [http://www.linuxfromscratch.org/blfs/view/svn/postlfs/initramfs.html](http://www.linuxfromscratch.org/blfs/view/svn/postlfs/initramfs.html)
 
@@ -381,4 +381,3 @@ Sources:
 [https://www.quora.com/What-is-a-ring-buffer-in-Linux](https://www.quora.com/What-is-a-ring-buffer-in-Linux)
 
 [https://unix.stackexchange.com/questions/191560/difference-between-output-of-dmesg-and-content-of-var-log-dmesg](https://unix.stackexchange.com/questions/191560/difference-between-output-of-dmesg-and-content-of-var-log-dmesg)
-

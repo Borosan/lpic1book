@@ -1,6 +1,6 @@
 # 108.2. System logging
 
-**Weight:** 3
+**Weight: **3
 
 **Description:** Candidates should be able to configure the syslog daemon. This objective also includes configuring the logging daemon to send log output to a central log server or accept log output as a central log server. Use of the systemd journal subsystem is covered. Also, awareness of rsyslog and syslog-ng as alternative logging systems is included.
 
@@ -39,52 +39,52 @@ The syslog daemon is a server process that provides a message logging facility f
 
 ### syslog.conf
 
- The syslog.conf file is the main configuration file for the **syslogd.** Whenever syslogd   receives a log message, it acts based on the message's type \(or facility\) and its priority \(called selector fields\).
+ The syslog.conf file is the main configuration file for the **syslogd. **Whenever syslogd   receives a log message, it acts based on the message's type (or facility) and its priority (called selector fields).
 
-```text
+```
 type (facility).priority (severity)  destination(where to send the log)
 ```
 
 **Facilities** are simply categories. Some facilities in Linux are: **`auth, user, kern, cron, daemon, mail, local1, local2, ...`**
 
-* **`auth`** ``: Security/authentication messages
-* **`user`** : User-level messages
-* **`kern`** : Kernel messages
-* **`corn`** : Clock daemon
-* **`daemon`** : System daemons
-* **`mail`** : Mail system
+* **`auth`**` `: Security/authentication messages
+* **`user `**: User-level messages
+* **`kern `**: Kernel messages
+* **`corn `**: Clock daemon
+* **`daemon `**: System daemons
+* **`mail `**: Mail system
 * **`local0 – local7`** : Locally used facilities
 
-**priorities** Unlike facilities, which have no relationship to each other, priorities are hierarchical. Possible priorities in Linux are: **`emerg/panic, alert, crit, err/error, warn/warning, notice, info, debug`**
+**priorities **Unlike facilities, which have no relationship to each other, priorities are hierarchical. Possible priorities in Linux are:**` emerg/panic, alert, crit, err/error, warn/warning, notice, info, debug`**
 
-1. **`emerg :`** System is unusable
-2. **`alert :`** Action must be taken immediately
-3. **`critical :`** Critical conditions
-4. **`err :`** Error conditions
-5. **`warning :`** Warning conditions
-6. **`notice :`** Normal but significant conditions
-7. **`info :`** Informational messages 
-8. **`debug :`** Debug-level messages
+1. **`emerg : `**System is unusable
+2. **`alert : `**Action must be taken immediately
+3. **`critical : `**Critical conditions
+4. **`err : `**Error conditions
+5. **`warning : `**Warning conditions
+6. **`notice : `**Normal but significant conditions
+7. **`info : `**Informational messages 
+8. **`debug : `**Debug-level messages
 
 > if we log some specific priority , all the more important things will be logged too
 
 **Action:** Each line in this file specifies one or more facility/priority selectors followed by an action . On the action field we can have things like:
 
-| action | example | notes |
-| :--- | :--- | :--- |
-| filename | /var/log/messages | Writes logs to specified file |
-| username | user2 | Will notify that person on the screen |
-| @ip | @192.168.10.42 | Will send logs to specified log server and that server decides how to treat logs based on its configs. |
+| action   | example           | notes                                                                                                  |
+| -------- | ----------------- | ------------------------------------------------------------------------------------------------------ |
+| filename | /var/log/messages | Writes logs to specified file                                                                          |
+| username | user2             | Will notify that person on the screen                                                                  |
+| @ip      | @192.168.10.42    | Will send logs to specified log server and that server decides how to treat logs based on its configs. |
 
- In the following syslog.conf line, mail.notice is the selector and /var/log/mail is the action \(i.e., “write messages to /var/log/mail”\):
+ In the following syslog.conf line, mail.notice is the selector and /var/log/mail is the action (i.e., “write messages to /var/log/mail”):
 
-```text
+```
 mail.notice     /var/log/mail
 ```
 
-Within the selector, “mail” is the facility \(message category\) and “notice” is the level of priority. You can see part of syslog.conf \(CentOS6\)  :
+Within the selector, “mail” is the facility (message category) and “notice” is the level of priority. You can see part of syslog.conf (CentOS6)  :
 
-```text
+```
 #### RULES ####
 
 # Log all kernel messages to the console.
@@ -118,11 +118,11 @@ local7.*                                                /var/log/boot.log
 
 > `*`: wildcard .  signifying “any facility” or "any priority"
 >
-> dash - : means it can use memory cache \(:don't waist time constantly writing to the disk \)
+> dash - : means it can use memory cache (:don't waist time constantly writing to the disk )
 >
-> equal sign = : to log ONLY one specific level of priority. `facility.=priority action`
+> equal sign = : to log ONLY one specific level of priority.` facility.=priority action`
 
-There is also  /etc/rsyslog.d/ directory and it is better for different softwares and admins to add their specific configs there, instead of editing the main configuration file \(See Ubuntu16\).
+There is also  /etc/rsyslog.d/ directory and it is better for different softwares and admins to add their specific configs there, instead of editing the main configuration file (See Ubuntu16).
 
 ### klogd
 
@@ -130,9 +130,9 @@ There is also  /etc/rsyslog.d/ directory and it is better for different software
 
 ### /var/log
 
-Almost all logfiles are located under /var/log directory and its sub-directories on Linux\(CentOS6\).
+Almost all logfiles are located under /var/log directory and its sub-directories on Linux(CentOS6).
 
-```text
+```
 [root@centos6-1 ~]# ls /var/log
 anaconda.ifcfg.log    cron              messages-20200217  tallylog
 anaconda.log          cron-20200217     ntpstats           vmware-caf
@@ -154,7 +154,7 @@ You can use your favorite text editor or less or tail commands in conjunction wi
 
 We can creating rsyslog listener and catch other systems log messages. That is pretty easy. 
 
-```text
+```
 ###CentOS 6
 vi /etc/rsyslog.conf
 
@@ -169,7 +169,7 @@ $ModLoad imtcp
 $InputTCPServerRun 514
 ```
 
-```text
+```
 ###ubuntu 16
 vim /etc/default/rsyslog
 
@@ -184,9 +184,9 @@ and finally do not forget to restart the service `systemctl restart rsyslog` .
 
 ### journalctl
 
-Systemd also has its own  journaling program called **journald**  and it stores things in binary files. We can't go and see text files \(like what we did in syslog/rsyslog\), so  we have to use special tool called journalctl to access them\(CentOS7\):
+Systemd also has its own  journaling program called **journald  **and it stores things in binary files. We can't go and see text files (like what we did in syslog/rsyslog), so  we have to use special tool called journalctl to access them(CentOS7):
 
-```text
+```
 [root@centos7-1 ~]# journalctl 
 -- Logs begin at Mon 2020-02-10 02:51:48 EST, end at Tue 2020-02-18 09:19:13 EST. --
 Feb 10 02:51:48 localhost.localdomain systemd-journal[106]: Runtime journal is using 8.
@@ -206,9 +206,9 @@ As we mentioned earlier ,  linux logging is one of aspects of linux which is in 
 
 ### /etc/systemd/journald.conf
 
-The config file of journalctl is located at /etc/systemd/journald.conf \(CentOS7\)
+The config file of journalctl is located at /etc/systemd/journald.conf (CentOS7)
 
-```text
+```
 [root@centos7-1 ~]# cat  /etc/systemd/journald.conf 
 #  This file is part of systemd.
 #
@@ -253,15 +253,15 @@ The config file of journalctl is located at /etc/systemd/journald.conf \(CentOS7
 
 ### logger
 
-The Linux logger command provides an easy way to generate some logs\(centOS6\)
+The Linux logger command provides an easy way to generate some logs(centOS6)
 
-```text
+```
 [root@centos6-1 ~]# logger local1.emerg Hello! This is my log!
 ```
 
- and it will appear at /var/log/syslog \(or /var/log/messages\):
+ and it will appear at /var/log/syslog (or /var/log/messages):
 
-```text
+```
 [root@centos6-1 ~]# tail -5 /var/log/messages
 Feb 18 06:54:42 server1 NetworkManager[2183]: <info>   nameserver '172.16.43.2'
 Feb 18 06:54:42 server1 NetworkManager[2183]: <info>   domain name 'localdomain'
@@ -277,8 +277,8 @@ Feb 18 06:59:34 server1 payam: Hello! This is my log!
 
 The important files to pay attention to are:
 
-* /usr/sbin/logrotate -- the logrotate command itself \(the executable\)
-* /etc/cron.daily/logrotate -- the shell script that runs logrotate on a daily basis \(note that it might be /etc/cron.daily/logrotate.cron on some systems\)
+* /usr/sbin/logrotate -- the logrotate command itself (the executable)
+* /etc/cron.daily/logrotate -- the shell script that runs logrotate on a daily basis (note that it might be /etc/cron.daily/logrotate.cron on some systems)
 * /etc/logrotate.conf -- the log rotation configuration file
 
 Another important file is /etc/logrotate.d, included in the process through this line in the /etc/logrotate.conf file:
@@ -287,7 +287,7 @@ Another important file is /etc/logrotate.d, included in the process through this
 
 Use the /etc/logrotate.conf configuration file to specify how your log rotating and archiving should happen.
 
-```text
+```
 [root@centos6-1 ~]# cat /etc/logrotate.conf 
 # see "man logrotate" for details
 # rotate log files weekly
@@ -328,22 +328,22 @@ include /etc/logrotate.d
 
 Each log file may be handled daily, weekly, monthly, or when it grows too large. 
 
-| parameter | meaning |
-| :--- | :--- |
-| missingok | don’t write an error message if the log file is missing |
-| daily, weekly, monthly | rotate logs daily, weekly, monthly |
-| rotate _N_ | keep the latest _N_ logs and delete the older ones |
-| compress | compress the log \(creates  gz files\) |
-|  **create** mode owner group |  Immediately after rotation \(before the **postrotate** script is run\) the log file is created with this acces and owner |
-| minsize N | Log files are rotated when they grow bigger than size bytes, but not before the additionally specified time interval\(daily,...\) |
+| parameter                    | meaning                                                                                                                         |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| missingok                    | don’t write an error message if the log file is missing                                                                         |
+| daily, weekly, monthly       | rotate logs daily, weekly, monthly                                                                                              |
+| rotate _N_                   | keep the latest _N_ logs and delete the older ones                                                                              |
+| compress                     | compress the log (creates  gz files)                                                                                            |
+|  **create** mode owner group |  Immediately after rotation (before the **postrotate** script is run) the log file is created with this acces and owner         |
+| minsize N                    | Log files are rotated when they grow bigger than size bytes, but not before the additionally specified time interval(daily,...) |
 
-this file contains some default settings and sets up rotation for a few logs that are not owned by any system packages. It also uses an `include` statement to pull in configuration from any file in the `/etc/logrotate.d` directory\(CentOS6\).
+this file contains some default settings and sets up rotation for a few logs that are not owned by any system packages. It also uses an `include` statement to pull in configuration from any file in the `/etc/logrotate.d` directory(CentOS6).
 
 ### /etc/logrotate.d
 
 Any packages we install that need help with log rotation will place their Logrotate configuration here.
 
-```text
+```
 [root@centos6-1 ~]# ls /etc/logrotate.d/
 ConsoleKit  cups  dracut  httpd  named  ppp  psacct  syslog  wpa_supplicant  yum
 
@@ -361,12 +361,12 @@ ConsoleKit  cups  dracut  httpd  named  ppp  psacct  syslog  wpa_supplicant  yum
 
 These are the meaning of some of these parameters:
 
-| parameter | meaning |
-| :--- | :--- |
-| missingok | don’t write an error message if the log file is missing |
-| notifempty | don’t rotate the log file if it is empty. |
+| parameter      | meaning                                                                           |
+| -------------- | --------------------------------------------------------------------------------- |
+| missingok      | don’t write an error message if the log file is missing                           |
+| notifempty     | don’t rotate the log file if it is empty.                                         |
 | shared scripts |  Run **prerotate** and **postrotate** scripts for every log file which is rotated |
-| delaycompress | Postpone compression of the previous log file to the next rotation cycle |
+| delaycompress  | Postpone compression of the previous log file to the next rotation cycle          |
 
 That's all!
 
@@ -382,13 +382,13 @@ That's all!
 
 [https://stackify.com/syslog-101/](https://stackify.com/syslog-101/)
 
-[https://www.ibm.com/support/knowledgecenter/en/SSB23S\_1.1.0.15/gtpc1/hsyslog.html](https://www.ibm.com/support/knowledgecenter/en/SSB23S_1.1.0.15/gtpc1/hsyslog.html)
+[https://www.ibm.com/support/knowledgecenter/en/SSB23S\_1.1.0.15/gtpc1/hsyslog.html](https://www.ibm.com/support/knowledgecenter/en/SSB23S\_1.1.0.15/gtpc1/hsyslog.html)
 
 [https://linux.die.net/man/5/syslog.conf](https://linux.die.net/man/5/syslog.conf)
 
 [https://www.linuxjournal.com/article/5476](https://www.linuxjournal.com/article/5476)
 
-[https://jadi.gitbooks.io/lpic1/content/1082\_system\_logging.html](https://jadi.gitbooks.io/lpic1/content/1082_system_logging.html)
+[https://jadi.gitbooks.io/lpic1/content/1082\_system_logging.html](https://jadi.gitbooks.io/lpic1/content/1082\_system_logging.html)
 
 [https://en.wikipedia.org/wiki/Syslog](https://en.wikipedia.org/wiki/Syslog)
 
@@ -403,4 +403,3 @@ That's all!
 [https://www.digitalocean.com/community/tutorials/how-to-manage-logfiles-with-logrotate-on-ubuntu-16-04](https://www.digitalocean.com/community/tutorials/how-to-manage-logfiles-with-logrotate-on-ubuntu-16-04)
 
 .
-

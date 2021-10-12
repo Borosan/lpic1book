@@ -8,7 +8,7 @@
 
 **Key Knowledge Areas:**
 
-* Set environment variables \(e.g. PATH\) at login or when spawning a new shell
+* Set environment variables (e.g. PATH) at login or when spawning a new shell
 * Write Bash functions for frequently used sequences of commands
 * Maintain skeleton directories for new user accounts
 * Set command search path with the proper directory
@@ -22,11 +22,11 @@
 * export
 * set
 * unset
-* ~/.bash\_profile
-* ~/.bash\_login
-* ~/.profile
-* ~/.bashrc
-* ~/.bash\_logout
+* \~/.bash_profile
+* \~/.bash_login
+* \~/.profile
+* \~/.bashrc
+* \~/.bash_logout
 * function
 * alias
 * lists
@@ -41,8 +41,8 @@ The shell program, for example Bash, uses a collection of startup scripts to cre
 
 Startup is configured differently for Login shells and Non login shells. 
 
-1. **Login shells** : If you open a shell or terminal \(or switch to one\), and it asks you to log in \(Username? Password?\) before it gives you a prompt, it's a login shell.
-2. **Non login shells** : If it doesn't ask you log in \(like _gnome-terminal_\), and lets you use it straight away, it's a non-login shell \(GUI\)
+1. **Login shells** : If you open a shell or terminal (or switch to one), and it asks you to log in (Username? Password?) before it gives you a prompt, it's a login shell.
+2. **Non login shells **: If it doesn't ask you log in (like _gnome-terminal_), and lets you use it straight away, it's a non-login shell (GUI)
 
 ![](.gitbook/assets/custshell-loginshelvsnon.jpg)
 
@@ -56,21 +56,21 @@ Startup is configured differently for Login shells and Non login shells.
 
 if you need to customize the login environment for all users on your system,  you can use /etc/profile, but as  the distribution files in /etc, such as /etc/profile, can be modified by system updates, so it is better not to edit them directly. Rather, create additional files in /etc/profile.d.
 
-#### adding global configs for non-login \(interactive\) shell
+#### adding global configs for non-login (interactive) shell
 
 ### /etc/bash.bashrc &  /etc/bashrc
 
-You can use /etc/bash.bashrc \( or /etc/bashrc \)\[based on your distro\] for adding global configs and global  aliases.
+You can use /etc/bash.bashrc ( or /etc/bashrc )\[based on your distro] for adding global configs and global  aliases.
 
 #### user specfic configs
 
-### /home/user/.bash\_profile  &  /home/user/.bashrc
+### /home/user/.bash_profile  &  /home/user/.bashrc
 
  `~/.bash_profile` and `~/.bashrc` are shell scripts that contain shell commands. These files are executed in a user's context when a new shell opens or when a user logs in so that their environment is set correctly. As we mentioned`~/.bash_profile` is executed for login shells and `~/.bashrc` is executed for interactive non-login shells.
 
- This means that when a user logs in \(via username and password\) to the console \(either locally or remotely via something like SSH\), the `~/.bash_profile` script is executed before the initial command prompt is returned to the user. After that, every time a new shell is opened, the `~/.bashrc` script is executed. 
+ This means that when a user logs in (via username and password) to the console (either locally or remotely via something like SSH), the `~/.bash_profile` script is executed before the initial command prompt is returned to the user. After that, every time a new shell is opened, the `~/.bashrc` script is executed. 
 
-> Most of the time PATH and env vars go into the in ~/.bash\_profile and aliases go into the ~/.bashrc.
+> Most of the time PATH and env vars go into the in \~/.bash_profile and aliases go into the \~/.bashrc.
 
 ### Aliases
 
@@ -78,7 +78,7 @@ In bash, you can define aliases for commands. You use aliases to provide an alte
 
  You set aliases or list aliases with the `alias` command and remove them with the `unalias` command.
 
-```text
+```
 ### list aliases
 root@ubuntu16-1:~# alias 
 alias egrep='egrep --color=auto'
@@ -103,7 +103,7 @@ total 472
 
 in order to make aliases permanent for user they are defined in `/home/user/.bashrc` :
 
-```text
+```
 ...
 # some more ls aliases
 alias ll='ls -alF'
@@ -112,13 +112,13 @@ alias l='ls -CF'
 ...
 ```
 
-> Another common use of aliases is for the root user. The `cp`, `rm`, and `mv` commands are usually aliased to include the `-i` parameter, to help prevent accidental destruction of files.
+>  Another common use of aliases is for the root user. The `cp`, `rm`, and `mv` commands are usually aliased to include the `-i` parameter, to help prevent accidental destruction of files.
 
 ### /etc/skel
 
-You might be wondering how files like ~/.bash\_profile, ~/.bashrc, or ~/.bash\_logout got created in your home directory. These are skeleton files that are copied from /etc/skel.
+You might be wondering how files like \~/.bash_profile, \~/.bashrc, or \~/.bash_logout got created in your home directory. These are skeleton files that are copied from /etc/skel.
 
-```text
+```
 root@ubuntu16-1:~# ls -1a /etc/skel/
 .
 ..
@@ -128,11 +128,11 @@ examples.desktop
 .profile
 ```
 
-### .bash\_logout
+### .bash_logout
 
-The file .bash\_logout is read and executed every time a login shell exits. It clears the screen whenever you log out. Without .bash\_logout whatever you were working on could be visible for the next user!
+The file .bash_logout is read and executed every time a login shell exits. It clears the screen whenever you log out. Without .bash_logout whatever you were working on could be visible for the next user!
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/skel/.bash_logout 
 # ~/.bash_logout: executed by bash(1) when login shell exits.
 
@@ -147,7 +147,7 @@ fi
 
  If a script runs in a child shell, any variables it might export are lost when it returns to the parent.
 
-```text
+```
 root@ubuntu16-1:~# cat .profile 
 # ~/.profile: executed by Bourne-compatible login shells.
 
@@ -160,13 +160,13 @@ fi
 mesg n || true
 ```
 
- So if .profile runs the ~/.bashrc script, why aren’t the variables and functions that are exported from ~/.bashrc lost? The answer is that you run the script in the current environment by using the `source` \(or `.`\) command. 
+ So if .profile runs the \~/.bashrc script, why aren’t the variables and functions that are exported from \~/.bashrc lost? The answer is that you run the script in the current environment by using the `source` (or `.`) command. 
 
 ### Shell functions
 
 Aliases are useful, but what happens if you want to handle parameters? Aliases expand only the first word, and everything else on the command line is appended to the expansion. If you want to run a command with some parameters and then process the output somehow, you are out of luck with an alias. In this case, you need a shell function.
 
-```text
+```
 myfunc() {
     echo "hello $1"
 }
@@ -179,7 +179,7 @@ function myfunc() {
 
 `$1` returns the first argument
 
-```text
+```
 root@ubuntu16-1:~# myfunc "payam"
 hello payam
 ```
@@ -190,14 +190,14 @@ Shell functions have a couple of advantages over aliases:
 * You can use programming constructs, such as testing and looping, to enhance your processing.
 
 {% hint style="info" %}
-We can use `unset` command inorder to unset our defined function.
+We can use `unset `command inorder to unset our defined function.
 {% endhint %}
 
 ### lists
 
 Shell supports a different type of variable called an array variable. This can hold multiple values at the same time. Arrays provide a method of grouping a set of variables. Instead of creating a new name for each variable that is required, you can use a single array variable that stores all the other variables.
 
-```text
+```
 array_name=(value1 ... valuen)
 
 ### example:
@@ -212,7 +212,7 @@ linux
 
 Another example:
 
-```text
+```
 root@ubuntu16-1:~# mylist2=("we are" "learning" "lpic 1-102 exam")
 root@ubuntu16-1:~# echo ${mylist2[2]}
 lpic 1-101 exam
@@ -234,11 +234,10 @@ Keep your eyes on syntax!
 
 [https://developer.ibm.com/tutorials/l-lpic1-105-1/](https://developer.ibm.com/tutorials/l-lpic1-105-1/)
 
-[https://jadi.gitbooks.io/lpic1/content/1051\_customize\_and\_use\_the\_shell\_environment.html](https://jadi.gitbooks.io/lpic1/content/1051_customize_and_use_the_shell_environment.html)
+[https://jadi.gitbooks.io/lpic1/content/1051\_customize_and_use_the_shell_environment.html](https://jadi.gitbooks.io/lpic1/content/1051\_customize_and_use_the_shell_environment.html)
 
 [https://www.tutorialspoint.com/unix/unix-using-arrays.htm](https://www.tutorialspoint.com/unix/unix-using-arrays.htm)
 
 With the special thanks of shawn powers.
 
 .
-

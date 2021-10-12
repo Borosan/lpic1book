@@ -17,11 +17,11 @@
 * ldd
 * ldconfig
 * /etc/ld.so.conf
-* LD\_LIBRARY\_PATH
+* LD_LIBRARY_PATH
 
 #### What is a library?
 
-In programming, a library is an assortment of pre-compiled pieces of code that can be reused in a program. Libraries simplify life for programmers, in that they provide reusable functions, routines, classes, data structures and so on \(written by a another programmer\), which they can use in their programs.
+In programming, a library is an assortment of pre-compiled pieces of code that can be reused in a program. Libraries simplify life for programmers, in that they provide reusable functions, routines, classes, data structures and so on (written by a another programmer), which they can use in their programs.
 
 ![](.gitbook/assets/sharedlib-intro.jpg)
 
@@ -32,13 +32,13 @@ Linux supports two classes of libraries, namely:
 
 **Static libraries vs Shared libraries**
 
-* Each program using routines from a static library has a copy of them in the executable file. This wastes disk space and \(if more than one such program is in use at the same time\) RAM as well. Also, when a static library is updated, all the programs using it must be recompiled in order to take advantage of the new code. 
-* When a program uses a shared library instead, the program binary does not include a copy of the code, but only a reference to the library. The run time loader, finds the library and loads it into memory at the same time as the program. ****One advantage of using dynamic library is that when a library is updated \( security issues \) all other programs take advantage of new code without recompiling.
+* Each program using routines from a static library has a copy of them in the executable file. This wastes disk space and (if more than one such program is in use at the same time) RAM as well. Also, when a static library is updated, all the programs using it must be recompiled in order to take advantage of the new code. 
+* When a program uses a shared library instead, the program binary does not include a copy of the code, but only a reference to the library. The run time loader, finds the library and loads it into memory at the same time as the program.** **One advantage of using dynamic library is that when a library is updated ( security issues ) all other programs take advantage of new code without recompiling.
 
 {% hint style="info" %}
-Dynamic or shared libraries can further be categorized into two groups \( beyond the scope of LPIC exam\):
+Dynamic or shared libraries can further be categorized into two groups ( beyond the scope of LPIC exam):
 
-* **Dynamically linked libraries** – here a program is linked with the shared library and the kernel loads the library \(in case it’s not in memory\) upon execution.
+* **Dynamically linked libraries** – here a program is linked with the shared library and the kernel loads the library (in case it’s not in memory) upon execution.
 * **Dynamically loaded libraries** – the program takes full control by calling functions with the library.
 {% endhint %}
 
@@ -50,9 +50,9 @@ Depending on library, Linux stores its libraries mainly in three locations:
 * **/usr/lib**
 * **/usr/local/lib**
 
-**/lib** : The /lib directory contains those **shared library images needed to boot** the system and run the commands in the root filesystem, ie. by binaries in /bin and /sbin.
+**/lib **: The /lib directory contains those **shared library images needed to boot** the system and run the commands in the root filesystem, ie. by binaries in /bin and /sbin.
 
-```text
+```
 root@ubuntu16-1:~# ls /lib
 apparmor  ifupdown                              modules        udev
 brltty    init                                  recovery-mode  ufw
@@ -64,22 +64,22 @@ hdparm    modprobe.d                            terminfo
 
 The /lib folder sister folders are /lib32 and /lib64.
 
-**/usr/lib** : **All software libraries** are installed here. This **does not contain system default or kernel libraries**.
+**/usr/lib** :** All software libraries** are installed here. This **does not contain system default or kernel libraries**.
 
-```text
+```
 root@ubuntu16-1:~# ls /usr/lib/
 ```
 
 **/usr/local/lib**: To place **extra system library files** here. These library files can be used by different applications.
 
-```text
+```
 root@ubuntu16-1:~# ls /usr/local/lib/
 python2.7  python3.5
 ```
 
 Also **/var/lib** Directory, holds **dynamic data libraries/files** like the rpm/dpkg database and game scores.
 
-```text
+```
 root@ubuntu16-1:~# ls /var/lib/
 AccountsService      fwupd            nginx                    udisks2
 acpi-support         gconf            nssdb                    update-manager
@@ -107,39 +107,39 @@ In this article we will discuss specifically about Shared Libraries.
 
 Shared libraries are named in three ways:
 
-* library name \(a.k.a "soname"\)  
-* filename  \(a.k.a "real name"\)\(absolute path to file which stores library code\)
+* library name (a.k.a "soname")  
+* filename  (a.k.a "real name")(absolute path to file which stores library code)
 * "linker name"
 
-**1\)**Every shared library has a special name called the **"soname''**. The soname has the prefix "**lib**'', the name of the library, the phrase "**.so**'', followed by a period and a **version number** that is incremented whenever the interface changes . 
+**1)**Every shared library has a special name called the **"soname''**. The soname has the prefix "**lib**'', the name of the library, the phrase "**.so**'', followed by a period and a **version number** that is incremented whenever the interface changes . 
 
-```text
+```
 libreadline.so.6
 ```
 
 A fully-qualified soname includes as a prefix the directory it's in.
 
-```text
+```
 /usr/lib/libreadline.so.6
 ```
 
 On a working system a fully-qualified soname is simply a symbolic link to the shared library's "real name''.
 
-**2\)**Every shared library also has a **"real name''**, which is the filename containing the actual library code. The real name adds to the soname a period, a minor number, another period, and the release number. The last period and release number are optional.
+**2)**Every shared library also has a **"real name''**, which is the filename containing the actual library code. The real name adds to the soname a period, a minor number, another period, and the release number. The last period and release number are optional.
 
-```text
+```
 libreadline.so.6.3
 ```
 
-**3\)**In addition, there's the name that the compiler uses when requesting a library, \(I'll call it the **"linker name''**\), which is simply the soname without any version number.
+**3)**In addition, there's the name that the compiler uses when requesting a library, (I'll call it the **"linker name''**), which is simply the soname without any version number.
 
-```text
+```
 libreadline.so
 ```
 
 Okey lets explain all in an example:
 
-```text
+```
 root@ubuntu16-1:/lib/x86_64-linux-gnu# ls -l | grep libread
 lrwxrwxrwx 1 root root      18 Nov 26  2017 libreadline.so.6 -> libreadline.so.6.3
 -rw-r--r-- 1 root root  282392 Feb  4  2016 libreadline.so.6.3
@@ -149,9 +149,9 @@ Thus, `/usr/lib/libreadline.so.6` is a fully-qualified soname, which is set to b
 
 ### ldd
 
-To **get a list of all shared library dependencies for a binary file**, you can use the ldd utility**.** For example lets see what shared libraries are required by ls command:
+To **get a list of all shared library dependencies for a binary file**, you can use the ldd utility**. **For example lets see what shared libraries are required by ls command:
 
-```text
+```
 root@ubuntu16-1:~# which ls
 /bin/ls
 root@ubuntu16-1:~# ldd /bin/ls
@@ -178,7 +178,7 @@ These three files helps programs to find their required shared libraries.
 
 ld.so.conf file tells the system where to look for library files, that is kind of an address book.
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/ld.so.conf
 include /etc/ld.so.conf.d/*.conf
 ```
@@ -189,7 +189,7 @@ Traditionally in the past, it included all the paths which libraries existed. To
 
 ld.so.conf.d directory contains several configuration files for the kernel or for other third party applications.
 
-```text
+```
 root@ubuntu16-1:~# ls -la /etc/ld.so.conf.d/
 total 32
 drwxr-xr-x   2 root root  4096 Oct  7 00:37 .
@@ -204,7 +204,7 @@ lrwxrwxrwx   1 root root    42 Nov 26  2017 x86_64-linux-gnu_GL.conf -> /etc/alt
 
 Lets see what is inside configuration files :
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/ld.so.conf.d/libc.conf 
 # libc default configuration
 /usr/local/lib
@@ -233,7 +233,7 @@ By default, ldconfig reads the content of /etc/ld.so.conf, creates the appropria
 
 This is a binary file, so that is not something we usually like to see :
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/ld.so.cache 
 ld.so-1.7.0�^^<^P^~^�^�^�^�^
                                        _<_F_f_s_�_�_�_�_``<`K`t`�`�`�`�`�`a#aJa\a�a�a�a�a�a
@@ -249,9 +249,9 @@ vv@vKvpv}v�v�v�v�vww<wMwxw�w�w�w�w�wx5x
 
 use `string` command intead and it just shows human readable binary files, also `lconfig -p` prints cache.
 
-This is very important especially when we have just installed new shared libraries or created our own, or created new library directories. We need to run ldconfig command to effect the changes.\(The out put has been truncated\):
+This is very important especially when we have just installed new shared libraries or created our own, or created new library directories. We need to run ldconfig command to effect the changes.(The out put has been truncated):
 
-```text
+```
 root@ubuntu16-1:~# ldconfig -v
 /sbin/ldconfig.real: Path `/lib/x86_64-linux-gnu' given more than once
 /sbin/ldconfig.real: Path `/usr/lib/x86_64-linux-gnu' given more than once
@@ -342,7 +342,7 @@ d.so
 
 ldconfig command has some options:
 
-```text
+```
 root@ubuntu16-1:~# ldconfig --help
 Usage: ldconfig.real [OPTION...]
 Configure Dynamic Linker Run Time Bindings.
@@ -372,31 +372,31 @@ For bug reporting instructions, please see:
 
 After creating our shared library, we need to install it.
 
-### Installing a Dynamic Library: <a id="f3ce"></a>
+### Installing a Dynamic Library: <a href="f3ce" id="f3ce"></a>
 
 There are several ways to install a dynamic library:
 
-**1\)**We can either move it into any of the standard directories mentioned above, and run the ldconfig command.
+**1)**We can either move it into any of the standard directories mentioned above, and run the ldconfig command.
 
-**2\)**The method above sets the library path permanently. To set it temporarily, use the LD\_LIBRARY\_PATH environment variable on the command line.
+**2)**The method above sets the library path permanently. To set it temporarily, use the LD_LIBRARY_PATH environment variable on the command line.
 
-## LD\_LIBRARY\_PATH
+## LD_LIBRARY_PATH
 
-In Linux, the environment variable LD\_LIBRARY\_PATH is a colon-separated set of directories where libraries should be searched for first, before the standard set of directories; this is useful when debugging a new library or using a nonstandard library for special purposes.
+In Linux, the environment variable LD_LIBRARY_PATH is a colon-separated set of directories where libraries should be searched for first, before the standard set of directories; this is useful when debugging a new library or using a nonstandard library for special purposes.
 
-```text
+```
 root@ubuntu16-1:~# echo $LD_LIBRARY_PATH
 ```
 
-The usual dynamic linker on Linux uses a cache to find its libraries, So there is no default value for LD\_LIBRARY\_PATH, default library lookup doesn’t need it at all. If LD\_LIBRARY\_PATH is defined, then it is used first, but doesn’t disable the other lookups \(which also include a few default directories\).
+The usual dynamic linker on Linux uses a cache to find its libraries, So there is no default value for LD_LIBRARY_PATH, default library lookup doesn’t need it at all. If LD_LIBRARY_PATH is defined, then it is used first, but doesn’t disable the other lookups (which also include a few default directories).
 
 Whether it has a default value or not we can use blow command to add our new library path:
 
-```text
+```
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your/custom/path/
 ```
 
-Do not forget that these changes are not permanent and If you want to keep the changes permanent, then add above line in the shell initialization file**/etc/profile**\(global\) or**~/.profile**\(user specific\), which will be discussed in next lessons.
+Do not forget that these changes are not permanent and If you want to keep the changes permanent, then add above line in the shell initialization file**/etc/profile**(global) or**\~/.profile**(user specific), which will be discussed in next lessons.
 
 That's all!
 
@@ -423,4 +423,3 @@ Sources:
 [http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html](http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html)
 
 [https://unix.stackexchange.com/questions/354295/what-is-the-default-value-of-ld-library-path](https://unix.stackexchange.com/questions/354295/what-is-the-default-value-of-ld-library-path)
-

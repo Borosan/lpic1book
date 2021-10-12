@@ -26,15 +26,15 @@ In this tutorial, we learn hat make network configurations persistent in linux.
 
 ### ifconfig
 
- **ifconfig** \( **interface configuration\)** utility is used to configure, or view the configuration of, a network interface via command line interface\(CentOS6\).
+ **ifconfig** ( **interface configuration)** utility is used to configure, or view the configuration of, a network interface via command line interface(CentOS6).
 
-```text
+```
 ifconfig [...OPTIONS] [INTERFACE]
 ```
 
  The “**ifconfig**” command with no option, displays  current network configuration information:
 
-```text
+```
 [root@centos6-1 ~]# 
 [root@centos6-1 ~]# ifconfig
 eth0      Link encap:Ethernet  HWaddr 00:0C:29:6D:D2:C5  
@@ -58,24 +58,24 @@ lo        Link encap:Local Loopback
 
 > the lo is the loopback adapter , with ip address 127.0.0.1 which is used by operating system for its own internal communications.
 
-| ifconfig option | description |
-| :--- | :--- |
-| -a | display all the interfaces available, even if they are down. |
-| -s | display a short list \(like netstat -i\) |
-| -v  | be more verbose for some error conditions |
+| ifconfig option | description                                                  |
+| --------------- | ------------------------------------------------------------ |
+| -a              | display all the interfaces available, even if they are down. |
+| -s              | display a short list (like netstat -i)                       |
+| -v              | be more verbose for some error conditions                    |
 
 We can use ifconfig to change network configurations, but this will require root access:
 
-| ifconfig command | description |
-| :--- | :--- |
-| ifconfig eth0 172.16.43.155 | Assign a IP Address |
-| ifconfig eth0 netmask 255.255.255.224 | Assign a Netmask   |
+| ifconfig command                                    | description          |
+| --------------------------------------------------- | -------------------- |
+| ifconfig eth0 172.16.43.155                         | Assign a IP Address  |
+| ifconfig eth0 netmask 255.255.255.224               | Assign a Netmask     |
 | ifconfig eth0 172.16.43.155 netmask 255.255.255.224 | Assign a IP, Netmask |
 
 ifconfig can be used to  turn an interface up and down ,again  this will need root access:
 
 * ifconfig _interface_ up:  used to activate the driver for the given interface
-* ifconfig _interface_ down:   used to deactivate the driver for the given interface
+* ifconfig _interface _down:   used to deactivate the driver for the given interface
 
 {% hint style="danger" %}
 If you're still using ifconfig, you're living in the past! ifconfig command  is deprecated and replaced by ip command.
@@ -85,7 +85,7 @@ If you're still using ifconfig, you're living in the past! ifconfig command  is 
 
 Same as previous commands, ifup and ifdown are used to enable and disable an interface.
 
-```text
+```
 [root@centos6-1 ~]# ifdown eth0
 Device state: 3 (disconnected)
 [root@centos6-1 ~]# ifup eth0
@@ -99,7 +99,7 @@ Connection activated
 
 One benefit of chopping ip addresses into classes and subnets is controlling broad casts.This happens using subnetmask.  But what is two compuyers from two different networks wants to communicate with each other?
 
-A **gateway** is a node or a router that acts as an access point to passes network data from local networks to remote networks.
+A **gateway **is a node or a router that acts as an access point to passes network data from local networks to remote networks.
 
 the address which is used as a gateway to reach to other networks outside our local network is called **default gateway**. There are different ways to set gateway.
 
@@ -113,7 +113,7 @@ Unfortunately the network configuration files in linux are placed in different p
 
 In Redhat , CentOS, and fedora the files are located at  `/etc/sysconfig/network-scripts/` . 
 
-```text
+```
 [root@server1 ~]# ls /etc/sysconfig/network-scripts/
 ifcfg-eth0   ifdown-ippp    ifdown-sit     ifup-ib     ifup-post      init.ipv6-global
 ifcfg-lo     ifdown-ipv6    ifdown-tunnel  ifup-ippp   ifup-ppp       net.hotplug
@@ -127,7 +127,7 @@ ifdown-ib    ifdown-routes  ifup-eth       ifup-plusb  ifup-wireless
 
 and the default gateway is configured via file:  `/etc/sysconfig/network`
 
-```text
+```
 [root@server1 Desktop]# cat /etc/sysconfig/network
 NETWORKING=yes
 HOSTNAME=server1
@@ -136,7 +136,7 @@ GATEWAY=172.16.43.2
 
 lets take a look at  eth0 configuration file:
 
-```text
+```
 [root@server1 ~]# cat  /etc/sysconfig/network-scripts/ifcfg-eth0
 DEVICE="eth0"
 BOOTPROTO=none
@@ -165,7 +165,7 @@ LAST_CONNECT=1582381005
 
 In debian based systems line Ubuntu , ... the main network configuration file location is  `/etc/network/interfaces` and there is no separated file for gateway configuration :
 
-```text
+```
 auto lo
 iface lo inte loopback
 
@@ -178,7 +178,7 @@ gateway 172.16.43.2
 dns-nameservers 8.8.8.8
 ```
 
-there might be `/etc/network/interfaces.d` directory for configuration files.
+there might be `/etc/network/interfaces.d `directory for configuration files.
 
 > ifdown and ifup commands use this configuration file.
 
@@ -188,7 +188,7 @@ there might be `/etc/network/interfaces.d` directory for configuration files.
 
 As you have noticed DNS configuration is in the same file that interface configuration is located but there is another place in linux which contains DNS information `/etc/resolv.conf` :
 
-```text
+```
 [root@server1 Desktop]# cat /etc/resolv.conf 
 # Generated by NetworkManager
 nameserver 8.8.8.8
@@ -198,9 +198,9 @@ Again setting in this file are not permanent and it is not recommended to change
 
 ### hostname
 
- **Hostname** is the program that is used to either set or display the current host, domain or node name of the system \(we are usiong centOS\).
+ **Hostname** is the program that is used to either set or display the current host, domain or node name of the system (we are usiong centOS).
 
-```text
+```
 [root@server1 Desktop]# hostname
 server1
 [root@server1 Desktop]# hostname centos6-1
@@ -210,23 +210,23 @@ centos6-1
 
 The new hostname will appear if you open a new terminal but get vanished if you restart the system. To configure hostname permanently there are a couple of other places which should be changed
 
-1. `/etc/hostname` \(Ubuntu\) OR `/etc/sysconfig/network` \(CentOS\)
-2. `/etc/hosts` \(both Ubuntu , CentOS\)
+1. `/etc/hostname `(Ubuntu) OR` /etc/sysconfig/network` (CentOS)
+2. `/etc/hosts` (both Ubuntu , CentOS)
 
 ### /etc/hostname
 
-/etc/hostname contains name of the machine and is one of the configuration files that should be modified  in order to make a new hostname persistent in Debian based systems.\(ubuntu16 here\)
+/etc/hostname contains name of the machine and is one of the configuration files that should be modified  in order to make a new hostname persistent in Debian based systems.(ubuntu16 here)
 
-```text
+```
 root@ubuntu16-1:~# cat /etc/hostname 
 ubuntu16-1
 ```
 
 ### /etc/sysconfig/network
 
-Another place which contains hostname and should be changed in RedHat based systems to have persistent hostname\(CentOS6\)
+Another place which contains hostname and should be changed in RedHat based systems to have persistent hostname(CentOS6)
 
-```text
+```
 [root@server1 Desktop]# cat /etc/sysconfig/network
 NETWORKING=yes
 HOSTNAME=server1   ###<---- change it to centos6-1 in our ex
@@ -235,9 +235,9 @@ GATEWAY=172.16.43.2
 
 ### /etc/hosts
 
- The **/etc/hosts** is an operating system file that translate hostnames or domain names to IP addresses , it do the same thing that DNS do. We can using for testing purposes or when DNS server is absent. Do not forget that it has a highr priority than DNS, \(means that operating system first look inside /etc/hosts file to gain the ip address of a host, if it wasn't successful then it would query DNS Server\).
+ The **/etc/hosts** is an operating system file that translate hostnames or domain names to IP addresses , it do the same thing that DNS do. We can using for testing purposes or when DNS server is absent. Do not forget that it has a highr priority than DNS, (means that operating system first look inside /etc/hosts file to gain the ip address of a host, if it wasn't successful then it would query DNS Server).
 
-```text
+```
 [root@server1 Desktop]# cat /etc/hosts
 127.0.0.1	centos6-1 localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1	server1	localhost localhost.localdomain localhost6 localhost6.localdomain6
@@ -248,7 +248,7 @@ For making new hostname permanent it is another file which should be modified.
 
 ### route
 
-All network devices, whether they are hosts, routers, or other types of network nodes such as network attached printers, need to make decisions about where to route TCP/IP data packets. The routing table provides the configuration information required to make those decisions. the **route** command is used to view and make changes to the kernel routing table. 
+All network devices, whether they are hosts, routers, or other types of network nodes such as network attached printers, need to make decisions about where to route TCP/IP data packets. The routing table provides the configuration information required to make those decisions. the **route **command is used to view and make changes to the kernel routing table. 
 
 {% hint style="danger" %}
 route command make temporary setting, use config files instead!
@@ -256,7 +256,7 @@ route command make temporary setting, use config files instead!
 
  Running **route**  command  without any options displays the routing table entries:
 
-```text
+```
 [root@server1 Desktop]# route
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
@@ -264,13 +264,13 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 default         172.16.43.2     0.0.0.0         UG    0      0        0 eth0
 ```
 
-> This shows us how the system is currently configured. If a packet comes into the system and has a destination in the range **172.16.43.0** through **172.16.43.255**, then it is forwarded to the gateway **\***, which is **0.0.0.0** — a special address which represents an invalid or non-existant destination. So, in this case, our system will not route these packets.
+> This shows us how the system is currently configured. If a packet comes into the system and has a destination in the range **172.16.43.0 **through **172.16.43.255**, then it is forwarded to the gateway **\***, which is **0.0.0.0** — a special address which represents an invalid or non-existant destination. So, in this case, our system will not route these packets.
 >
-> If the destination is not in this IP address range, it is forwarded to the default gateway \(in this case, **172.16.43.2**, and that system will determine how to forward the traffic on to the next step towards its destination.
+> If the destination is not in this IP address range, it is forwarded to the default gateway (in this case, **172.16.43.2**, and that system will determine how to forward the traffic on to the next step towards its destination.
 
-By default route command displays the host name in its output. We can request it to display the numerical IP address using `-n` option:
+By default route command displays the host name in its output. We can request it to display the numerical IP address using `-n `option:
 
-```text
+```
 [root@server1 Desktop]# route -n
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
@@ -280,7 +280,7 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 
  The following route add command will set the default gateway as 172.16.43.2:
 
-```text
+```
 [root@server1 ~]# route add default gw 172.16.43.1
 [root@server1 ~]# route
 Kernel IP routing table
@@ -293,7 +293,7 @@ default         172.16.43.2     0.0.0.0         UG    0      0        0 eth0
 
 use route del for deleting:
 
-```text
+```
 [root@server1 ~]# route del  default gw 172.16.43.1
 [root@server1 ~]# route
 Kernel IP routing table
@@ -309,26 +309,26 @@ default         172.16.43.2     0.0.0.0         UG    0      0        0 eth0
 
 ### ip
 
-This command replaces old good and now deprecated ifconfig command, however, **ifconfig**  command is still works and available for most of the Linux distributions.
+This command replaces old good and now deprecated ifconfig command, however, **ifconfig ** command is still works and available for most of the Linux distributions.
 
 It can be used to assign and remove addresses , bring interfaces up or down,  manipulate routing,  and many more things.
 
-```text
+```
 ip [ OPTIONS ] OBJECT { COMMAND | help }
 ```
 
-| ip command example | description |
-| :--- | :--- |
-| ip address show | show all IP addresses associated on all network devices |
-| ip address show eth0 | view the information of any particular interface |
-| ip addr add 192.168.50.5/24 dev eth0 | Assign a IP Address to Specific Interface |
-| ip addr del 192.168.50.5/24 dev eth0 | Remove an IP Address |
-| ip link show  | Display Network Interface\(s\) |
-| ip link set eth0 up | Enable Network Interface |
-| ip link set eth0 down | Disable Network Interface |
-| ip route show | Show routing table information |
-| ip route add 10.10.20.0/24 via 192.168.50.100 dev eth0 | Add static route |
-| ip route del 10.10.20.0/24 | Remove static route |
+| ip command example                                     | description                                             |
+| ------------------------------------------------------ | ------------------------------------------------------- |
+| ip address show                                        | show all IP addresses associated on all network devices |
+| ip address show eth0                                   | view the information of any particular interface        |
+| ip addr add 192.168.50.5/24 dev eth0                   | Assign a IP Address to Specific Interface               |
+| ip addr del 192.168.50.5/24 dev eth0                   | Remove an IP Address                                    |
+| ip link show                                           | Display Network Interface(s)                            |
+| ip link set eth0 up                                    | Enable Network Interface                                |
+| ip link set eth0 down                                  | Disable Network Interface                               |
+| ip route show                                          | Show routing table information                          |
+| ip route add 10.10.20.0/24 via 192.168.50.100 dev eth0 | Add static route                                        |
+| ip route del 10.10.20.0/24                             | Remove static route                                     |
 
 > All the above settings  will be lost after a system restart. use config files instead.
 
@@ -336,9 +336,9 @@ ip [ OPTIONS ] OBJECT { COMMAND | help }
 
 The `ping` command is one of the most used utilities for troubleshooting, testing, and diagnosing network connectivity issues.
 
-Ping works by sending one or more ICMP \(Internet Control Message Protocol\) Echo Request packages to a specified destination IP on the network and waits for a reply. When the destination receives the package, it will respond back with an ICMP echo reply.
+Ping works by sending one or more ICMP (Internet Control Message Protocol) Echo Request packages to a specified destination IP on the network and waits for a reply. When the destination receives the package, it will respond back with an ICMP echo reply.
 
-```text
+```
 [root@server1 ~]# ping 8.8.8.8 -c3
 PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 64 bytes from 8.8.8.8: icmp_seq=1 ttl=128 time=45.0 ms
@@ -352,12 +352,12 @@ rtt min/avg/max/mdev = 40.262/44.107/47.040/2.851 ms
 
 With the `ping` command, we can determine whether a remote destination IP is active or inactive. You can also find the round-trip delay in communicating with the destination and check whether there is a packet loss.
 
-| ping command switch | description |
-| :--- | :--- |
-|  **-n** | Numeric output only.do not try to resolve hostname |
-|  **-i interval** | Wait interval seconds between sending each packet |
-|  **-I interface** | Set source address to specified interface address |
-| **-a** | Audible ping |
+| ping command switch | description                                        |
+| ------------------- | -------------------------------------------------- |
+|  **-n**             | Numeric output only.do not try to resolve hostname |
+|  **-i interval**    | Wait interval seconds between sending each packet  |
+|  **-I interface**   | Set source address to specified interface address  |
+| **-a**              | Audible ping                                       |
 
 > for ipv6 environment use ping6 command.
 
@@ -367,16 +367,16 @@ This file determines where the system finds things like host names, passwords, a
 
 Here’s a snippet from a sample /etc/nsswitch.conf file
 
-```text
+```
 passwd:   files nis
 group:    files nis
 
 hosts:    files dns myhostname
 ```
 
-In this example, user information \(the passwd and group services\) come first from “files” \(like /etc/passwd or /etc/group\), and if no entries are found there, a query to an NIS server \(configured elsewhere\) will be used. 
+In this example, user information (the passwd and group services) come first from “files” (like /etc/passwd or /etc/group), and if no entries are found there, a query to an NIS server (configured elsewhere) will be used. 
 
-Host information first comes from /etc/hosts \(files\), then a DNS server \(dns\), and if neither of those work, at least a fallback of “myhostname” so that the local machine has _some_ name.
+Host information first comes from /etc/hosts (files), then a DNS server (dns), and if neither of those work, at least a fallback of “myhostname” so that the local machine has _some_ name.
 
 > The non-complexity comes in the “and if that doesn’t work” rule. When multiple services are listed, they’re tried in order, and a sevice either succeeds or fails. If it fails, the next is tried, etc.
 
@@ -393,11 +393,11 @@ that's all.
 
  Red Hat Enterprise Linux provides methods for consistent and predictable network device naming for network interfaces. These features change the name of network interfaces on a system in order to make locating and differentiating the interfaces easier.
 
-Traditionally, network interfaces in Linux are enumerated as `eth[0123…]`, but these names do not necessarily correspond to actual labels on the chassis. Modern server platforms with multiple network adapters can encounter non-deterministic and counter-intuitive naming of these interfaces. This affects both network adapters embedded on the motherboard \(_Lan-on-Motherboard_, or _LOM_\) and add-in \(single and multiport\) adapters.
+Traditionally, network interfaces in Linux are enumerated as `eth[0123…]`, but these names do not necessarily correspond to actual labels on the chassis. Modern server platforms with multiple network adapters can encounter non-deterministic and counter-intuitive naming of these interfaces. This affects both network adapters embedded on the motherboard (_Lan-on-Motherboard_, or _LOM_) and add-in (single and multiport) adapters.
 
-In Red Hat Enterprise Linux, **udev** supports a number of different naming schemes. The default is to assign fixed names based on firmware, topology, and location information. This has the advantage that the names are fully automatic, fully predictable, that they stay fixed even if hardware is added or removed \(no re-enumeration takes place\), and that broken hardware can be replaced seamlessly. The disadvantage is that they are sometimes harder to read than the eth0 or wlan0 names traditionally used. For example: enp5s0.
+In Red Hat Enterprise Linux, **udev** supports a number of different naming schemes. The default is to assign fixed names based on firmware, topology, and location information. This has the advantage that the names are fully automatic, fully predictable, that they stay fixed even if hardware is added or removed (no re-enumeration takes place), and that broken hardware can be replaced seamlessly. The disadvantage is that they are sometimes harder to read than the eth0 or wlan0 names traditionally used. For example: enp5s0.
 
-* for disabling that \(how ever it is not recommanded Add both `net.ifnames=0` and `biosdevname=0` as kernel parameter values to the `GRUB_CMDLINE_LINUX` variable  \)
+* for disabling that (how ever it is not recommanded Add both `net.ifnames=0` and `biosdevname=0` as kernel parameter values to the `GRUB_CMDLINE_LINUX` variable  )
 {% endhint %}
 
 
@@ -416,7 +416,7 @@ In Red Hat Enterprise Linux, **udev** supports a number of different naming sche
 
 [https://www.unixmen.com/how-to-find-default-gateway-in-linux/](https://www.unixmen.com/how-to-find-default-gateway-in-linux/)
 
-[https://jadi.gitbooks.io/lpic1/content/1092\_basic\_network\_configuration.html](https://jadi.gitbooks.io/lpic1/content/1092_basic_network_configuration.html)
+[https://jadi.gitbooks.io/lpic1/content/1092\_basic_network_configuration.html](https://jadi.gitbooks.io/lpic1/content/1092\_basic_network_configuration.html)
 
 [https://www.tecmint.com/setup-local-dns-using-etc-hosts-file-in-linux/](https://www.tecmint.com/setup-local-dns-using-etc-hosts-file-in-linux/)
 
@@ -440,7 +440,6 @@ In Red Hat Enterprise Linux, **udev** supports a number of different naming sche
 
 .
 
-[https://access.redhat.com/documentation/en-us/red\_hat\_enterprise\_linux/7/html/networking\_guide/ch-consistent\_network\_device\_naming](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/ch-consistent_network_device_naming)
+[https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/ch-consistent_network_device_naming](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/ch-consistent_network_device_naming)
 
 .
-
