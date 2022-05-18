@@ -4,7 +4,7 @@
 
 **Weight:** 4
 
-**Description: **Candidates should demonstrate a proper understanding of TCP/IP network fundamentals.
+**Description:** Candidates should demonstrate a proper understanding of TCP/IP network fundamentals.
 
 **Key Knowledge Areas:**
 
@@ -22,20 +22,20 @@
 * Subnetting
 * TCP, UDP, ICMP
 
-#### IP 
+#### IP&#x20;
 
 The IP (Internet Protocol) is the fundamental protocol for communications on the Internet. It specifies the way information is packetized, addressed, transferred, routed, and received by networked devices.
 
 #### IP Address
 
- An **IP address** is a number identifying of a computer or another device on the Internet. It is similar to a mailing address, which identifies where postal mail comes from and where it should be delivered. IP addresses uniquely identify the source and destination of data transmitted with the Internet Protocol.
+&#x20;An **IP address** is a number identifying of a computer or another device on the Internet. It is similar to a mailing address, which identifies where postal mail comes from and where it should be delivered. IP addresses uniquely identify the source and destination of data transmitted with the Internet Protocol.
 
 ### IPv4
 
 IPv4 addresses are 32 bits long (four bytes). An example of an IPv4 address is 216.58.216.164, which is the front page of Google.com.
 
 {% hint style="info" %}
-** IP v4 address breakdown**
+&#x20;**IP v4 address breakdown**
 
 The address is made up of 32 binary bits.
 
@@ -65,7 +65,7 @@ And this sample shows an IP address represented in both binary and decimal.
 > ```
 {% endhint %}
 
-The maximum value of a 32-bit number is 232, or 4,294,967,296. So the maximum number of IPv4 addresses, which is called its address space, is about 4.3 billion. In the 1980s, this was sufficient to address every networked device, but scientists knew that this space would quickly become exhausted. 
+The maximum value of a 32-bit number is 232, or 4,294,967,296. So the maximum number of IPv4 addresses, which is called its address space, is about 4.3 billion. In the 1980s, this was sufficient to address every networked device, but scientists knew that this space would quickly become exhausted.&#x20;
 
 > Technologies such as NAT have delayed the problem by allowing many devices to use a single IP address, but a larger address space is needed to serve the modern Internet.
 
@@ -83,16 +83,16 @@ With an IPv4 IP address, there are five classes of available IP ranges: Class A,
 
 Within an Internet Protocol or IP network, every connected host must have both an IP host address and a subnet mask to operate properly. Any device using the IP protocol can refer to itself with the IP address 127.0.0.1 and subnet mask 255.0.0.0, but to communicate with other devices on the network, each device must have  a (private or public) IP address and subnet mask.
 
- netmask  is a 32-bit binary which bounds that IP class to have prefixed number of Networks and prefixed number of Hosts per network.
+&#x20;netmask  is a 32-bit binary which bounds that IP class to have prefixed number of Networks and prefixed number of Hosts per network.
 
 ![](.gitbook/assets/fundamentalip-ipv4format.jpg)
 
-* Netid: The part of an IP address that identifies the network. 
+* Netid: The part of an IP address that identifies the network.&#x20;
 * Hostid: The part of an IP address that identifies a host in a network.
 
 The netid and hostid are of varying lengths, depending on the class of the address.
 
- Each IP class is equipped with its own default subnet mask (netmask) and  allows for a range of valid IP addresses, shown in the following table:
+&#x20;Each IP class is equipped with its own default subnet mask (netmask) and  allows for a range of valid IP addresses, shown in the following table:
 
 | Class       | Address range                | subnetmask    | Supports                                                       |
 | ----------- | ---------------------------- | ------------- | -------------------------------------------------------------- |
@@ -102,7 +102,7 @@ The netid and hostid are of varying lengths, depending on the class of the addre
 | **Class D** | 224.0.0.0 to 239.255.255.255 | N/A           | Reserved for multicast groups.                                 |
 | **Class E** | 240.0.0.0 to 254.255.255.254 | N/A           | Reserved for future use, or research and development purposes. |
 
->  Ranges 127.x.x.x are reserved for the loopback or localhost, for example, **127.0.0.1** is the loopback address. Range **255.255.255.255** broadcasts to all hosts on the local network.
+> &#x20;Ranges 127.x.x.x are reserved for the loopback or localhost, for example, **127.0.0.1** is the loopback address. Range **255.255.255.255** broadcasts to all hosts on the local network.
 
 {% hint style="success" %}
 **Private  IPs**
@@ -122,19 +122,19 @@ Classful IP addressing does not provide any flexibility of having less number of
 
 ### subnetting
 
-The process of  deviding an IP Class into  smaller blocks, or groups of IPs, known as subnetting. 
+The process of  deviding an IP Class into  smaller blocks, or groups of IPs, known as subnetting.&#x20;
 
-Subnetting can improve security and help to balance overall network traffic. 
+Subnetting can improve security and help to balance overall network traffic.&#x20;
 
 {% hint style="info" %}
 **CIDR**
 
-CIDR** ** or **Classless Inter Domain Routing** is based on subnetting concept.CIDR and subnetting are virtually the same thing. The term Subnetting is generally used when you use it at the organizational level. CIDR is generally used when you it at the ISP level or higher.
+CIDR **** or **Classless Inter Domain Routing** is based on subnetting concept.CIDR and subnetting are virtually the same thing. The term Subnetting is generally used when you use it at the organizational level. CIDR is generally used when you it at the ISP level or higher.
 {% endhint %}
 
 **How subnetting works ?**subnetting is a bitwise operation on a network of ip addresses which take place using netmask (subnetmask).
 
- it provides the flexibility of borrowing bits of Host part of the IP address and using them as Network in Network, called Subnet. By using subnetting, one single Class A IP address can be used to have smaller sub-networks which provides better network management capabilities.
+&#x20;it provides the flexibility of borrowing bits of Host part of the IP address and using them as Network in Network, called Subnet. By using subnetting, one single Class A IP address can be used to have smaller sub-networks which provides better network management capabilities.
 
 *   **Class A Subnets**
 
@@ -176,13 +176,13 @@ let’s discuss some of the popular protocols (ITCP/UDP/ICMP) and their respecti
 
 ### TCP
 
- Transmission Control Protocol (TCP)  is a **connection-oriented** protocol which operates are the Transport Layer of both the (OSI) reference model and the (TCP/IP) protocol stack. It is designed to provide reliable transportation of the datagrams over a network. It provides reassurance by initializing a 3-way handshake before communicating data between the sender the receiver.
+&#x20;Transmission Control Protocol (TCP)  is a **connection-oriented** protocol which operates are the Transport Layer of both the (OSI) reference model and the (TCP/IP) protocol stack. It is designed to provide reliable transportation of the datagrams over a network. It provides reassurance by initializing a 3-way handshake before communicating data between the sender the receiver.
 
 ![](.gitbook/assets/fundamentalip-howtcp.gif)
 
 ### UPD
 
- User Datagram Protocol (UDP),  is a connectionless protocol. This protocol also operates at the Transport Layer of both the (OSI) reference model and the (TCP/IP) protocol stack. However, unlike Transmission Control Protocol (TCP), the User Datagram Protocol (UDP) does not provide any guarantee or reassurance of the delivery of datagrams across a network. Not all protocols at the Application Layer uses TCP, there are many Layer 7 protocols which uses the User Datagram Protocol (UDP).
+&#x20;User Datagram Protocol (UDP),  is a connectionless protocol. This protocol also operates at the Transport Layer of both the (OSI) reference model and the (TCP/IP) protocol stack. However, unlike Transmission Control Protocol (TCP), the User Datagram Protocol (UDP) does not provide any guarantee or reassurance of the delivery of datagrams across a network. Not all protocols at the Application Layer uses TCP, there are many Layer 7 protocols which uses the User Datagram Protocol (UDP).
 
 ![](.gitbook/assets/fundamentalip-howudp.gif)
 
@@ -200,7 +200,7 @@ let’s discuss some of the popular protocols (ITCP/UDP/ICMP) and their respecti
 
 On a network, whether on a Local Area Network (LAN) or a Wide Area Network (WAN), host devices will be communicating to exchange data and information between each other and sometimes an error can occur.
 
- Internet Control Message Protocol (ICMP)  is typically used to provide error reporting on a network. There are many types of Internet Control Message Protocol (ICMP) messages which provide different actions and give feedback if an error occurs, and also the issue which exists. A good example of  using ICMP Protocol is ping command:
+&#x20;Internet Control Message Protocol (ICMP)  is typically used to provide error reporting on a network. There are many types of Internet Control Message Protocol (ICMP) messages which provide different actions and give feedback if an error occurs, and also the issue which exists. A good example of  using ICMP Protocol is ping command:
 
 ```
 root@ubuntu16-1:~# ping google.com -c 3
@@ -250,7 +250,7 @@ The default port of some protocols are as follow. These are very important and m
 
 ### /etc/services
 
-The /etc/services file contains information regarding the known services available in the  Internet. For each service, a single line should be present with the following information: 
+The /etc/services file contains information regarding the known services available in the  Internet. For each service, a single line should be present with the following information:&#x20;
 
 `official_service_name   port_number/protocol_name    aliases`
 
@@ -292,7 +292,7 @@ smtp		25/tcp		mail
 ...
 ```
 
-and so on ... .
+and so on .... .&#x20;
 
 .
 
@@ -312,9 +312,9 @@ and so on ... .
 
 [https://www.computerhope.com/jargon/s/subnetma.htm](https://www.computerhope.com/jargon/s/subnetma.htm)
 
-[https://www.ibm.com/support/knowledgecenter/en/SSSHRK\_4.2.0/disco/concept/dsc_private_addr_ranges.html](https://www.ibm.com/support/knowledgecenter/en/SSSHRK\_4.2.0/disco/concept/dsc_private_addr_ranges.html)
+[https://www.ibm.com/support/knowledgecenter/en/SSSHRK\_4.2.0/disco/concept/dsc\_private\_addr\_ranges.html](https://www.ibm.com/support/knowledgecenter/en/SSSHRK\_4.2.0/disco/concept/dsc\_private\_addr\_ranges.html)
 
-[https://en.wikipedia.org/wiki/IPv6\_address#/media/File:Ipv6\_address_leading_zeros.svg](https://en.wikipedia.org/wiki/IPv6\_address#/media/File:Ipv6\_address_leading_zeros.svg)
+[https://en.wikipedia.org/wiki/IPv6\_address#/media/File:Ipv6\_address\_leading\_zeros.svg](https://en.wikipedia.org/wiki/IPv6\_address#/media/File:Ipv6\_address\_leading\_zeros.svg)
 
 [https://www.tutorialspoint.com/ipv4/ipv4\_subnetting.htm](https://www.tutorialspoint.com/ipv4/ipv4\_subnetting.htm)
 
@@ -326,10 +326,12 @@ and so on ... .
 
 [https://study-ccna.com/osi-tcp-ip-models/](https://study-ccna.com/osi-tcp-ip-models/)
 
-[https://www.inetdaemon.com/tutorials/internet/tcp/3-way_handshake.shtml](https://www.inetdaemon.com/tutorials/internet/tcp/3-way_handshake.shtml)
+[https://www.inetdaemon.com/tutorials/internet/tcp/3-way\_handshake.shtml](https://www.inetdaemon.com/tutorials/internet/tcp/3-way\_handshake.shtml)
 
 [https://nordvpn.com/blog/tcp-or-udp-which-is-better/](https://nordvpn.com/blog/tcp-or-udp-which-is-better/)
 
-[http://www.qnx.com/developers/docs/6.5.0/index.jsp?topic=%2Fcom.qnx.doc.neutrino_utilities%2Fs%2Fservices.html](http://www.qnx.com/developers/docs/6.5.0/index.jsp?topic=%2Fcom.qnx.doc.neutrino_utilities%2Fs%2Fservices.html)
+[http://www.qnx.com/developers/docs/6.5.0/index.jsp?topic=%2Fcom.qnx.doc.neutrino\_utilities%2Fs%2Fservices.html](http://www.qnx.com/developers/docs/6.5.0/index.jsp?topic=%2Fcom.qnx.doc.neutrino\_utilities%2Fs%2Fservices.html)
+
+Cisco got you here? [https://www.pcwdld.com/cisco-commands-cheat-sheet](https://www.pcwdld.com/cisco-commands-cheat-sheet)
 
 .
