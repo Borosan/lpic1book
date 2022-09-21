@@ -17,12 +17,12 @@
 * ssh-keygen
 * ssh-agent
 * ssh-add
-* \~/.ssh/id_rsa and id_rsa.pub
-* \~/.ssh/id_dsa and id_dsa.pub
-* /etc/ssh/ssh_host_rsa_key and ssh_host_rsa_key.pub
-* /etc/ssh/ssh_host_dsa_key and ssh_host_dsa_key.pub
-* \~/.ssh/authorized_keys
-* ssh_known_hosts
+* \~/.ssh/id\_rsa and id\_rsa.pub
+* \~/.ssh/id\_dsa and id\_dsa.pub
+* /etc/ssh/ssh\_host\_rsa\_key and ssh\_host\_rsa\_key.pub
+* /etc/ssh/ssh\_host\_dsa\_key and ssh\_host\_dsa\_key.pub
+* \~/.ssh/authorized\_keys
+* ssh\_known\_hosts
 * gpg
 * \~/.gnupg/
 
@@ -30,7 +30,7 @@ First lets start about some concepts.
 
 ## Cryptography
 
- Cryptography is a method of using advanced mathematical principles in storing and transmitting data in a particular form so that only those whom it is intended can read and process it. Encryption is a key concept in cryptography
+&#x20;Cryptography is a method of using advanced mathematical principles in storing and transmitting data in a particular form so that only those whom it is intended can read and process it. Encryption is a key concept in cryptography
 
 * **Encryption** :In cryptography, encryption is the process of encoding a message or information in such a way that only authorized parties can access it and those who are not authorized cannot.
 * **Decryption**: The conversion of encrypted data into its original form is called Decryption. It is generally a reverse process of encryption.
@@ -128,11 +128,11 @@ ssh_host_rsa_key.pub
 ssh_import_id
 ```
 
-The`sshd_config`is the ssh ** daemon**(or ssh server process) configuration file, Whereas, the `ssh_config` file is the ssh client configuration file. The client configuration file only has bearing on when you use the ssh command to connect to another ssh host . As you can see there are public keys and private keys here with different algorithems and they can be used by SSH to encrypt the session.
+The`sshd_config`is the ssh **daemon**(or ssh server process) configuration file, Whereas, the `ssh_config` file is the ssh client configuration file. The client configuration file only has bearing on when you use the ssh command to connect to another ssh host . As you can see there are public keys and private keys here with different algorithems and they can be used by SSH to encrypt the session.
 
 ## ssh client configurations
 
-Till now we have understood how ssh works. As we mentioned when ssh connection is started, the public key of ssh server is tranfered to the client(stored in ./ssh/known_hosts) and the client will use it to continue negotiation with the server and user will be required to get authenticated by sending username and password.
+Till now we have understood how ssh works. As we mentioned when ssh connection is started, the public key of ssh server is tranfered to the client(stored in ./ssh/known\_hosts) and the client will use it to continue negotiation with the server and user will be required to get authenticated by sending username and password.
 
 Lets start by connecting toUbuntu16-1 from Ubuntu16-2 and see the keys:
 
@@ -160,7 +160,7 @@ user1@ubuntu16-1:~$
 ```
 
 {% hint style="info" %}
-**What is fingerprint ? **a public key fingerprint is a short sequence of bytes used to identify a longer public key. Fingerprints are created by applying a cryptographic hash function to a public key. Since fingerprints are shorter than the keys they refer to, they can be used to simplify certain key management tasks.
+**What is fingerprint ?** a public key fingerprint is a short sequence of bytes used to identify a longer public key. Fingerprints are created by applying a cryptographic hash function to a public key. Since fingerprints are shorter than the keys they refer to, they can be used to simplify certain key management tasks.
 {% endhint %}
 
 now lets compare the keys in server and client:
@@ -231,11 +231,11 @@ user1@ubuntu16-2:~$
 
 ```
 
-We haven't set passphrase in our demonstration but if we set we would be asked to enter it when we copy it to the server. 
+We haven't set passphrase in our demonstration but if we set we would be asked to enter it when we copy it to the server.&#x20;
 
 ### ssh-copy-id
 
-we use ssh-copy-id - configures a public key as authorized on a server 
+we use ssh-copy-id - configures a public key as authorized on a server&#x20;
 
 ```
 user1@ubuntu16-2:~$ ssh-copy-id -i .ssh/id_rsa.pub user1@192.168.52.146
@@ -284,7 +284,7 @@ and it seems okey.We can copy and paste the keys for other users if you like, bu
 
 We have configured a password less ssh connection using key based authentication. But what would happened if our system compromised? An evil hacker would be able to get connected to other servers using key based authentication without knowning the passwords.
 
-Passphrase can help us to avoid this kinds of security issues by requiring a passphrase at the beginning of every ssh key-based authentication. So let clear previous authorized_key, and start:
+Passphrase can help us to avoid this kinds of security issues by requiring a passphrase at the beginning of every ssh key-based authentication. So let clear previous authorized\_key, and start:
 
 ```
 user1@ubuntu16-1:~$ 
@@ -409,7 +409,7 @@ as you can see each time we are asked to enter passphrase and that was what we w
 
 ### ssh-agent
 
- The **ssh**-**agent** is a helper program that keeps track of user's identity keys and their passphrases. The **agent** can then use the keys to log into other servers without having the user type in a password or passphrase again. This implements a form of single sign-on (SSO). The SSH agent is used for SSH public key authentication.
+&#x20;The **ssh**-**agent** is a helper program that keeps track of user's identity keys and their passphrases. The **agent** can then use the keys to log into other servers without having the user type in a password or passphrase again. This implements a form of single sign-on (SSO). The SSH agent is used for SSH public key authentication.
 
 ```
 user1@ubuntu16-2:~$ ssh-agent
@@ -434,7 +434,7 @@ user1@ubuntu16-2:~$ ssh-add -l
 user1@ubuntu16-2:~$ 
 ```
 
-`-l`  will list private keys currently accessible to the agent, 
+`-l`  will list private keys currently accessible to the agent,&#x20;
 
 `-D`Deletes all identities from the agent, if you like!
 
@@ -472,11 +472,11 @@ SSH is a standard for secure remote logins and file transfers over untrusted net
 
 #### what is ssh port forwarding?
 
- SSH port forwarding is a mechanism in SSH for tunneling application ports from the client machine to the server machine, or vice versa. some system administrators and IT professionals use it for opening backdoors into the internal network from their home machines. It can also be abused by hackers and malware to open access from the Internet to the internal network.
+&#x20;SSH port forwarding is a mechanism in SSH for tunneling application ports from the client machine to the server machine, or vice versa. some system administrators and IT professionals use it for opening backdoors into the internal network from their home machines. It can also be abused by hackers and malware to open access from the Internet to the internal network.
 
 There are three types of SSH port forwarding:
 
-* **Local port forwarding **- connections from an SSH client are forwarded, via the SSH server, to a destination server.
+* **Local port forwarding** - connections from an SSH client are forwarded, via the SSH server, to a destination server.
 
 ![](.gitbook/assets/ssh-portfwl1.jpg)
 
@@ -494,17 +494,17 @@ There are three types of SSH port forwarding:
 
 Like other command ssh has also some options.Lets take a look at most usefull switches:
 
-| SSH commands                             | Description                                                                                                      |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| ssh -V                                   | Shows ssh client version                                                                                         |
-| ssh user1@server1.example.com            | Connect to the remote host, add "-v" for verbose mode                                                            |
-| ssh -l login_name server1.example.com    | Specifies the user to log in as on the remote machine.                                                           |
-| ssh user1@server1.example.com \<command> | Running \<command> on the remote host over ssh                                                                   |
-| ssh -X user@server1.example.com          | Enable Xforwarding on the clients side,  X11Forwarding should be enabled on the server side in sshd_config file. |
+| SSH commands                             | Description                                                                                                       |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| ssh -V                                   | Shows ssh client version                                                                                          |
+| ssh user1@server1.example.com            | Connect to the remote host, add "-v" for verbose mode                                                             |
+| ssh -l login\_name server1.example.com   | Specifies the user to log in as on the remote machine.                                                            |
+| ssh user1@server1.example.com \<command> | Running \<command> on the remote host over ssh                                                                    |
+| ssh -X user@server1.example.com          | Enable Xforwarding on the clients side,  X11Forwarding should be enabled on the server side in sshd\_config file. |
 
 ## data encryption
 
- Encryption **is important** because it allows you to securely protect data that you don't want anyone else to have access to. 
+&#x20;Encryption **is important** because it allows you to securely protect data that you don't want anyone else to have access to.&#x20;
 
 ### gpg
 
@@ -755,9 +755,9 @@ RwZvU8ge0PLulrQ5km9xea2295b2dOBEPCzOkgv6BTeAMADrBmi2shhLqUWeoRRr
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-## signing 
+## signing&#x20;
 
- By encrypting a document using your private key, you let everyone to try to open it using your public key and if they succeed, they will be sure that you have signed it using YOUR private key! `gpg` has a specific command to sign documents:
+&#x20;By encrypting a document using your private key, you let everyone to try to open it using your public key and if they succeed, they will be sure that you have signed it using YOUR private key! `gpg` has a specific command to sign documents:
 
 ```
 user1@ubuntu16-1:~$ vim notice
@@ -806,7 +806,7 @@ user2@ubuntu16-1:~$
 
 and that's all folks!
 
-## Congratulation we have done lpic1-102 !!! do not forget to give a [start](https://github.com/Borosan) and [donate](https://payping.ir/@borosan) :-)
+## Congratulation we have done lpic1-102 !!! do not forget to give a [star](https://github.com/Borosan) and [donate](http://linuxcert.ir/donation.html) :-)
 
 ## You can start studying my LPIC-2 book: [https://borosan.gitbook.io/lpic2-exam-guide/](https://borosan.gitbook.io/lpic2-exam-guide/)
 
@@ -826,7 +826,7 @@ and that's all folks!
 
 [https://stackoverflow.com/questions/454048/what-is-the-difference-between-encrypting-and-signing-in-asymmetric-encryption](https://stackoverflow.com/questions/454048/what-is-the-difference-between-encrypting-and-signing-in-asymmetric-encryption)
 
-[https://en.wikipedia.org/wiki/Key_server](https://en.wikipedia.org/wiki/Key_server)
+[https://en.wikipedia.org/wiki/Key\_server](https://en.wikipedia.org/wiki/Key\_server)
 
 [https://www.ssh.com/ssh/protocol](https://www.ssh.com/ssh/protocol)
 
@@ -848,6 +848,6 @@ and that's all folks!
 
 [https://www.howtogeek.com/427982/how-to-encrypt-and-decrypt-files-with-gpg-on-linux/](https://www.howtogeek.com/427982/how-to-encrypt-and-decrypt-files-with-gpg-on-linux/)
 
-[https://jadi.gitbooks.io/lpic1/content/1103\_securing_data_with_encryption.html](https://jadi.gitbooks.io/lpic1/content/1103\_securing_data_with_encryption.html)
+[https://jadi.gitbooks.io/lpic1/content/1103\_securing\_data\_with\_encryption.html](https://jadi.gitbooks.io/lpic1/content/1103\_securing\_data\_with\_encryption.html)
 
 .
