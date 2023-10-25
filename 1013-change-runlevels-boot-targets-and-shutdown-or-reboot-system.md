@@ -495,7 +495,7 @@ In order to switch between Boot Targets we use systemctl tool.
 
 ### systemctl
 
-Systemctl is a systemd utility which is responsible for Controlling the systemd system and service manager. It can does lots of thing but what we need here and use it for is changing boot targets.
+Systemctl is a systemd utility which is responsible for Controlling the systemd system and service manager. It can do a lot of things but what we need here and use it for is changing boot targets.
 
 To see the current boot target use `systemctl get-default` command:
 
