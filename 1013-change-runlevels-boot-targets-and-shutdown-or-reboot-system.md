@@ -95,7 +95,7 @@ init (as a command) is a process control initialization like telinit.
 {% hint style="info" %}
 #### telinit vs init
 
-telinit is a smaller tool that informs init when it needs to switch runlevels. So we can use "telinit" to "tell init" that it needs to switch runlevel. telinit is actually linked to init command and it is possible to use init command instead but it is not recommanded.
+telinit is a smaller tool that informs init when it needs to switch runlevels. So we can use "telinit" to "tell init" that it needs to switch runlevel. telinit is actually linked to init command and it is possible to use init command instead but it is not recommended.
 
 ```
 [root@centos5-1 ~]# ls -l /sbin/telinit 
