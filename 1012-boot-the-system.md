@@ -57,7 +57,7 @@ The master boot record is located on the first sector of a disk. The specific ad
 
 What Master Boot Record includes and how it continues the boot sequence?
 
-![](.gitbook/assets/boot-MBR.JPG)
+![](.gitbook/assets/boot-MBR.jpg)
 
 The master boot record itself holds two things : the boot loader program(or some of it) and the partition table
 
